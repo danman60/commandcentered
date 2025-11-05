@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equipment Location Tracking - CommandCentered</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+    <nav class="bg-white border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <h1 class="text-xl font-bold text-purple-600">CommandCentered</h1>
+                    <div class="ml-10 flex space-x-4">
+                        <a href="#" class="text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium">Dashboard</a>
+                        <a href="#" class="text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium">Calendar</a>
+                        <a href="#" class="text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium">Events</a>
+                        <a href="#" class="text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium">Operators</a>
+                        <a href="#" class="text-purple-600 border-b-2 border-purple-600 px-3 py-2 text-sm font-medium">Equipment</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-600">Acme Video Productions</span>
+                    <div class="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-white font-medium">JD</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-gray-900">Equipment Location Tracking</h2>
+            <button class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 flex items-center">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                </svg>
+                Log Movement
+            </button>
+        </div>
+
+        <!-- Location Summary Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div class="bg-white rounded-lg shadow p-4">
+                <div class="text-sm text-gray-600 mb-1">At Warehouse</div>
+                <div class="text-2xl font-bold text-gray-900">89</div>
+                <div class="text-xs text-gray-500 mt-1">57% of inventory</div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-4">
+                <div class="text-sm text-gray-600 mb-1">On Location</div>
+                <div class="text-2xl font-bold text-blue-600">42</div>
+                <div class="text-xs text-gray-500 mt-1">7 active events</div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-4">
+                <div class="text-sm text-gray-600 mb-1">With Operators</div>
+                <div class="text-2xl font-bold text-purple-600">18</div>
+                <div class="text-xs text-gray-500 mt-1">Personal equipment</div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-4">
+                <div class="text-sm text-gray-600 mb-1">In Maintenance</div>
+                <div class="text-2xl font-bold text-yellow-600">7</div>
+                <div class="text-xs text-gray-500 mt-1">Avg 4 days</div>
+            </div>
+        </div>
+
+        <!-- Timeline View -->
+        <div class="bg-white rounded-lg shadow p-6 mb-6">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-semibold text-gray-900">Movement Timeline</h3>
+                <div class="flex items-center space-x-4">
+                    <select class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500 text-sm">
+                        <option>All Equipment</option>
+                        <option>Cameras</option>
+                        <option>Audio</option>
+                        <option>Lighting</option>
+                    </select>
+                    <select class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500 text-sm">
+                        <option>Last 7 Days</option>
+                        <option>Last 30 Days</option>
+                        <option>Last 90 Days</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Timeline Items -->
+            <div class="space-y-6">
+                <div class="flex">
+                    <div class="flex flex-col items-center mr-4">
+                        <div class="flex items-center justify-center w-10 h-10 bg-green-100 rounded-full">
+                            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                        <div class="w-0.5 h-full bg-gray-300 mt-2"></div>
+                    </div>
+                    <div class="pb-6 flex-1">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-semibold text-gray-900">Equipment Returned</span>
+                            <span class="text-xs text-gray-500">2 hours ago</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-2">Sony FX6 Camera (CAM-FX6-001) returned to Warehouse A, Shelf 3B</p>
+                        <div class="flex items-center space-x-4 text-xs text-gray-500">
+                            <span>From: Summer Music Festival</span>
+                            <span>Operator: Mike Johnson</span>
+                        </div>
+                        <span class="inline-block mt-2 px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded">Checked In</span>
+                    </div>
+                </div>
+
+                <div class="flex">
+                    <div class="flex flex-col items-center mr-4">
+                        <div class="flex items-center justify-center w-10 h-10 bg-blue-100 rounded-full">
+                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            </svg>
+                        </div>
+                        <div class="w-0.5 h-full bg-gray-300 mt-2"></div>
+                    </div>
+                    <div class="pb-6 flex-1">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-semibold text-gray-900">Equipment Checked Out</span>
+                            <span class="text-xs text-gray-500">1 day ago</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-2">RED Komodo 6K (CAM-RED-003) checked out for Corporate Training Video</p>
+                        <div class="flex items-center space-x-4 text-xs text-gray-500">
+                            <span>To: Tech Corp HQ, San Francisco</span>
+                            <span>Operator: Sarah Chen</span>
+                        </div>
+                        <span class="inline-block mt-2 px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded">Checked Out</span>
+                    </div>
+                </div>
+
+                <div class="flex">
+                    <div class="flex flex-col items-center mr-4">
+                        <div class="flex items-center justify-center w-10 h-10 bg-yellow-100 rounded-full">
+                            <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                            </svg>
+                        </div>
+                        <div class="w-0.5 h-full bg-gray-300 mt-2"></div>
+                    </div>
+                    <div class="pb-6 flex-1">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-semibold text-gray-900">Sent for Maintenance</span>
+                            <span class="text-xs text-gray-500">3 days ago</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-2">ARRI SkyPanel S60-C (LGT-SKY-008) sent to Tech Solutions for repair</p>
+                        <div class="flex items-center space-x-4 text-xs text-gray-500">
+                            <span>Issue: Flickering at low intensity</span>
+                            <span>Expected Return: Jun 22, 2024</span>
+                        </div>
+                        <span class="inline-block mt-2 px-2 py-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded">In Maintenance</span>
+                    </div>
+                </div>
+
+                <div class="flex">
+                    <div class="flex flex-col items-center mr-4">
+                        <div class="flex items-center justify-center w-10 h-10 bg-purple-100 rounded-full">
+                            <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+                            </svg>
+                        </div>
+                        <div class="w-0.5 h-full bg-gray-300 mt-2"></div>
+                    </div>
+                    <div class="pb-6 flex-1">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-semibold text-gray-900">Location Transfer</span>
+                            <span class="text-xs text-gray-500">5 days ago</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-2">Canon EF 24-70mm Lens moved between warehouse locations</p>
+                        <div class="flex items-center space-x-4 text-xs text-gray-500">
+                            <span>From: Warehouse B</span>
+                            <span>To: Warehouse A, Shelf 2A</span>
+                        </div>
+                        <span class="inline-block mt-2 px-2 py-1 text-xs font-medium bg-purple-100 text-purple-800 rounded">Transfer</span>
+                    </div>
+                </div>
+
+                <div class="flex">
+                    <div class="flex flex-col items-center mr-4">
+                        <div class="flex items-center justify-center w-10 h-10 bg-green-100 rounded-full">
+                            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-semibold text-gray-900">Maintenance Complete</span>
+                            <span class="text-xs text-gray-500">1 week ago</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-2">Sony FX6 Camera returned from Tech Solutions after sensor cleaning</p>
+                        <div class="flex items-center space-x-4 text-xs text-gray-500">
+                            <span>Work Performed: Sensor cleaning, firmware update</span>
+                            <span>Cost: $150</span>
+                        </div>
+                        <span class="inline-block mt-2 px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded">Completed</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Current Locations Map -->
+        <div class="bg-white rounded-lg shadow p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Current Equipment Locations</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-semibold text-gray-900">Warehouse A</h4>
+                        <span class="px-2 py-1 text-xs font-medium bg-gray-100 text-gray-800 rounded">67 items</span>
+                    </div>
+                    <div class="space-y-2 text-sm text-gray-600">
+                        <div class="flex justify-between"><span>Cameras:</span> <span class="font-medium">12</span></div>
+                        <div class="flex justify-between"><span>Lenses:</span> <span class="font-medium">18</span></div>
+                        <div class="flex justify-between"><span>Audio:</span> <span class="font-medium">24</span></div>
+                        <div class="flex justify-between"><span>Lighting:</span> <span class="font-medium">13</span></div>
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-semibold text-gray-900">Active Events</h4>
+                        <span class="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded">42 items</span>
+                    </div>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between text-gray-600">
+                            <span>Summer Festival:</span>
+                            <span class="font-medium">24 items</span>
+                        </div>
+                        <div class="flex justify-between text-gray-600">
+                            <span>Corporate Training:</span>
+                            <span class="font-medium">8 items</span>
+                        </div>
+                        <div class="flex justify-between text-gray-600">
+                            <span>Wedding - Johnson:</span>
+                            <span class="font-medium">10 items</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-semibold text-gray-900">Other Locations</h4>
+                        <span class="px-2 py-1 text-xs font-medium bg-gray-100 text-gray-800 rounded">47 items</span>
+                    </div>
+                    <div class="space-y-2 text-sm text-gray-600">
+                        <div class="flex justify-between"><span>Warehouse B:</span> <span class="font-medium">22</span></div>
+                        <div class="flex justify-between"><span>With Operators:</span> <span class="font-medium">18</span></div>
+                        <div class="flex justify-between"><span>Maintenance:</span> <span class="font-medium">7</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

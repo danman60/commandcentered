@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equipment Detail - CommandCentered</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+    <nav class="bg-white border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <h1 class="text-xl font-bold text-purple-600">CommandCentered</h1>
+                    <div class="ml-10 flex space-x-4">
+                        <a href="#" class="text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium">Dashboard</a>
+                        <a href="#" class="text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium">Calendar</a>
+                        <a href="#" class="text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium">Events</a>
+                        <a href="#" class="text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium">Operators</a>
+                        <a href="#" class="text-purple-600 border-b-2 border-purple-600 px-3 py-2 text-sm font-medium">Equipment</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-600">Acme Video Productions</span>
+                    <div class="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-white font-medium">JD</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="mb-6">
+            <a href="#" class="text-purple-600 hover:text-purple-700 text-sm font-medium">&larr; Back to Equipment</a>
+        </div>
+
+        <div class="bg-white rounded-lg shadow p-6 mb-6">
+            <div class="flex items-start justify-between">
+                <div class="flex items-center">
+                    <div class="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-6">
+                        <h2 class="text-2xl font-bold text-gray-900">Sony FX6 Camera</h2>
+                        <p class="text-sm text-gray-600 mt-1">Serial Number: CAM-FX6-001</p>
+                        <div class="flex items-center space-x-3 mt-2">
+                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-green-100 text-green-800">Available</span>
+                            <span class="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded">Camera</span>
+                        </div>
+                    </div>
+                </div>
+                <button class="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">Edit Details</button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-2 space-y-6">
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Equipment Details</h3>
+                    <div class="grid grid-cols-2 gap-4 text-sm">
+                        <div><span class="text-gray-600">Owner:</span> <span class="ml-2 text-gray-900 font-medium">Company</span></div>
+                        <div><span class="text-gray-600">Purchase Date:</span> <span class="ml-2 text-gray-900">Jan 15, 2023</span></div>
+                        <div><span class="text-gray-600">Purchase Price:</span> <span class="ml-2 text-gray-900">$5,998</span></div>
+                        <div><span class="text-gray-600">Replacement Value:</span> <span class="ml-2 text-gray-900">$6,500</span></div>
+                        <div><span class="text-gray-600">Current Location:</span> <span class="ml-2 text-gray-900">Warehouse A, Shelf 3B</span></div>
+                        <div><span class="text-gray-600">Last Maintenance:</span> <span class="ml-2 text-gray-900">May 1, 2024</span></div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Location History</h3>
+                    <div class="space-y-4">
+                        <div class="flex">
+                            <div class="flex flex-col items-center mr-4">
+                                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                                <div class="w-0.5 h-full bg-gray-300 mt-1"></div>
+                            </div>
+                            <div class="pb-4 flex-1">
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="text-sm font-semibold text-gray-900">Warehouse A, Shelf 3B</span>
+                                    <span class="text-xs text-gray-500">Current</span>
+                                </div>
+                                <p class="text-sm text-gray-600">Returned from Summer Music Festival</p>
+                                <span class="text-xs text-gray-500">Jun 17, 2024 10:30 AM</span>
+                            </div>
+                        </div>
+                        <div class="flex">
+                            <div class="flex flex-col items-center mr-4">
+                                <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
+                                <div class="w-0.5 h-full bg-gray-300 mt-1"></div>
+                            </div>
+                            <div class="pb-4 flex-1">
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="text-sm font-semibold text-gray-900">Summer Music Festival</span>
+                                    <span class="text-xs text-gray-500">3 days</span>
+                                </div>
+                                <p class="text-sm text-gray-600">Event: Downtown Park, Los Angeles</p>
+                                <p class="text-sm text-gray-600">Operator: Mike Johnson</p>
+                                <span class="text-xs text-gray-500">Jun 14 - Jun 16, 2024</span>
+                            </div>
+                        </div>
+                        <div class="flex">
+                            <div class="flex flex-col items-center mr-4">
+                                <div class="w-3 h-3 bg-gray-400 rounded-full"></div>
+                                <div class="w-0.5 h-full bg-gray-300 mt-1"></div>
+                            </div>
+                            <div class="pb-4 flex-1">
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="text-sm font-semibold text-gray-900">Warehouse A, Shelf 3B</span>
+                                    <span class="text-xs text-gray-500">28 days</span>
+                                </div>
+                                <p class="text-sm text-gray-600">Storage between events</p>
+                                <span class="text-xs text-gray-500">May 17 - Jun 13, 2024</span>
+                            </div>
+                        </div>
+                        <div class="flex">
+                            <div class="flex flex-col items-center mr-4">
+                                <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="text-sm font-semibold text-gray-900">Tech Solutions Repair</span>
+                                    <span class="text-xs text-gray-500">5 days</span>
+                                </div>
+                                <p class="text-sm text-gray-600">Sensor cleaning and firmware update</p>
+                                <span class="text-xs text-gray-500">May 12 - May 16, 2024</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Maintenance Log</h3>
+                    <div class="space-y-3">
+                        <div class="border-l-4 border-green-500 pl-4 py-2">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-sm font-semibold text-gray-900">Sensor Cleaning</span>
+                                <span class="text-xs text-gray-500">May 15, 2024</span>
+                            </div>
+                            <p class="text-sm text-gray-600">Full sensor cleaning and calibration. Camera in excellent condition.</p>
+                            <span class="text-xs text-gray-500">Technician: Tech Solutions | Cost: $150</span>
+                        </div>
+                        <div class="border-l-4 border-blue-500 pl-4 py-2">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-sm font-semibold text-gray-900">Firmware Update</span>
+                                <span class="text-xs text-gray-500">May 15, 2024</span>
+                            </div>
+                            <p class="text-sm text-gray-600">Updated to firmware v4.01. Improved autofocus and color science.</p>
+                            <span class="text-xs text-gray-500">Technician: Tech Solutions | Cost: $0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+                    <div class="space-y-2">
+                        <button class="w-full px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 text-sm">Assign to Event</button>
+                        <button class="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-50">Log Maintenance</button>
+                        <button class="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-50">Update Location</button>
+                        <button class="w-full px-4 py-2 border border-red-300 rounded-lg text-sm text-red-700 hover:bg-red-50">Mark as Damaged</button>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Usage Stats</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-600">Total Events</span>
+                                <span class="font-semibold text-gray-900">24</span>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-600">Total Days Used</span>
+                                <span class="font-semibold text-gray-900">67 days</span>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-600">Last 30 Days</span>
+                                <span class="font-semibold text-gray-900">5 days</span>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-600">Utilization Rate</span>
+                                <span class="font-semibold text-gray-900">42%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Notes</h3>
+                    <textarea rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500 text-sm" placeholder="Equipment notes...">Excellent condition. Sensor professionally cleaned May 2024. Includes original box and accessories.</textarea>
+                    <button class="mt-2 w-full px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 text-sm">Save Notes</button>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

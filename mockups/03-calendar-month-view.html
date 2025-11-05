@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar - CommandCentered</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation (same as dashboard) -->
+    <nav class="bg-white border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <h1 class="text-xl font-bold text-purple-600">CommandCentered</h1>
+                    <div class="ml-10 flex space-x-4">
+                        <a href="#" class="text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium">Dashboard</a>
+                        <a href="#" class="text-purple-600 border-b-2 border-purple-600 px-3 py-2 text-sm font-medium">Calendar</a>
+                        <a href="#" class="text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium">Events</a>
+                        <a href="#" class="text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium">Operators</a>
+                        <a href="#" class="text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium">Equipment</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-600">Acme Video Productions</span>
+                    <div class="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-white font-medium">JD</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Calendar Header -->
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-gray-900">June 2025</h2>
+            <div class="flex items-center space-x-4">
+                <div class="flex space-x-2">
+                    <button class="px-4 py-2 bg-purple-600 text-white rounded-lg text-sm font-medium">Month</button>
+                    <button class="px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50">Week</button>
+                    <button class="px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50">Day</button>
+                </div>
+                <div class="flex space-x-2">
+                    <button class="p-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                    </button>
+                    <button class="px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50">Today</button>
+                    <button class="p-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </button>
+                </div>
+                <button class="px-4 py-2 bg-purple-600 text-white rounded-lg text-sm font-medium hover:bg-purple-700">+ New Event</button>
+            </div>
+        </div>
+
+        <!-- Calendar Grid -->
+        <div class="bg-white rounded-lg shadow overflow-hidden">
+            <!-- Day Headers -->
+            <div class="grid grid-cols-7 border-b border-gray-200">
+                <div class="p-3 text-center text-sm font-semibold text-gray-700 border-r border-gray-200">Sunday</div>
+                <div class="p-3 text-center text-sm font-semibold text-gray-700 border-r border-gray-200">Monday</div>
+                <div class="p-3 text-center text-sm font-semibold text-gray-700 border-r border-gray-200">Tuesday</div>
+                <div class="p-3 text-center text-sm font-semibold text-gray-700 border-r border-gray-200">Wednesday</div>
+                <div class="p-3 text-center text-sm font-semibold text-gray-700 border-r border-gray-200">Thursday</div>
+                <div class="p-3 text-center text-sm font-semibold text-gray-700 border-r border-gray-200">Friday</div>
+                <div class="p-3 text-center text-sm font-semibold text-gray-700">Saturday</div>
+            </div>
+
+            <!-- Calendar Days -->
+            <div class="grid grid-cols-7">
+                <!-- Week 1 -->
+                <div class="min-h-32 p-2 border-r border-b border-gray-200 bg-gray-50">
+                    <div class="text-sm text-gray-400">1</div>
+                </div>
+                <div class="min-h-32 p-2 border-r border-b border-gray-200 bg-gray-50">
+                    <div class="text-sm text-gray-400">2</div>
+                </div>
+                <div class="min-h-32 p-2 border-r border-b border-gray-200 bg-gray-50">
+                    <div class="text-sm text-gray-400">3</div>
+                </div>
+                <div class="min-h-32 p-2 border-r border-b border-gray-200 bg-gray-50">
+                    <div class="text-sm text-gray-400">4</div>
+                </div>
+                <div class="min-h-32 p-2 border-r border-b border-gray-200 bg-gray-50">
+                    <div class="text-sm text-gray-400">5</div>
+                </div>
+                <div class="min-h-32 p-2 border-r border-b border-gray-200 bg-gray-50">
+                    <div class="text-sm text-gray-400">6</div>
+                </div>
+                <div class="min-h-32 p-2 border-b border-gray-200 bg-gray-50">
+                    <div class="text-sm text-gray-400">7</div>
+                </div>
+
+                <!-- Week 2 -->
+                <div class="min-h-32 p-2 border-r border-b border-gray-200">
+                    <div class="text-sm text-gray-700 mb-1">8</div>
+                </div>
+                <div class="min-h-32 p-2 border-r border-b border-gray-200">
+                    <div class="text-sm text-gray-700 mb-1">9</div>
+                </div>
+                <div class="min-h-32 p-2 border-r border-b border-gray-200">
+                    <div class="text-sm text-gray-700 mb-1">10</div>
+                    <div class="text-xs bg-blue-100 text-blue-700 p-1 rounded mb-1 truncate cursor-pointer hover:bg-blue-200">Corporate Video</div>
+                </div>
+                <div class="min-h-32 p-2 border-r border-b border-gray-200">
+                    <div class="text-sm text-gray-700 mb-1">11</div>
+                </div>
+                <div class="min-h-32 p-2 border-r border-b border-gray-200">
+                    <div class="text-sm text-gray-700 mb-1">12</div>
+                </div>
+                <div class="min-h-32 p-2 border-r border-b border-gray-200">
+                    <div class="text-sm text-gray-700 mb-1">13</div>
+                </div>
+                <div class="min-h-32 p-2 border-b border-gray-200">
+                    <div class="text-sm text-gray-700 mb-1">14</div>
+                    <div class="text-xs bg-purple-100 text-purple-700 p-1 rounded mb-1 truncate cursor-pointer hover:bg-purple-200">Festival (3 days)</div>
+                </div>
+
+                <!-- Week 3 -->
+                <div class="min-h-32 p-2 border-r border-b border-gray-200">
+                    <div class="text-sm text-gray-700 mb-1">15</div>
+                    <div class="text-xs bg-purple-100 text-purple-700 p-1 rounded mb-1 truncate cursor-pointer hover:bg-purple-200">Festival cont...</div>
+                </div>
+                <div class="min-h-32 p-2 border-r border-b border-gray-200">
+                    <div class="text-sm text-gray-700 mb-1">16</div>
+                    <div class="text-xs bg-purple-100 text-purple-700 p-1 rounded mb-1 truncate cursor-pointer hover:bg-purple-200">Festival cont...</div>
+                </div>
+                <div class="min-h-32 p-2 border-r border-b border-gray-200">
+                    <div class="text-sm font-bold text-purple-600 mb-1">17</div>
+                    <div class="text-xs bg-green-100 text-green-700 p-1 rounded mb-1 truncate cursor-pointer hover:bg-green-200">Training Session</div>
+                    <div class="text-xs bg-blue-100 text-blue-700 p-1 rounded mb-1 truncate cursor-pointer hover:bg-blue-200">Corporate Video</div>
+                </div>
+                <div class="min-h-32 p-2 border-r border-b border-gray-200">
+                    <div class="text-sm text-gray-700 mb-1">18</div>
+                </div>
+                <div class="min-h-32 p-2 border-r border-b border-gray-200">
+                    <div class="text-sm text-gray-700 mb-1">19</div>
+                </div>
+                <div class="min-h-32 p-2 border-r border-b border-gray-200">
+                    <div class="text-sm text-gray-700 mb-1">20</div>
+                </div>
+                <div class="min-h-32 p-2 border-b border-gray-200">
+                    <div class="text-sm text-gray-700 mb-1">21</div>
+                    <div class="text-xs bg-yellow-100 text-yellow-700 p-1 rounded mb-1 truncate cursor-pointer hover:bg-yellow-200">Conference (2 days)</div>
+                </div>
+
+                <!-- Week 4 -->
+                <div class="min-h-32 p-2 border-r border-b border-gray-200">
+                    <div class="text-sm text-gray-700 mb-1">22</div>
+                    <div class="text-xs bg-yellow-100 text-yellow-700 p-1 rounded mb-1 truncate cursor-pointer hover:bg-yellow-200">Conference cont...</div>
+                    <div class="text-xs bg-pink-100 text-pink-700 p-1 rounded mb-1 truncate cursor-pointer hover:bg-pink-200">Wedding</div>
+                </div>
+                <div class="min-h-32 p-2 border-r border-b border-gray-200">
+                    <div class="text-sm text-gray-700 mb-1">23</div>
+                </div>
+                <div class="min-h-32 p-2 border-r border-b border-gray-200">
+                    <div class="text-sm text-gray-700 mb-1">24</div>
+                </div>
+                <div class="min-h-32 p-2 border-r border-b border-gray-200">
+                    <div class="text-sm text-gray-700 mb-1">25</div>
+                </div>
+                <div class="min-h-32 p-2 border-r border-b border-gray-200">
+                    <div class="text-sm text-gray-700 mb-1">26</div>
+                </div>
+                <div class="min-h-32 p-2 border-r border-b border-gray-200">
+                    <div class="text-sm text-gray-700 mb-1">27</div>
+                </div>
+                <div class="min-h-32 p-2 border-b border-gray-200">
+                    <div class="text-sm text-gray-700 mb-1">28</div>
+                </div>
+
+                <!-- Week 5 -->
+                <div class="min-h-32 p-2 border-r border-gray-200">
+                    <div class="text-sm text-gray-700 mb-1">29</div>
+                </div>
+                <div class="min-h-32 p-2 border-r border-gray-200">
+                    <div class="text-sm text-gray-700 mb-1">30</div>
+                </div>
+                <div class="min-h-32 p-2 border-r border-gray-200 bg-gray-50">
+                    <div class="text-sm text-gray-400">1</div>
+                </div>
+                <div class="min-h-32 p-2 border-r border-gray-200 bg-gray-50">
+                    <div class="text-sm text-gray-400">2</div>
+                </div>
+                <div class="min-h-32 p-2 border-r border-gray-200 bg-gray-50">
+                    <div class="text-sm text-gray-400">3</div>
+                </div>
+                <div class="min-h-32 p-2 border-r border-gray-200 bg-gray-50">
+                    <div class="text-sm text-gray-400">4</div>
+                </div>
+                <div class="min-h-32 p-2 bg-gray-50">
+                    <div class="text-sm text-gray-400">5</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Legend -->
+        <div class="mt-4 flex items-center space-x-6 text-sm">
+            <div class="flex items-center">
+                <div class="w-4 h-4 bg-blue-100 rounded mr-2"></div>
+                <span class="text-gray-700">Corporate</span>
+            </div>
+            <div class="flex items-center">
+                <div class="w-4 h-4 bg-purple-100 rounded mr-2"></div>
+                <span class="text-gray-700">Festival</span>
+            </div>
+            <div class="flex items-center">
+                <div class="w-4 h-4 bg-pink-100 rounded mr-2"></div>
+                <span class="text-gray-700">Wedding</span>
+            </div>
+            <div class="flex items-center">
+                <div class="w-4 h-4 bg-yellow-100 rounded mr-2"></div>
+                <span class="text-gray-700">Conference</span>
+            </div>
+            <div class="flex items-center">
+                <div class="w-4 h-4 bg-green-100 rounded mr-2"></div>
+                <span class="text-gray-700">Training</span>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

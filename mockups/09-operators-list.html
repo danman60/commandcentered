@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operators List - CommandCentered</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <h1 class="text-xl font-bold text-purple-600">CommandCentered</h1>
+                    <div class="ml-10 flex space-x-4">
+                        <a href="#" class="text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium">Dashboard</a>
+                        <a href="#" class="text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium">Calendar</a>
+                        <a href="#" class="text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium">Events</a>
+                        <a href="#" class="text-purple-600 border-b-2 border-purple-600 px-3 py-2 text-sm font-medium">Operators</a>
+                        <a href="#" class="text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium">Equipment</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-600">Acme Video Productions</span>
+                    <div class="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-white font-medium">JD</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-gray-900">Operators</h2>
+            <button class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 flex items-center">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                </svg>
+                Add Operator
+            </button>
+        </div>
+
+        <!-- Filters -->
+        <div class="bg-white rounded-lg shadow p-4 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Search</label>
+                    <input type="text" placeholder="Name, email, phone..." class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                    <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500">
+                        <option>All Statuses</option>
+                        <option>Active</option>
+                        <option>On Blackout</option>
+                        <option>Inactive</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Min Skills</label>
+                    <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500">
+                        <option>Any Level</option>
+                        <option>Camera 7+</option>
+                        <option>Audio 8+</option>
+                        <option>Lighting 6+</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Availability</label>
+                    <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500">
+                        <option>All</option>
+                        <option>Available This Week</option>
+                        <option>Has Blackout Dates</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Operators Table -->
+        <div class="bg-white rounded-lg shadow overflow-hidden">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contact</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Top Skills</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Equipment</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center text-white font-medium">MJ</div>
+                                <div class="ml-3">
+                                    <div class="text-sm font-medium text-gray-900">Mike Johnson</div>
+                                    <div class="text-xs text-gray-500">ID: OP-1024</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-900">mike.j@email.com</div>
+                            <div class="text-xs text-gray-500">(310) 555-0124</div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex flex-wrap gap-1">
+                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">Camera 9</span>
+                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">Audio 8</span>
+                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-purple-100 text-purple-800">Drone 7</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-900">Sony A7S III</div>
+                            <div class="text-xs text-gray-500">+ 4 more items</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <a href="#" class="text-purple-600 hover:text-purple-900 mr-3">View</a>
+                            <a href="#" class="text-gray-600 hover:text-gray-900">Edit</a>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center text-white font-medium">SC</div>
+                                <div class="ml-3">
+                                    <div class="text-sm font-medium text-gray-900">Sarah Chen</div>
+                                    <div class="text-xs text-gray-500">ID: OP-1018</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-900">s.chen@email.com</div>
+                            <div class="text-xs text-gray-500">(424) 555-0198</div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex flex-wrap gap-1">
+                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">Lighting 10</span>
+                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">Audio 9</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-900">Zoom H6</div>
+                            <div class="text-xs text-gray-500">+ 2 more items</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">On Blackout</span>
+                            <div class="text-xs text-gray-500 mt-1">Until Jun 20</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <a href="#" class="text-purple-600 hover:text-purple-900 mr-3">View</a>
+                            <a href="#" class="text-gray-600 hover:text-gray-900">Edit</a>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center text-white font-medium">RP</div>
+                                <div class="ml-3">
+                                    <div class="text-sm font-medium text-gray-900">Robert Park</div>
+                                    <div class="text-xs text-gray-500">ID: OP-1031</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-900">r.park@email.com</div>
+                            <div class="text-xs text-gray-500">(213) 555-0167</div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex flex-wrap gap-1">
+                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">Camera 8</span>
+                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800">Editing 9</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-500">No equipment</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <a href="#" class="text-purple-600 hover:text-purple-900 mr-3">View</a>
+                            <a href="#" class="text-gray-600 hover:text-gray-900">Edit</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="bg-gray-50 px-6 py-3 flex items-center justify-between border-t border-gray-200">
+                <div class="text-sm text-gray-700">
+                    Showing <span class="font-medium">1</span> to <span class="font-medium">3</span> of <span class="font-medium">28</span> operators
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-100">Previous</button>
+                    <button class="px-3 py-1 bg-purple-600 text-white rounded-md text-sm">1</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-100">2</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-100">3</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-100">Next</button>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operator Personal Equipment - CommandCentered</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <h1 class="text-xl font-bold text-purple-600">CommandCentered</h1>
+                    <div class="ml-10 flex space-x-4">
+                        <a href="#" class="text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium">Dashboard</a>
+                        <a href="#" class="text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium">Calendar</a>
+                        <a href="#" class="text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium">Events</a>
+                        <a href="#" class="text-purple-600 border-b-2 border-purple-600 px-3 py-2 text-sm font-medium">Operators</a>
+                        <a href="#" class="text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium">Equipment</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-600">Acme Video Productions</span>
+                    <div class="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-white font-medium">JD</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="mb-6">
+            <a href="#" class="text-purple-600 hover:text-purple-700 text-sm font-medium">&larr; Back to Mike Johnson</a>
+        </div>
+
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <h2 class="text-2xl font-bold text-gray-900">Mike Johnson's Equipment</h2>
+                <p class="text-sm text-gray-600 mt-1">Personal equipment owned by operator</p>
+            </div>
+            <button class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 flex items-center">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                </svg>
+                Add Equipment
+            </button>
+        </div>
+
+        <!-- Equipment List -->
+        <div class="bg-white rounded-lg shadow overflow-hidden">
+            <div class="divide-y divide-gray-200">
+                <!-- Camera Equipment -->
+                <div class="p-6">
+                    <div class="flex items-start justify-between">
+                        <div class="flex-1">
+                            <div class="flex items-center">
+                                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    </svg>
+                                </div>
+                                <div class="ml-4">
+                                    <h3 class="text-lg font-semibold text-gray-900">Sony A7S III Camera Body</h3>
+                                    <p class="text-sm text-gray-600 mt-1">Serial: SN123456789</p>
+                                    <div class="flex items-center space-x-3 mt-2">
+                                        <span class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded">Available</span>
+                                        <span class="text-xs text-gray-500">Rental Rate: $150/day</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 grid grid-cols-3 gap-4 text-sm">
+                                <div>
+                                    <span class="text-gray-600">Purchase Date:</span>
+                                    <span class="ml-2 text-gray-900">Jan 15, 2023</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-600">Value:</span>
+                                    <span class="ml-2 text-gray-900">$3,500</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-600">Last Used:</span>
+                                    <span class="ml-2 text-gray-900">Jun 10, 2024</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex space-x-2 ml-4">
+                            <button class="p-2 text-gray-400 hover:text-gray-600">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                </svg>
+                            </button>
+                            <button class="p-2 text-gray-400 hover:text-red-600">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lens -->
+                <div class="p-6">
+                    <div class="flex items-start justify-between">
+                        <div class="flex-1">
+                            <div class="flex items-center">
+                                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                    </svg>
+                                </div>
+                                <div class="ml-4">
+                                    <h3 class="text-lg font-semibold text-gray-900">Sony FE 24-70mm f/2.8 GM II</h3>
+                                    <p class="text-sm text-gray-600 mt-1">Serial: LN987654321</p>
+                                    <div class="flex items-center space-x-3 mt-2">
+                                        <span class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded">Available</span>
+                                        <span class="text-xs text-gray-500">Rental Rate: $75/day</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 grid grid-cols-3 gap-4 text-sm">
+                                <div>
+                                    <span class="text-gray-600">Purchase Date:</span>
+                                    <span class="ml-2 text-gray-900">Jan 15, 2023</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-600">Value:</span>
+                                    <span class="ml-2 text-gray-900">$2,300</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-600">Last Used:</span>
+                                    <span class="ml-2 text-gray-900">Jun 10, 2024</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex space-x-2 ml-4">
+                            <button class="p-2 text-gray-400 hover:text-gray-600">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                </svg>
+                            </button>
+                            <button class="p-2 text-gray-400 hover:text-red-600">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tripod -->
+                <div class="p-6">
+                    <div class="flex items-start justify-between">
+                        <div class="flex-1">
+                            <div class="flex items-center">
+                                <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                                    <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                    </svg>
+                                </div>
+                                <div class="ml-4">
+                                    <h3 class="text-lg font-semibold text-gray-900">Manfrotto 535 Carbon Fiber Tripod</h3>
+                                    <p class="text-sm text-gray-600 mt-1">Serial: TR445566</p>
+                                    <div class="flex items-center space-x-3 mt-2">
+                                        <span class="px-2 py-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded">In Use</span>
+                                        <span class="text-xs text-gray-500">Rental Rate: $25/day</span>
+                                        <span class="text-xs text-blue-600">Event: Summer Music Festival</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 grid grid-cols-3 gap-4 text-sm">
+                                <div>
+                                    <span class="text-gray-600">Purchase Date:</span>
+                                    <span class="ml-2 text-gray-900">Mar 5, 2022</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-600">Value:</span>
+                                    <span class="ml-2 text-gray-900">$800</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-600">Current Event:</span>
+                                    <span class="ml-2 text-gray-900">Jun 14-16, 2024</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex space-x-2 ml-4">
+                            <button class="p-2 text-gray-400 hover:text-gray-600">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                </svg>
+                            </button>
+                            <button class="p-2 text-gray-400 hover:text-red-600">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DJI Drone -->
+                <div class="p-6">
+                    <div class="flex items-start justify-between">
+                        <div class="flex-1">
+                            <div class="flex items-center">
+                                <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                                    <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+                                    </svg>
+                                </div>
+                                <div class="ml-4">
+                                    <h3 class="text-lg font-semibold text-gray-900">DJI Mavic 3 Cine Drone</h3>
+                                    <p class="text-sm text-gray-600 mt-1">Serial: DR778899</p>
+                                    <div class="flex items-center space-x-3 mt-2">
+                                        <span class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded">Available</span>
+                                        <span class="text-xs text-gray-500">Rental Rate: $200/day</span>
+                                        <span class="text-xs text-green-600">FAA Part 107 Required</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 grid grid-cols-3 gap-4 text-sm">
+                                <div>
+                                    <span class="text-gray-600">Purchase Date:</span>
+                                    <span class="ml-2 text-gray-900">Aug 12, 2023</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-600">Value:</span>
+                                    <span class="ml-2 text-gray-900">$4,800</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-600">Last Used:</span>
+                                    <span class="ml-2 text-gray-900">Jun 8, 2024</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex space-x-2 ml-4">
+                            <button class="p-2 text-gray-400 hover:text-gray-600">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                </svg>
+                            </button>
+                            <button class="p-2 text-gray-400 hover:text-red-600">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary -->
+        <div class="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <div class="flex items-start">
+                <svg class="w-5 h-5 text-blue-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <div class="ml-3">
+                    <h4 class="text-sm font-medium text-blue-900">Equipment Kit Value</h4>
+                    <p class="text-sm text-blue-700 mt-1">Total equipment value: <span class="font-semibold">$11,400</span> | Available for rental: <span class="font-semibold">$450/day</span></p>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

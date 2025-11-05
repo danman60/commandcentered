@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - CommandCentered</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <h1 class="text-xl font-bold text-purple-600">CommandCentered</h1>
+                    <div class="ml-10 flex space-x-4">
+                        <a href="#" class="text-purple-600 border-b-2 border-purple-600 px-3 py-2 text-sm font-medium">Dashboard</a>
+                        <a href="#" class="text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium">Calendar</a>
+                        <a href="#" class="text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium">Events</a>
+                        <a href="#" class="text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium">Operators</a>
+                        <a href="#" class="text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium">Equipment</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-600">Acme Video Productions</span>
+                    <div class="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-white font-medium">JD</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-6">Dashboard Overview</h2>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="text-sm text-gray-600 mb-1">Upcoming Events</div>
+                <div class="text-3xl font-bold text-gray-900">12</div>
+                <div class="text-xs text-green-600 mt-1">+3 this week</div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="text-sm text-gray-600 mb-1">Active Operators</div>
+                <div class="text-3xl font-bold text-gray-900">28</div>
+                <div class="text-xs text-gray-500 mt-1">2 on blackout</div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="text-sm text-gray-600 mb-1">Equipment Items</div>
+                <div class="text-3xl font-bold text-gray-900">156</div>
+                <div class="text-xs text-yellow-600 mt-1">3 need repair</div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="text-sm text-gray-600 mb-1">This Week Shifts</div>
+                <div class="text-3xl font-bold text-gray-900">47</div>
+                <div class="text-xs text-blue-600 mt-1">18 assigned</div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="bg-white rounded-lg shadow p-6 mb-8">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <button class="flex flex-col items-center p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition">
+                    <svg class="w-8 h-8 text-purple-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    <span class="text-sm font-medium">New Event</span>
+                </button>
+                <button class="flex flex-col items-center p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition">
+                    <svg class="w-8 h-8 text-purple-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                    <span class="text-sm font-medium">Add Operator</span>
+                </button>
+                <button class="flex flex-col items-center p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition">
+                    <svg class="w-8 h-8 text-purple-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path>
+                    </svg>
+                    <span class="text-sm font-medium">Equipment Log</span>
+                </button>
+                <button class="flex flex-col items-center p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition">
+                    <svg class="w-8 h-8 text-purple-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    <span class="text-sm font-medium">Gig Sheet</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Upcoming Events -->
+        <div class="bg-white rounded-lg shadow">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-900">Upcoming Events (Next 7 Days)</h3>
+            </div>
+            <div class="divide-y divide-gray-200">
+                <div class="p-6 hover:bg-gray-50">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h4 class="text-base font-semibold text-gray-900">Summer Music Festival</h4>
+                            <p class="text-sm text-gray-600 mt-1">Downtown Park, Los Angeles</p>
+                            <div class="flex items-center space-x-4 mt-2">
+                                <span class="text-sm text-gray-500">Fri, Jun 14 - Sun, Jun 16</span>
+                                <span class="text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded">7 shifts</span>
+                                <span class="text-sm bg-green-100 text-green-800 px-2 py-1 rounded">12 operators</span>
+                            </div>
+                        </div>
+                        <span class="text-sm bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full font-medium">3 unassigned</span>
+                    </div>
+                </div>
+                <div class="p-6 hover:bg-gray-50">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h4 class="text-base font-semibold text-gray-900">Corporate Training Video</h4>
+                            <p class="text-sm text-gray-600 mt-1">Tech Corp HQ, San Francisco</p>
+                            <div class="flex items-center space-x-4 mt-2">
+                                <span class="text-sm text-gray-500">Mon, Jun 17</span>
+                                <span class="text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded">2 shifts</span>
+                                <span class="text-sm bg-green-100 text-green-800 px-2 py-1 rounded">4 operators</span>
+                            </div>
+                        </div>
+                        <span class="text-sm bg-green-100 text-green-800 px-3 py-1 rounded-full font-medium">All assigned</span>
+                    </div>
+                </div>
+                <div class="p-6 hover:bg-gray-50">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h4 class="text-base font-semibold text-gray-900">Wedding - Johnson & Smith</h4>
+                            <p class="text-sm text-gray-600 mt-1">Grand Ballroom, Santa Monica</p>
+                            <div class="flex items-center space-x-4 mt-2">
+                                <span class="text-sm text-gray-500">Sat, Jun 22</span>
+                                <span class="text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded">3 shifts</span>
+                                <span class="text-sm bg-green-100 text-green-800 px-2 py-1 rounded">6 operators</span>
+                            </div>
+                        </div>
+                        <span class="text-sm bg-green-100 text-green-800 px-3 py-1 rounded-full font-medium">All assigned</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
