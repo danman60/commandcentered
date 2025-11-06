@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Option 2: Modern Card Dashboard - CommandCentered</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f8f9fb;
+            color: #1a1d29;
+        }
+
+        /* Top Navigation */
+        .top-nav {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: #6366f1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 4px;
+        }
+
+        .nav-tab {
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: #6b7280;
+            transition: all 0.2s;
+        }
+
+        .nav-tab:hover {
+            background: #f3f4f6;
+            color: #1f2937;
+        }
+
+        .nav-tab.active {
+            background: #eef2ff;
+            color: #6366f1;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .alert-bell {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            background: #fef2f2;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .alert-bell:hover {
+            background: #fee2e2;
+        }
+
+        .alert-count {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: #ef4444;
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 32px;
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid #e5e7eb;
+            transition: all 0.2s;
+        }
+
+        .stat-card:hover {
+            border-color: #d1d5db;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1a1d29;
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+
+        .stat-trend {
+            font-size: 14px;
+            font-weight: 600;
+            color: #10b981;
+        }
+
+        .stat-trend.down {
+            color: #ef4444;
+        }
+
+        /* Section Header */
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a1d29;
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 4px;
+            background: #f3f4f6;
+            padding: 4px;
+            border-radius: 10px;
+        }
+
+        .toggle-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #6b7280;
+        }
+
+        .toggle-btn.active {
+            background: white;
+            color: #1a1d29;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Events Grid */
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 20px;
+        }
+
+        .event-card {
+            background: white;
+            border-radius: 20px;
+            border: 1px solid #e5e7eb;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .event-card:hover {
+            border-color: #6366f1;
+            box-shadow: 0 12px 32px rgba(99, 102, 241, 0.12);
+            transform: translateY(-2px);
+        }
+
+        /* Status Bar on Card */
+        .card-status-bar {
+            height: 6px;
+            background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+        }
+
+        .card-status-bar.upcoming {
+            background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
+        }
+
+        .card-status-bar.warning {
+            background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%);
+        }
+
+        .card-body {
+            padding: 24px;
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 16px;
+        }
+
+        .event-info {
+            flex: 1;
+        }
+
+        .event-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a1d29;
+            margin-bottom: 6px;
+        }
+
+        .event-venue-inline {
+            font-size: 14px;
+            color: #6b7280;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .badge-live {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-upcoming {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .badge-warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        /* Time Display */
+        .time-display {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .time-icon {
+            font-size: 20px;
+        }
+
+        .time-details {
+            flex: 1;
+        }
+
+        .time-range {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a1d29;
+            margin-bottom: 2px;
+        }
+
+        .time-countdown {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        /* Metrics Row */
+        .metrics-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .metric-item {
+            text-align: center;
+        }
+
+        .metric-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: #6366f1;
+            margin-bottom: 4px;
+        }
+
+        .metric-label {
+            font-size: 12px;
+            color: #9ca3af;
+            font-weight: 500;
+        }
+
+        /* Action Buttons */
+        .card-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 12px;
+            border: none;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: #6366f1;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #4f46e5;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-telegram {
+            background: #0088cc;
+            color: white;
+            position: relative;
+        }
+
+        .btn-telegram:hover {
+            background: #0077b3;
+            box-shadow: 0 4px 12px rgba(0, 136, 204, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #4b5563;
+        }
+
+        .btn-secondary:hover {
+            background: #e5e7eb;
+        }
+
+        .btn-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: #ef4444;
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Empty State */
+        .empty-state {
+            background: white;
+            border-radius: 20px;
+            border: 2px dashed #e5e7eb;
+            padding: 64px 32px;
+            text-align: center;
+            color: #9ca3af;
+        }
+
+        .empty-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .empty-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+
+        .empty-desc {
+            font-size: 14px;
+            color: #9ca3af;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <div class="top-nav">
+        <div class="nav-container">
+            <div class="logo">
+                ⚡ CommandCentered
+            </div>
+
+            <div class="nav-tabs">
+                <div class="nav-tab active">Dashboard</div>
+                <div class="nav-tab">Events</div>
+                <div class="nav-tab">Operators</div>
+                <div class="nav-tab">Equipment</div>
+                <div class="nav-tab">Analytics</div>
+            </div>
+
+            <div class="nav-actions">
+                <div class="alert-bell">
+                    🔔
+                    <div class="alert-count">5</div>
+                </div>
+                <div class="user-avatar">DJ</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-label">Active Events</div>
+                <div class="stat-value">
+                    3
+                    <span class="stat-trend">+2</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">Operators Working</div>
+                <div class="stat-value">12</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">Equipment Deployed</div>
+                <div class="stat-value">44</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">Today's Revenue</div>
+                <div class="stat-value">$8.5k</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">This Week</div>
+                <div class="stat-value">$42k</div>
+            </div>
+        </div>
+
+        <!-- Active Events Section -->
+        <div class="section-header">
+            <div class="section-title">🎯 Active Operations</div>
+            <div class="view-toggle">
+                <div class="toggle-btn active">Cards</div>
+                <div class="toggle-btn">Timeline</div>
+                <div class="toggle-btn">Calendar</div>
+            </div>
+        </div>
+
+        <div class="events-grid">
+            <!-- Event Card 1 - Live -->
+            <div class="event-card">
+                <div class="card-status-bar"></div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="event-info">
+                            <div class="event-title">Spring Dance Competition</div>
+                            <div class="event-venue-inline">
+                                📍 Lincoln High School
+                            </div>
+                        </div>
+                        <div class="status-badge badge-live">● LIVE</div>
+                    </div>
+
+                    <div class="time-display">
+                        <div class="time-icon">🕐</div>
+                        <div class="time-details">
+                            <div class="time-range">9:00 AM - 6:00 PM</div>
+                            <div class="time-countdown">6 hours remaining</div>
+                        </div>
+                    </div>
+
+                    <div class="metrics-row">
+                        <div class="metric-item">
+                            <div class="metric-number">4</div>
+                            <div class="metric-label">Crew</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-number">12</div>
+                            <div class="metric-label">Equipment</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-number">$2.8k</div>
+                            <div class="metric-label">Revenue</div>
+                        </div>
+                    </div>
+
+                    <div class="card-actions">
+                        <button class="action-btn btn-telegram">
+                            💬 Chat
+                            <div class="btn-badge">3</div>
+                        </button>
+                        <button class="action-btn btn-primary">
+                            📋 Details
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Event Card 2 - Live with Warning -->
+            <div class="event-card">
+                <div class="card-status-bar warning"></div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="event-info">
+                            <div class="event-title">Summer Festival - Day 2</div>
+                            <div class="event-venue-inline">
+                                📍 Downtown Arena
+                            </div>
+                        </div>
+                        <div class="status-badge badge-warning">⚠ ISSUE</div>
+                    </div>
+
+                    <div class="time-display">
+                        <div class="time-icon">🕐</div>
+                        <div class="time-details">
+                            <div class="time-range">2:00 PM - 11:00 PM</div>
+                            <div class="time-countdown">8 hours remaining</div>
+                        </div>
+                    </div>
+
+                    <div class="metrics-row">
+                        <div class="metric-item">
+                            <div class="metric-number">6</div>
+                            <div class="metric-label">Crew</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-number">24</div>
+                            <div class="metric-label">Equipment</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-number">$5.5k</div>
+                            <div class="metric-label">Revenue</div>
+                        </div>
+                    </div>
+
+                    <div class="card-actions">
+                        <button class="action-btn btn-telegram">
+                            💬 Chat
+                            <div class="btn-badge">7</div>
+                        </button>
+                        <button class="action-btn btn-primary">
+                            📋 Details
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Event Card 3 - Upcoming -->
+            <div class="event-card">
+                <div class="card-status-bar upcoming"></div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="event-info">
+                            <div class="event-title">Recital Rehearsal</div>
+                            <div class="event-venue-inline">
+                                📍 Performing Arts Center
+                            </div>
+                        </div>
+                        <div class="status-badge badge-upcoming">STARTING SOON</div>
+                    </div>
+
+                    <div class="time-display">
+                        <div class="time-icon">⏰</div>
+                        <div class="time-details">
+                            <div class="time-range">6:00 PM - 9:00 PM</div>
+                            <div class="time-countdown">Starts in 2 hours</div>
+                        </div>
+                    </div>
+
+                    <div class="metrics-row">
+                        <div class="metric-item">
+                            <div class="metric-number">2</div>
+                            <div class="metric-label">Crew</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-number">8</div>
+                            <div class="metric-label">Equipment</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-number">$1.2k</div>
+                            <div class="metric-label">Revenue</div>
+                        </div>
+                    </div>
+
+                    <div class="card-actions">
+                        <button class="action-btn btn-telegram">
+                            💬 Chat
+                        </button>
+                        <button class="action-btn btn-secondary">
+                            📋 Details
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

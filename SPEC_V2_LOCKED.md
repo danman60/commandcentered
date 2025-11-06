@@ -1,8 +1,8 @@
-# CommandCentered - Specification v2.2 LOCKED
+# CommandCentered - Specification v2.3 LOCKED
 
 **Date:** 2025-11-06
 **Status:** ✅ LOCKED - Ready for Implementation
-**Previous Version:** v2.1 → v2.2 (added critical conflict validation & cancellation workflows)
+**Previous Version:** v2.2 → v2.3 (enhanced terminology for command center theme)
 
 ---
 
@@ -21,7 +21,7 @@
 - Shifts can **overlap** (for swing/breaks)
 - Operators can work **different roles per shift**
 - **Hourly OR flat rate** pay per shift
-- **Operator personal equipment** tracking
+- **Operator personal gear** tracking
 - **Hotel opt-in** logic
 - **Expandable skill system**
 - **Google Maps API** integration with batching
@@ -33,9 +33,22 @@
 2. **Last-Minute Cancellation Workflow** - Operator cancellation with replacement suggestions
 3. **Mid-Event Cancellation Support** - Partial event completion with revenue tracking
 4. **Assignment Status Tracking** - Track cancelled/completed shifts separately
-5. **Equipment Retrieval Workflow** - Handle equipment stuck at venue after cancellation
+5. **Gear Retrieval Workflow** - Handle gear stuck at venue after cancellation
 6. **Telegram Integration** - Per-event group chat for real-time crew communication
 7. **At-a-Glance Dashboard** - Single dashboard with clickable event cards, quick navigation
+
+### v2.2 → v2.3: Enhanced Terminology
+
+**Terminology Updates:**
+- `equipment` → `gear` (command center theme)
+- `templates` → `kits` (tactical terminology)
+- `equipment_templates` → `gear_kits` (pre-defined gear sets)
+- `addresses` → `locations` (formal location references)
+- `home_address` → `base_location` (operator's base of operations)
+- `trainings` → `drills` (training operations)
+- `equipment_location_history` → `gear_tracking_log` (audit trail)
+- `operator_equipment` → `operator_gear` (personal loadouts)
+- Equipment sets → `loadouts` (not "loadout kits")
 
 ---
 
@@ -53,28 +66,28 @@
 5. `shift_assignments` - Operators → Shifts (with role, pay, status, conflict tracking, hotel opt-in, travel times)
 
 **Operators:**
-6. `operators` - Crew members (rates, transportation, home address)
+6. `operators` - Crew members (rates, transportation, base location)
 7. `operator_blackout_dates` - Unavailable periods (HARD BLOCK)
 8. `operator_skills` - Skill ratings per operator (expandable)
 9. `operator_skill_history` - Skill upgrade audit trail
-10. `operator_equipment` - Operator's personal gear inventory
-11. `operator_equipment_requests` - Requests per shift (can borrow)
+10. `operator_gear` - Operator's personal gear inventory
+11. `operator_gear_requests` - Requests per shift (can borrow)
 
-**Skills & Training:**
+**Skills & Drills:**
 12. `skill_definitions` - Tenant-defined skills (videography, photography, etc.)
-13. `trainings` - Training sessions (scheduled on calendar)
-14. `training_attendees` - Who attended which training
-15. `training_agenda_items` - Training curriculum line items
+13. `drills` - Training sessions (scheduled on calendar)
+14. `drill_attendees` - Who attended which drill
+15. `drill_agenda_items` - Drill curriculum line items
 
-**Equipment & Vehicles:**
-16. `equipment` - Company equipment (cameras, lenses, etc.)
-17. `equipment_location_history` - Movement audit trail
-18. `equipment_assignments` - Equipment → Events (stays for all shifts, retrieval tracking)
+**Gear & Vehicles:**
+16. `gear` - Company gear (cameras, lenses, etc.)
+17. `gear_tracking_log` - Movement audit trail
+18. `gear_assignments` - Gear → Events (stays for all shifts, retrieval tracking)
 19. `vehicles` - Company vehicles (with status/availability tracking)
-20. `event_equipment_templates` - Pre-defined equipment lists per event type
+20. `gear_kits` - Pre-defined gear loadouts per event type
 
 **Alerts & Notifications:** ✅ NEW v2.2
-21. `alerts` - System-wide alerts (no operators, missing equipment, impossible schedules, etc.)
+21. `alerts` - System-wide alerts (no operators, missing gear, impossible schedules, etc.)
 
 **REMOVED from v1.0:**
 - `operator_assignments` → Replaced by `shift_assignments`
@@ -84,12 +97,19 @@
 - Assignment status tracking (confirmed/cancelled/completed)
 - Conflict level tracking (none/caution/impossible)
 - Mid-event cancellation support
-- Equipment retrieval workflow
+- Gear retrieval workflow
 - Vehicle availability status
 - Telegram group integration per event
 - System-wide alerts & notifications
 - At-a-glance dashboard UX pattern
 - Flexible shift rules (required for multi-day, optional for single-day)
+
+**UPDATED in v2.3:**
+- Enhanced command center terminology throughout
+- `gear` replaces `equipment` (8 table/field renames)
+- `drills` replaces `trainings` (4 table renames)
+- `base_location` replaces `home_address` (operator base)
+- `gear_kits` replaces `equipment_templates` (pre-defined loadouts)
 
 ---
 
@@ -148,25 +168,25 @@
 - Hourly: Track actual vs estimated, calculate overtime
 - Flat: No overtime (fixed price regardless of hours)
 
-### 3. Operator Personal Equipment ✅
+### 3. Operator Personal Gear ✅
 
 **Scenario:** John owns Sony A7III. You want him to bring it to gig.
 
 **Workflow:**
-1. John registers equipment in inventory: "Sony A7III" (camera)
+1. John registers gear in inventory: "Sony A7III" (camera)
 2. Owner assigns John to shift as Videographer
 3. Owner requests: "Bring your Sony A7III + 24-70mm Lens"
 4. John confirms offline
 5. Gig sheet shows:
    ```
-   Company Equipment: Camera 1, Lens A, B
+   Company Gear: Camera 1, Lens A, B
    🎒 BRING YOUR OWN:
    ⚠️ Sony A7III (requested)
    ⚠️ 24-70mm Lens (requested)
    ```
 
 **Borrowing:**
-- Can request operator's equipment even when they're NOT working that shift
+- Can request operator's gear even when they're NOT working that shift
 - Example: "Can I borrow your Sony on Saturday?" (John not working)
 - `is_borrowing = true` flag tracks this
 
@@ -214,17 +234,17 @@ Travel: Venue → Hotel (15 min)
 - Stage Management
 - Technical Setup
 
-**Training system:**
-- Schedule trainings on calendar (like shifts)
-- Create training agenda (line items of curriculum)
-- Operators RSVP to training
-- Owner manually upgrades skills after training
+**Drill system:**
+- Schedule drills on calendar (like shifts)
+- Create drill agenda (line items of curriculum)
+- Operators RSVP to drill
+- Owner manually upgrades skills after drill
 - History tracked in `operator_skill_history`
 
 ### 6. Google Maps API Integration ✅
 
 **Features:**
-- **Travel time calculation:** Home → Venue, Venue → Hotel, Between shifts
+- **Travel time calculation:** Base → Venue, Venue → Hotel, Between shifts
 - **Historical traffic data:** Saturday 9am typical traffic (not live)
 - **Batch requests:** 4 operators = 1 API call (75% cost savings)
 - **Rush hour warnings:** "⚠️ CAUTION: Rush hour possible 8-9am"
@@ -235,13 +255,13 @@ Travel: Venue → Hotel (15 min)
 - "Travel time: 25-40 min (depending on traffic)"
 - "🔵 Info" / "🟡 Caution" / "🔴 Alert" based on buffer time
 
-### 7. Equipment Categories ✅
+### 7. Gear Categories ✅
 
 Updated from v1.0:
 ```
 camera       → Cameras + drones
 lens         → Lenses
-audio        → Audio equipment
+audio        → Audio gear
 computer     → Laptops, desktops, monitors, storage devices
 rigging      → Stands, tripods, gimbals, stabilizers
 cable        → Cables
@@ -291,7 +311,7 @@ if (existingShift.end < newShift.start) {
 }
 ```
 
-**Equipment Conflicts:**
+**Gear Conflicts:**
 - ✅ Double-booking (WARN + require reason)
 
 **Vehicle Conflicts:**
@@ -302,7 +322,7 @@ if (existingShift.end < newShift.start) {
 
 **Complete travel flow:**
 ```
-🏠 8:15 AM - Leave Home
+🏠 8:15 AM - Leave Base
    ↓ 25-40 min (traffic)
 
 📍 9:00 AM - Shift 1 (Videographer)
@@ -318,7 +338,7 @@ if (existingShift.end < newShift.start) {
    Downtown Airbnb
 ```
 
-### 10. Equipment Tracking ✅
+### 10. Gear Tracking ✅
 
 **Location history:**
 - "In Shop"
@@ -354,7 +374,7 @@ if (existingShift.end < newShift.start) {
      // Rank by:
      // 1. Skill match
      // 2. Availability
-     // 3. Travel distance from home
+     // 3. Travel distance from base
 
      return rankedOperators;
    }
@@ -386,10 +406,10 @@ if (existingShift.end < newShift.start) {
    - `events.cancellation_penalty` = Partial payment from client
    - `events.cancellation_reason` = Why cancelled
 
-3. **Equipment retrieval:**
-   - Equipment already at venue from Day 1
-   - Flag `equipment_assignments.needs_retrieval = true`
-   - Manual action required: "Equipment Retrieved" button
+3. **Gear retrieval:**
+   - Gear already at venue from Day 1
+   - Flag `gear_assignments.needs_retrieval = true`
+   - Manual action required: "Gear Retrieved" button
    - When retrieved: Update location history, return to 'available'
 
 **Shift-based model handles this naturally** - completed shifts stay completed, future shifts cancelled.
@@ -476,15 +496,15 @@ ALTER TABLE events ADD COLUMN telegram_group_created_at TIMESTAMPTZ;
 
 **🔴 CRITICAL ALERTS (Block event start):**
 1. **No operators assigned** - Event < 48 hours, zero operators assigned
-2. **No equipment assigned** - Event < 48 hours, zero equipment assigned
+2. **No gear assigned** - Event < 48 hours, zero gear assigned
 3. **Impossible arrival** - Operator cannot arrive on time based on travel calculation
-4. **Missing vehicle** - Equipment assigned but no vehicle for transport
+4. **Missing vehicle** - Gear assigned but no vehicle for transport
 
 **🟡 WARNING ALERTS (Fix recommended):**
 1. **Shift too long** - Single shift >12 hours (fatigue risk)
 2. **Understaffed** - Roles needed > operators assigned
 3. **Tight schedule** - Travel buffer <30 min between shifts
-4. **Equipment conflict** - Double-booking detected
+4. **Gear conflict** - Double-booking detected
 
 **🔵 INFO ALERTS:**
 1. **Event tomorrow** - Reminder 24 hours before
@@ -498,7 +518,7 @@ interface Alert {
   tenant_id: string;
   event_id: string;
   level: 'critical' | 'warning' | 'info';
-  type: 'no_operators' | 'no_equipment' | 'impossible_arrival' | 'shift_too_long' | etc.;
+  type: 'no_operators' | 'no_gear' | 'impossible_arrival' | 'shift_too_long' | etc.;
   message: string;
   created_at: Date;
   acknowledged_at?: Date;
@@ -534,14 +554,14 @@ async function checkEventAlerts() {
       });
     }
 
-    // Check equipment
-    const equipmentCount = await countAssignedEquipment(event.id);
-    if (equipmentCount === 0) {
+    // Check gear
+    const gearCount = await countAssignedGear(event.id);
+    if (gearCount === 0) {
       createAlert({
         event_id: event.id,
         level: 'critical',
-        type: 'no_equipment',
-        message: `${event.event_name} has NO equipment assigned`
+        type: 'no_gear',
+        message: `${event.event_name} has NO gear assigned`
       });
     }
 
@@ -659,19 +679,19 @@ CREATE INDEX alerts_tenant_unresolved_idx ON alerts(tenant_id, resolved_at) WHER
 - Hotel opt-in management
 
 ### Phase 5: Gig Sheets & Email (Weeks 8-9)
-- Gig sheet generation (travel itinerary, equipment, hotel)
+- Gig sheet generation (travel itinerary, gear, hotel)
 - HTML email templates
 - .ics calendar file generation
 - Manual email sending (Resend)
 
-### Phase 6: Training & Skills (Week 9)
-- Training sessions (scheduled on calendar)
-- Training agendas
+### Phase 6: Drills & Skills (Week 9)
+- Drill sessions (scheduled on calendar)
+- Drill agendas
 - Skill upgrades (manual approval)
 - Skill history tracking
 
 ### Phase 7: Polish & Launch (Week 10)
-- Equipment location tracking
+- Gear location tracking
 - Packing lists
 - Analytics dashboard
 - Mobile optimization
@@ -693,24 +713,24 @@ CREATE INDEX alerts_tenant_unresolved_idx ON alerts(tenant_id, resolved_at) WHER
 2. ✅ Overlapping events (conflict detection)
 3. ✅ Blackout date conflicts (hard block)
 4. ✅ Ride coordination
-5. ✅ Equipment kit quick assign
-6. ✅ Equipment template auto-suggest
+5. ✅ Gear kit quick assign
+6. ✅ Gear kit auto-suggest
 7. ✅ Event duplication (annual events)
 8. ✅ Multi-day events with shifts
-9. ✅ Equipment breaks during event
+9. ✅ Gear breaks during event
 10. ✅ Overtime and pay disputes (audit trail)
 
 **13 issues found and resolved in v2.1:**
-- Equipment location history (added table)
+- Gear location history (added table)
 - Multi-day events (shift model)
-- Equipment breaking (broken_during_event flag)
+- Gear breaking (broken_during_event flag)
 - Audit trail for pay (updated_at, updated_by, notes)
 - Blackout override (removed, hard block)
 - Conflict warnings (overlap calculation, reason required)
-- Template validation (filter deleted equipment)
+- Kit validation (filter deleted gear)
 - Ride provider removal (cascade + warning)
 - Hotel opt-in logic (event-level + operator opt-in)
-- Operator personal equipment (new tables)
+- Operator personal gear (new tables)
 - Expandable skills (skill_definitions table)
 
 **NEW v2.2 - Additional scenarios validated:**
@@ -770,11 +790,11 @@ ALTER TABLE events ADD COLUMN telegram_invite_link TEXT;
 ALTER TABLE events ADD COLUMN telegram_group_created_at TIMESTAMPTZ;
 
 -- ============================================
--- equipment_assignments: Retrieval Workflow
+-- gear_assignments: Retrieval Workflow
 -- ============================================
 
-ALTER TABLE equipment_assignments ADD COLUMN needs_retrieval BOOLEAN DEFAULT false;
-ALTER TABLE equipment_assignments ADD COLUMN retrieved_at TIMESTAMPTZ;
+ALTER TABLE gear_assignments ADD COLUMN needs_retrieval BOOLEAN DEFAULT false;
+ALTER TABLE gear_assignments ADD COLUMN retrieved_at TIMESTAMPTZ;
 
 -- ============================================
 -- vehicles: Availability Tracking
@@ -798,7 +818,7 @@ CREATE TABLE alerts (
   event_id UUID REFERENCES events(id) ON DELETE CASCADE,
 
   level TEXT NOT NULL CHECK (level IN ('critical', 'warning', 'info')),
-  type TEXT NOT NULL, -- 'no_operators', 'no_equipment', 'impossible_arrival', 'shift_too_long', etc.
+  type TEXT NOT NULL, -- 'no_operators', 'no_gear', 'impossible_arrival', 'shift_too_long', etc.
   message TEXT NOT NULL,
 
   acknowledged_at TIMESTAMPTZ,
@@ -833,7 +853,7 @@ CREATE INDEX alerts_level_idx ON alerts(level, created_at);
 **Main Spec:**
 - `docs/specs/COMMANDCENTERED_SPEC_V1.md` - Original event-based spec (60 pages)
 - `docs/specs/SCHEMA_V2_SHIFTS.md` - Shift-based redesign with Q&A
-- `docs/specs/SCHEMA_V2.1_ADDITIONS.md` - 4 new features (personal equipment, hotels, skills, maps)
+- `docs/specs/SCHEMA_V2.1_ADDITIONS.md` - 4 new features (personal gear, hotels, skills, maps)
 - `docs/specs/SCENARIOS_AND_VALIDATION.md` - 10 test scenarios with issue tracking
 - `docs/specs/ADDITIONAL_SCENARIOS_MITIGATION.md` - 12 additional edge cases + mitigation strategies
 - **`SPEC_V2_LOCKED.md`** - This file (comprehensive v2.2 summary)
@@ -854,9 +874,9 @@ CREATE INDEX alerts_level_idx ON alerts(level, created_at);
 **Cancellations:** Last-minute + mid-event workflows specified
 **Pay:** Hourly + flat rate system designed
 **Travel:** Google Maps API integration planned
-**Equipment:** Company + operator personal tracking
+**Gear:** Company + operator personal tracking
 **Skills:** Expandable tenant-defined system
-**Training:** Scheduled with agendas
+**Drills:** Scheduled with agendas
 **Hotels:** Event-level with opt-in
 **Testing:** 14 scenarios validated, 13+ issues resolved
 
@@ -864,12 +884,31 @@ CREATE INDEX alerts_level_idx ON alerts(level, created_at);
 
 ---
 
+## 🎯 User Roles
+
+### The Commander (Tenant/Owner)
+- **Primary user** of CommandCentered
+- Coordinates all operations
+- Liaises with clients for event details
+- Assigns operators to shifts
+- Assigns gear to events
+- Sends gig sheets to crew
+- Monitors active operations via Main Console
+- Responds to critical alerts
+
+### Operators (Crew)
+- Receive gig sheets via email
+- Join event Telegram groups
+- Report to assigned shifts
+- No system login required (MVP)
+
+---
+
 ## 🚀 Next Steps
 
 1. ✅ Spec v2.2 finalized and locked
-2. 🔜 Add Telegram integration for event communication
-3. 🔜 Design at-a-glance dashboard UX
-4. 🔜 Begin Phase 1 implementation
+2. ✅ UX specification created (Commander-centric dashboard)
+3. 🔜 Begin Phase 1 implementation
 5. 🔜 Initialize Next.js 14 project
 6. 🔜 Create Supabase project
 7. 🔜 Implement Prisma schema (17 tables + v2.2 fields)

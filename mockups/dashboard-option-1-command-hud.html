@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Option 1: Command Center HUD - CommandCentered</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #0a0e1a;
+            color: #e0e6ed;
+            overflow-x: hidden;
+        }
+
+        /* HUD Grid Layout */
+        .hud-container {
+            display: grid;
+            grid-template-columns: 280px 1fr 320px;
+            grid-template-rows: 60px 1fr;
+            height: 100vh;
+            gap: 1px;
+            background: #1a1f2e;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #1a1f2e 0%, #0f1419 100%);
+            border-bottom: 2px solid #00ff9d;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            box-shadow: 0 4px 20px rgba(0, 255, 157, 0.1);
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: #00ff9d;
+            letter-spacing: 1px;
+        }
+
+        .status-bar {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #8b95a5;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .status-dot.active { background: #00ff9d; }
+        .status-dot.warning { background: #ffc107; }
+        .status-dot.critical { background: #ff3b5c; }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .alerts-badge {
+            position: relative;
+            background: #ff3b5c;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            animation: alertPulse 1s infinite;
+        }
+
+        @keyframes alertPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Left Sidebar - Quick Nav */
+        .sidebar-left {
+            background: #0f1419;
+            border-right: 1px solid #1a1f2e;
+            padding: 16px;
+            overflow-y: auto;
+        }
+
+        .nav-section {
+            margin-bottom: 24px;
+        }
+
+        .nav-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #5a6370;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 4px;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-item:hover {
+            background: #1a1f2e;
+            border-left-color: #00ff9d;
+        }
+
+        .nav-item.active {
+            background: rgba(0, 255, 157, 0.1);
+            border-left-color: #00ff9d;
+            color: #00ff9d;
+        }
+
+        .nav-icon {
+            font-size: 18px;
+        }
+
+        .nav-count {
+            margin-left: auto;
+            background: #1a1f2e;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        /* Main Content - Active Operations */
+        .main-content {
+            background: #0a0e1a;
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #e0e6ed;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .title-accent {
+            width: 3px;
+            height: 20px;
+            background: linear-gradient(180deg, #00ff9d 0%, #00b8d4 100%);
+            border-radius: 2px;
+        }
+
+        /* HUD Event Cards */
+        .hud-events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 16px;
+        }
+
+        .hud-event-card {
+            background: linear-gradient(135deg, #1a1f2e 0%, #0f1419 100%);
+            border: 1px solid #2a3040;
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .hud-event-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #00ff9d 0%, #00b8d4 100%);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .hud-event-card:hover {
+            border-color: #00ff9d;
+            box-shadow: 0 8px 32px rgba(0, 255, 157, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .hud-event-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 16px;
+        }
+
+        .event-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #e0e6ed;
+            margin-bottom: 4px;
+        }
+
+        .event-venue {
+            font-size: 13px;
+            color: #8b95a5;
+        }
+
+        .event-status {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-in-progress {
+            background: rgba(0, 255, 157, 0.15);
+            color: #00ff9d;
+            border: 1px solid rgba(0, 255, 157, 0.3);
+        }
+
+        .status-upcoming {
+            background: rgba(0, 184, 212, 0.15);
+            color: #00b8d4;
+            border: 1px solid rgba(0, 184, 212, 0.3);
+        }
+
+        .card-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #1a1f2e;
+        }
+
+        .metric {
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #00ff9d;
+            margin-bottom: 4px;
+        }
+
+        .metric-label {
+            font-size: 11px;
+            color: #5a6370;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .card-timeline {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            font-size: 13px;
+            color: #8b95a5;
+        }
+
+        .timeline-dot {
+            width: 6px;
+            height: 6px;
+            background: #00ff9d;
+            border-radius: 50%;
+        }
+
+        .card-quick-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .quick-action-btn {
+            flex: 1;
+            background: rgba(0, 255, 157, 0.1);
+            border: 1px solid rgba(0, 255, 157, 0.2);
+            color: #00ff9d;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .quick-action-btn:hover {
+            background: rgba(0, 255, 157, 0.2);
+            border-color: #00ff9d;
+        }
+
+        .quick-action-btn.telegram {
+            background: rgba(0, 136, 204, 0.1);
+            border-color: rgba(0, 136, 204, 0.2);
+            color: #0088cc;
+        }
+
+        .quick-action-btn.telegram:hover {
+            background: rgba(0, 136, 204, 0.2);
+            border-color: #0088cc;
+        }
+
+        .unread-badge {
+            background: #ff3b5c;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        /* Right Sidebar - System Status */
+        .sidebar-right {
+            background: #0f1419;
+            border-left: 1px solid #1a1f2e;
+            padding: 16px;
+            overflow-y: auto;
+        }
+
+        .system-panel {
+            background: #1a1f2e;
+            border: 1px solid #2a3040;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .panel-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #e0e6ed;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .alert-item {
+            display: flex;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(255, 59, 92, 0.05);
+            border-left: 3px solid #ff3b5c;
+            border-radius: 6px;
+            margin-bottom: 8px;
+        }
+
+        .alert-item.warning {
+            background: rgba(255, 193, 7, 0.05);
+            border-left-color: #ffc107;
+        }
+
+        .alert-item.info {
+            background: rgba(0, 184, 212, 0.05);
+            border-left-color: #00b8d4;
+        }
+
+        .alert-icon {
+            font-size: 16px;
+        }
+
+        .alert-content {
+            flex: 1;
+        }
+
+        .alert-message {
+            font-size: 12px;
+            color: #e0e6ed;
+            margin-bottom: 4px;
+        }
+
+        .alert-time {
+            font-size: 11px;
+            color: #5a6370;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #1a1f2e;
+        }
+
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #8b95a5;
+        }
+
+        .stat-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: #e0e6ed;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0a0e1a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #1a1f2e;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2a3040;
+        }
+    </style>
+</head>
+<body>
+    <div class="hud-container">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="logo">⚡ COMMANDCENTERED</div>
+            <div class="status-bar">
+                <div class="status-item">
+                    <div class="status-dot active"></div>
+                    <span>3 Events Active</span>
+                </div>
+                <div class="status-item">
+                    <div class="status-dot warning"></div>
+                    <span>2 Warnings</span>
+                </div>
+                <div class="alerts-badge">5 ALERTS</div>
+            </div>
+        </div>
+
+        <!-- Left Sidebar -->
+        <div class="sidebar-left">
+            <div class="nav-section">
+                <div class="nav-title">Operations</div>
+                <div class="nav-item active">
+                    <span class="nav-icon">🎯</span>
+                    <span>Active Events</span>
+                    <span class="nav-count">3</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">📅</span>
+                    <span>Upcoming</span>
+                    <span class="nav-count">7</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">✅</span>
+                    <span>Completed</span>
+                    <span class="nav-count">12</span>
+                </div>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-title">Resources</div>
+                <div class="nav-item">
+                    <span class="nav-icon">👥</span>
+                    <span>Operators</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">📦</span>
+                    <span>Equipment</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">🚗</span>
+                    <span>Vehicles</span>
+                </div>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-title">Management</div>
+                <div class="nav-item">
+                    <span class="nav-icon">📊</span>
+                    <span>Analytics</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">⚙️</span>
+                    <span>Settings</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="section-header">
+                <div class="section-title">
+                    <div class="title-accent"></div>
+                    Active Operations
+                </div>
+            </div>
+
+            <div class="hud-events-grid">
+                <!-- Event Card 1 - In Progress -->
+                <div class="hud-event-card">
+                    <div class="card-header">
+                        <div>
+                            <div class="event-name">Spring Dance Competition</div>
+                            <div class="event-venue">Lincoln High School</div>
+                        </div>
+                        <div class="event-status status-in-progress">IN PROGRESS</div>
+                    </div>
+
+                    <div class="card-metrics">
+                        <div class="metric">
+                            <div class="metric-value">4</div>
+                            <div class="metric-label">Operators</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">12</div>
+                            <div class="metric-label">Equipment</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">6h</div>
+                            <div class="metric-label">Remaining</div>
+                        </div>
+                    </div>
+
+                    <div class="card-timeline">
+                        <div class="timeline-dot"></div>
+                        <span>9:00 AM - 6:00 PM</span>
+                    </div>
+
+                    <div class="card-quick-actions">
+                        <button class="quick-action-btn telegram">
+                            💬 Chat <span class="unread-badge">3</span>
+                        </button>
+                        <button class="quick-action-btn">
+                            📋 Details
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Event Card 2 - In Progress -->
+                <div class="hud-event-card">
+                    <div class="card-header">
+                        <div>
+                            <div class="event-name">Summer Festival - Day 2</div>
+                            <div class="event-venue">Downtown Arena</div>
+                        </div>
+                        <div class="event-status status-in-progress">IN PROGRESS</div>
+                    </div>
+
+                    <div class="card-metrics">
+                        <div class="metric">
+                            <div class="metric-value">6</div>
+                            <div class="metric-label">Operators</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">24</div>
+                            <div class="metric-label">Equipment</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">8h</div>
+                            <div class="metric-label">Remaining</div>
+                        </div>
+                    </div>
+
+                    <div class="card-timeline">
+                        <div class="timeline-dot"></div>
+                        <span>2:00 PM - 11:00 PM</span>
+                    </div>
+
+                    <div class="card-quick-actions">
+                        <button class="quick-action-btn telegram">
+                            💬 Chat <span class="unread-badge">7</span>
+                        </button>
+                        <button class="quick-action-btn">
+                            📋 Details
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Event Card 3 - Upcoming -->
+                <div class="hud-event-card">
+                    <div class="card-header">
+                        <div>
+                            <div class="event-name">Recital Rehearsal</div>
+                            <div class="event-venue">Performing Arts Center</div>
+                        </div>
+                        <div class="event-status status-upcoming">STARTING SOON</div>
+                    </div>
+
+                    <div class="card-metrics">
+                        <div class="metric">
+                            <div class="metric-value">2</div>
+                            <div class="metric-label">Operators</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">8</div>
+                            <div class="metric-label">Equipment</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">2h</div>
+                            <div class="metric-label">Until Start</div>
+                        </div>
+                    </div>
+
+                    <div class="card-timeline">
+                        <div class="timeline-dot"></div>
+                        <span>6:00 PM - 9:00 PM</span>
+                    </div>
+
+                    <div class="card-quick-actions">
+                        <button class="quick-action-btn telegram">
+                            💬 Chat
+                        </button>
+                        <button class="quick-action-btn">
+                            📋 Details
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Sidebar -->
+        <div class="sidebar-right">
+            <!-- Alerts Panel -->
+            <div class="system-panel">
+                <div class="panel-title">🚨 Critical Alerts</div>
+
+                <div class="alert-item">
+                    <div class="alert-icon">🔴</div>
+                    <div class="alert-content">
+                        <div class="alert-message">State Finals has NO operators assigned</div>
+                        <div class="alert-time">36 hours away</div>
+                    </div>
+                </div>
+
+                <div class="alert-item warning">
+                    <div class="alert-icon">🟡</div>
+                    <div class="alert-content">
+                        <div class="alert-message">Camera 3 double-booked tomorrow</div>
+                        <div class="alert-time">2 events conflict</div>
+                    </div>
+                </div>
+
+                <div class="alert-item info">
+                    <div class="alert-icon">🔵</div>
+                    <div class="alert-content">
+                        <div class="alert-message">Gig sheets pending for 3 events</div>
+                        <div class="alert-time">Send before tomorrow</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Stats -->
+            <div class="system-panel">
+                <div class="panel-title">📊 Today's Stats</div>
+
+                <div class="stat-item">
+                    <span class="stat-label">Active Events</span>
+                    <span class="stat-value">3</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Operators Working</span>
+                    <span class="stat-value">12</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Equipment Deployed</span>
+                    <span class="stat-value">44 items</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Revenue Today</span>
+                    <span class="stat-value">$8,500</span>
+                </div>
+            </div>
+
+            <!-- Upcoming -->
+            <div class="system-panel">
+                <div class="panel-title">📅 Next 48 Hours</div>
+
+                <div class="stat-item">
+                    <span class="stat-label">Tomorrow</span>
+                    <span class="stat-value">4 events</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Monday</span>
+                    <span class="stat-value">2 events</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
