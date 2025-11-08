@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CommandCentered - Calendar (Streamlined)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .calendar-day {
+            min-height: 100px;
+            transition: all 0.15s ease;
+        }
+        .calendar-day:hover {
+            background: #f9fafb;
+        }
+        .event-pill {
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-bottom: 2px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .event-pill:hover {
+            transform: translateX(2px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .popover {
+            position: absolute;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .modal-backdrop {
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+    <!-- Top Nav -->
+    <nav class="bg-white border-b border-gray-200 px-6 py-3">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-6">
+                <h1 class="text-xl font-bold text-gray-900">CommandCentered</h1>
+                <div class="flex gap-4">
+                    <a href="#" class="text-sm text-gray-600 hover:text-gray-900">Dashboard</a>
+                    <a href="#" class="text-sm font-semibold text-blue-600">Calendar</a>
+                    <a href="#" class="text-sm text-gray-600 hover:text-gray-900">Events</a>
+                    <a href="#" class="text-sm text-gray-600 hover:text-gray-900">Operators</a>
+                    <a href="#" class="text-sm text-gray-600 hover:text-gray-900">Gear</a>
+                </div>
+            </div>
+            <button class="px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700">
+                + New Event
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto p-6">
+
+        <!-- Calendar Header -->
+        <div class="mb-6 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <h2 class="text-2xl font-bold text-gray-900">December 2024</h2>
+                <div class="flex gap-2">
+                    <button class="px-3 py-1.5 border border-gray-300 rounded text-sm hover:bg-gray-50">
+                        ← Prev
+                    </button>
+                    <button class="px-3 py-1.5 border border-gray-300 rounded text-sm hover:bg-gray-50">
+                        Today
+                    </button>
+                    <button class="px-3 py-1.5 border border-gray-300 rounded text-sm hover:bg-gray-50">
+                        Next →
+                    </button>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <div class="flex gap-2 text-xs">
+                    <div class="flex items-center gap-1">
+                        <div class="w-3 h-3 bg-blue-500 rounded"></div>
+                        <span class="text-gray-600">Events</span>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <div class="w-3 h-3 bg-purple-500 rounded"></div>
+                        <span class="text-gray-600">Drills</span>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <div class="w-3 h-3 bg-red-500 rounded"></div>
+                        <span class="text-gray-600">Blackouts</span>
+                    </div>
+                </div>
+                <select class="px-3 py-1.5 border border-gray-300 rounded text-sm">
+                    <option>Month View</option>
+                    <option>Week View</option>
+                    <option>Day View</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Calendar Grid -->
+        <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+
+            <!-- Days of Week Header -->
+            <div class="grid grid-cols-7 bg-gray-50 border-b border-gray-200">
+                <div class="px-3 py-2 text-xs font-semibold text-gray-600 text-center">Sunday</div>
+                <div class="px-3 py-2 text-xs font-semibold text-gray-600 text-center">Monday</div>
+                <div class="px-3 py-2 text-xs font-semibold text-gray-600 text-center">Tuesday</div>
+                <div class="px-3 py-2 text-xs font-semibold text-gray-600 text-center">Wednesday</div>
+                <div class="px-3 py-2 text-xs font-semibold text-gray-600 text-center">Thursday</div>
+                <div class="px-3 py-2 text-xs font-semibold text-gray-600 text-center">Friday</div>
+                <div class="px-3 py-2 text-xs font-semibold text-gray-600 text-center">Saturday</div>
+            </div>
+
+            <!-- Calendar Days -->
+            <div class="grid grid-cols-7">
+
+                <!-- Week 1 (Nov 30 - Dec 6) -->
+                <div class="calendar-day border-r border-b border-gray-100 p-2 bg-gray-50 opacity-50">
+                    <div class="text-xs text-gray-400 mb-1">30</div>
+                </div>
+                <div class="calendar-day border-r border-b border-gray-100 p-2">
+                    <div class="text-xs text-gray-900 mb-1 font-semibold">1</div>
+                </div>
+                <div class="calendar-day border-r border-b border-gray-100 p-2">
+                    <div class="text-xs text-gray-900 mb-1 font-semibold">2</div>
+                </div>
+                <div class="calendar-day border-r border-b border-gray-100 p-2">
+                    <div class="text-xs text-gray-900 mb-1 font-semibold">3</div>
+                </div>
+                <div class="calendar-day border-r border-b border-gray-100 p-2">
+                    <div class="text-xs text-gray-900 mb-1 font-semibold">4</div>
+                </div>
+                <div class="calendar-day border-r border-b border-gray-100 p-2">
+                    <div class="text-xs text-gray-900 mb-1 font-semibold">5</div>
+                </div>
+                <div class="calendar-day border-b border-gray-100 p-2">
+                    <div class="text-xs text-gray-900 mb-1 font-semibold">6</div>
+                </div>
+
+                <!-- Week 2 (Dec 7-13) -->
+                <div class="calendar-day border-r border-b border-gray-100 p-2">
+                    <div class="text-xs text-gray-900 mb-1 font-semibold">7</div>
+                </div>
+                <div class="calendar-day border-r border-b border-gray-100 p-2 bg-green-50">
+                    <div class="text-xs text-gray-900 mb-1 font-semibold">8</div>
+                    <div class="event-pill bg-blue-500 text-white font-semibold" onclick="showEventPopover(event, 'event1')">
+                        West Coast Elite
+                    </div>
+                </div>
+                <div class="calendar-day border-r border-b border-gray-100 p-2 bg-green-50">
+                    <div class="text-xs text-gray-900 mb-1 font-semibold">9</div>
+                    <div class="event-pill bg-blue-500 text-white font-semibold" onclick="showEventPopover(event, 'event1')">
+                        West Coast Elite
+                    </div>
+                </div>
+                <div class="calendar-day border-r border-b border-gray-100 p-2">
+                    <div class="text-xs text-gray-900 mb-1 font-semibold">10</div>
+                    <div class="event-pill bg-purple-500 text-white font-semibold" onclick="showEventPopover(event, 'drill1')">
+                        Team Drill: Camera Ops
+                    </div>
+                </div>
+                <div class="calendar-day border-r border-b border-gray-100 p-2">
+                    <div class="text-xs text-gray-900 mb-1 font-semibold">11</div>
+                </div>
+                <div class="calendar-day border-r border-b border-gray-100 p-2 bg-blue-50">
+                    <div class="text-xs text-gray-900 mb-1 font-semibold">12</div>
+                    <div class="text-xs text-blue-600 font-semibold">TODAY</div>
+                </div>
+                <div class="calendar-day border-b border-gray-100 p-2">
+                    <div class="text-xs text-gray-900 mb-1 font-semibold">13</div>
+                </div>
+
+                <!-- Week 3 (Dec 14-20) - BUSIEST WEEK -->
+                <div class="calendar-day border-r border-b border-gray-100 p-2">
+                    <div class="text-xs text-gray-900 mb-1 font-semibold">14</div>
+                </div>
+                <div class="calendar-day border-r border-b border-gray-100 p-2 bg-yellow-50">
+                    <div class="text-xs text-gray-900 mb-1 font-semibold">15</div>
+                    <div class="event-pill bg-red-500 text-white font-semibold" onclick="showEventPopover(event, 'event2')">
+                        ⚠️ EMPWR Recital
+                    </div>
+                </div>
+                <div class="calendar-day border-r border-b border-gray-100 p-2 bg-yellow-50">
+                    <div class="text-xs text-gray-900 mb-1 font-semibold">16</div>
+                    <div class="event-pill bg-red-500 text-white font-semibold" onclick="showEventPopover(event, 'event2')">
+                        ⚠️ EMPWR Recital
+                    </div>
+                </div>
+                <div class="calendar-day border-r border-b border-gray-100 p-2">
+                    <div class="text-xs text-gray-900 mb-1 font-semibold">17</div>
+                </div>
+                <div class="calendar-day border-r border-b border-gray-100 p-2">
+                    <div class="text-xs text-gray-900 mb-1 font-semibold">18</div>
+                </div>
+                <div class="calendar-day border-r border-b border-gray-100 p-2">
+                    <div class="text-xs text-gray-900 mb-1 font-semibold">19</div>
+                </div>
+                <div class="calendar-day border-b border-gray-100 p-2 bg-red-50">
+                    <div class="text-xs text-gray-900 mb-1 font-semibold">20</div>
+                    <div class="event-pill bg-red-300 text-red-900 font-semibold" onclick="showEventPopover(event, 'blackout1')">
+                        Sarah K. - Blackout
+                    </div>
+                </div>
+
+                <!-- Week 4 (Dec 21-27) -->
+                <div class="calendar-day border-r border-b border-gray-100 p-2 bg-red-50">
+                    <div class="text-xs text-gray-900 mb-1 font-semibold">21</div>
+                    <div class="event-pill bg-red-300 text-red-900 font-semibold" onclick="showEventPopover(event, 'blackout1')">
+                        Sarah K. - Blackout
+                    </div>
+                </div>
+                <div class="calendar-day border-r border-b border-gray-100 p-2 bg-green-50">
+                    <div class="text-xs text-gray-900 mb-1 font-semibold">22</div>
+                    <div class="event-pill bg-blue-500 text-white font-semibold" onclick="showEventPopover(event, 'event3')">
+                        Glow Winter Showcase
+                    </div>
+                    <div class="event-pill bg-red-300 text-red-900 font-semibold" onclick="showEventPopover(event, 'blackout1')">
+                        Sarah K. - Blackout
+                    </div>
+                </div>
+                <div class="calendar-day border-r border-b border-gray-100 p-2 bg-red-50">
+                    <div class="text-xs text-gray-900 mb-1 font-semibold">23</div>
+                    <div class="event-pill bg-red-300 text-red-900 font-semibold" onclick="showEventPopover(event, 'blackout1')">
+                        Sarah K. - Blackout
+                    </div>
+                </div>
+                <div class="calendar-day border-r border-b border-gray-100 p-2 bg-red-50">
+                    <div class="text-xs text-gray-900 mb-1 font-semibold">24</div>
+                    <div class="event-pill bg-red-300 text-red-900 font-semibold" onclick="showEventPopover(event, 'blackout1')">
+                        Sarah K. - Blackout
+                    </div>
+                </div>
+                <div class="calendar-day border-r border-b border-gray-100 p-2 bg-red-50">
+                    <div class="text-xs text-gray-900 mb-1 font-semibold">25</div>
+                    <div class="event-pill bg-red-300 text-red-900 font-semibold" onclick="showEventPopover(event, 'blackout1')">
+                        Sarah K. - Blackout
+                    </div>
+                </div>
+                <div class="calendar-day border-r border-b border-gray-100 p-2 bg-red-50">
+                    <div class="text-xs text-gray-900 mb-1 font-semibold">26</div>
+                    <div class="event-pill bg-red-300 text-red-900 font-semibold" onclick="showEventPopover(event, 'blackout1')">
+                        Sarah K. - Blackout
+                    </div>
+                </div>
+                <div class="calendar-day border-b border-gray-100 p-2 bg-red-50">
+                    <div class="text-xs text-gray-900 mb-1 font-semibold">27</div>
+                    <div class="event-pill bg-red-300 text-red-900 font-semibold" onclick="showEventPopover(event, 'blackout1')">
+                        Sarah K. - Blackout
+                    </div>
+                </div>
+
+                <!-- Week 5 (Dec 28 - Jan 3) -->
+                <div class="calendar-day border-r border-gray-100 p-2">
+                    <div class="text-xs text-gray-900 mb-1 font-semibold">28</div>
+                </div>
+                <div class="calendar-day border-r border-gray-100 p-2">
+                    <div class="text-xs text-gray-900 mb-1 font-semibold">29</div>
+                </div>
+                <div class="calendar-day border-r border-gray-100 p-2">
+                    <div class="text-xs text-gray-900 mb-1 font-semibold">30</div>
+                </div>
+                <div class="calendar-day border-r border-gray-100 p-2">
+                    <div class="text-xs text-gray-900 mb-1 font-semibold">31</div>
+                </div>
+                <div class="calendar-day border-r border-gray-100 p-2 bg-gray-50 opacity-50">
+                    <div class="text-xs text-gray-400 mb-1">1</div>
+                </div>
+                <div class="calendar-day border-r border-gray-100 p-2 bg-gray-50 opacity-50">
+                    <div class="text-xs text-gray-400 mb-1">2</div>
+                </div>
+                <div class="calendar-day border-gray-100 p-2 bg-gray-50 opacity-50">
+                    <div class="text-xs text-gray-400 mb-1">3</div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Mini Stats Below Calendar -->
+        <div class="mt-6 grid grid-cols-4 gap-4">
+            <div class="bg-white rounded-lg border border-gray-200 p-4 text-center">
+                <div class="text-2xl font-bold text-blue-600">5</div>
+                <div class="text-xs text-gray-600 mt-1">Events This Month</div>
+            </div>
+            <div class="bg-white rounded-lg border border-gray-200 p-4 text-center">
+                <div class="text-2xl font-bold text-purple-600">2</div>
+                <div class="text-xs text-gray-600 mt-1">Drills Scheduled</div>
+            </div>
+            <div class="bg-white rounded-lg border border-gray-200 p-4 text-center">
+                <div class="text-2xl font-bold text-green-600">12</div>
+                <div class="text-xs text-gray-600 mt-1">Operators Deployed</div>
+            </div>
+            <div class="bg-white rounded-lg border border-gray-200 p-4 text-center">
+                <div class="text-2xl font-bold text-red-600">1</div>
+                <div class="text-xs text-gray-600 mt-1">Active Blackouts</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- EVENT PREVIEW POPOVER (Hidden by default, positioned dynamically) -->
+    <div id="eventPopover" class="popover hidden bg-white rounded-lg border border-gray-300 shadow-lg" style="width: 320px;">
+        <div class="p-4">
+            <div class="flex items-start justify-between mb-3">
+                <div>
+                    <div class="text-sm font-bold text-gray-900" id="popoverTitle">EMPWR Dance Recital</div>
+                    <div class="text-xs text-gray-600" id="popoverDate">Dec 15-16, 2024</div>
+                </div>
+                <button onclick="hideEventPopover()" class="text-gray-400 hover:text-gray-600">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="space-y-2 mb-3">
+                <div class="flex items-center gap-2 text-xs text-gray-700">
+                    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                    </svg>
+                    <span id="popoverLocation">Sacramento Convention Center</span>
+                </div>
+                <div class="flex items-center gap-2 text-xs text-gray-700">
+                    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                    </svg>
+                    <span id="popoverOperators">4/5 operators assigned</span>
+                </div>
+                <div class="flex items-center gap-2 text-xs text-gray-700">
+                    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                    </svg>
+                    <span id="popoverGear">8 gear items assigned</span>
+                </div>
+            </div>
+
+            <div id="popoverAlert" class="bg-red-50 border border-red-200 rounded px-2 py-1.5 mb-3">
+                <div class="text-xs font-semibold text-red-900">⚠️ 1 role not assigned</div>
+                <div class="text-xs text-red-700 mt-0.5">Videographer needed for Load-out shift</div>
+            </div>
+
+            <div class="flex gap-2">
+                <button class="flex-1 px-3 py-1.5 border border-gray-300 text-gray-700 text-xs font-semibold rounded hover:bg-gray-50" onclick="viewEventDetails()">
+                    View Details
+                </button>
+                <button class="flex-1 px-3 py-1.5 bg-blue-600 text-white text-xs font-semibold rounded hover:bg-blue-700">
+                    Assign Operator
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showEventPopover(event, eventId) {
+            event.stopPropagation();
+            const popover = document.getElementById('eventPopover');
+
+            // Position popover near clicked element
+            const rect = event.target.getBoundingClientRect();
+            popover.style.left = (rect.left + window.scrollX - 160) + 'px';
+            popover.style.top = (rect.bottom + window.scrollY + 8) + 'px';
+
+            // Update popover content based on eventId
+            // (In real app, this would fetch from data)
+
+            popover.classList.remove('hidden');
+        }
+
+        function hideEventPopover() {
+            document.getElementById('eventPopover').classList.add('hidden');
+        }
+
+        function viewEventDetails() {
+            alert('Navigate to full event detail page');
+            hideEventPopover();
+        }
+
+        // Close popover when clicking outside
+        document.addEventListener('click', function(event) {
+            const popover = document.getElementById('eventPopover');
+            if (!popover.contains(event.target) && !event.target.classList.contains('event-pill')) {
+                hideEventPopover();
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CommandCentered - Tactical HUD Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rajdhani', monospace;
+            background: #000;
+            color: #00ff9d;
+            overflow-x: hidden;
+        }
+
+        /* Animated Grid Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(0, 255, 157, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 157, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* Corner Frames */
+        .corner-frame {
+            position: fixed;
+            pointer-events: none;
+            z-index: 999;
+        }
+        .corner-frame.tl { top: 0; left: 0; width: 80px; height: 80px; border-top: 3px solid #00ff9d; border-left: 3px solid #00ff9d; box-shadow: 0 0 15px rgba(0,255,157,0.5); }
+        .corner-frame.tr { top: 0; right: 0; width: 80px; height: 80px; border-top: 3px solid #00ff9d; border-right: 3px solid #00ff9d; box-shadow: 0 0 15px rgba(0,255,157,0.5); }
+        .corner-frame.bl { bottom: 0; left: 0; width: 80px; height: 80px; border-bottom: 3px solid #00ff9d; border-left: 3px solid #00ff9d; box-shadow: 0 0 15px rgba(0,255,157,0.5); }
+        .corner-frame.br { bottom: 0; right: 0; width: 80px; height: 80px; border-bottom: 3px solid #00ff9d; border-right: 3px solid #00ff9d; box-shadow: 0 0 15px rgba(0,255,157,0.5); }
+
+        /* Top HUD Bar */
+        .top-hud {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: linear-gradient(135deg, #0a1a1a 0%, #000 100%);
+            border-bottom: 2px solid #00ff9d;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            z-index: 100;
+            box-shadow: 0 0 30px rgba(0, 255, 157, 0.3);
+        }
+
+        .logo {
+            font-family: 'Orbitron', monospace;
+            font-size: 20px;
+            font-weight: 700;
+            color: #00ff9d;
+            letter-spacing: 3px;
+            text-shadow: 0 0 20px #00ff9d;
+        }
+
+        .hud-nav {
+            display: flex;
+            gap: 32px;
+        }
+
+        .hud-nav a {
+            color: #00ff9d;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 8px 16px;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .hud-nav a:hover,
+        .hud-nav a.active {
+            border: 1px solid #00ff9d;
+            box-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
+            background: rgba(0, 255, 157, 0.05);
+        }
+
+        .hud-btn {
+            background: rgba(0, 255, 157, 0.2);
+            border: 2px solid #00ff9d;
+            color: #00ff9d;
+            padding: 8px 20px;
+            font-family: 'Rajdhani', monospace;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            cursor: pointer;
+            clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+            transition: all 0.2s;
+        }
+
+        .hud-btn:hover {
+            background: rgba(0, 255, 157, 0.3);
+            box-shadow: 0 0 20px rgba(0, 255, 157, 0.6);
+        }
+
+        /* Main Container */
+        .main-container {
+            margin-top: 70px;
+            padding: 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Quick Stats HUD */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-panel {
+            background: rgba(0, 20, 15, 0.8);
+            border: 2px solid #00ff9d;
+            padding: 16px;
+            text-align: center;
+            clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
+            box-shadow: 0 0 15px rgba(0, 255, 157, 0.3);
+            position: relative;
+        }
+
+        .stat-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00ff9d, transparent);
+            animation: scanLine 2s linear infinite;
+        }
+
+        @keyframes scanLine {
+            0% { transform: translateY(0); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(60px); opacity: 0; }
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #00ff9d;
+            text-shadow: 0 0 10px #00ff9d;
+            font-family: 'Orbitron', monospace;
+        }
+
+        .stat-value.red { color: #ff0040; text-shadow: 0 0 10px #ff0040; }
+        .stat-value.yellow { color: #ffd700; text-shadow: 0 0 10px #ffd700; }
+
+        .stat-label {
+            font-size: 11px;
+            color: #00ff9d;
+            margin-top: 4px;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Alert Banner */
+        .alert-banner {
+            background: rgba(255, 0, 64, 0.15);
+            border: 2px solid #ff0040;
+            border-left: 6px solid #ff0040;
+            padding: 16px;
+            margin-bottom: 24px;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%);
+            box-shadow: 0 0 20px rgba(255, 0, 64, 0.4);
+        }
+
+        .alert-header {
+            font-size: 14px;
+            font-weight: 700;
+            color: #ff0040;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+        }
+
+        .alert-item {
+            display: flex;
+            align-items: start;
+            gap: 12px;
+            margin-bottom: 12px;
+            padding: 8px;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .alert-icon {
+            color: #ff0040;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .alert-content {
+            flex: 1;
+        }
+
+        .alert-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #ff0040;
+        }
+
+        .alert-desc {
+            font-size: 12px;
+            color: #00ff9d;
+            opacity: 0.8;
+            margin-top: 2px;
+        }
+
+        .alert-action {
+            font-size: 12px;
+            color: #00ff9d;
+            text-decoration: underline;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* Event Cards Grid */
+        .events-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #00ff9d;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .event-card {
+            background: rgba(0, 20, 15, 0.8);
+            border: 2px solid #00ff9d;
+            padding: 20px;
+            clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px);
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .event-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 157, 0.1), transparent);
+            transition: all 0.5s;
+        }
+
+        .event-card:hover::before {
+            left: 100%;
+        }
+
+        .event-card:hover {
+            border-color: #00ff9d;
+            box-shadow: 0 0 30px rgba(0, 255, 157, 0.5);
+            transform: translateY(-4px);
+        }
+
+        .event-card.alert {
+            border-color: #ff0040;
+            box-shadow: 0 0 20px rgba(255, 0, 64, 0.3);
+        }
+
+        .event-card.complete {
+            opacity: 0.6;
+            border-color: #555;
+        }
+
+        .event-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .event-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: #00ff9d;
+            text-transform: uppercase;
+        }
+
+        .event-venue {
+            font-size: 11px;
+            color: #00ff9d;
+            opacity: 0.7;
+            margin-top: 2px;
+        }
+
+        .event-date {
+            text-align: right;
+            font-size: 12px;
+            font-weight: 600;
+            color: #00ff9d;
+        }
+
+        .event-days {
+            font-size: 10px;
+            opacity: 0.7;
+        }
+
+        .event-badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            font-size: 11px;
+            font-weight: 700;
+            border: 1px solid;
+            clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+        }
+
+        .badge.blue { background: rgba(0, 150, 255, 0.2); border-color: #0096ff; color: #0096ff; }
+        .badge.green { background: rgba(0, 255, 157, 0.2); border-color: #00ff9d; color: #00ff9d; }
+        .badge.purple { background: rgba(150, 0, 255, 0.2); border-color: #9600ff; color: #9600ff; }
+        .badge.orange { background: rgba(255, 150, 0, 0.2); border-color: #ff9600; color: #ff9600; }
+
+        .event-shifts {
+            border-top: 1px solid rgba(0, 255, 157, 0.3);
+            padding-top: 12px;
+            margin-bottom: 12px;
+        }
+
+        .shift-line {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            margin-bottom: 6px;
+            color: #00ff9d;
+        }
+
+        .shift-time {
+            color: #00ff9d;
+            opacity: 0.7;
+        }
+
+        .shift-name {
+            font-weight: 600;
+        }
+
+        .event-status {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top: 1px solid rgba(0, 255, 157, 0.3);
+            padding-top: 12px;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            box-shadow: 0 0 8px currentColor;
+        }
+
+        .status-dot.red { background: #ff0040; color: #ff0040; }
+        .status-dot.green { background: #00ff9d; color: #00ff9d; }
+        .status-dot.yellow { background: #ffd700; color: #ffd700; }
+        .status-dot.gray { background: #555; color: #555; }
+
+        .status-text {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .event-expand {
+            font-size: 10px;
+            opacity: 0.6;
+        }
+
+        /* Modal */
+        .modal-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal {
+            background: rgba(0, 20, 15, 0.95);
+            border: 3px solid #00ff9d;
+            max-width: 900px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            clip-path: polygon(24px 0, 100% 0, 100% calc(100% - 24px), calc(100% - 24px) 100%, 0 100%, 0 24px);
+            box-shadow: 0 0 50px rgba(0, 255, 157, 0.5);
+        }
+
+        .modal-header {
+            padding: 20px 24px;
+            border-bottom: 2px solid #00ff9d;
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #00ff9d;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .modal-subtitle {
+            font-size: 12px;
+            color: #00ff9d;
+            opacity: 0.7;
+            margin-top: 4px;
+        }
+
+        .modal-close {
+            background: none;
+            border: 2px solid #00ff9d;
+            color: #00ff9d;
+            font-size: 20px;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+        }
+
+        .modal-content {
+            padding: 24px;
+        }
+
+        .modal-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .modal-stat {
+            text-align: center;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #00ff9d;
+        }
+
+        .modal-stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #00ff9d;
+            font-family: 'Orbitron', monospace;
+        }
+
+        .modal-stat-label {
+            font-size: 10px;
+            color: #00ff9d;
+            opacity: 0.7;
+            margin-top: 4px;
+        }
+
+        .modal-section {
+            margin-bottom: 24px;
+        }
+
+        .modal-section-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #00ff9d;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid rgba(0, 255, 157, 0.3);
+            padding-bottom: 8px;
+        }
+
+        .shift-detail {
+            background: rgba(0, 0, 0, 0.5);
+            border-left: 3px solid #00ff9d;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+
+        .shift-detail.alert {
+            border-left-color: #ff0040;
+            background: rgba(255, 0, 64, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Corner Frames -->
+    <div class="corner-frame tl"></div>
+    <div class="corner-frame tr"></div>
+    <div class="corner-frame bl"></div>
+    <div class="corner-frame br"></div>
+
+    <!-- Top HUD -->
+    <div class="top-hud">
+        <div class="logo">COMMANDCENTERED</div>
+        <nav class="hud-nav">
+            <a href="#" class="active">DASHBOARD</a>
+            <a href="#">CALENDAR</a>
+            <a href="#">EVENTS</a>
+            <a href="#">OPERATORS</a>
+            <a href="#">GEAR</a>
+        </nav>
+        <button class="hud-btn">+ NEW EVENT</button>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+
+        <!-- Quick Stats -->
+        <div class="stats-grid">
+            <div class="stat-panel">
+                <div class="stat-value">8</div>
+                <div class="stat-label">Active Events</div>
+            </div>
+            <div class="stat-panel">
+                <div class="stat-value">3</div>
+                <div class="stat-label">This Week</div>
+            </div>
+            <div class="stat-panel">
+                <div class="stat-value">12</div>
+                <div class="stat-label">Ops Deployed</div>
+            </div>
+            <div class="stat-panel">
+                <div class="stat-value red">2</div>
+                <div class="stat-label">⚠ Alerts</div>
+            </div>
+            <div class="stat-panel">
+                <div class="stat-value">24/32</div>
+                <div class="stat-label">Gear Available</div>
+            </div>
+        </div>
+
+        <!-- Alert Banner -->
+        <div class="alert-banner">
+            <div class="alert-header">⚠ System Alerts (2)</div>
+            <div class="alert-item">
+                <div class="alert-icon">!</div>
+                <div class="alert-content">
+                    <div class="alert-title">NO OPERATOR ASSIGNED</div>
+                    <div class="alert-desc">EMPWR Recital - Videographer role still open (3 days away)</div>
+                </div>
+                <div class="alert-action" onclick="openModal()">VIEW EVENT</div>
+            </div>
+            <div class="alert-item">
+                <div class="alert-icon">!</div>
+                <div class="alert-content">
+                    <div class="alert-title">IMPOSSIBLE SCHEDULE DETECTED</div>
+                    <div class="alert-desc">Jake M. assigned to overlapping shifts (travel time: 47min, gap: 15min)</div>
+                </div>
+                <div class="alert-action">RESOLVE</div>
+            </div>
+        </div>
+
+        <!-- Events Section -->
+        <div class="events-header">
+            <div class="section-title">// Upcoming Events</div>
+            <div class="alert-action" style="font-size: 12px;">VIEW ALL →</div>
+        </div>
+
+        <div class="events-grid">
+
+            <!-- Event Card 1 - Alert -->
+            <div class="event-card alert" onclick="openModal()">
+                <div class="event-header">
+                    <div>
+                        <div class="event-name">EMPWR Dance Recital</div>
+                        <div class="event-venue">Sacramento Convention Center</div>
+                    </div>
+                    <div class="event-date">
+                        <div>DEC 15-16</div>
+                        <div class="event-days">2 days</div>
+                    </div>
+                </div>
+
+                <div class="event-badges">
+                    <span class="badge blue">👤 4/5 OPS</span>
+                    <span class="badge green">📦 8 ITEMS</span>
+                    <span class="badge purple">🚗 2 VEHICLES</span>
+                    <span class="badge orange">🏨 HOTEL</span>
+                </div>
+
+                <div class="event-shifts">
+                    <div class="shift-line">
+                        <span class="shift-time">DEC 15 09:00</span>
+                        <span>→</span>
+                        <span class="shift-name">Load-in (3 ops)</span>
+                    </div>
+                    <div class="shift-line">
+                        <span class="shift-time">DEC 16 10:00</span>
+                        <span>→</span>
+                        <span class="shift-name">Shoot Day 2 (4 ops)</span>
+                    </div>
+                </div>
+
+                <div class="event-status">
+                    <div class="status-indicator">
+                        <div class="status-dot red"></div>
+                        <span class="status-text" style="color: #ff0040;">1 ALERT</span>
+                    </div>
+                    <div class="event-expand">CLICK FOR DETAILS →</div>
+                </div>
+            </div>
+
+            <!-- Event Card 2 - All Good -->
+            <div class="event-card" onclick="openModal()">
+                <div class="event-header">
+                    <div>
+                        <div class="event-name">Glow Winter Showcase</div>
+                        <div class="event-venue">Golden 1 Center</div>
+                    </div>
+                    <div class="event-date">
+                        <div>DEC 22</div>
+                        <div class="event-days">1 day</div>
+                    </div>
+                </div>
+
+                <div class="event-badges">
+                    <span class="badge blue">👤 6/6 OPS</span>
+                    <span class="badge green">📦 12 ITEMS</span>
+                    <span class="badge purple">🚗 3 VEHICLES</span>
+                </div>
+
+                <div class="event-shifts">
+                    <div class="shift-line">
+                        <span class="shift-time">DEC 22 08:00</span>
+                        <span>→</span>
+                        <span class="shift-name">Load-in (4 ops)</span>
+                    </div>
+                    <div class="shift-line">
+                        <span class="shift-time">DEC 22 12:00</span>
+                        <span>→</span>
+                        <span class="shift-name">Full Crew (6 ops)</span>
+                    </div>
+                </div>
+
+                <div class="event-status">
+                    <div class="status-indicator">
+                        <div class="status-dot green"></div>
+                        <span class="status-text">ALL SET</span>
+                    </div>
+                    <div class="event-expand">CLICK FOR DETAILS →</div>
+                </div>
+            </div>
+
+            <!-- Event Card 3 - Draft -->
+            <div class="event-card" onclick="openModal()" style="opacity: 0.8;">
+                <div class="event-header">
+                    <div>
+                        <div class="event-name">Youth America Grand Prix</div>
+                        <div class="event-venue">SF War Memorial Opera House</div>
+                    </div>
+                    <div class="event-date">
+                        <div>JAN 12-14</div>
+                        <div class="event-days">3 days</div>
+                    </div>
+                </div>
+
+                <div class="event-badges">
+                    <span class="badge blue" style="opacity: 0.5;">👤 0/8 OPS</span>
+                    <span class="badge green" style="opacity: 0.5;">📦 NOT PLANNED</span>
+                    <span class="badge yellow" style="background: rgba(255, 215, 0, 0.2); border-color: #ffd700; color: #ffd700;">✏️ DRAFT</span>
+                </div>
+
+                <div class="event-shifts">
+                    <div class="shift-line" style="opacity: 0.6;">
+                        <span>3 shifts planned</span>
+                        <span>•</span>
+                        <span>8 roles to fill</span>
+                    </div>
+                </div>
+
+                <div class="event-status">
+                    <div class="status-indicator">
+                        <div class="status-dot yellow"></div>
+                        <span class="status-text" style="color: #ffd700;">PLANNING PHASE</span>
+                    </div>
+                    <div class="event-expand">CLICK TO CONTINUE →</div>
+                </div>
+            </div>
+
+            <!-- Event Card 4 - Completed -->
+            <div class="event-card complete" onclick="openModal()">
+                <div class="event-header">
+                    <div>
+                        <div class="event-name">Radix Dance Convention</div>
+                        <div class="event-venue">Sacramento Convention Center</div>
+                    </div>
+                    <div class="event-date">
+                        <div>DEC 8-9</div>
+                        <div class="event-days">Completed</div>
+                    </div>
+                </div>
+
+                <div class="event-badges">
+                    <span class="badge blue" style="opacity: 0.6;">👤 5 OPS</span>
+                    <span class="badge green" style="opacity: 0.6;">📦 10 ITEMS</span>
+                    <span class="badge" style="background: rgba(85, 85, 85, 0.2); border-color: #555; color: #888;">✅ COMPLETE</span>
+                </div>
+
+                <div class="event-shifts">
+                    <div class="shift-line" style="opacity: 0.6;">
+                        <span class="shift-time">Revenue:</span>
+                        <span class="shift-name">$4,240</span>
+                        <span>•</span>
+                        <span class="shift-time">Labor:</span>
+                        <span class="shift-name">$2,180</span>
+                    </div>
+                </div>
+
+                <div class="event-status">
+                    <div class="status-indicator">
+                        <div class="status-dot gray"></div>
+                        <span class="status-text" style="color: #888;">EVENT COMPLETE</span>
+                    </div>
+                    <div class="event-expand">VIEW REPORT →</div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-backdrop" id="modal" onclick="closeModal()">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div>
+                    <div class="modal-title">EMPWR Dance Recital</div>
+                    <div class="modal-subtitle">DEC 15-16, 2024 • Sacramento Convention Center</div>
+                </div>
+                <button class="modal-close" onclick="closeModal()">×</button>
+            </div>
+
+            <div class="modal-content">
+
+                <!-- Quick Stats -->
+                <div class="modal-stats">
+                    <div class="modal-stat">
+                        <div class="modal-stat-value">4</div>
+                        <div class="modal-stat-label">SHIFTS</div>
+                    </div>
+                    <div class="modal-stat">
+                        <div class="modal-stat-value" style="color: #0096ff;">4/5</div>
+                        <div class="modal-stat-label">OPERATORS</div>
+                    </div>
+                    <div class="modal-stat">
+                        <div class="modal-stat-value">8</div>
+                        <div class="modal-stat-label">GEAR ITEMS</div>
+                    </div>
+                    <div class="modal-stat">
+                        <div class="modal-stat-value" style="color: #9600ff;">$6.5K</div>
+                        <div class="modal-stat-label">REVENUE</div>
+                    </div>
+                </div>
+
+                <!-- Alert -->
+                <div class="alert-banner" style="margin-bottom: 24px;">
+                    <div class="alert-title" style="margin-bottom: 4px;">⚠️ 1 ROLE NOT ASSIGNED</div>
+                    <div class="alert-desc">Videographer needed for Dec 16 Load-out (8pm-11pm)</div>
+                    <div class="alert-action" style="margin-top: 8px;">ASSIGN OPERATOR →</div>
+                </div>
+
+                <!-- Shifts -->
+                <div class="modal-section">
+                    <div class="modal-section-title">// SHIFTS (4 TOTAL)</div>
+
+                    <div class="shift-detail">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <div>
+                                <div style="font-weight: 700; font-size: 13px;">LOAD-IN & SETUP</div>
+                                <div style="font-size: 11px; opacity: 0.7;">Dec 15, 9:00am - 12:00pm (3 hrs)</div>
+                            </div>
+                            <span class="badge green">✓ STAFFED</span>
+                        </div>
+                        <div style="font-size: 11px;">Jake M. (Video Lead) • Sarah K. (Photo) • Mike R. (Video)</div>
+                    </div>
+
+                    <div class="shift-detail">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <div>
+                                <div style="font-weight: 700; font-size: 13px;">SHOOT DAY 1</div>
+                                <div style="font-size: 11px; opacity: 0.7;">Dec 15, 2:00pm - 9:00pm (7 hrs)</div>
+                            </div>
+                            <span class="badge green">✓ STAFFED</span>
+                        </div>
+                        <div style="font-size: 11px;">4 operators assigned</div>
+                    </div>
+
+                    <div class="shift-detail alert">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <div>
+                                <div style="font-weight: 700; font-size: 13px; color: #ff0040;">SHOOT DAY 2</div>
+                                <div style="font-size: 11px; opacity: 0.7;">Dec 16, 10:00am - 7:00pm (9 hrs)</div>
+                            </div>
+                            <span class="badge" style="background: rgba(255, 0, 64, 0.2); border-color: #ff0040; color: #ff0040;">! 1 ROLE OPEN</span>
+                        </div>
+                        <div style="font-size: 11px; color: #ff0040;">Videographer role needs assignment</div>
+                    </div>
+
+                    <div class="shift-detail">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <div>
+                                <div style="font-weight: 700; font-size: 13px;">LOAD-OUT</div>
+                                <div style="font-size: 11px; opacity: 0.7;">Dec 16, 8:00pm - 11:00pm (3 hrs)</div>
+                            </div>
+                            <span class="badge green">✓ STAFFED</span>
+                        </div>
+                        <div style="font-size: 11px;">2 operators assigned</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openModal() {
+            document.getElementById('modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        // ESC key to close
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeModal();
+        });
+    </script>
+
+</body>
+</html>
