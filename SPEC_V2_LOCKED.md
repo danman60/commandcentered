@@ -904,14 +904,490 @@ CREATE INDEX alerts_level_idx ON alerts(level, created_at);
 
 ---
 
+## 🎬 Phase 2: Post-Production & Deliverables ✅ NEW v2.4
+
+### Overview
+
+After event capture, the post-production workflow manages editing, delivery tracking, and client communication. This phase tracks:
+- Video editing projects (full shows, individual routines, highlight reels)
+- Photo galleries and exports
+- Asset completion progress
+- Editor assignments and workload balancing
+- Due dates and client deliverable schedules
+- Bounty system for rush/quality work
+- Client notes (email integration + manual entry)
+
+### Database Schema
+
+**New Tables (6 total):**
+
+#### 22. `deliverables`
+Parent deliverable tracking per event.
+
+```sql
+CREATE TABLE deliverables (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  tenant_id UUID NOT NULL REFERENCES tenants(id),
+  event_id UUID NOT NULL REFERENCES events(id),
+  deliverable_type TEXT NOT NULL, -- 'full_show' | 'routine_videos' | 'photo_gallery' | 'highlight_reel' | 'social_clips'
+  deliverable_name TEXT NOT NULL, -- e.g., "Full Show Edit", "Routine Videos"
+  due_date DATE NOT NULL,
+  total_assets INTEGER NOT NULL DEFAULT 0, -- Total items to deliver (e.g., 127 routines)
+  completed_assets INTEGER NOT NULL DEFAULT 0, -- Items completed
+  assigned_editor_id UUID REFERENCES editors(id), -- Primary editor
+  status TEXT NOT NULL DEFAULT 'not_started', -- 'not_started' | 'in_progress' | 'in_review' | 'delivered' | 'cancelled'
+  priority TEXT DEFAULT 'normal', -- 'low' | 'normal' | 'high' | 'urgent'
+  notes TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_deliverables_tenant ON deliverables(tenant_id);
+CREATE INDEX idx_deliverables_event ON deliverables(event_id);
+CREATE INDEX idx_deliverables_editor ON deliverables(assigned_editor_id);
+CREATE INDEX idx_deliverables_due_date ON deliverables(due_date);
+CREATE INDEX idx_deliverables_status ON deliverables(status);
+```
+
+#### 23. `deliverable_assets`
+Individual items within a deliverable (each routine, each photo set).
+
+```sql
+CREATE TABLE deliverable_assets (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  tenant_id UUID NOT NULL REFERENCES tenants(id),
+  deliverable_id UUID NOT NULL REFERENCES deliverables(id) ON DELETE CASCADE,
+  asset_name TEXT NOT NULL, -- e.g., "Solo - Emma Johnson - Titanium"
+  asset_type TEXT, -- 'video' | 'photo' | 'audio' | 'graphic'
+  file_path TEXT, -- Storage path or URL
+  file_size_mb DECIMAL(10,2),
+  duration_seconds INTEGER, -- For video/audio
+  completed BOOLEAN NOT NULL DEFAULT FALSE,
+  assigned_editor_id UUID REFERENCES editors(id), -- Can differ from parent deliverable
+  completed_at TIMESTAMPTZ,
+  notes TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_deliverable_assets_tenant ON deliverable_assets(tenant_id);
+CREATE INDEX idx_deliverable_assets_deliverable ON deliverable_assets(deliverable_id);
+CREATE INDEX idx_deliverable_assets_editor ON deliverable_assets(assigned_editor_id);
+CREATE INDEX idx_deliverable_assets_completed ON deliverable_assets(completed);
+```
+
+#### 24. `editors`
+People who perform post-production work (can be same as operators or separate).
+
+```sql
+CREATE TABLE editors (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  tenant_id UUID NOT NULL REFERENCES tenants(id),
+  name TEXT NOT NULL,
+  email TEXT NOT NULL,
+  phone TEXT,
+  specialties TEXT[], -- ['video_editing', 'color_grading', 'photo_retouching', 'motion_graphics']
+  hourly_rate DECIMAL(10,2), -- Editing rate
+  flat_rate_per_project DECIMAL(10,2), -- Alternative pricing
+  max_concurrent_projects INTEGER DEFAULT 3, -- Workload cap
+  is_active BOOLEAN NOT NULL DEFAULT TRUE,
+  notes TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_editors_tenant ON editors(tenant_id);
+CREATE INDEX idx_editors_active ON editors(is_active);
+CREATE UNIQUE INDEX idx_editors_email_per_tenant ON editors(tenant_id, email);
+```
+
+#### 25. `bounties`
+Incentive system for rush/quality editing work.
+
+```sql
+CREATE TABLE bounties (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  tenant_id UUID NOT NULL REFERENCES tenants(id),
+  deliverable_id UUID REFERENCES deliverables(id) ON DELETE CASCADE, -- Can be deliverable-wide
+  deliverable_asset_id UUID REFERENCES deliverable_assets(id) ON DELETE CASCADE, -- Or specific asset
+  bounty_type TEXT NOT NULL, -- 'rush' | 'backlog_clear' | 'quality_bonus' | 'weekend_work'
+  bounty_amount DECIMAL(10,2) NOT NULL, -- Dollar value
+  bounty_criteria TEXT NOT NULL, -- Requirements to claim bounty
+  expires_at TIMESTAMPTZ, -- Deadline to complete
+  claimed_by UUID REFERENCES editors(id), -- Editor who accepted
+  claimed_at TIMESTAMPTZ,
+  bounty_status TEXT NOT NULL DEFAULT 'open', -- 'open' | 'claimed' | 'completed' | 'paid' | 'expired'
+  completed_at TIMESTAMPTZ,
+  paid_at TIMESTAMPTZ,
+  notes TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_bounties_tenant ON bounties(tenant_id);
+CREATE INDEX idx_bounties_deliverable ON bounties(deliverable_id);
+CREATE INDEX idx_bounties_asset ON bounties(deliverable_asset_id);
+CREATE INDEX idx_bounties_status ON bounties(bounty_status);
+CREATE INDEX idx_bounties_claimed_by ON bounties(claimed_by);
+```
+
+#### 26. `client_notes`
+Client communication tracking (email integration + manual entry).
+
+```sql
+CREATE TABLE client_notes (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  tenant_id UUID NOT NULL REFERENCES tenants(id),
+  event_id UUID REFERENCES events(id), -- Can be event-specific or general
+  source TEXT NOT NULL DEFAULT 'manual', -- 'email' | 'manual' | 'telegram' | 'phone'
+  subject TEXT,
+  content TEXT NOT NULL,
+  email_from TEXT, -- If source = email
+  email_subject TEXT, -- Original email subject
+  email_received_at TIMESTAMPTZ, -- When email was received
+  priority TEXT DEFAULT 'normal', -- 'low' | 'normal' | 'high' | 'urgent'
+  is_action_required BOOLEAN NOT NULL DEFAULT FALSE,
+  action_status TEXT DEFAULT 'pending', -- 'pending' | 'in_progress' | 'completed' | 'ignored'
+  created_by UUID REFERENCES user_profiles(id), -- Who created manual note
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_client_notes_tenant ON client_notes(tenant_id);
+CREATE INDEX idx_client_notes_event ON client_notes(event_id);
+CREATE INDEX idx_client_notes_source ON client_notes(source);
+CREATE INDEX idx_client_notes_action_required ON client_notes(is_action_required);
+CREATE INDEX idx_client_notes_created_at ON client_notes(created_at DESC);
+```
+
+#### 27. `deliverable_revisions`
+Track revision requests and approval workflow.
+
+```sql
+CREATE TABLE deliverable_revisions (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  tenant_id UUID NOT NULL REFERENCES tenants(id),
+  deliverable_id UUID REFERENCES deliverables(id) ON DELETE CASCADE,
+  deliverable_asset_id UUID REFERENCES deliverable_assets(id) ON DELETE CASCADE,
+  revision_type TEXT NOT NULL, -- 'client_request' | 'internal_qa' | 'technical_fix'
+  requested_by TEXT, -- Client name or "Internal QA"
+  requested_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  revision_notes TEXT NOT NULL,
+  assigned_editor_id UUID REFERENCES editors(id),
+  status TEXT NOT NULL DEFAULT 'pending', -- 'pending' | 'in_progress' | 'completed' | 'rejected'
+  completed_at TIMESTAMPTZ,
+  resolution_notes TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_deliverable_revisions_tenant ON deliverable_revisions(tenant_id);
+CREATE INDEX idx_deliverable_revisions_deliverable ON deliverable_revisions(deliverable_id);
+CREATE INDEX idx_deliverable_revisions_asset ON deliverable_revisions(deliverable_asset_id);
+CREATE INDEX idx_deliverable_revisions_status ON deliverable_revisions(status);
+```
+
+### Workflows
+
+#### 1. Post-Event Deliverable Creation
+
+**Trigger:** Event status changes to 'completed' (all shifts done)
+
+**Auto-create deliverable templates based on event type:**
+```javascript
+// After event completes
+const event = await getEvent(eventId);
+
+// Auto-create standard deliverables
+await createDeliverables([
+  {
+    type: 'full_show',
+    name: 'Full Show Edit',
+    due_date: addDays(event.end_date, 14), // 2 weeks
+    total_assets: 1
+  },
+  {
+    type: 'routine_videos',
+    name: 'Individual Routine Videos',
+    due_date: addDays(event.end_date, 30), // 4 weeks
+    total_assets: event.estimated_routine_count // From event metadata
+  },
+  {
+    type: 'photo_gallery',
+    name: 'Event Photo Gallery',
+    due_date: addDays(event.end_date, 7), // 1 week
+    total_assets: 1
+  }
+]);
+```
+
+#### 2. Asset Upload & Assignment
+
+**Commander uploads captured footage:**
+```
+1. Upload files to storage (Dropbox/S3/Google Drive)
+2. Parse filename metadata: "Solo - Emma Johnson - Titanium.mp4"
+3. Auto-create deliverable_assets entries
+4. Link to parent deliverable (routine_videos)
+5. Suggest editor based on workload balance
+```
+
+**Editor Assignment Logic:**
+```javascript
+// Find editor with lowest current workload
+const editors = await getActiveEditors();
+const workloads = await getEditorWorkloads(editors);
+
+const suggestedEditor = editors.reduce((best, current) => {
+  const currentLoad = workloads[current.id].pending_assets;
+  const bestLoad = workloads[best.id].pending_assets;
+  return currentLoad < bestLoad ? current : best;
+});
+```
+
+#### 3. Editor Progress Tracking
+
+**Editors check off completed assets:**
+```
+1. Editor views assigned assets
+2. Clicks checkbox to mark completed
+3. System updates:
+   - deliverable_assets.completed = true
+   - deliverable_assets.completed_at = NOW()
+   - deliverables.completed_assets += 1
+   - Recalculate deliverables.status based on progress
+```
+
+**Progress % Calculation:**
+```javascript
+const progress = (deliverable.completed_assets / deliverable.total_assets) * 100;
+
+// Auto-update status
+if (progress === 0) deliverable.status = 'not_started';
+else if (progress < 100) deliverable.status = 'in_progress';
+else deliverable.status = 'in_review'; // Ready for QA
+```
+
+#### 4. Bounty System
+
+**Create Rush Bounty:**
+```javascript
+await createBounty({
+  deliverable_id: routineVideosDeliverableId,
+  bounty_type: 'rush',
+  bounty_amount: 750, // $750 total
+  bounty_criteria: '15 routine videos edited by tomorrow 5PM with color grading',
+  expires_at: tomorrow_5pm,
+  bounty_status: 'open'
+});
+
+// Calculate per-asset value
+const perAssetValue = 750 / 15; // $50 per video
+```
+
+**Claim Bounty:**
+```
+1. Editor views open bounties
+2. Clicks "Claim Bounty"
+3. System updates:
+   - bounty.claimed_by = editorId
+   - bounty.claimed_at = NOW()
+   - bounty.bounty_status = 'claimed'
+   - Assign all related assets to editor
+```
+
+**Complete Bounty:**
+```
+1. Editor completes all bounty assets before expiration
+2. System auto-detects completion
+3. bounty.bounty_status = 'completed'
+4. Notify Commander for payment approval
+5. Commander marks bounty.bounty_status = 'paid'
+```
+
+#### 5. Client Note Integration (Email)
+
+**Email Forwarding Setup:**
+```
+1. Setup email forwarding: client@studio.com → notes@commandcentered.com
+2. Webhook receives email (SendGrid/Mailgun)
+3. Parse email headers + body
+4. Extract event reference (subject line keywords, sender email)
+5. Create client_note entry:
+   - source = 'email'
+   - email_from = sender
+   - email_subject = original subject
+   - content = email body (strip HTML)
+   - event_id = matched event (if found)
+   - is_action_required = detect keywords ("URGENT", "ASAP", "CHANGE")
+6. Notify Commander: "New client note from XYZ Studio"
+```
+
+**Manual Note Creation:**
+```
+1. Commander clicks "Add Client Note"
+2. Select event (optional)
+3. Enter subject + content
+4. Mark as action required (checkbox)
+5. Save with source = 'manual'
+```
+
+#### 6. Revision Request Workflow
+
+**Client Requests Revision:**
+```
+1. Client emails: "Please re-edit routine #47, music sync is off"
+2. Email → client_note created with is_action_required = true
+3. Commander creates deliverable_revision:
+   - Links to specific deliverable_asset
+   - revision_type = 'client_request'
+   - revision_notes = "Music sync issue - routine #47"
+   - Assigns to editor
+4. Editor completes revision
+5. Marks deliverable_revision.status = 'completed'
+6. Asset sent back to client for approval
+```
+
+### UI Components
+
+**Main Dashboard Additions:**
+
+1. **Deliverables Overview Card:**
+```
+DELIVERABLES - ACTIVE (12)
+┌─────────────────────────────────────┐
+│ ⚠️ 3 overdue | 🟡 5 due this week   │
+│ ✅ 4 on track                       │
+│ [View All Deliverables]             │
+└─────────────────────────────────────┘
+```
+
+2. **Client Notes Widget:**
+```
+CLIENT NOTES - RECENT (5)
+┌─────────────────────────────────────┐
+│ 📧 Studio X - Urgent music change   │
+│    2 hours ago • Action Required    │
+│ 📧 Dance Co - Approved full show    │
+│    Yesterday • No action needed     │
+│ 📝 Phone: Client wants highlight    │
+│    3 days ago • In progress         │
+│ [View All Notes]                    │
+└─────────────────────────────────────┘
+```
+
+3. **Bounties Widget:**
+```
+ACTIVE BOUNTIES (2)
+┌─────────────────────────────────────┐
+│ 🎯 Rush: 15 Routines - $750         │
+│    Due: Tomorrow 5PM • Unclaimed    │
+│    [Claim Bounty]                   │
+│ 🎯 Weekend Work - $200 bonus        │
+│    Claimed by Mike R. • 60% done    │
+└─────────────────────────────────────┘
+```
+
+**Deliverables Detail View:**
+
+See mockup tactical-09-deliverables-dashboard.html (to be created)
+
+### Alert Integration
+
+**New Alert Types:**
+
+```javascript
+// Deliverable approaching due date
+{
+  alert_type: 'deliverable_due_soon',
+  severity: 'caution',
+  message: 'Routine Videos due in 2 days - 38/127 remaining',
+  event_id: eventId,
+  deliverable_id: deliverableId
+}
+
+// Overdue deliverable
+{
+  alert_type: 'deliverable_overdue',
+  severity: 'critical',
+  message: 'Full Show Edit is 3 days overdue',
+  event_id: eventId,
+  deliverable_id: deliverableId
+}
+
+// Bounty expiring
+{
+  alert_type: 'bounty_expiring',
+  severity: 'caution',
+  message: 'Rush bounty expires in 6 hours - unclaimed',
+  bounty_id: bountyId
+}
+
+// Client action required
+{
+  alert_type: 'client_action_required',
+  severity: 'high',
+  message: 'Client note requires response - Studio X',
+  client_note_id: noteId
+}
+```
+
+### Business Rules
+
+1. **Auto-status Updates:**
+   - `completed_assets / total_assets = 0%` → status = 'not_started'
+   - `0% < progress < 100%` → status = 'in_progress'
+   - `progress = 100%` → status = 'in_review' (requires manual 'delivered' confirmation)
+
+2. **Editor Workload Limits:**
+   - Track `max_concurrent_projects` per editor
+   - Prevent over-assignment (alert if limit exceeded)
+   - Suggest editors with capacity when assigning
+
+3. **Bounty Expiration:**
+   - If `expires_at` passes and status = 'open' → status = 'expired'
+   - If `expires_at` passes and status = 'claimed' but not completed → revert to 'open', notify original claimer
+
+4. **Client Note Priorities:**
+   - Email keywords trigger auto-priority:
+     - "URGENT", "ASAP", "EMERGENCY" → priority = 'urgent'
+     - "IMPORTANT", "PLEASE" → priority = 'high'
+     - Default → priority = 'normal'
+
+5. **Revision Tracking:**
+   - Unlimited revisions allowed per asset
+   - Track revision count per asset for billing purposes
+   - Alert if single asset has 3+ revision requests (quality issue?)
+
+### Integration Points
+
+**Email → Client Notes:**
+- SendGrid Inbound Parse webhook
+- Mailgun Routes
+- Custom email parser microservice
+
+**Storage Integration:**
+- Dropbox API for file uploads
+- Google Drive API
+- AWS S3 with signed URLs
+- Store `file_path` as full URL or storage key
+
+**Notification Channels:**
+- Email to Commander when client note arrives
+- Telegram message when bounty claimed
+- Dashboard alert for overdue deliverables
+
+---
+
 ## 🚀 Next Steps
 
 1. ✅ Spec v2.2 finalized and locked
 2. ✅ UX specification created (Commander-centric dashboard)
-3. 🔜 Begin Phase 1 implementation
+3. ✅ Deliverables & Post-Production spec added (v2.4)
+4. 🔜 Begin Phase 1 implementation
 5. 🔜 Initialize Next.js 14 project
 6. 🔜 Create Supabase project
-7. 🔜 Implement Prisma schema (17 tables + v2.2 fields)
+7. 🔜 Implement Prisma schema (27 tables + all v2.x fields)
 8. 🔜 Setup authentication
 9. 🔜 Write first tests
 
@@ -919,4 +1395,4 @@ CREATE INDEX alerts_level_idx ON alerts(level, created_at);
 
 ---
 
-**Spec v2.2 locked. Ready to build. 🎬**
+**Spec v2.4 locked. Ready to build. 🎬**
