@@ -128,6 +128,14 @@
             text-shadow: 0 0 20px #00ff9d;
         }
 
+        .weekend-subtitle {
+            font-size: 12px;
+            color: #00ff9d;
+            opacity: 0.7;
+            margin-top: 4px;
+            letter-spacing: 1px;
+        }
+
         .weekend-nav {
             display: flex;
             gap: 12px;
@@ -208,7 +216,7 @@
 
         .timeline-grid {
             display: grid;
-            grid-template-columns: 200px repeat(48, 60px); /* 200px for labels, 48 half-hour slots */
+            grid-template-columns: 180px repeat(72, 40px); /* 180px for labels, 72 half-hour slots (3 days) */
             min-width: max-content;
         }
 
@@ -216,18 +224,18 @@
         .day-header {
             grid-column: 2 / -1;
             display: grid;
-            grid-template-columns: repeat(48, 60px);
+            grid-template-columns: repeat(72, 40px);
             border-bottom: 2px solid #00ff9d;
         }
 
         .day-label {
             grid-column: span 24;
-            padding: 12px;
+            padding: 10px 4px;
             text-align: center;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
             background: rgba(0, 255, 157, 0.1);
             border-right: 1px solid #00ff9d;
         }
@@ -240,14 +248,14 @@
         .time-header {
             grid-column: 2 / -1;
             display: grid;
-            grid-template-columns: repeat(48, 60px);
+            grid-template-columns: repeat(72, 40px);
             border-bottom: 1px solid rgba(0, 255, 157, 0.3);
         }
 
         .time-slot {
-            padding: 8px 4px;
+            padding: 6px 2px;
             text-align: center;
-            font-size: 10px;
+            font-size: 9px;
             border-right: 1px solid rgba(0, 255, 157, 0.1);
             color: #00ff9d;
             opacity: 0.6;
@@ -256,15 +264,16 @@
         .time-slot.hour {
             border-right: 1px solid rgba(0, 255, 157, 0.3);
             opacity: 1;
+            font-weight: 600;
         }
 
         /* Row Labels */
         .row-label {
-            padding: 12px;
-            font-size: 13px;
+            padding: 10px 8px;
+            font-size: 11px;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
             border-right: 2px solid #00ff9d;
             border-bottom: 1px solid rgba(0, 255, 157, 0.2);
             display: flex;
@@ -276,22 +285,22 @@
         .event-row {
             grid-column: 2 / -1;
             display: grid;
-            grid-template-columns: repeat(48, 60px);
+            grid-template-columns: repeat(72, 40px);
             border-bottom: 1px solid rgba(0, 255, 157, 0.2);
             position: relative;
-            min-height: 60px;
+            min-height: 50px;
         }
 
         /* Event Blocks */
         .event-block {
             position: absolute;
-            height: 50px;
-            top: 5px;
+            height: 42px;
+            top: 4px;
             background: rgba(0, 150, 255, 0.3);
             border: 2px solid #0096ff;
             border-left: 4px solid #0096ff;
-            clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
-            padding: 8px 12px;
+            clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+            padding: 6px 8px;
             cursor: pointer;
             transition: all 0.2s;
             box-shadow: 0 0 10px rgba(0, 150, 255, 0.4);
@@ -310,7 +319,7 @@
         }
 
         .event-name {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
             color: #00ff9d;
             white-space: nowrap;
@@ -319,7 +328,7 @@
         }
 
         .event-time {
-            font-size: 10px;
+            font-size: 9px;
             color: #00ff9d;
             opacity: 0.7;
         }
@@ -328,26 +337,26 @@
         .assignment-row {
             grid-column: 2 / -1;
             display: grid;
-            grid-template-columns: repeat(48, 60px);
+            grid-template-columns: repeat(72, 40px);
             border-bottom: 1px solid rgba(0, 255, 157, 0.1);
             position: relative;
-            min-height: 40px;
+            min-height: 34px;
         }
 
         .assignment-block {
             position: absolute;
-            height: 30px;
-            top: 5px;
+            height: 26px;
+            top: 4px;
             background: rgba(0, 255, 157, 0.2);
             border: 1px solid #00ff9d;
-            padding: 4px 8px;
-            font-size: 11px;
+            padding: 3px 6px;
+            font-size: 10px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 3px;
             white-space: nowrap;
             overflow: hidden;
         }
@@ -355,6 +364,7 @@
         .assignment-block:hover {
             background: rgba(0, 255, 157, 0.3);
             box-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
+            z-index: 10;
         }
 
         .assignment-block.travel {
@@ -364,7 +374,7 @@
         }
 
         .assignment-icon {
-            font-size: 10px;
+            font-size: 9px;
         }
 
         /* Legend */
@@ -454,7 +464,10 @@
 
         <!-- Weekend Header -->
         <div class="weekend-header">
-            <div class="weekend-title">// JUNE 13-14, 2025</div>
+            <div>
+                <div class="weekend-title">// JUNE 13-15, 2025</div>
+                <div class="weekend-subtitle">FRI • SAT • SUN</div>
+            </div>
             <div class="weekend-nav">
                 <button class="nav-btn">← PREV WEEKEND</button>
                 <button class="nav-btn">TODAY</button>
@@ -495,174 +508,216 @@
                 <!-- Day Headers -->
                 <div></div>
                 <div class="day-header">
-                    <div class="day-label">FRIDAY, JUNE 13</div>
-                    <div class="day-label">SATURDAY, JUNE 14</div>
+                    <div class="day-label">FRI 6/13</div>
+                    <div class="day-label">SAT 6/14</div>
+                    <div class="day-label">SUN 6/15</div>
                 </div>
 
                 <!-- Time Headers -->
                 <div></div>
                 <div class="time-header">
-                    <!-- Friday times (6am - 11:59pm) -->
+                    <!-- Friday times -->
                     <div class="time-slot hour">6A</div>
-                    <div class="time-slot">6:30</div>
+                    <div class="time-slot">:30</div>
                     <div class="time-slot hour">7A</div>
-                    <div class="time-slot">7:30</div>
+                    <div class="time-slot">:30</div>
                     <div class="time-slot hour">8A</div>
-                    <div class="time-slot">8:30</div>
+                    <div class="time-slot">:30</div>
                     <div class="time-slot hour">9A</div>
-                    <div class="time-slot">9:30</div>
+                    <div class="time-slot">:30</div>
                     <div class="time-slot hour">10A</div>
-                    <div class="time-slot">10:30</div>
+                    <div class="time-slot">:30</div>
                     <div class="time-slot hour">11A</div>
-                    <div class="time-slot">11:30</div>
+                    <div class="time-slot">:30</div>
                     <div class="time-slot hour">12P</div>
-                    <div class="time-slot">12:30</div>
+                    <div class="time-slot">:30</div>
                     <div class="time-slot hour">1P</div>
-                    <div class="time-slot">1:30</div>
+                    <div class="time-slot">:30</div>
                     <div class="time-slot hour">2P</div>
-                    <div class="time-slot">2:30</div>
+                    <div class="time-slot">:30</div>
                     <div class="time-slot hour">3P</div>
-                    <div class="time-slot">3:30</div>
+                    <div class="time-slot">:30</div>
                     <div class="time-slot hour">4P</div>
-                    <div class="time-slot">4:30</div>
+                    <div class="time-slot">:30</div>
                     <div class="time-slot hour">5P</div>
-                    <div class="time-slot">5:30</div>
+                    <div class="time-slot">:30</div>
                     <!-- Saturday times -->
                     <div class="time-slot hour">6A</div>
-                    <div class="time-slot">6:30</div>
+                    <div class="time-slot">:30</div>
                     <div class="time-slot hour">7A</div>
-                    <div class="time-slot">7:30</div>
+                    <div class="time-slot">:30</div>
                     <div class="time-slot hour">8A</div>
-                    <div class="time-slot">8:30</div>
+                    <div class="time-slot">:30</div>
                     <div class="time-slot hour">9A</div>
-                    <div class="time-slot">9:30</div>
+                    <div class="time-slot">:30</div>
                     <div class="time-slot hour">10A</div>
-                    <div class="time-slot">10:30</div>
+                    <div class="time-slot">:30</div>
                     <div class="time-slot hour">11A</div>
-                    <div class="time-slot">11:30</div>
+                    <div class="time-slot">:30</div>
                     <div class="time-slot hour">12P</div>
-                    <div class="time-slot">12:30</div>
+                    <div class="time-slot">:30</div>
                     <div class="time-slot hour">1P</div>
-                    <div class="time-slot">1:30</div>
+                    <div class="time-slot">:30</div>
                     <div class="time-slot hour">2P</div>
-                    <div class="time-slot">2:30</div>
+                    <div class="time-slot">:30</div>
                     <div class="time-slot hour">3P</div>
-                    <div class="time-slot">3:30</div>
+                    <div class="time-slot">:30</div>
                     <div class="time-slot hour">4P</div>
-                    <div class="time-slot">4:30</div>
+                    <div class="time-slot">:30</div>
                     <div class="time-slot hour">5P</div>
-                    <div class="time-slot">5:30</div>
+                    <div class="time-slot">:30</div>
+                    <!-- Sunday times -->
+                    <div class="time-slot hour">6A</div>
+                    <div class="time-slot">:30</div>
+                    <div class="time-slot hour">7A</div>
+                    <div class="time-slot">:30</div>
+                    <div class="time-slot hour">8A</div>
+                    <div class="time-slot">:30</div>
+                    <div class="time-slot hour">9A</div>
+                    <div class="time-slot">:30</div>
+                    <div class="time-slot hour">10A</div>
+                    <div class="time-slot">:30</div>
+                    <div class="time-slot hour">11A</div>
+                    <div class="time-slot">:30</div>
+                    <div class="time-slot hour">12P</div>
+                    <div class="time-slot">:30</div>
+                    <div class="time-slot hour">1P</div>
+                    <div class="time-slot">:30</div>
+                    <div class="time-slot hour">2P</div>
+                    <div class="time-slot">:30</div>
+                    <div class="time-slot hour">3P</div>
+                    <div class="time-slot">:30</div>
+                    <div class="time-slot hour">4P</div>
+                    <div class="time-slot">:30</div>
+                    <div class="time-slot hour">5P</div>
+                    <div class="time-slot">:30</div>
                 </div>
 
                 <!-- EVENTS SECTION -->
                 <div class="row-label">📅 EVENTS</div>
                 <div class="event-row">
                     <!-- Kinetic Elements (Fri 7:30pm = slot 27) -->
-                    <div class="event-block" style="left: calc(27 * 60px); width: calc(5 * 60px);">
-                        <div class="event-name">Kinetic Elements</div>
-                        <div class="event-time">7:30PM - 10:00PM</div>
+                    <div class="event-block" style="left: calc(27 * 40px); width: calc(5 * 40px);">
+                        <div class="event-name">Kinetic</div>
+                        <div class="event-time">7:30P-10P</div>
                     </div>
 
-                    <!-- 7Attitudes (Sat) - overlaps with GRAD (CONFLICT) -->
-                    <div class="event-block conflict" style="left: calc(34 * 60px); width: calc(10 * 60px);">
-                        <div class="event-name">7Attitudes <span class="conflict-badge">⚠ CONFLICT</span></div>
-                        <div class="event-time">10:00AM - 5:00PM</div>
+                    <!-- 7Attitudes (Sat 10am = slot 32) -->
+                    <div class="event-block" style="left: calc(32 * 40px); width: calc(14 * 40px);">
+                        <div class="event-name">7Attitudes</div>
+                        <div class="event-time">10A-5P</div>
+                    </div>
+
+                    <!-- Alt Vox (Sat 7:30pm = slot 51) -->
+                    <div class="event-block" style="left: calc(51 * 40px); width: calc(5 * 40px);">
+                        <div class="event-name">Alt Vox</div>
+                        <div class="event-time">7:30P-10P</div>
                     </div>
                 </div>
 
                 <div class="row-label"></div>
                 <div class="event-row">
-                    <!-- GRAD Recital (Sat 9am) -->
-                    <div class="event-block" style="left: calc(30 * 60px); width: calc(8 * 60px);">
-                        <div class="event-name">GRAD Recital</div>
-                        <div class="event-time">9:00AM - 1:00PM</div>
+                    <!-- GRAD Recital (Sat 9am = slot 30) -->
+                    <div class="event-block conflict" style="left: calc(30 * 40px); width: calc(8 * 40px);">
+                        <div class="event-name">GRAD <span class="conflict-badge">⚠</span></div>
+                        <div class="event-time">9A-1P</div>
                     </div>
 
-                    <!-- LDS 2 Shows (Sat 2pm) -->
-                    <div class="event-block" style="left: calc(40 * 60px); width: calc(6 * 60px);">
-                        <div class="event-name">LDS 2 Shows</div>
-                        <div class="event-time">2:00PM - 5:00PM</div>
+                    <!-- LDS 2 Shows (Sat 2pm = slot 40) -->
+                    <div class="event-block" style="left: calc(40 * 40px); width: calc(6 * 40px);">
+                        <div class="event-name">LDS Shows</div>
+                        <div class="event-time">2P-5P</div>
                     </div>
                 </div>
 
                 <!-- OPERATORS SECTION -->
-                <div class="row-label">👤 JAKE M. (Video Lead)</div>
+                <div class="row-label">👤 JAKE M.</div>
                 <div class="assignment-row">
-                    <!-- Kinetic Elements -->
-                    <div class="assignment-block" style="left: calc(27 * 60px); width: calc(5 * 60px); background: rgba(0, 150, 255, 0.3); border-color: #0096ff;">
+                    <!-- Kinetic -->
+                    <div class="assignment-block" style="left: calc(27 * 40px); width: calc(5 * 40px); background: rgba(0, 150, 255, 0.3); border-color: #0096ff;">
                         <span class="assignment-icon">🎥</span>
                         <span>Kinetic</span>
                     </div>
 
-                    <!-- Travel time -->
-                    <div class="assignment-block travel" style="left: calc(32 * 60px); width: calc(2 * 60px);">
+                    <!-- Travel -->
+                    <div class="assignment-block travel" style="left: calc(32 * 40px); width: calc(1.5 * 40px);">
                         <span class="assignment-icon">🚗</span>
-                        <span>Travel (47min)</span>
                     </div>
 
-                    <!-- GRAD Recital (CONFLICT - arrives late) -->
-                    <div class="assignment-block conflict" style="left: calc(34 * 60px); width: calc(4 * 60px); background: rgba(255, 0, 64, 0.3); border-color: #ff0040;">
+                    <!-- GRAD (CONFLICT) -->
+                    <div class="assignment-block conflict" style="left: calc(33.5 * 40px); width: calc(4.5 * 40px); background: rgba(255, 0, 64, 0.3); border-color: #ff0040;">
                         <span class="assignment-icon">🎥</span>
-                        <span>GRAD ⚠</span>
+                        <span>GRAD⚠</span>
+                    </div>
+
+                    <!-- Alt Vox -->
+                    <div class="assignment-block" style="left: calc(51 * 40px); width: calc(5 * 40px); background: rgba(0, 150, 255, 0.3); border-color: #0096ff;">
+                        <span class="assignment-icon">🎥</span>
+                        <span>Alt Vox</span>
                     </div>
                 </div>
 
-                <div class="row-label">👤 SARAH K. (Photo)</div>
+                <div class="row-label">👤 SARAH K.</div>
                 <div class="assignment-row">
                     <!-- 7Attitudes -->
-                    <div class="assignment-block" style="left: calc(34 * 60px); width: calc(10 * 60px); background: rgba(150, 0, 255, 0.3); border-color: #9600ff;">
+                    <div class="assignment-block" style="left: calc(32 * 40px); width: calc(14 * 40px); background: rgba(150, 0, 255, 0.3); border-color: #9600ff;">
                         <span class="assignment-icon">📷</span>
                         <span>7Attitudes</span>
                     </div>
                 </div>
 
-                <div class="row-label">👤 MIKE R. (Video)</div>
+                <div class="row-label">👤 MIKE R.</div>
                 <div class="assignment-row">
-                    <!-- GRAD Recital -->
-                    <div class="assignment-block" style="left: calc(30 * 60px); width: calc(8 * 60px); background: rgba(0, 150, 255, 0.3); border-color: #0096ff;">
+                    <!-- GRAD -->
+                    <div class="assignment-block" style="left: calc(30 * 40px); width: calc(8 * 40px); background: rgba(0, 150, 255, 0.3); border-color: #0096ff;">
                         <span class="assignment-icon">🎥</span>
-                        <span>GRAD Recital</span>
+                        <span>GRAD</span>
                     </div>
 
-                    <!-- LDS 2 Shows -->
-                    <div class="assignment-block" style="left: calc(40 * 60px); width: calc(6 * 60px); background: rgba(0, 150, 255, 0.3); border-color: #0096ff;">
+                    <!-- LDS -->
+                    <div class="assignment-block" style="left: calc(40 * 40px); width: calc(6 * 40px); background: rgba(0, 150, 255, 0.3); border-color: #0096ff;">
                         <span class="assignment-icon">🎥</span>
-                        <span>LDS Shows</span>
+                        <span>LDS</span>
                     </div>
                 </div>
 
                 <!-- GEAR SECTION -->
-                <div class="row-label">📦 SONY A7S III</div>
+                <div class="row-label">📦 A7S III</div>
                 <div class="assignment-row">
-                    <!-- Kinetic Elements -->
-                    <div class="assignment-block" style="left: calc(27 * 60px); width: calc(5 * 60px); background: rgba(150, 0, 255, 0.3); border-color: #9600ff;">
-                        <span>Kinetic (Jake)</span>
+                    <!-- Kinetic -->
+                    <div class="assignment-block" style="left: calc(27 * 40px); width: calc(5 * 40px); background: rgba(150, 0, 255, 0.3); border-color: #9600ff;">
+                        <span>Kinetic</span>
                     </div>
 
-                    <!-- GRAD Recital (CONFLICT - can't be in 2 places) -->
-                    <div class="assignment-block conflict" style="left: calc(30 * 60px); width: calc(8 * 60px); background: rgba(255, 0, 64, 0.3); border-color: #ff0040;">
-                        <span>GRAD ⚠ OVERLAP</span>
+                    <!-- GRAD (CONFLICT) -->
+                    <div class="assignment-block conflict" style="left: calc(30 * 40px); width: calc(8 * 40px); background: rgba(255, 0, 64, 0.3); border-color: #ff0040;">
+                        <span>GRAD⚠</span>
+                    </div>
+
+                    <!-- Alt Vox -->
+                    <div class="assignment-block" style="left: calc(51 * 40px); width: calc(5 * 40px); background: rgba(150, 0, 255, 0.3); border-color: #9600ff;">
+                        <span>Alt Vox</span>
                     </div>
                 </div>
 
                 <div class="row-label">📦 CANON R5</div>
                 <div class="assignment-row">
                     <!-- 7Attitudes -->
-                    <div class="assignment-block" style="left: calc(34 * 60px); width: calc(10 * 60px); background: rgba(150, 0, 255, 0.3); border-color: #9600ff;">
-                        <span>7Attitudes (Sarah)</span>
+                    <div class="assignment-block" style="left: calc(32 * 40px); width: calc(14 * 40px); background: rgba(150, 0, 255, 0.3); border-color: #9600ff;">
+                        <span>7Attitudes</span>
                     </div>
                 </div>
 
-                <div class="row-label">📦 RONIN RS3</div>
+                <div class="row-label">📦 RONIN</div>
                 <div class="assignment-row">
-                    <!-- GRAD Recital -->
-                    <div class="assignment-block" style="left: calc(30 * 60px); width: calc(8 * 60px); background: rgba(150, 0, 255, 0.3); border-color: #9600ff;">
-                        <span>GRAD (Mike)</span>
+                    <!-- GRAD -->
+                    <div class="assignment-block" style="left: calc(30 * 40px); width: calc(8 * 40px); background: rgba(150, 0, 255, 0.3); border-color: #9600ff;">
+                        <span>GRAD</span>
                     </div>
 
-                    <!-- LDS 2 Shows -->
-                    <div class="assignment-block" style="left: calc(40 * 60px); width: calc(6 * 60px); background: rgba(150, 0, 255, 0.3); border-color: #9600ff;">
-                        <span>LDS (Mike)</span>
+                    <!-- LDS -->
+                    <div class="assignment-block" style="left: calc(40 * 40px); width: calc(6 * 40px); background: rgba(150, 0, 255, 0.3); border-color: #9600ff;">
+                        <span>LDS</span>
                     </div>
                 </div>
 
