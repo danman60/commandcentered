@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CommandCentered - Weekend Timeline (Tactical HUD)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rajdhani', monospace;
+            background: #000;
+            color: #00ff9d;
+            overflow-x: hidden;
+        }
+
+        /* Animated Grid Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(0, 255, 157, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 157, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* Corner Frames */
+        .corner-frame {
+            position: fixed;
+            pointer-events: none;
+            z-index: 999;
+        }
+        .corner-frame.tl { top: 0; left: 0; width: 80px; height: 80px; border-top: 3px solid #00ff9d; border-left: 3px solid #00ff9d; box-shadow: 0 0 15px rgba(0,255,157,0.5); }
+        .corner-frame.tr { top: 0; right: 0; width: 80px; height: 80px; border-top: 3px solid #00ff9d; border-right: 3px solid #00ff9d; box-shadow: 0 0 15px rgba(0,255,157,0.5); }
+        .corner-frame.bl { bottom: 0; left: 0; width: 80px; height: 80px; border-bottom: 3px solid #00ff9d; border-left: 3px solid #00ff9d; box-shadow: 0 0 15px rgba(0,255,157,0.5); }
+        .corner-frame.br { bottom: 0; right: 0; width: 80px; height: 80px; border-bottom: 3px solid #00ff9d; border-right: 3px solid #00ff9d; box-shadow: 0 0 15px rgba(0,255,157,0.5); }
+
+        /* Top HUD Bar */
+        .top-hud {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: linear-gradient(135deg, #0a1a1a 0%, #000 100%);
+            border-bottom: 2px solid #00ff9d;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            z-index: 100;
+            box-shadow: 0 0 30px rgba(0, 255, 157, 0.3);
+        }
+
+        .logo {
+            font-family: 'Orbitron', monospace;
+            font-size: 20px;
+            font-weight: 700;
+            color: #00ff9d;
+            letter-spacing: 3px;
+            text-shadow: 0 0 20px #00ff9d;
+        }
+
+        .hud-nav {
+            display: flex;
+            gap: 32px;
+        }
+
+        .hud-nav a {
+            color: #00ff9d;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 8px 16px;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .hud-nav a:hover,
+        .hud-nav a.active {
+            border: 1px solid #00ff9d;
+            box-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
+            background: rgba(0, 255, 157, 0.05);
+        }
+
+        /* Main Container */
+        .main-container {
+            margin-top: 70px;
+            padding: 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Weekend Header */
+        .weekend-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .weekend-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 24px;
+            font-weight: 700;
+            color: #00ff9d;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 20px #00ff9d;
+        }
+
+        .weekend-nav {
+            display: flex;
+            gap: 12px;
+        }
+
+        .nav-btn {
+            background: rgba(0, 255, 157, 0.2);
+            border: 2px solid #00ff9d;
+            color: #00ff9d;
+            padding: 8px 20px;
+            font-family: 'Rajdhani', monospace;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            cursor: pointer;
+            clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+            transition: all 0.2s;
+        }
+
+        .nav-btn:hover {
+            background: rgba(0, 255, 157, 0.3);
+            box-shadow: 0 0 20px rgba(0, 255, 157, 0.6);
+        }
+
+        /* Stats Panel */
+        .stats-panel {
+            background: rgba(0, 20, 15, 0.8);
+            border: 2px solid #00ff9d;
+            padding: 16px;
+            margin-bottom: 24px;
+            clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
+            box-shadow: 0 0 15px rgba(0, 255, 157, 0.3);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 24px;
+            text-align: center;
+        }
+
+        .stat-item {
+            border-right: 1px solid rgba(0, 255, 157, 0.3);
+        }
+
+        .stat-item:last-child {
+            border-right: none;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #00ff9d;
+            font-family: 'Orbitron', monospace;
+            text-shadow: 0 0 10px #00ff9d;
+        }
+
+        .stat-value.red { color: #ff0040; text-shadow: 0 0 10px #ff0040; }
+        .stat-value.yellow { color: #ffd700; text-shadow: 0 0 10px #ffd700; }
+
+        .stat-label {
+            font-size: 11px;
+            color: #00ff9d;
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 4px;
+        }
+
+        /* Timeline Grid */
+        .timeline-container {
+            background: rgba(0, 20, 15, 0.8);
+            border: 2px solid #00ff9d;
+            clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px);
+            box-shadow: 0 0 15px rgba(0, 255, 157, 0.3);
+            overflow-x: auto;
+        }
+
+        .timeline-grid {
+            display: grid;
+            grid-template-columns: 200px repeat(48, 60px); /* 200px for labels, 48 half-hour slots */
+            min-width: max-content;
+        }
+
+        /* Day Headers */
+        .day-header {
+            grid-column: 2 / -1;
+            display: grid;
+            grid-template-columns: repeat(48, 60px);
+            border-bottom: 2px solid #00ff9d;
+        }
+
+        .day-label {
+            grid-column: span 24;
+            padding: 12px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: rgba(0, 255, 157, 0.1);
+            border-right: 1px solid #00ff9d;
+        }
+
+        .day-label:last-child {
+            border-right: none;
+        }
+
+        /* Time Headers */
+        .time-header {
+            grid-column: 2 / -1;
+            display: grid;
+            grid-template-columns: repeat(48, 60px);
+            border-bottom: 1px solid rgba(0, 255, 157, 0.3);
+        }
+
+        .time-slot {
+            padding: 8px 4px;
+            text-align: center;
+            font-size: 10px;
+            border-right: 1px solid rgba(0, 255, 157, 0.1);
+            color: #00ff9d;
+            opacity: 0.6;
+        }
+
+        .time-slot.hour {
+            border-right: 1px solid rgba(0, 255, 157, 0.3);
+            opacity: 1;
+        }
+
+        /* Row Labels */
+        .row-label {
+            padding: 12px;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-right: 2px solid #00ff9d;
+            border-bottom: 1px solid rgba(0, 255, 157, 0.2);
+            display: flex;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        /* Event Row */
+        .event-row {
+            grid-column: 2 / -1;
+            display: grid;
+            grid-template-columns: repeat(48, 60px);
+            border-bottom: 1px solid rgba(0, 255, 157, 0.2);
+            position: relative;
+            min-height: 60px;
+        }
+
+        /* Event Blocks */
+        .event-block {
+            position: absolute;
+            height: 50px;
+            top: 5px;
+            background: rgba(0, 150, 255, 0.3);
+            border: 2px solid #0096ff;
+            border-left: 4px solid #0096ff;
+            clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 0 10px rgba(0, 150, 255, 0.4);
+        }
+
+        .event-block:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(0, 150, 255, 0.6);
+        }
+
+        .event-block.conflict {
+            background: rgba(255, 0, 64, 0.3);
+            border-color: #ff0040;
+            border-left-color: #ff0040;
+            box-shadow: 0 0 10px rgba(255, 0, 64, 0.4);
+        }
+
+        .event-name {
+            font-size: 12px;
+            font-weight: 700;
+            color: #00ff9d;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .event-time {
+            font-size: 10px;
+            color: #00ff9d;
+            opacity: 0.7;
+        }
+
+        /* Operator/Gear Assignments */
+        .assignment-row {
+            grid-column: 2 / -1;
+            display: grid;
+            grid-template-columns: repeat(48, 60px);
+            border-bottom: 1px solid rgba(0, 255, 157, 0.1);
+            position: relative;
+            min-height: 40px;
+        }
+
+        .assignment-block {
+            position: absolute;
+            height: 30px;
+            top: 5px;
+            background: rgba(0, 255, 157, 0.2);
+            border: 1px solid #00ff9d;
+            padding: 4px 8px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .assignment-block:hover {
+            background: rgba(0, 255, 157, 0.3);
+            box-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
+        }
+
+        .assignment-block.travel {
+            background: rgba(255, 215, 0, 0.2);
+            border-color: #ffd700;
+            border-style: dashed;
+        }
+
+        .assignment-icon {
+            font-size: 10px;
+        }
+
+        /* Legend */
+        .legend {
+            display: flex;
+            gap: 24px;
+            padding: 16px;
+            background: rgba(0, 0, 0, 0.5);
+            border-top: 1px solid rgba(0, 255, 157, 0.3);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+        }
+
+        .legend-box {
+            width: 20px;
+            height: 12px;
+            border: 2px solid;
+        }
+
+        .legend-box.event {
+            background: rgba(0, 150, 255, 0.3);
+            border-color: #0096ff;
+        }
+
+        .legend-box.operator {
+            background: rgba(0, 255, 157, 0.2);
+            border-color: #00ff9d;
+        }
+
+        .legend-box.gear {
+            background: rgba(150, 0, 255, 0.2);
+            border-color: #9600ff;
+        }
+
+        .legend-box.travel {
+            background: rgba(255, 215, 0, 0.2);
+            border-color: #ffd700;
+            border-style: dashed;
+        }
+
+        .legend-box.conflict {
+            background: rgba(255, 0, 64, 0.3);
+            border-color: #ff0040;
+        }
+
+        /* Conflict Badge */
+        .conflict-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(255, 0, 64, 0.2);
+            border: 1px solid #ff0040;
+            padding: 2px 6px;
+            font-size: 9px;
+            font-weight: 700;
+            clip-path: polygon(4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%, 0 4px);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Corner Frames -->
+    <div class="corner-frame tl"></div>
+    <div class="corner-frame tr"></div>
+    <div class="corner-frame bl"></div>
+    <div class="corner-frame br"></div>
+
+    <!-- Top HUD -->
+    <div class="top-hud">
+        <div class="logo">COMMANDCENTERED</div>
+        <nav class="hud-nav">
+            <a href="#">DASHBOARD</a>
+            <a href="#" class="active">WEEKEND VIEW</a>
+            <a href="#">CALENDAR</a>
+            <a href="#">OPERATORS</a>
+            <a href="#">GEAR</a>
+        </nav>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+
+        <!-- Weekend Header -->
+        <div class="weekend-header">
+            <div class="weekend-title">// JUNE 13-14, 2025</div>
+            <div class="weekend-nav">
+                <button class="nav-btn">← PREV WEEKEND</button>
+                <button class="nav-btn">TODAY</button>
+                <button class="nav-btn">NEXT WEEKEND →</button>
+            </div>
+        </div>
+
+        <!-- Stats Panel -->
+        <div class="stats-panel">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value">3</div>
+                    <div class="stat-label">Events</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">8</div>
+                    <div class="stat-label">Operators</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">24</div>
+                    <div class="stat-label">Gear Items</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value yellow">2</div>
+                    <div class="stat-label">⚠ Conflicts</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">4</div>
+                    <div class="stat-label">Vehicles</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="timeline-container">
+            <div class="timeline-grid">
+
+                <!-- Day Headers -->
+                <div></div>
+                <div class="day-header">
+                    <div class="day-label">FRIDAY, JUNE 13</div>
+                    <div class="day-label">SATURDAY, JUNE 14</div>
+                </div>
+
+                <!-- Time Headers -->
+                <div></div>
+                <div class="time-header">
+                    <!-- Friday times (6am - 11:59pm) -->
+                    <div class="time-slot hour">6A</div>
+                    <div class="time-slot">6:30</div>
+                    <div class="time-slot hour">7A</div>
+                    <div class="time-slot">7:30</div>
+                    <div class="time-slot hour">8A</div>
+                    <div class="time-slot">8:30</div>
+                    <div class="time-slot hour">9A</div>
+                    <div class="time-slot">9:30</div>
+                    <div class="time-slot hour">10A</div>
+                    <div class="time-slot">10:30</div>
+                    <div class="time-slot hour">11A</div>
+                    <div class="time-slot">11:30</div>
+                    <div class="time-slot hour">12P</div>
+                    <div class="time-slot">12:30</div>
+                    <div class="time-slot hour">1P</div>
+                    <div class="time-slot">1:30</div>
+                    <div class="time-slot hour">2P</div>
+                    <div class="time-slot">2:30</div>
+                    <div class="time-slot hour">3P</div>
+                    <div class="time-slot">3:30</div>
+                    <div class="time-slot hour">4P</div>
+                    <div class="time-slot">4:30</div>
+                    <div class="time-slot hour">5P</div>
+                    <div class="time-slot">5:30</div>
+                    <!-- Saturday times -->
+                    <div class="time-slot hour">6A</div>
+                    <div class="time-slot">6:30</div>
+                    <div class="time-slot hour">7A</div>
+                    <div class="time-slot">7:30</div>
+                    <div class="time-slot hour">8A</div>
+                    <div class="time-slot">8:30</div>
+                    <div class="time-slot hour">9A</div>
+                    <div class="time-slot">9:30</div>
+                    <div class="time-slot hour">10A</div>
+                    <div class="time-slot">10:30</div>
+                    <div class="time-slot hour">11A</div>
+                    <div class="time-slot">11:30</div>
+                    <div class="time-slot hour">12P</div>
+                    <div class="time-slot">12:30</div>
+                    <div class="time-slot hour">1P</div>
+                    <div class="time-slot">1:30</div>
+                    <div class="time-slot hour">2P</div>
+                    <div class="time-slot">2:30</div>
+                    <div class="time-slot hour">3P</div>
+                    <div class="time-slot">3:30</div>
+                    <div class="time-slot hour">4P</div>
+                    <div class="time-slot">4:30</div>
+                    <div class="time-slot hour">5P</div>
+                    <div class="time-slot">5:30</div>
+                </div>
+
+                <!-- EVENTS SECTION -->
+                <div class="row-label">📅 EVENTS</div>
+                <div class="event-row">
+                    <!-- Kinetic Elements (Fri 7:30pm = slot 27) -->
+                    <div class="event-block" style="left: calc(27 * 60px); width: calc(5 * 60px);">
+                        <div class="event-name">Kinetic Elements</div>
+                        <div class="event-time">7:30PM - 10:00PM</div>
+                    </div>
+
+                    <!-- 7Attitudes (Sat) - overlaps with GRAD (CONFLICT) -->
+                    <div class="event-block conflict" style="left: calc(34 * 60px); width: calc(10 * 60px);">
+                        <div class="event-name">7Attitudes <span class="conflict-badge">⚠ CONFLICT</span></div>
+                        <div class="event-time">10:00AM - 5:00PM</div>
+                    </div>
+                </div>
+
+                <div class="row-label"></div>
+                <div class="event-row">
+                    <!-- GRAD Recital (Sat 9am) -->
+                    <div class="event-block" style="left: calc(30 * 60px); width: calc(8 * 60px);">
+                        <div class="event-name">GRAD Recital</div>
+                        <div class="event-time">9:00AM - 1:00PM</div>
+                    </div>
+
+                    <!-- LDS 2 Shows (Sat 2pm) -->
+                    <div class="event-block" style="left: calc(40 * 60px); width: calc(6 * 60px);">
+                        <div class="event-name">LDS 2 Shows</div>
+                        <div class="event-time">2:00PM - 5:00PM</div>
+                    </div>
+                </div>
+
+                <!-- OPERATORS SECTION -->
+                <div class="row-label">👤 JAKE M. (Video Lead)</div>
+                <div class="assignment-row">
+                    <!-- Kinetic Elements -->
+                    <div class="assignment-block" style="left: calc(27 * 60px); width: calc(5 * 60px); background: rgba(0, 150, 255, 0.3); border-color: #0096ff;">
+                        <span class="assignment-icon">🎥</span>
+                        <span>Kinetic</span>
+                    </div>
+
+                    <!-- Travel time -->
+                    <div class="assignment-block travel" style="left: calc(32 * 60px); width: calc(2 * 60px);">
+                        <span class="assignment-icon">🚗</span>
+                        <span>Travel (47min)</span>
+                    </div>
+
+                    <!-- GRAD Recital (CONFLICT - arrives late) -->
+                    <div class="assignment-block conflict" style="left: calc(34 * 60px); width: calc(4 * 60px); background: rgba(255, 0, 64, 0.3); border-color: #ff0040;">
+                        <span class="assignment-icon">🎥</span>
+                        <span>GRAD ⚠</span>
+                    </div>
+                </div>
+
+                <div class="row-label">👤 SARAH K. (Photo)</div>
+                <div class="assignment-row">
+                    <!-- 7Attitudes -->
+                    <div class="assignment-block" style="left: calc(34 * 60px); width: calc(10 * 60px); background: rgba(150, 0, 255, 0.3); border-color: #9600ff;">
+                        <span class="assignment-icon">📷</span>
+                        <span>7Attitudes</span>
+                    </div>
+                </div>
+
+                <div class="row-label">👤 MIKE R. (Video)</div>
+                <div class="assignment-row">
+                    <!-- GRAD Recital -->
+                    <div class="assignment-block" style="left: calc(30 * 60px); width: calc(8 * 60px); background: rgba(0, 150, 255, 0.3); border-color: #0096ff;">
+                        <span class="assignment-icon">🎥</span>
+                        <span>GRAD Recital</span>
+                    </div>
+
+                    <!-- LDS 2 Shows -->
+                    <div class="assignment-block" style="left: calc(40 * 60px); width: calc(6 * 60px); background: rgba(0, 150, 255, 0.3); border-color: #0096ff;">
+                        <span class="assignment-icon">🎥</span>
+                        <span>LDS Shows</span>
+                    </div>
+                </div>
+
+                <!-- GEAR SECTION -->
+                <div class="row-label">📦 SONY A7S III</div>
+                <div class="assignment-row">
+                    <!-- Kinetic Elements -->
+                    <div class="assignment-block" style="left: calc(27 * 60px); width: calc(5 * 60px); background: rgba(150, 0, 255, 0.3); border-color: #9600ff;">
+                        <span>Kinetic (Jake)</span>
+                    </div>
+
+                    <!-- GRAD Recital (CONFLICT - can't be in 2 places) -->
+                    <div class="assignment-block conflict" style="left: calc(30 * 60px); width: calc(8 * 60px); background: rgba(255, 0, 64, 0.3); border-color: #ff0040;">
+                        <span>GRAD ⚠ OVERLAP</span>
+                    </div>
+                </div>
+
+                <div class="row-label">📦 CANON R5</div>
+                <div class="assignment-row">
+                    <!-- 7Attitudes -->
+                    <div class="assignment-block" style="left: calc(34 * 60px); width: calc(10 * 60px); background: rgba(150, 0, 255, 0.3); border-color: #9600ff;">
+                        <span>7Attitudes (Sarah)</span>
+                    </div>
+                </div>
+
+                <div class="row-label">📦 RONIN RS3</div>
+                <div class="assignment-row">
+                    <!-- GRAD Recital -->
+                    <div class="assignment-block" style="left: calc(30 * 60px); width: calc(8 * 60px); background: rgba(150, 0, 255, 0.3); border-color: #9600ff;">
+                        <span>GRAD (Mike)</span>
+                    </div>
+
+                    <!-- LDS 2 Shows -->
+                    <div class="assignment-block" style="left: calc(40 * 60px); width: calc(6 * 60px); background: rgba(150, 0, 255, 0.3); border-color: #9600ff;">
+                        <span>LDS (Mike)</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Legend -->
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-box event"></div>
+                    <span>Event</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-box operator"></div>
+                    <span>Operator Assignment</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-box gear"></div>
+                    <span>Gear Assignment</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-box travel"></div>
+                    <span>Travel Time</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-box conflict"></div>
+                    <span>Conflict Detected</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
