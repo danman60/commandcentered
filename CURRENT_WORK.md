@@ -1,17 +1,68 @@
 # CommandCentered - Current Work
 
 **Last Updated:** 2025-11-07
-**Status:** 🎨 UX Design Phase - Weekend Planner Complete (Timeline/Map/Kit&Team)
+**Status:** 🎨 UX Design Phase - Main Dashboard Complete + Deliverables Spec Added
 
 ---
 
 ## Latest Session (2025-11-07)
 
-### ✅ Completed: Weekend Planner (3-Card Interactive View)
+### ✅ Completed: Deliverables Spec + Main Dashboard Redesign
+
+**Goal:** Add post-production tracking to spec + create main dashboard with sidebars
+
+**Latest Deliverables:**
+
+**SPEC_V2_LOCKED.md (v2.4)** - **DELIVERABLES PHASE ADDED**
+   - ✅ 6 new database tables:
+     - `deliverables` - Parent deliverable tracking per event
+     - `deliverable_assets` - Individual items (routines, photos, etc.)
+     - `editors` - Post-production team with workload limits
+     - `bounties` - Incentive system for rush/quality work
+     - `client_notes` - Email integration + manual notes
+     - `deliverable_revisions` - Revision request workflow
+   - ✅ Complete workflows documented:
+     - Auto-create deliverables after event completion
+     - Asset upload & editor assignment logic
+     - Progress tracking with auto-status updates
+     - Bounty creation/claiming/completion
+     - Email → client note integration (SendGrid/Mailgun)
+     - Revision request approval workflow
+   - ✅ Alert integration (4 new alert types)
+   - ✅ Business rules for workload balancing
+   - ✅ UI widget specifications
+   - ✅ Total schema now: 27 tables (up from 21)
+
+**Tactical-09-Main-Dashboard.html** - **COMPLETE DASHBOARD REDESIGN** ⭐
+   - ✅ 3-column layout (220px / 1fr / 280px)
+   - ✅ Left Sidebar - TEAM & GEAR:
+     - 5 Operators with status badges (deployed/available/blackout)
+     - 5 Gear Kits with location tracking
+     - Hover effects and status color coding
+   - ✅ Center Panel - MONTH VIEW:
+     - Calendar grid (7 columns x 5 rows)
+     - Weekend highlighting (purple tint)
+     - Event pills on days with events
+     - Click days to navigate to Day View
+   - ✅ Weekend Cards Section:
+     - 3 weekend cards showing upcoming weekends
+     - Event summary + assignment status
+     - Click to navigate to Weekend View (tactical-08)
+   - ✅ Right Sidebar - DELIVERABLES & ALERTS:
+     - **Alerts Widget (3 items)**: Conflicts, unfilled positions, maintenance
+     - **Deliverables Widget (4 items)**: Progress bars, due dates, overdue warnings
+     - **Client Notes Widget (3 items)**: Email integration preview, action required flags
+     - **Bounties Widget (2 items)**: Rush jobs, weekend bonuses, claim status
+   - ✅ Top HUD Bar:
+     - View switcher: Month / Weekend / Event
+     - Live system time display
+     - Logo + tactical aesthetic
+   - ✅ Tactical HUD aesthetic maintained
+   - ✅ All widgets clickable with navigation placeholders
+
+### ✅ Previous: Weekend Planner (3-Card Interactive View)
 
 **Goal:** Create weekend planner for tracking gear/people/locations across multiple events
-
-**Latest Deliverable:**
 
 **Tactical-08-Weekend-Planner.html** - **3-CARD WEEKEND PLANNER** ⭐
    - ✅ Timeline Card (Left): 3-day schedule with event cards
@@ -233,6 +284,7 @@ animation: gridMove 20s linear infinite;
 ## Files Modified This Session
 
 **New Files:**
+- `mockups/tactical-09-main-dashboard.html` ⭐ **MAIN DASHBOARD** (Month view + sidebars + deliverables)
 - `mockups/tactical-08-weekend-planner.html` ⭐ **3-CARD WEEKEND PLANNER** (Timeline/Map/Kit&Team)
 - `mockups/tactical-07-weekend-gantt.html` ⭐ **WEEKEND TIMELINE** (drag-and-drop, single-page, shift-based)
 - `mockups/tactical-06-weekend-timeline.html` (earlier iteration - 3-day timeline grid)
@@ -246,6 +298,7 @@ animation: gridMove 20s linear infinite;
 - `UXInspo/glow_comp_logo_v5 copy2000px_banner copy2.avif`
 
 **Updated Files:**
+- `SPEC_V2_LOCKED.md` (v2.3 → v2.4: Added Deliverables Phase)
 - This file (CURRENT_WORK.md)
 
 ---
@@ -287,19 +340,26 @@ Military command center meets modern logistics software. Terminal green on black
 
 ## Session Success Metrics
 
-✅ **Created:** 11 new mockup files (8 initial + 3 weekend planning iterations)
+✅ **Created:** 12 new mockup files (8 initial + 4 planning/dashboard iterations)
 ✅ **Established:** Tactical HUD as baseline aesthetic
 ✅ **Documented:** Complete UX pattern library
-✅ **Completed:** 3-card weekend planner with map integration
+✅ **Completed:** Main dashboard + weekend planner + deliverables spec
 ✅ **Committed:** All work saved to git
 ✅ **User Approval:** "the one to beat!"
 
-**Total mockups:** 31 files
-**Spec status:** v2.3 LOCKED
+**Total mockups:** 32 files
+**Spec status:** v2.4 LOCKED (27 tables total)
 **Design status:** Tactical aesthetic APPROVED
 **Interactive prototypes:**
-- Weekend timeline COMPLETE
+- Main dashboard with sidebars COMPLETE
 - Weekend planner (Timeline/Map/Kit&Team) COMPLETE
+- Weekend timeline (drag-and-drop) COMPLETE
+
+**Spec additions:**
+- Deliverables tracking (6 new tables)
+- Email integration design
+- Bounty system specification
+- Revision workflow
 
 ---
 
