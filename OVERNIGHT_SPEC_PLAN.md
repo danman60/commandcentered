@@ -17,13 +17,45 @@
 - Proposal contains pricing, client picks options
 - Proposal confirmation → Project created
 
-### Proposal Builder
-- **CLIENT-FACING:** Clients fill out proposal builders themselves
-- Gets all deliverables they want
-- Current: N8N webhook → HTML email → Manual data entry
-- **NEW TARGET:** CommandCentered endpoint → Auto-create contract
-- Pricing calculated in proposal builder (see RecitalBuilder example)
-- Dance recitals = standardized pricing, other events = custom
+### Proposal Builder **BUILDER** (Meta-Tool) ⭐ CRITICAL PIVOT
+- **ADMIN TOOL:** Drag-and-drop proposal builder creator (like Typeform builder)
+- **YOU CREATE:** Proposal builders for different service types
+- **CLIENT USES:** Pre-built proposal forms you send them
+- Current Pain: Manually coding each proposal in HTML (5 different ones exist)
+- **NEW TARGET:** Visual builder to create proposal forms in minutes
+
+**Pre-Built Templates Needed:**
+1. Dance Recital Media (exists: RecitalBuilderFrontend.html)
+2. Event Videography (exists: MusicSite.html)
+3. Concert Videography (exists: TributeShowConcert.txt)
+4. Dance Promo Videos (exists: DancePromo.html)
+5. Corporate Video Production (exists: CorpVideo.html)
+
+**Builder Elements:**
+- Number inputs (dancer count, guest count, hours)
+- Service toggle cards (video, streaming, photos, etc.)
+- Package tier selection (Bronze/Silver/Gold)
+- Add-on checkboxes
+- Date picker
+- Text fields (venue, special requests)
+- File upload (shot lists, inspiration)
+
+**Pricing Logic Builder:**
+- Tiered by quantity (volume discounts: 0-100 dancers = $X, 101-200 = $Y)
+- Per-unit multiplier (# dancers × $X)
+- Fixed packages ($5000 for Gold package)
+- Conditional pricing (video + photo = 10% discount)
+- Admin sees cost breakdown + margin, client sees final price
+
+**Workflow:**
+1. You build proposal form in CommandCentered (drag-and-drop)
+2. Set pricing logic visually
+3. Preview & publish
+4. Get shareable link: `commandcentered.com/proposals/{slug}`
+5. Send link to client
+6. Client fills proposal → Pricing calculates live
+7. Client submits → You get notification
+8. You review → Accept → Auto-generate contract
 
 ### Contracts & E-Signature
 - **CRITICAL:** Auto-generate contracts from accepted proposals
@@ -88,9 +120,15 @@
 
 ## 🎯 OVERNIGHT TASKS (Multi-Session)
 
-### Session 1: File Analysis & Research
-- [x] Read RecitalBuilderFrontend.html - Analyze proposal structure
-- [ ] Read MusicSite.html - Understand service offerings
+### Session 1: File Analysis & Research ⭐ PROPOSAL BUILDER FOCUS
+- [ ] Read RecitalBuilderFrontend.html - Extract elements, pricing logic, UI patterns
+- [ ] Read MusicSite.html - Event videography structure
+- [ ] Read TributeShowConcert.txt - Concert videography services
+- [ ] Read DancePromo.html - Promo video packages
+- [ ] Read CorpVideo.html - Corporate video offerings
+- [ ] Identify common patterns across all 5 proposal builders
+- [ ] Extract unique elements per template
+- [ ] Document pricing logic variations
 - [ ] Read CRM Data.html - Understand targeting data structure
 - [ ] Continue HoneyBook exploration (contracts, payments, templates)
 - [ ] Document HoneyBook feature parity matrix
@@ -228,33 +266,58 @@
 
 ## 🔍 FILES TO ANALYZE
 
-1. **D:\ClaudeCode\RecitalBuilderFrontend.html**
+### Existing Proposal Builders (Templates to Replicate)
+1. **D:\ClaudeCode\RecitalBuilderFrontend.html** - Dance Recital Media
    - Extract: Proposal structure, pricing logic, service options
    - Note: Client-facing aesthetic to replicate
 
-2. **C:\Users\Danie\OneDrive\Desktop\MusicSite.html**
+2. **C:\Users\Danie\OneDrive\Desktop\MusicSite.html** - Event Videography
    - Extract: Service catalog, pricing tiers
    - Note: Marketing positioning
 
-3. **C:\Users\Danie\Downloads\CRM Data.html**
+3. **C:\Users\Danie\OneDrive\Desktop\TributeShowConcert.txt** - Concert Videography
+   - Extract: Concert-specific services and pricing
+
+4. **C:\Users\Danie\OneDrive\Desktop\DancePromo.html** - Dance Promo Videos
+   - Extract: Promo video packages and pricing
+
+5. **C:\Users\Danie\OneDrive\Desktop\CorpVideo.html** - Corporate Video Production
+   - Extract: Corporate packages and deliverables
+
+### CRM Data
+6. **C:\Users\Danie\Downloads\CRM Data.html**
    - Extract: Organization data structure, targeting fields
    - Note: CRM interface requirements
 
 ---
 
-## 🎨 DESIGN DIRECTION
+## 🎨 DESIGN DIRECTION & BRANDING ⭐ CRITICAL
 
-### Client-Facing (Suite 1)
+### Client-Facing: **StreamStage** Branding
+- **Brand Name:** StreamStage (all client-facing materials)
 - **Aesthetic:** Clean, professional, modern
-- **Reference:** RecitalBuilderFrontend.html design
-- **Colors:** Professional blues, whites, clean typography
-- **No tactical/military theme on client side**
+- **Reference:** RecitalBuilderFrontend.html design (StreamStage branding already in use)
+- **Colors (from RecitalBuilder):**
+  - Primary: `#1a1a1a` (dark)
+  - Secondary: `#2a2a2a`
+  - Accent: `#00bcd4` (cyan)
+  - Recital Pink: `#f06292`
+  - Recital Gold: `#ffd54f`
+- **Typography:** -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif
+- **URLs:**
+  - Proposal builders: `streamstage.com/proposals/{slug}` or `proposals.streamstage.com/{slug}`
+  - Client portal: `streamstage.com/portal` or `portal.streamstage.com`
+  - Contracts: StreamStage branded
+  - Invoices: StreamStage branded
+- **NO tactical/military theme on client side**
 
-### Internal/Logistics (Suite 2)
+### Internal: **CommandCentered** System
+- **Brand Name:** CommandCentered (internal operations system)
 - **Aesthetic:** Tactical HUD, military command center
 - **Reference:** tactical-01-dashboard.html (existing)
 - **Colors:** Neon green (#00ff9d), black, angular shapes
 - **CRM "Targeting" interface uses military nomenclature**
+- **Only YOU see this** - clients never interact with CommandCentered branding
 
 ---
 
