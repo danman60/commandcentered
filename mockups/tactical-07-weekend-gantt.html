@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CommandCentered - Weekend Gantt (No Scroll)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rajdhani', monospace;
+            background: #000;
+            color: #00ff9d;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        /* Animated Grid Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(0, 255, 157, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 157, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* Corner Frames */
+        .corner-frame {
+            position: fixed;
+            pointer-events: none;
+            z-index: 999;
+        }
+        .corner-frame.tl { top: 0; left: 0; width: 60px; height: 60px; border-top: 3px solid #00ff9d; border-left: 3px solid #00ff9d; box-shadow: 0 0 15px rgba(0,255,157,0.5); }
+        .corner-frame.tr { top: 0; right: 0; width: 60px; height: 60px; border-top: 3px solid #00ff9d; border-right: 3px solid #00ff9d; box-shadow: 0 0 15px rgba(0,255,157,0.5); }
+        .corner-frame.bl { bottom: 0; left: 0; width: 60px; height: 60px; border-bottom: 3px solid #00ff9d; border-left: 3px solid #00ff9d; box-shadow: 0 0 15px rgba(0,255,157,0.5); }
+        .corner-frame.br { bottom: 0; right: 0; width: 60px; height: 60px; border-bottom: 3px solid #00ff9d; border-right: 3px solid #00ff9d; box-shadow: 0 0 15px rgba(0,255,157,0.5); }
+
+        /* Top HUD Bar */
+        .top-hud {
+            height: 50px;
+            background: linear-gradient(135deg, #0a1a1a 0%, #000 100%);
+            border-bottom: 2px solid #00ff9d;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            box-shadow: 0 0 30px rgba(0, 255, 157, 0.3);
+        }
+
+        .logo {
+            font-family: 'Orbitron', monospace;
+            font-size: 16px;
+            font-weight: 700;
+            color: #00ff9d;
+            letter-spacing: 2px;
+            text-shadow: 0 0 20px #00ff9d;
+        }
+
+        .weekend-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 18px;
+            font-weight: 700;
+            color: #00ff9d;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 15px #00ff9d;
+        }
+
+        /* Main Layout */
+        .main-container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            height: calc(100vh - 50px);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Left Sidebar - Draggable Resources */
+        .sidebar {
+            background: rgba(0, 20, 15, 0.8);
+            border-right: 2px solid #00ff9d;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-section {
+            border-bottom: 1px solid rgba(0, 255, 157, 0.3);
+            padding: 12px;
+        }
+
+        .sidebar-header {
+            font-size: 11px;
+            font-weight: 700;
+            color: #00ff9d;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid rgba(0, 255, 157, 0.3);
+        }
+
+        .draggable-item {
+            background: rgba(0, 255, 157, 0.15);
+            border: 1px solid #00ff9d;
+            padding: 6px 8px;
+            margin-bottom: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: grab;
+            clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .draggable-item:hover {
+            background: rgba(0, 255, 157, 0.25);
+            box-shadow: 0 0 10px rgba(0, 255, 157, 0.4);
+            transform: translateX(4px);
+        }
+
+        .draggable-item:active {
+            cursor: grabbing;
+        }
+
+        .draggable-icon {
+            font-size: 12px;
+        }
+
+        .item-meta {
+            font-size: 9px;
+            opacity: 0.7;
+            margin-left: auto;
+        }
+
+        /* Right Panel - Event Grid */
+        .event-grid {
+            display: flex;
+            flex-direction: column;
+            padding: 12px;
+            gap: 12px;
+            overflow-y: auto;
+        }
+
+        /* Event Card */
+        .event-card {
+            background: rgba(0, 20, 15, 0.8);
+            border: 2px solid #0096ff;
+            border-left: 6px solid #0096ff;
+            clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
+            box-shadow: 0 0 15px rgba(0, 150, 255, 0.3);
+        }
+
+        .event-card.conflict {
+            border-color: #ff0040;
+            border-left-color: #ff0040;
+            box-shadow: 0 0 15px rgba(255, 0, 64, 0.4);
+        }
+
+        .event-header {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 8px 12px;
+            border-bottom: 1px solid rgba(0, 255, 157, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .event-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: #00ff9d;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .event-date {
+            font-size: 10px;
+            color: #00ff9d;
+            opacity: 0.7;
+        }
+
+        .event-body {
+            padding: 12px;
+        }
+
+        /* Shifts Grid */
+        .shifts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .shift-card {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 255, 157, 0.3);
+            padding: 8px;
+            min-height: 120px;
+        }
+
+        .shift-header {
+            font-size: 11px;
+            font-weight: 700;
+            color: #00ff9d;
+            margin-bottom: 6px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid rgba(0, 255, 157, 0.2);
+        }
+
+        .shift-time {
+            font-size: 9px;
+            opacity: 0.7;
+            margin-bottom: 8px;
+        }
+
+        /* Drop Zones */
+        .drop-zone {
+            min-height: 30px;
+            margin-bottom: 8px;
+            padding: 4px;
+            border: 1px dashed rgba(0, 255, 157, 0.3);
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 2px;
+        }
+
+        .drop-zone.operators {
+            border-color: rgba(0, 150, 255, 0.5);
+        }
+
+        .drop-zone.gear {
+            border-color: rgba(150, 0, 255, 0.5);
+        }
+
+        .drop-zone.drag-over {
+            background: rgba(0, 255, 157, 0.2);
+            border-style: solid;
+            box-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
+        }
+
+        .drop-label {
+            font-size: 9px;
+            color: #00ff9d;
+            opacity: 0.5;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        /* Assigned Items (in drop zones) */
+        .assigned-item {
+            background: rgba(0, 255, 157, 0.2);
+            border: 1px solid #00ff9d;
+            padding: 4px 6px;
+            margin-bottom: 4px;
+            font-size: 10px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .assigned-item:hover {
+            background: rgba(0, 255, 157, 0.3);
+        }
+
+        .assigned-item.operator {
+            background: rgba(0, 150, 255, 0.2);
+            border-color: #0096ff;
+        }
+
+        .assigned-item.gear {
+            background: rgba(150, 0, 255, 0.2);
+            border-color: #9600ff;
+        }
+
+        .remove-btn {
+            margin-left: auto;
+            font-size: 10px;
+            color: #ff0040;
+            cursor: pointer;
+        }
+
+        /* Conflict Badge */
+        .conflict-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(255, 0, 64, 0.3);
+            border: 1px solid #ff0040;
+            padding: 2px 6px;
+            font-size: 9px;
+            font-weight: 700;
+            clip-path: polygon(4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%, 0 4px);
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 255, 157, 0.3);
+            border: 1px solid #00ff9d;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 255, 157, 0.5);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Corner Frames -->
+    <div class="corner-frame tl"></div>
+    <div class="corner-frame tr"></div>
+    <div class="corner-frame bl"></div>
+    <div class="corner-frame br"></div>
+
+    <!-- Top HUD -->
+    <div class="top-hud">
+        <div class="logo">COMMANDCENTERED</div>
+        <div class="weekend-title">// WEEKEND: JUNE 13-15, 2025</div>
+        <div style="font-size: 10px; color: #00ff9d; opacity: 0.7;">DRAG & DROP TO ASSIGN</div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+
+        <!-- Left Sidebar - Resources -->
+        <div class="sidebar">
+
+            <!-- Operators Section -->
+            <div class="sidebar-section">
+                <div class="sidebar-header">👤 OPERATORS</div>
+
+                <div class="draggable-item" draggable="true" data-type="operator" data-id="jake">
+                    <span class="draggable-icon">🎥</span>
+                    <span>Jake M.</span>
+                    <span class="item-meta">$65/hr</span>
+                </div>
+
+                <div class="draggable-item" draggable="true" data-type="operator" data-id="sarah">
+                    <span class="draggable-icon">📷</span>
+                    <span>Sarah K.</span>
+                    <span class="item-meta">$55/hr</span>
+                </div>
+
+                <div class="draggable-item" draggable="true" data-type="operator" data-id="mike">
+                    <span class="draggable-icon">🎥</span>
+                    <span>Mike R.</span>
+                    <span class="item-meta">$50/hr</span>
+                </div>
+
+                <div class="draggable-item" draggable="true" data-type="operator" data-id="amy">
+                    <span class="draggable-icon">🎬</span>
+                    <span>Amy L.</span>
+                    <span class="item-meta">$75/hr</span>
+                </div>
+
+                <div class="draggable-item" draggable="true" data-type="operator" data-id="tyler">
+                    <span class="draggable-icon">🎥</span>
+                    <span>Tyler C.</span>
+                    <span class="item-meta">$50/hr</span>
+                </div>
+            </div>
+
+            <!-- Gear Kits Section -->
+            <div class="sidebar-section">
+                <div class="sidebar-header">📦 GEAR KITS</div>
+
+                <div class="draggable-item" draggable="true" data-type="gear" data-id="video-pro">
+                    <span class="draggable-icon">📦</span>
+                    <span>Video Pro Kit</span>
+                    <span class="item-meta">8 items</span>
+                </div>
+
+                <div class="draggable-item" draggable="true" data-type="gear" data-id="photo-kit">
+                    <span class="draggable-icon">📦</span>
+                    <span>Photo Kit</span>
+                    <span class="item-meta">6 items</span>
+                </div>
+
+                <div class="draggable-item" draggable="true" data-type="gear" data-id="audio-kit">
+                    <span class="draggable-icon">📦</span>
+                    <span>Audio Kit</span>
+                    <span class="item-meta">4 items</span>
+                </div>
+
+                <div class="draggable-item" draggable="true" data-type="gear" data-id="lighting-kit">
+                    <span class="draggable-icon">📦</span>
+                    <span>Lighting Kit</span>
+                    <span class="item-meta">5 items</span>
+                </div>
+
+                <div class="draggable-item" draggable="true" data-type="gear" data-id="gimbal-kit">
+                    <span class="draggable-icon">📦</span>
+                    <span>Gimbal Kit</span>
+                    <span class="item-meta">3 items</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Right Panel - Events -->
+        <div class="event-grid">
+
+            <!-- Event 1: Kinetic Elements (Friday) -->
+            <div class="event-card">
+                <div class="event-header">
+                    <div class="event-name">KINETIC ELEMENTS</div>
+                    <div class="event-date">FRI 6/13 • 7:30PM-10:00PM</div>
+                </div>
+                <div class="event-body">
+                    <div class="shifts-grid">
+
+                        <!-- Shift 1: Load-in -->
+                        <div class="shift-card">
+                            <div class="shift-header">LOAD-IN</div>
+                            <div class="shift-time">7:30PM - 8:00PM</div>
+
+                            <div class="drop-label">Operators:</div>
+                            <div class="drop-zone operators" data-shift="kinetic-loadin" data-zone="operators">
+                                <!-- Empty - ready for drag -->
+                            </div>
+
+                            <div class="drop-label">Gear Kits:</div>
+                            <div class="drop-zone gear" data-shift="kinetic-loadin" data-zone="gear">
+                                <!-- Empty - ready for drag -->
+                            </div>
+                        </div>
+
+                        <!-- Shift 2: Show -->
+                        <div class="shift-card">
+                            <div class="shift-header">SHOW</div>
+                            <div class="shift-time">8:00PM - 10:00PM</div>
+
+                            <div class="drop-label">Operators:</div>
+                            <div class="drop-zone operators" data-shift="kinetic-show" data-zone="operators">
+                                <div class="assigned-item operator">
+                                    <span class="draggable-icon">🎥</span>
+                                    <span>Jake M.</span>
+                                    <span class="remove-btn">×</span>
+                                </div>
+                            </div>
+
+                            <div class="drop-label">Gear Kits:</div>
+                            <div class="drop-zone gear" data-shift="kinetic-show" data-zone="gear">
+                                <div class="assigned-item gear">
+                                    <span class="draggable-icon">📦</span>
+                                    <span>Video Pro Kit</span>
+                                    <span class="remove-btn">×</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Event 2: GRAD Recital (Saturday) - CONFLICT -->
+            <div class="event-card conflict">
+                <div class="event-header">
+                    <div class="event-name">GRAD RECITAL <span class="conflict-badge">⚠ CONFLICT</span></div>
+                    <div class="event-date">SAT 6/14 • 9:00AM-1:00PM</div>
+                </div>
+                <div class="event-body">
+                    <div class="shifts-grid">
+
+                        <!-- Shift 1: Setup -->
+                        <div class="shift-card">
+                            <div class="shift-header">SETUP</div>
+                            <div class="shift-time">9:00AM - 10:00AM</div>
+
+                            <div class="drop-label">Operators:</div>
+                            <div class="drop-zone operators" data-shift="grad-setup" data-zone="operators">
+                                <div class="assigned-item operator">
+                                    <span class="draggable-icon">🎥</span>
+                                    <span>Mike R.</span>
+                                    <span class="remove-btn">×</span>
+                                </div>
+                            </div>
+
+                            <div class="drop-label">Gear Kits:</div>
+                            <div class="drop-zone gear" data-shift="grad-setup" data-zone="gear">
+                                <div class="assigned-item gear">
+                                    <span class="draggable-icon">📦</span>
+                                    <span>Gimbal Kit</span>
+                                    <span class="remove-btn">×</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Shift 2: Show Part 1 -->
+                        <div class="shift-card">
+                            <div class="shift-header">SHOW PART 1</div>
+                            <div class="shift-time">10:00AM - 11:30AM</div>
+
+                            <div class="drop-label">Operators:</div>
+                            <div class="drop-zone operators" data-shift="grad-show1" data-zone="operators">
+                                <div class="assigned-item operator">
+                                    <span class="draggable-icon">🎥</span>
+                                    <span>Mike R.</span>
+                                    <span class="remove-btn">×</span>
+                                </div>
+                                <!-- Jake conflicts here - shows up late -->
+                            </div>
+
+                            <div class="drop-label">Gear Kits:</div>
+                            <div class="drop-zone gear" data-shift="grad-show1" data-zone="gear">
+                                <!-- Empty -->
+                            </div>
+                        </div>
+
+                        <!-- Shift 3: Show Part 2 -->
+                        <div class="shift-card">
+                            <div class="shift-header">SHOW PART 2</div>
+                            <div class="shift-time">11:30AM - 1:00PM</div>
+
+                            <div class="drop-label">Operators:</div>
+                            <div class="drop-zone operators" data-shift="grad-show2" data-zone="operators">
+                                <div class="assigned-item operator">
+                                    <span class="draggable-icon">🎥</span>
+                                    <span>Mike R.</span>
+                                    <span class="remove-btn">×</span>
+                                </div>
+                            </div>
+
+                            <div class="drop-label">Gear Kits:</div>
+                            <div class="drop-zone gear" data-shift="grad-show2" data-zone="gear">
+                                <!-- Empty -->
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Event 3: 7Attitudes (Saturday) -->
+            <div class="event-card">
+                <div class="event-header">
+                    <div class="event-name">7ATTITUDES</div>
+                    <div class="event-date">SAT 6/14 • 10:00AM-5:00PM</div>
+                </div>
+                <div class="event-body">
+                    <div class="shifts-grid">
+
+                        <!-- Shift 1: Morning Session -->
+                        <div class="shift-card">
+                            <div class="shift-header">MORNING SESSION</div>
+                            <div class="shift-time">10:00AM - 1:00PM</div>
+
+                            <div class="drop-label">Operators:</div>
+                            <div class="drop-zone operators" data-shift="7att-morning" data-zone="operators">
+                                <div class="assigned-item operator">
+                                    <span class="draggable-icon">📷</span>
+                                    <span>Sarah K.</span>
+                                    <span class="remove-btn">×</span>
+                                </div>
+                            </div>
+
+                            <div class="drop-label">Gear Kits:</div>
+                            <div class="drop-zone gear" data-shift="7att-morning" data-zone="gear">
+                                <div class="assigned-item gear">
+                                    <span class="draggable-icon">📦</span>
+                                    <span>Photo Kit</span>
+                                    <span class="remove-btn">×</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Shift 2: Afternoon Session -->
+                        <div class="shift-card">
+                            <div class="shift-header">AFTERNOON SESSION</div>
+                            <div class="shift-time">1:00PM - 5:00PM</div>
+
+                            <div class="drop-label">Operators:</div>
+                            <div class="drop-zone operators" data-shift="7att-afternoon" data-zone="operators">
+                                <div class="assigned-item operator">
+                                    <span class="draggable-icon">📷</span>
+                                    <span>Sarah K.</span>
+                                    <span class="remove-btn">×</span>
+                                </div>
+                            </div>
+
+                            <div class="drop-label">Gear Kits:</div>
+                            <div class="drop-zone gear" data-shift="7att-afternoon" data-zone="gear">
+                                <!-- Empty -->
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Event 4: LDS 2 Shows (Saturday) -->
+            <div class="event-card">
+                <div class="event-header">
+                    <div class="event-name">LDS 2 SHOWS</div>
+                    <div class="event-date">SAT 6/14 • 2:00PM-5:00PM</div>
+                </div>
+                <div class="event-body">
+                    <div class="shifts-grid">
+
+                        <!-- Single Shift -->
+                        <div class="shift-card">
+                            <div class="shift-header">BOTH SHOWS</div>
+                            <div class="shift-time">2:00PM - 5:00PM</div>
+
+                            <div class="drop-label">Operators:</div>
+                            <div class="drop-zone operators" data-shift="lds-shows" data-zone="operators">
+                                <!-- Empty - ready for drag -->
+                            </div>
+
+                            <div class="drop-label">Gear Kits:</div>
+                            <div class="drop-zone gear" data-shift="lds-shows" data-zone="gear">
+                                <!-- Empty - ready for drag -->
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        let draggedElement = null;
+
+        // Draggable items from sidebar
+        document.querySelectorAll('.draggable-item').forEach(item => {
+            item.addEventListener('dragstart', (e) => {
+                draggedElement = {
+                    type: item.dataset.type,
+                    id: item.dataset.id,
+                    html: item.innerHTML
+                };
+                e.dataTransfer.effectAllowed = 'copy';
+            });
+        });
+
+        // Drop zones
+        document.querySelectorAll('.drop-zone').forEach(zone => {
+            zone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'copy';
+                zone.classList.add('drag-over');
+            });
+
+            zone.addEventListener('dragleave', () => {
+                zone.classList.remove('drag-over');
+            });
+
+            zone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                zone.classList.remove('drag-over');
+
+                if (!draggedElement) return;
+
+                // Check if zone type matches dragged type
+                const zoneType = zone.dataset.zone;
+                if ((zoneType === 'operators' && draggedElement.type !== 'operator') ||
+                    (zoneType === 'gear' && draggedElement.type !== 'gear')) {
+                    return;
+                }
+
+                // Create assigned item
+                const assignedItem = document.createElement('div');
+                assignedItem.className = `assigned-item ${draggedElement.type}`;
+                assignedItem.innerHTML = draggedElement.html + '<span class="remove-btn">×</span>';
+
+                // Add remove functionality
+                assignedItem.querySelector('.remove-btn').addEventListener('click', () => {
+                    assignedItem.remove();
+                });
+
+                zone.appendChild(assignedItem);
+            });
+        });
+
+        // Remove buttons for existing items
+        document.querySelectorAll('.remove-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.target.closest('.assigned-item').remove();
+            });
+        });
+    </script>
+
+</body>
+</html>
