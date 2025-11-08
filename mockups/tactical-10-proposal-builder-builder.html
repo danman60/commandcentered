@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proposal Builder Builder - CommandCentered</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* CommandCentered Proposal Builder Builder - Tactical HUD Aesthetic */
+
+        :root {
+            --cc-primary: #00ff9d;
+            --cc-bg: #000;
+            --cc-bg-secondary: #0a0a0a;
+            --cc-bg-panel: #0f0f0f;
+            --cc-border: #00ff9d;
+            --cc-border-dim: #003322;
+            --cc-alert: #ff0040;
+            --cc-warning: #ffd700;
+            --cc-info: #0096ff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rajdhani', Arial, sans-serif;
+            background-color: var(--cc-bg);
+            color: var(--cc-primary);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Animated Grid Background */
+        .grid-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(0, 255, 157, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 157, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes gridMove {
+            0% { background-position: 0 0; }
+            100% { background-position: 50px 50px; }
+        }
+
+        /* Corner HUD Frames */
+        .hud-frame {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            border: 2px solid var(--cc-primary);
+            pointer-events: none;
+            z-index: 1000;
+            box-shadow: 0 0 20px rgba(0, 255, 157, 0.3);
+        }
+
+        .hud-frame.top-left {
+            top: 10px;
+            left: 10px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .hud-frame.top-right {
+            top: 10px;
+            right: 10px;
+            border-left: none;
+            border-bottom: none;
+        }
+
+        .hud-frame.bottom-left {
+            bottom: 10px;
+            left: 10px;
+            border-right: none;
+            border-top: none;
+        }
+
+        .hud-frame.bottom-right {
+            bottom: 10px;
+            right: 10px;
+            border-left: none;
+            border-top: none;
+        }
+
+        /* Main Container */
+        .app-container {
+            position: relative;
+            z-index: 1;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top HUD Bar */
+        .top-bar {
+            background: linear-gradient(90deg, rgba(0, 255, 157, 0.1) 0%, rgba(0, 255, 157, 0.05) 100%);
+            border-bottom: 2px solid var(--cc-primary);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .top-bar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 157, 0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { left: -100%; }
+            50% { left: 100%; }
+        }
+
+        .top-bar-left {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            text-shadow: 0 0 20px var(--cc-primary);
+        }
+
+        .mode-badge {
+            padding: 4px 12px;
+            background: var(--cc-bg-panel);
+            border: 1px solid var(--cc-primary);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            clip-path: polygon(4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%, 0 4px);
+        }
+
+        .top-bar-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .action-btn {
+            padding: 8px 16px;
+            background: transparent;
+            border: 1px solid var(--cc-primary);
+            color: var(--cc-primary);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+            text-transform: uppercase;
+        }
+
+        .action-btn:hover {
+            background: rgba(0, 255, 157, 0.1);
+            box-shadow: 0 0 15px rgba(0, 255, 157, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .action-btn.primary {
+            background: var(--cc-primary);
+            color: var(--cc-bg);
+        }
+
+        .action-btn.primary:hover {
+            background: #00cc7d;
+        }
+
+        /* Main Content Area */
+        .content-area {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 280px 1fr 320px;
+            gap: 12px;
+            padding: 12px;
+            overflow: hidden;
+        }
+
+        /* Left Sidebar: Element Palette */
+        .element-palette {
+            background: var(--cc-bg-panel);
+            border: 1px solid var(--cc-border-dim);
+            border-radius: 4px;
+            padding: 16px;
+            overflow-y: auto;
+            clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
+        }
+
+        .palette-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            text-shadow: 0 0 10px var(--cc-primary);
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--cc-border-dim);
+        }
+
+        .palette-category {
+            margin-bottom: 20px;
+        }
+
+        .category-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: rgba(0, 255, 157, 0.6);
+            margin-bottom: 8px;
+        }
+
+        .element-item {
+            background: var(--cc-bg-secondary);
+            border: 1px solid var(--cc-border-dim);
+            padding: 10px 12px;
+            margin-bottom: 6px;
+            cursor: grab;
+            transition: all 0.2s ease;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+        }
+
+        .element-item:hover {
+            border-color: var(--cc-primary);
+            background: rgba(0, 255, 157, 0.05);
+            transform: translateX(4px);
+        }
+
+        .element-item:active {
+            cursor: grabbing;
+        }
+
+        .element-icon {
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        /* Center: Canvas */
+        .canvas-area {
+            background: var(--cc-bg-secondary);
+            border: 2px solid var(--cc-primary);
+            border-radius: 4px;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 0 30px rgba(0, 255, 157, 0.2);
+        }
+
+        .canvas-header {
+            background: var(--cc-bg-panel);
+            border-bottom: 1px solid var(--cc-border-dim);
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .canvas-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .canvas-zoom {
+            display: flex;
+            gap: 8px;
+        }
+
+        .zoom-btn {
+            width: 24px;
+            height: 24px;
+            background: transparent;
+            border: 1px solid var(--cc-border-dim);
+            color: var(--cc-primary);
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.2s ease;
+        }
+
+        .zoom-btn:hover {
+            border-color: var(--cc-primary);
+            background: rgba(0, 255, 157, 0.1);
+        }
+
+        .canvas-content {
+            padding: 24px;
+            /* StreamStage preview styles */
+            background: #1a1a1a;
+            min-height: 100%;
+        }
+
+        .canvas-element {
+            background: #2a2a2a;
+            border: 2px dashed rgba(0, 255, 157, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .canvas-element:hover {
+            border-color: var(--cc-primary);
+            border-style: solid;
+        }
+
+        .canvas-element.selected {
+            border-color: var(--cc-primary);
+            border-style: solid;
+            box-shadow: 0 0 20px rgba(0, 255, 157, 0.3);
+        }
+
+        .element-label {
+            position: absolute;
+            top: -10px;
+            left: 12px;
+            background: var(--cc-bg);
+            padding: 2px 8px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border: 1px solid var(--cc-primary);
+        }
+
+        .element-controls {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            display: flex;
+            gap: 4px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .canvas-element:hover .element-controls {
+            opacity: 1;
+        }
+
+        .control-btn {
+            width: 20px;
+            height: 20px;
+            background: var(--cc-bg);
+            border: 1px solid var(--cc-primary);
+            color: var(--cc-primary);
+            cursor: pointer;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .control-btn:hover {
+            background: var(--cc-primary);
+            color: var(--cc-bg);
+        }
+
+        /* Right Sidebar: Element Settings */
+        .settings-panel {
+            background: var(--cc-bg-panel);
+            border: 1px solid var(--cc-border-dim);
+            border-radius: 4px;
+            padding: 16px;
+            overflow-y: auto;
+            clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
+        }
+
+        .settings-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            text-shadow: 0 0 10px var(--cc-primary);
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--cc-border-dim);
+        }
+
+        .settings-group {
+            margin-bottom: 20px;
+        }
+
+        .settings-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: rgba(0, 255, 157, 0.8);
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .settings-input {
+            width: 100%;
+            padding: 8px 10px;
+            background: var(--cc-bg-secondary);
+            border: 1px solid var(--cc-border-dim);
+            color: var(--cc-primary);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 13px;
+            transition: all 0.2s ease;
+        }
+
+        .settings-input:focus {
+            outline: none;
+            border-color: var(--cc-primary);
+            box-shadow: 0 0 10px rgba(0, 255, 157, 0.2);
+        }
+
+        .settings-textarea {
+            resize: vertical;
+            min-height: 60px;
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        .settings-select {
+            width: 100%;
+            padding: 8px 10px;
+            background: var(--cc-bg-secondary);
+            border: 1px solid var(--cc-border-dim);
+            color: var(--cc-primary);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .settings-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .settings-checkbox input {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .settings-checkbox label {
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        /* Pricing Rules Section */
+        .pricing-rules {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--cc-border-dim);
+        }
+
+        .rule-item {
+            background: var(--cc-bg-secondary);
+            border: 1px solid var(--cc-border-dim);
+            padding: 12px;
+            margin-bottom: 8px;
+            clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+        }
+
+        .rule-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .rule-type {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .add-rule-btn {
+            width: 100%;
+            padding: 8px;
+            background: transparent;
+            border: 1px dashed var(--cc-border-dim);
+            color: var(--cc-primary);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+        }
+
+        .add-rule-btn:hover {
+            border-color: var(--cc-primary);
+            background: rgba(0, 255, 157, 0.05);
+        }
+
+        /* Status indicator */
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            background: var(--cc-primary);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--cc-primary);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Scrollbar Styles */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--cc-bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--cc-border-dim);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--cc-primary);
+        }
+    </style>
+</head>
+<body>
+    <!-- HUD Corner Frames -->
+    <div class="hud-frame top-left"></div>
+    <div class="hud-frame top-right"></div>
+    <div class="hud-frame bottom-left"></div>
+    <div class="hud-frame bottom-right"></div>
+
+    <!-- Grid Background -->
+    <div class="grid-background"></div>
+
+    <!-- Main App Container -->
+    <div class="app-container">
+        <!-- Top HUD Bar -->
+        <div class="top-bar">
+            <div class="top-bar-left">
+                <div class="logo">COMMANDCENTERED</div>
+                <div class="mode-badge">⚙ PROPOSAL BUILDER</div>
+                <div style="display: flex; align-items: center; gap: 8px; font-size: 12px;">
+                    <div class="status-indicator"></div>
+                    <span style="opacity: 0.6;">Template: Dance Recital Media</span>
+                </div>
+            </div>
+            <div class="top-bar-right">
+                <button class="action-btn">SAVE DRAFT</button>
+                <button class="action-btn">PREVIEW</button>
+                <button class="action-btn primary">PUBLISH</button>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="content-area">
+            <!-- Left Sidebar: Element Palette -->
+            <div class="element-palette">
+                <div class="palette-title">⊞ ELEMENTS</div>
+
+                <div class="palette-category">
+                    <div class="category-label">▸ INPUTS</div>
+                    <div class="element-item" draggable="true">
+                        <div class="element-icon">🔢</div>
+                        <div>Number Input</div>
+                    </div>
+                    <div class="element-item" draggable="true">
+                        <div class="element-icon">📝</div>
+                        <div>Text Input</div>
+                    </div>
+                    <div class="element-item" draggable="true">
+                        <div class="element-icon">📄</div>
+                        <div>Textarea</div>
+                    </div>
+                    <div class="element-item" draggable="true">
+                        <div class="element-icon">📅</div>
+                        <div>Date Picker</div>
+                    </div>
+                    <div class="element-item" draggable="true">
+                        <div class="element-icon">🕐</div>
+                        <div>Time Picker</div>
+                    </div>
+                    <div class="element-item" draggable="true">
+                        <div class="element-icon">📋</div>
+                        <div>Dropdown</div>
+                    </div>
+                </div>
+
+                <div class="palette-category">
+                    <div class="category-label">▸ SELECTION</div>
+                    <div class="element-item" draggable="true">
+                        <div class="element-icon">☑</div>
+                        <div>Checkbox Card</div>
+                    </div>
+                    <div class="element-item" draggable="true">
+                        <div class="element-icon">◉</div>
+                        <div>Radio Card</div>
+                    </div>
+                    <div class="element-item" draggable="true">
+                        <div class="element-icon">⇅</div>
+                        <div>Toggle</div>
+                    </div>
+                    <div class="element-item" draggable="true">
+                        <div class="element-icon">±</div>
+                        <div>Quantity Control</div>
+                    </div>
+                </div>
+
+                <div class="palette-category">
+                    <div class="category-label">▸ DISPLAY</div>
+                    <div class="element-item" draggable="true">
+                        <div class="element-icon">★</div>
+                        <div>Hero Section</div>
+                    </div>
+                    <div class="element-item" draggable="true">
+                        <div class="element-icon">━</div>
+                        <div>Section Divider</div>
+                    </div>
+                    <div class="element-item" draggable="true">
+                        <div class="element-icon">📦</div>
+                        <div>Base Package</div>
+                    </div>
+                    <div class="element-item" draggable="true">
+                        <div class="element-icon">▶</div>
+                        <div>Video Embed</div>
+                    </div>
+                    <div class="element-item" draggable="true">
+                        <div class="element-icon">💰</div>
+                        <div>Pricing Summary</div>
+                    </div>
+                </div>
+
+                <div class="palette-category">
+                    <div class="category-label">▸ LAYOUT</div>
+                    <div class="element-item" draggable="true">
+                        <div class="element-icon">▦</div>
+                        <div>2-Column Grid</div>
+                    </div>
+                    <div class="element-item" draggable="true">
+                        <div class="element-icon">▦</div>
+                        <div>3-Column Grid</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Center: Canvas (Preview) -->
+            <div class="canvas-area">
+                <div class="canvas-header">
+                    <div class="canvas-title">◈ LIVE PREVIEW (StreamStage)</div>
+                    <div class="canvas-zoom">
+                        <button class="zoom-btn">−</button>
+                        <span style="font-size: 11px; opacity: 0.6;">100%</span>
+                        <button class="zoom-btn">+</button>
+                    </div>
+                </div>
+                <div class="canvas-content">
+                    <!-- Hero Section -->
+                    <div class="canvas-element selected">
+                        <div class="element-label">HERO SECTION</div>
+                        <div class="element-controls">
+                            <button class="control-btn">↑</button>
+                            <button class="control-btn">↓</button>
+                            <button class="control-btn">✎</button>
+                            <button class="control-btn">✕</button>
+                        </div>
+                        <div style="text-align: center; color: #00bcd4;">
+                            <h1 style="font-size: 28px; margin-bottom: 12px;">Dance Recital Media Package</h1>
+                            <p style="color: #b0b0b0; margin-bottom: 16px;">Professional multi-camera videography and photography</p>
+                            <div style="display: flex; justify-content: center; gap: 20px; font-size: 13px; color: #fff;">
+                                <div>✓ Multi-camera coverage</div>
+                                <div>✓ Professional editing</div>
+                                <div>✓ Individual videos</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Number Input -->
+                    <div class="canvas-element">
+                        <div class="element-label">NUMBER INPUT</div>
+                        <div class="element-controls">
+                            <button class="control-btn">↑</button>
+                            <button class="control-btn">↓</button>
+                            <button class="control-btn">✎</button>
+                            <button class="control-btn">✕</button>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="color: #f06292; font-size: 16px; margin-bottom: 12px; font-weight: 600;">How many dancers?</div>
+                            <input type="number" value="150" style="width: 150px; height: 50px; font-size: 28px; text-align: center; background: #1a1a1a; border: 2px solid #404040; color: #fff; border-radius: 6px;">
+                            <div style="margin-top: 8px; font-size: 12px; color: #4caf50;">Tier 2: 101-200 dancers = $12/dancer</div>
+                        </div>
+                    </div>
+
+                    <!-- Checkbox Card Grid -->
+                    <div class="canvas-element">
+                        <div class="element-label">CHECKBOX CARD GRID</div>
+                        <div class="element-controls">
+                            <button class="control-btn">↑</button>
+                            <button class="control-btn">↓</button>
+                            <button class="control-btn">✎</button>
+                            <button class="control-btn">✕</button>
+                        </div>
+                        <div style="text-align: center; margin-bottom: 12px;">
+                            <div style="color: #00bcd4; font-size: 20px; font-weight: 600;">Select Your Services</div>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
+                            <div style="background: #1a1a1a; border: 2px solid #f06292; padding: 16px; border-radius: 8px;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                    <div style="width: 20px; height: 20px; border-radius: 50%; background: #f06292; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px;">✓</div>
+                                    <div style="font-size: 10px; background: #f06292; color: #fff; padding: 2px 8px; border-radius: 10px;">SELECTED</div>
+                                </div>
+                                <div style="color: #00bcd4; font-weight: 600; margin-bottom: 4px;">Video Recording</div>
+                                <div style="color: #b0b0b0; font-size: 12px;">Multi-camera recording</div>
+                                <div style="color: #f06292; font-weight: 700; margin-top: 8px;">Included</div>
+                            </div>
+                            <div style="background: #1a1a1a; border: 2px solid #f06292; padding: 16px; border-radius: 8px;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                    <div style="width: 20px; height: 20px; border-radius: 50%; background: #f06292; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px;">✓</div>
+                                    <div style="font-size: 10px; background: #f06292; color: #fff; padding: 2px 8px; border-radius: 10px;">SELECTED</div>
+                                </div>
+                                <div style="color: #00bcd4; font-weight: 600; margin-bottom: 4px;">Photography</div>
+                                <div style="color: #b0b0b0; font-size: 12px;">Professional photos</div>
+                                <div style="color: #f06292; font-weight: 700; margin-top: 8px;">Included</div>
+                            </div>
+                            <div style="background: #1a1a1a; border: 2px solid #404040; padding: 16px; border-radius: 8px; opacity: 0.6;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                    <div style="width: 20px; height: 20px; border-radius: 50%; border: 2px solid #404040;"></div>
+                                    <div style="font-size: 10px; background: #404040; color: #b0b0b0; padding: 2px 8px; border-radius: 10px;">SELECT</div>
+                                </div>
+                                <div style="color: #00bcd4; font-weight: 600; margin-bottom: 4px;">Live Streaming</div>
+                                <div style="color: #b0b0b0; font-size: 12px;">Stream to viewers</div>
+                                <div style="color: #00bcd4; font-weight: 700; margin-top: 8px;">+$500</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Drop Zone -->
+                    <div style="border: 2px dashed rgba(0, 255, 157, 0.3); border-radius: 8px; padding: 32px; text-align: center; color: rgba(0, 255, 157, 0.5); margin-top: 12px;">
+                        <div style="font-size: 48px; margin-bottom: 8px;">⊕</div>
+                        <div>Drop elements here or click to add</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Sidebar: Settings Panel -->
+            <div class="settings-panel">
+                <div class="settings-title">⚙ SETTINGS</div>
+
+                <div style="font-size: 12px; opacity: 0.6; margin-bottom: 16px;">
+                    Selected: <strong style="color: var(--cc-primary);">Hero Section</strong>
+                </div>
+
+                <div class="settings-group">
+                    <label class="settings-label">Title</label>
+                    <input type="text" class="settings-input" value="Dance Recital Media Package">
+                </div>
+
+                <div class="settings-group">
+                    <label class="settings-label">Description</label>
+                    <textarea class="settings-input settings-textarea">Professional multi-camera videography and photography for your dance recital</textarea>
+                </div>
+
+                <div class="settings-group">
+                    <label class="settings-label">Features (one per line)</label>
+                    <textarea class="settings-input settings-textarea">Multi-camera coverage
+Professional editing
+Individual routine videos
+Fast delivery</textarea>
+                </div>
+
+                <div class="settings-group">
+                    <label class="settings-label">Feature Icon</label>
+                    <select class="settings-select">
+                        <option selected>✓ Checkmark</option>
+                        <option>★ Star</option>
+                        <option>● Bullet</option>
+                        <option>→ Arrow</option>
+                    </select>
+                </div>
+
+                <div class="pricing-rules">
+                    <div class="settings-label" style="margin-bottom: 12px;">💰 PRICING RULES</div>
+
+                    <div class="rule-item">
+                        <div class="rule-header">
+                            <div class="rule-type">Tiered Pricing</div>
+                            <button class="control-btn">✕</button>
+                        </div>
+                        <div style="font-size: 11px; opacity: 0.6;">
+                            Field: <strong>dancer-count</strong><br>
+                            0-100: $15 | 101-200: $12 | 201+: $10
+                        </div>
+                    </div>
+
+                    <div class="rule-item">
+                        <div class="rule-header">
+                            <div class="rule-type">Volume Discount</div>
+                            <button class="control-btn">✕</button>
+                        </div>
+                        <div style="font-size: 11px; opacity: 0.6;">
+                            $2000+: 10% off | $3000+: 15% off
+                        </div>
+                    </div>
+
+                    <button class="add-rule-btn">+ ADD PRICING RULE</button>
+                </div>
+
+                <div style="margin-top: 24px;">
+                    <div class="settings-label">TEMPLATE SETTINGS</div>
+                    <div class="settings-group">
+                        <label class="settings-label">Template Name</label>
+                        <input type="text" class="settings-input" value="Dance Recital Media">
+                    </div>
+                    <div class="settings-group">
+                        <label class="settings-label">URL Slug</label>
+                        <input type="text" class="settings-input" value="dance-recital-media">
+                        <div style="font-size: 10px; margin-top: 4px; opacity: 0.6;">
+                            streamstage.com/proposals/dance-recital-media
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Drag-and-drop simulation
+        const elementItems = document.querySelectorAll('.element-item');
+        const canvasElements = document.querySelectorAll('.canvas-element');
+
+        elementItems.forEach(item => {
+            item.addEventListener('dragstart', (e) => {
+                item.style.opacity = '0.5';
+            });
+
+            item.addEventListener('dragend', (e) => {
+                item.style.opacity = '1';
+            });
+        });
+
+        canvasElements.forEach(element => {
+            element.addEventListener('click', () => {
+                canvasElements.forEach(el => el.classList.remove('selected'));
+                element.classList.add('selected');
+            });
+        });
+
+        console.log('Proposal Builder Builder - Drag elements from left palette to canvas');
+    </script>
+</body>
+</html>

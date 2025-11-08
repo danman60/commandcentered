@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dance Recital Media - StreamStage Proposal Builder</title>
+    <style>
+        /* StreamStage Proposal Builder - Client-Facing Mockup */
+        /* Based on RecitalBuilderFrontend.html analysis */
+
+        :root {
+            --streamstage-primary: #1a1a1a;
+            --streamstage-secondary: #2a2a2a;
+            --streamstage-accent: #00bcd4;
+            --streamstage-accent-hover: #00acc1;
+            --streamstage-orange: #ff6b35;
+            --streamstage-text: #ffffff;
+            --streamstage-text-muted: #b0b0b0;
+            --streamstage-border: #404040;
+            --streamstage-success: #4caf50;
+            --recital-pink: #f06292;
+            --recital-gold: #ffd54f;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--streamstage-primary);
+            color: var(--streamstage-text);
+            line-height: 1.4;
+            font-size: 15px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px 16px;
+        }
+
+        /* Header */
+        .header {
+            background: var(--streamstage-secondary);
+            border-bottom: 2px solid var(--streamstage-accent);
+            padding: 16px 0;
+            margin-bottom: 32px;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--streamstage-accent);
+            letter-spacing: 1px;
+        }
+
+        .logo span {
+            color: var(--streamstage-text);
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            background: var(--streamstage-secondary);
+            border: 1px solid var(--streamstage-border);
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 32px;
+        }
+
+        .hero h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--streamstage-accent);
+            margin-bottom: 16px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--streamstage-text-muted);
+            margin-bottom: 24px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-features {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            flex-wrap: wrap;
+            font-size: 15px;
+            color: var(--streamstage-text);
+        }
+
+        .hero-feature {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hero-feature::before {
+            content: "✓";
+            color: var(--streamstage-success);
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        /* Section */
+        .section {
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--streamstage-accent);
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .section-subtitle {
+            color: var(--streamstage-text-muted);
+            margin-bottom: 20px;
+            font-size: 15px;
+            text-align: center;
+        }
+
+        /* Dancer Count Input */
+        .dancer-input-section {
+            background: var(--streamstage-secondary);
+            border: 2px solid var(--recital-pink);
+            border-radius: 12px;
+            padding: 32px;
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .dancer-input-section h3 {
+            font-size: 20px;
+            color: var(--recital-pink);
+            margin-bottom: 16px;
+        }
+
+        .dancer-input {
+            width: 180px;
+            height: 60px;
+            font-size: 32px;
+            font-weight: 700;
+            text-align: center;
+            background: var(--streamstage-primary);
+            border: 2px solid var(--streamstage-border);
+            color: var(--streamstage-text);
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .dancer-input:focus {
+            outline: none;
+            border-color: var(--recital-pink);
+            box-shadow: 0 0 20px rgba(240, 98, 146, 0.3);
+        }
+
+        .pricing-tier-hint {
+            margin-top: 12px;
+            font-size: 13px;
+            color: var(--streamstage-text-muted);
+        }
+
+        .pricing-tier-hint.active {
+            color: var(--streamstage-success);
+            font-weight: 600;
+        }
+
+        /* Service Toggle Cards */
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .service-card {
+            background: var(--streamstage-secondary);
+            border: 2px solid var(--streamstage-border);
+            border-radius: 8px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .service-card:hover {
+            border-color: var(--streamstage-accent);
+            transform: translateY(-2px);
+        }
+
+        .service-card.selected {
+            border-color: var(--recital-pink);
+            background: linear-gradient(135deg, var(--streamstage-secondary) 0%, rgba(240, 98, 146, 0.05) 100%);
+        }
+
+        .service-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--streamstage-border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .checkbox.checked {
+            border-color: var(--recital-pink);
+            background: var(--recital-pink);
+            color: white;
+        }
+
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .status-badge.unselected {
+            background: var(--streamstage-border);
+            color: var(--streamstage-text-muted);
+        }
+
+        .status-badge.selected {
+            background: var(--recital-pink);
+            color: white;
+        }
+
+        .service-card h4 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--streamstage-accent);
+            margin-bottom: 8px;
+        }
+
+        .service-card p {
+            color: var(--streamstage-text-muted);
+            font-size: 14px;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .service-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--recital-pink);
+        }
+
+        /* Investment Summary */
+        .summary-section {
+            background: var(--streamstage-secondary);
+            border: 2px solid var(--recital-gold);
+            border-radius: 12px;
+            padding: 24px;
+            position: sticky;
+            top: 20px;
+        }
+
+        .summary-section h3 {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--recital-gold);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            font-size: 15px;
+            border-bottom: 1px solid var(--streamstage-border);
+        }
+
+        .summary-row:last-child {
+            border-bottom: none;
+        }
+
+        .summary-row.total {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--recital-gold);
+            padding-top: 16px;
+            margin-top: 8px;
+            border-top: 2px solid var(--recital-gold);
+        }
+
+        .summary-row .label {
+            color: var(--streamstage-text-muted);
+        }
+
+        .summary-row .value {
+            color: var(--streamstage-text);
+            font-weight: 600;
+        }
+
+        .summary-row.total .value {
+            color: var(--recital-gold);
+        }
+
+        .discount-row {
+            background: var(--streamstage-success);
+            margin: 8px -12px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            color: white;
+        }
+
+        .discount-row .label,
+        .discount-row .value {
+            color: white;
+        }
+
+        /* Incentive Card */
+        .incentive-card {
+            margin-top: 16px;
+            padding: 12px;
+            border: 2px dashed var(--streamstage-orange);
+            background: rgba(255, 107, 53, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .incentive-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--streamstage-orange);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .incentive-text {
+            flex: 1;
+        }
+
+        .incentive-text strong {
+            color: var(--streamstage-orange);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .incentive-text small {
+            color: var(--streamstage-text-muted);
+            font-size: 12px;
+        }
+
+        /* Form Section */
+        .form-section {
+            background: var(--streamstage-secondary);
+            border: 1px solid var(--streamstage-border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 32px;
+        }
+
+        .form-section h3 {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--streamstage-accent);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .form-grid.full {
+            grid-template-columns: 1fr;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            color: var(--streamstage-text-muted);
+            font-weight: 600;
+        }
+
+        .form-input {
+            padding: 12px;
+            background: var(--streamstage-primary);
+            border: 1px solid var(--streamstage-border);
+            border-radius: 6px;
+            color: var(--streamstage-text);
+            font-size: 15px;
+            transition: all 0.2s ease;
+        }
+
+        .form-input::placeholder {
+            color: var(--streamstage-text-muted);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--streamstage-accent);
+        }
+
+        textarea.form-input {
+            resize: vertical;
+            min-height: 80px;
+            font-family: inherit;
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--recital-pink);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 16px;
+        }
+
+        .submit-btn:hover {
+            background: #e91e63;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(240, 98, 146, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Grid Layout */
+        .two-column {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 32px;
+            align-items: start;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 32px 16px;
+            color: var(--streamstage-text-muted);
+            font-size: 13px;
+            border-top: 1px solid var(--streamstage-border);
+            margin-top: 48px;
+        }
+
+        .footer a {
+            color: var(--streamstage-accent);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 1024px) {
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+
+            .summary-section {
+                position: static;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">Stream<span>Stage</span></div>
+            <div style="color: var(--streamstage-text-muted); font-size: 13px;">
+                Proposal Builder
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1>Dance Recital Media Package</h1>
+            <p>Professional multi-camera videography and photography for your dance recital. Get a custom quote based on your dancer count and service needs.</p>
+            <div class="hero-features">
+                <div class="hero-feature">Multi-camera coverage</div>
+                <div class="hero-feature">Professional editing</div>
+                <div class="hero-feature">Individual routine videos</div>
+                <div class="hero-feature">Fast delivery</div>
+            </div>
+        </div>
+
+        <!-- Dancer Count Input -->
+        <div class="dancer-input-section">
+            <h3>How many dancers will be performing?</h3>
+            <input type="number" class="dancer-input" id="dancer-count" value="150" min="0" max="999" onchange="updatePricing()">
+            <div class="pricing-tier-hint" id="tier-hint">
+                Tier 2: 101-200 dancers = $12/dancer
+            </div>
+        </div>
+
+        <div class="two-column">
+            <!-- Left Column: Service Selection -->
+            <div>
+                <!-- Service Selection -->
+                <div class="section">
+                    <h2 class="section-title">Select Your Services</h2>
+                    <p class="section-subtitle">Choose the services you need for your recital</p>
+
+                    <div class="service-grid">
+                        <!-- Video Service -->
+                        <div class="service-card selected" onclick="toggleService('video')">
+                            <div class="service-card-header">
+                                <div class="checkbox checked" id="checkbox-video">✓</div>
+                                <div class="status-badge selected" id="badge-video">Selected</div>
+                            </div>
+                            <h4>Video Recording</h4>
+                            <p>Full multi-camera recording of all routines with professional editing and individual video files per routine</p>
+                            <div class="service-price">Included in per-dancer price</div>
+                        </div>
+
+                        <!-- Photo Service -->
+                        <div class="service-card selected" onclick="toggleService('photo')">
+                            <div class="service-card-header">
+                                <div class="checkbox checked" id="checkbox-photo">✓</div>
+                                <div class="status-badge selected" id="badge-photo">Selected</div>
+                            </div>
+                            <h4>Photography</h4>
+                            <p>Professional photos of all routines with individual photo packages available for dancers</p>
+                            <div class="service-price">Included in per-dancer price</div>
+                        </div>
+
+                        <!-- Live Streaming -->
+                        <div class="service-card" onclick="toggleService('streaming')">
+                            <div class="service-card-header">
+                                <div class="checkbox" id="checkbox-streaming"></div>
+                                <div class="status-badge unselected" id="badge-streaming">Select</div>
+                            </div>
+                            <h4>Live Streaming</h4>
+                            <p>Stream your recital live to family and friends who can't attend in person</p>
+                            <div class="service-price">+$500</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Event Details Form -->
+                <div class="form-section">
+                    <h3>Event Details</h3>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Your Email *</label>
+                            <input type="email" class="form-input" placeholder="director@studio.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Studio/Organization *</label>
+                            <input type="text" class="form-input" placeholder="ABC Dance Studio" required>
+                        </div>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Contact Name</label>
+                            <input type="text" class="form-input" placeholder="Jane Smith">
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="tel" class="form-input" placeholder="(555) 123-4567">
+                        </div>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Recital Date *</label>
+                            <input type="date" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Start Time</label>
+                            <input type="time" class="form-input">
+                        </div>
+                    </div>
+
+                    <div class="form-grid full">
+                        <div class="form-group">
+                            <label>Venue Name & Address</label>
+                            <input type="text" class="form-input" placeholder="City Hall Auditorium, 123 Main St">
+                        </div>
+                    </div>
+
+                    <div class="form-grid full">
+                        <div class="form-group">
+                            <label>Special Requests or Questions</label>
+                            <textarea class="form-input" placeholder="Any special requirements, shot list requests, or questions you have..."></textarea>
+                        </div>
+                    </div>
+
+                    <button class="submit-btn" onclick="submitProposal()">Submit Proposal Request</button>
+
+                    <div style="text-align: center; margin-top: 12px; font-size: 12px; color: var(--streamstage-text-muted);">
+                        By submitting, you agree to receive a custom quote from StreamStage
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Investment Summary (Sticky) -->
+            <div>
+                <div class="summary-section">
+                    <h3>Investment Summary</h3>
+
+                    <div class="summary-row">
+                        <span class="label">Dancer Count</span>
+                        <span class="value" id="summary-dancers">150 dancers</span>
+                    </div>
+
+                    <div class="summary-row">
+                        <span class="label">Per-Dancer Rate</span>
+                        <span class="value" id="summary-rate">$12.00</span>
+                    </div>
+
+                    <div class="summary-row">
+                        <span class="label">Video + Photo Package</span>
+                        <span class="value" id="summary-base">$1,800</span>
+                    </div>
+
+                    <div class="summary-row" id="streaming-row" style="display: none;">
+                        <span class="label">Live Streaming</span>
+                        <span class="value">$500</span>
+                    </div>
+
+                    <div class="summary-row" style="border-top: 2px solid var(--streamstage-border); padding-top: 12px; margin-top: 8px;">
+                        <span class="label">Subtotal</span>
+                        <span class="value" id="summary-subtotal">$1,800</span>
+                    </div>
+
+                    <div class="summary-row discount-row" id="discount-row" style="display: none;">
+                        <span class="label">Volume Discount (10%)</span>
+                        <span class="value" id="discount-amount">-$180</span>
+                    </div>
+
+                    <div class="summary-row total">
+                        <span class="label">Total Investment</span>
+                        <span class="value" id="summary-total">$1,800</span>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 8px; font-size: 11px; color: var(--streamstage-text-muted);">
+                        +HST
+                    </div>
+
+                    <div class="incentive-card" id="incentive-card">
+                        <div class="incentive-icon">💰</div>
+                        <div class="incentive-text">
+                            <strong>Add $200 to save 10%!</strong>
+                            <small>You'll save $200 on your total order</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>Powered by <strong>StreamStage</strong> Professional Event Media</p>
+        <p>Questions? Email <a href="mailto:hello@streamstage.com">hello@streamstage.com</a></p>
+    </div>
+
+    <script>
+        // Pricing state
+        const state = {
+            dancerCount: 150,
+            services: {
+                video: true,
+                photo: true,
+                streaming: false
+            },
+            pricingTiers: [
+                { min: 0, max: 100, rate: 15 },
+                { min: 101, max: 200, rate: 12 },
+                { min: 201, max: 999, rate: 10 }
+            ],
+            volumeDiscounts: [
+                { threshold: 2000, pct: 10 },
+                { threshold: 3000, pct: 15 }
+            ],
+            servicePrices: {
+                streaming: 500
+            }
+        };
+
+        function toggleService(serviceId) {
+            state.services[serviceId] = !state.services[serviceId];
+
+            const card = event.currentTarget;
+            const checkbox = document.getElementById(`checkbox-${serviceId}`);
+            const badge = document.getElementById(`badge-${serviceId}`);
+
+            if (state.services[serviceId]) {
+                card.classList.add('selected');
+                checkbox.classList.add('checked');
+                checkbox.textContent = '✓';
+                badge.className = 'status-badge selected';
+                badge.textContent = 'Selected';
+            } else {
+                card.classList.remove('selected');
+                checkbox.classList.remove('checked');
+                checkbox.textContent = '';
+                badge.className = 'status-badge unselected';
+                badge.textContent = 'Select';
+            }
+
+            updatePricing();
+        }
+
+        function updatePricing() {
+            const dancerCount = parseInt(document.getElementById('dancer-count').value) || 0;
+            state.dancerCount = dancerCount;
+
+            // Find pricing tier
+            const tier = state.pricingTiers.find(t => dancerCount >= t.min && dancerCount <= t.max);
+            const rate = tier ? tier.rate : 15;
+
+            // Update tier hint
+            const tierHint = document.getElementById('tier-hint');
+            if (tier) {
+                tierHint.textContent = `Tier ${state.pricingTiers.indexOf(tier) + 1}: ${tier.min}-${tier.max} dancers = $${tier.rate}/dancer`;
+                tierHint.classList.add('active');
+            } else {
+                tierHint.textContent = 'Enter dancer count for pricing';
+                tierHint.classList.remove('active');
+            }
+
+            // Calculate base price
+            const basePrice = dancerCount * rate;
+
+            // Add services
+            let subtotal = basePrice;
+            if (state.services.streaming) {
+                subtotal += state.servicePrices.streaming;
+                document.getElementById('streaming-row').style.display = 'flex';
+            } else {
+                document.getElementById('streaming-row').style.display = 'none';
+            }
+
+            // Apply volume discount
+            let discount = 0;
+            let discountPct = 0;
+            const applicableTier = state.volumeDiscounts
+                .sort((a, b) => b.threshold - a.threshold)
+                .find(t => subtotal >= t.threshold);
+
+            if (applicableTier) {
+                discountPct = applicableTier.pct;
+                discount = Math.round(subtotal * (discountPct / 100));
+            }
+
+            const total = subtotal - discount;
+
+            // Update summary
+            document.getElementById('summary-dancers').textContent = `${dancerCount} dancers`;
+            document.getElementById('summary-rate').textContent = `$${rate.toFixed(2)}`;
+            document.getElementById('summary-base').textContent = `$${basePrice.toLocaleString()}`;
+            document.getElementById('summary-subtotal').textContent = `$${subtotal.toLocaleString()}`;
+            document.getElementById('summary-total').textContent = `$${total.toLocaleString()}`;
+
+            // Show/hide discount
+            if (discount > 0) {
+                document.getElementById('discount-row').style.display = 'flex';
+                document.getElementById('discount-amount').textContent = `-$${discount.toLocaleString()}`;
+            } else {
+                document.getElementById('discount-row').style.display = 'none';
+            }
+
+            // Update incentive card
+            const nextTier = state.volumeDiscounts.find(t => subtotal < t.threshold);
+            const incentiveCard = document.getElementById('incentive-card');
+
+            if (nextTier) {
+                const toNext = nextTier.threshold - subtotal;
+                const nextSavings = Math.round(nextTier.threshold * (nextTier.pct / 100));
+                incentiveCard.style.display = 'flex';
+                incentiveCard.querySelector('strong').textContent = `Add $${toNext.toLocaleString()} to save ${nextTier.pct}%!`;
+                incentiveCard.querySelector('small').textContent = `You'll save $${nextSavings.toLocaleString()} on your total order`;
+            } else {
+                incentiveCard.style.display = 'none';
+            }
+        }
+
+        function submitProposal() {
+            alert('Proposal submitted! In the real app, this would:\n\n1. Validate form data\n2. Send to CommandCentered\n3. Create lead record\n4. Send confirmation email\n5. Show success modal');
+        }
+
+        // Initialize pricing
+        updatePricing();
+    </script>
+</body>
+</html>
