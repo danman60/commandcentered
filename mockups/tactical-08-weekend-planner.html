@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CommandCentered - Weekend Planner (Timeline/Map/Kit&Team)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rajdhani', monospace;
+            background: #000;
+            color: #00ff9d;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        /* Animated Grid Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(0, 255, 157, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 157, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* Corner Frames */
+        .corner-frame {
+            position: fixed;
+            pointer-events: none;
+            z-index: 999;
+        }
+        .corner-frame.tl { top: 0; left: 0; width: 60px; height: 60px; border-top: 3px solid #00ff9d; border-left: 3px solid #00ff9d; box-shadow: 0 0 15px rgba(0,255,157,0.5); }
+        .corner-frame.tr { top: 0; right: 0; width: 60px; height: 60px; border-top: 3px solid #00ff9d; border-right: 3px solid #00ff9d; box-shadow: 0 0 15px rgba(0,255,157,0.5); }
+        .corner-frame.bl { bottom: 0; left: 0; width: 60px; height: 60px; border-bottom: 3px solid #00ff9d; border-left: 3px solid #00ff9d; box-shadow: 0 0 15px rgba(0,255,157,0.5); }
+        .corner-frame.br { bottom: 0; right: 0; width: 60px; height: 60px; border-bottom: 3px solid #00ff9d; border-right: 3px solid #00ff9d; box-shadow: 0 0 15px rgba(0,255,157,0.5); }
+
+        /* Top HUD Bar */
+        .top-hud {
+            height: 50px;
+            background: linear-gradient(135deg, #0a1a1a 0%, #000 100%);
+            border-bottom: 2px solid #00ff9d;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            box-shadow: 0 0 30px rgba(0, 255, 157, 0.3);
+        }
+
+        .logo {
+            font-family: 'Orbitron', monospace;
+            font-size: 16px;
+            font-weight: 700;
+            color: #00ff9d;
+            letter-spacing: 2px;
+            text-shadow: 0 0 20px #00ff9d;
+        }
+
+        .weekend-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 18px;
+            font-weight: 700;
+            color: #00ff9d;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 15px #00ff9d;
+        }
+
+        /* Main Layout - 3 Card Grid */
+        .main-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: 1fr;
+            gap: 12px;
+            height: calc(100vh - 50px);
+            padding: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Card Base Styling */
+        .planning-card {
+            background: rgba(0, 20, 15, 0.8);
+            border: 2px solid #00ff9d;
+            clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
+            box-shadow: 0 0 20px rgba(0, 255, 157, 0.3);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 16px;
+            border-bottom: 2px solid rgba(0, 255, 157, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 14px;
+            font-weight: 700;
+            color: #00ff9d;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px #00ff9d;
+        }
+
+        .card-subtitle {
+            font-size: 9px;
+            opacity: 0.7;
+            text-transform: uppercase;
+        }
+
+        .card-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px;
+        }
+
+        /* TIMELINE CARD */
+        .timeline-day {
+            margin-bottom: 16px;
+        }
+
+        .day-header {
+            font-size: 11px;
+            font-weight: 700;
+            color: #00ff9d;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid rgba(0, 255, 157, 0.3);
+        }
+
+        .timeline-event {
+            background: rgba(0, 150, 255, 0.15);
+            border-left: 3px solid #0096ff;
+            padding: 8px 10px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .timeline-event:hover {
+            background: rgba(0, 150, 255, 0.25);
+            transform: translateX(4px);
+            box-shadow: 0 0 10px rgba(0, 150, 255, 0.4);
+        }
+
+        .timeline-event.active {
+            border-left-color: #00ff9d;
+            background: rgba(0, 255, 157, 0.2);
+            box-shadow: 0 0 15px rgba(0, 255, 157, 0.5);
+        }
+
+        .event-name {
+            font-size: 12px;
+            font-weight: 700;
+            color: #00ff9d;
+            margin-bottom: 4px;
+        }
+
+        .event-time {
+            font-size: 10px;
+            opacity: 0.7;
+            margin-bottom: 4px;
+        }
+
+        .event-location {
+            font-size: 9px;
+            color: #0096ff;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .event-team {
+            font-size: 9px;
+            margin-top: 6px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+
+        .team-badge {
+            background: rgba(0, 255, 157, 0.2);
+            border: 1px solid #00ff9d;
+            padding: 2px 6px;
+            font-size: 8px;
+            font-weight: 600;
+            clip-path: polygon(3px 0, 100% 0, 100% calc(100% - 3px), calc(100% - 3px) 100%, 0 100%, 0 3px);
+        }
+
+        /* MAP CARD */
+        .map-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 255, 157, 0.2);
+        }
+
+        .map-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .location-marker {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .location-marker:hover circle {
+            r: 12;
+            filter: drop-shadow(0 0 8px rgba(0, 150, 255, 0.8));
+        }
+
+        .location-marker.active circle {
+            fill: #00ff9d;
+            filter: drop-shadow(0 0 12px rgba(0, 255, 157, 1));
+        }
+
+        .location-marker circle {
+            fill: #0096ff;
+            stroke: #00ff9d;
+            stroke-width: 2;
+        }
+
+        .location-label {
+            fill: #00ff9d;
+            font-size: 9px;
+            font-weight: 700;
+            text-anchor: middle;
+            text-shadow: 0 0 8px #000;
+        }
+
+        .travel-line {
+            stroke: #ffd700;
+            stroke-width: 2;
+            stroke-dasharray: 5,5;
+            fill: none;
+            opacity: 0.6;
+            animation: dashMove 1s linear infinite;
+        }
+
+        @keyframes dashMove {
+            0% { stroke-dashoffset: 0; }
+            100% { stroke-dashoffset: 10; }
+        }
+
+        .travel-time-label {
+            fill: #ffd700;
+            font-size: 8px;
+            font-weight: 600;
+            text-anchor: middle;
+        }
+
+        /* KIT & TEAM CARD */
+        .resource-section {
+            margin-bottom: 16px;
+        }
+
+        .section-header {
+            font-size: 11px;
+            font-weight: 700;
+            color: #00ff9d;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid rgba(0, 255, 157, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .resource-count {
+            font-size: 9px;
+            opacity: 0.7;
+        }
+
+        .draggable-resource {
+            background: rgba(0, 255, 157, 0.15);
+            border: 1px solid #00ff9d;
+            padding: 8px 10px;
+            margin-bottom: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: grab;
+            clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .draggable-resource:hover {
+            background: rgba(0, 255, 157, 0.25);
+            box-shadow: 0 0 10px rgba(0, 255, 157, 0.4);
+            transform: translateX(4px);
+        }
+
+        .draggable-resource:active {
+            cursor: grabbing;
+        }
+
+        .draggable-resource.assigned {
+            opacity: 0.5;
+            background: rgba(0, 255, 157, 0.05);
+        }
+
+        .resource-icon {
+            font-size: 14px;
+        }
+
+        .resource-info {
+            flex: 1;
+        }
+
+        .resource-name {
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .resource-meta {
+            font-size: 8px;
+            opacity: 0.7;
+            margin-top: 2px;
+        }
+
+        .assignment-indicator {
+            font-size: 8px;
+            color: #0096ff;
+            font-weight: 600;
+        }
+
+        /* Drop Zone Styling */
+        .drop-zone {
+            min-height: 40px;
+            border: 1px dashed rgba(0, 255, 157, 0.3);
+            padding: 6px;
+            margin-top: 6px;
+            background: rgba(0, 0, 0, 0.3);
+            transition: all 0.2s;
+        }
+
+        .drop-zone.drag-over {
+            background: rgba(0, 255, 157, 0.2);
+            border-style: solid;
+            box-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
+        }
+
+        .drop-label {
+            font-size: 8px;
+            opacity: 0.5;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        .assigned-item {
+            background: rgba(0, 150, 255, 0.2);
+            border: 1px solid #0096ff;
+            padding: 4px 6px;
+            margin-bottom: 4px;
+            font-size: 9px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .remove-btn {
+            margin-left: auto;
+            font-size: 10px;
+            color: #ff0040;
+            cursor: pointer;
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 255, 157, 0.3);
+            border: 1px solid #00ff9d;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 255, 157, 0.5);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Corner Frames -->
+    <div class="corner-frame tl"></div>
+    <div class="corner-frame tr"></div>
+    <div class="corner-frame bl"></div>
+    <div class="corner-frame br"></div>
+
+    <!-- Top HUD -->
+    <div class="top-hud">
+        <div class="logo">COMMANDCENTERED</div>
+        <div class="weekend-title">// WEEKEND: JUNE 13-15, 2025</div>
+        <div style="font-size: 10px; color: #00ff9d; opacity: 0.7;">TIMELINE / MAP / KIT & TEAM</div>
+    </div>
+
+    <!-- Main 3-Card Grid -->
+    <div class="main-container">
+
+        <!-- TIMELINE CARD -->
+        <div class="planning-card">
+            <div class="card-header">
+                <div>
+                    <div class="card-title">📅 TIMELINE</div>
+                    <div class="card-subtitle">3-Day Schedule</div>
+                </div>
+            </div>
+            <div class="card-body">
+
+                <!-- Friday -->
+                <div class="timeline-day">
+                    <div class="day-header">FRIDAY, JUNE 13</div>
+
+                    <div class="timeline-event" data-event="kinetic" onclick="selectEvent('kinetic')">
+                        <div class="event-name">KINETIC ELEMENTS</div>
+                        <div class="event-time">7:30PM - 10:00PM</div>
+                        <div class="event-location">📍 Downtown Theater (12 mi)</div>
+                        <div class="drop-label">Team Assignment:</div>
+                        <div class="drop-zone" data-event="kinetic" data-zone="team">
+                            <!-- Empty - ready for drag -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Saturday -->
+                <div class="timeline-day">
+                    <div class="day-header">SATURDAY, JUNE 14</div>
+
+                    <div class="timeline-event" data-event="grad" onclick="selectEvent('grad')">
+                        <div class="event-name">GRAD RECITAL</div>
+                        <div class="event-time">9:00AM - 1:00PM</div>
+                        <div class="event-location">📍 City Center Hall (8 mi)</div>
+                        <div class="drop-label">Team Assignment:</div>
+                        <div class="drop-zone" data-event="grad" data-zone="team">
+                            <!-- Empty - ready for drag -->
+                        </div>
+                    </div>
+
+                    <div class="timeline-event" data-event="7attitudes" onclick="selectEvent('7attitudes')">
+                        <div class="event-name">7ATTITUDES</div>
+                        <div class="event-time">10:00AM - 5:00PM</div>
+                        <div class="event-location">📍 Westside Arena (15 mi)</div>
+                        <div class="drop-label">Team Assignment:</div>
+                        <div class="drop-zone" data-event="7attitudes" data-zone="team">
+                            <!-- Empty - ready for drag -->
+                        </div>
+                    </div>
+
+                    <div class="timeline-event" data-event="lds" onclick="selectEvent('lds')">
+                        <div class="event-name">LDS 2 SHOWS</div>
+                        <div class="event-time">2:00PM - 5:00PM</div>
+                        <div class="event-location">📍 Church Auditorium (6 mi)</div>
+                        <div class="drop-label">Team Assignment:</div>
+                        <div class="drop-zone" data-event="lds" data-zone="team">
+                            <!-- Empty - ready for drag -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sunday -->
+                <div class="timeline-day">
+                    <div class="day-header">SUNDAY, JUNE 15</div>
+
+                    <div class="timeline-event" data-event="sunday-rest" onclick="selectEvent('sunday-rest')">
+                        <div class="event-name" style="opacity: 0.5;">NO EVENTS SCHEDULED</div>
+                        <div class="event-time" style="opacity: 0.5;">Rest & Recovery Day</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- MAP CARD -->
+        <div class="planning-card">
+            <div class="card-header">
+                <div>
+                    <div class="card-title">🗺️ MAP</div>
+                    <div class="card-subtitle">Locations & Travel Time</div>
+                </div>
+            </div>
+            <div class="card-body" style="padding: 0;">
+                <div class="map-container">
+                    <svg class="map-svg" viewBox="0 0 400 400" id="mapSvg">
+                        <!-- Base location (office/home) -->
+                        <circle cx="200" cy="200" r="15" fill="#00ff9d" stroke="#00ff9d" stroke-width="3" opacity="0.3"/>
+                        <text x="200" y="225" class="location-label">HOME BASE</text>
+
+                        <!-- Event Locations -->
+                        <g class="location-marker" data-event="kinetic" onclick="selectEvent('kinetic')">
+                            <circle cx="140" cy="150" r="10"/>
+                            <text x="140" y="135" class="location-label">Downtown Theater</text>
+                        </g>
+
+                        <g class="location-marker" data-event="grad" onclick="selectEvent('grad')">
+                            <circle cx="280" cy="120" r="10"/>
+                            <text x="280" y="105" class="location-label">City Center Hall</text>
+                        </g>
+
+                        <g class="location-marker" data-event="7attitudes" onclick="selectEvent('7attitudes')">
+                            <circle cx="90" cy="280" r="10"/>
+                            <text x="90" y="265" class="location-label">Westside Arena</text>
+                        </g>
+
+                        <g class="location-marker" data-event="lds" onclick="selectEvent('lds')">
+                            <circle cx="320" cy="260" r="10"/>
+                            <text x="320" y="245" class="location-label">Church Aud.</text>
+                        </g>
+
+                        <!-- Travel lines (will be drawn dynamically) -->
+                        <g id="travelLines"></g>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- KIT & TEAM CARD -->
+        <div class="planning-card">
+            <div class="card-header">
+                <div>
+                    <div class="card-title">👥📦 KIT & TEAM</div>
+                    <div class="card-subtitle">Drag to Assign</div>
+                </div>
+            </div>
+            <div class="card-body">
+
+                <!-- Operators Section -->
+                <div class="resource-section">
+                    <div class="section-header">
+                        <span>👤 OPERATORS</span>
+                        <span class="resource-count">5 Available</span>
+                    </div>
+
+                    <div class="draggable-resource" draggable="true" data-type="operator" data-id="jake">
+                        <span class="resource-icon">🎥</span>
+                        <div class="resource-info">
+                            <div class="resource-name">Jake M.</div>
+                            <div class="resource-meta">Video Lead • $65/hr</div>
+                        </div>
+                        <span class="assignment-indicator"></span>
+                    </div>
+
+                    <div class="draggable-resource" draggable="true" data-type="operator" data-id="sarah">
+                        <span class="resource-icon">📷</span>
+                        <div class="resource-info">
+                            <div class="resource-name">Sarah K.</div>
+                            <div class="resource-meta">Photo Specialist • $55/hr</div>
+                        </div>
+                        <span class="assignment-indicator"></span>
+                    </div>
+
+                    <div class="draggable-resource" draggable="true" data-type="operator" data-id="mike">
+                        <span class="resource-icon">🎥</span>
+                        <div class="resource-info">
+                            <div class="resource-name">Mike R.</div>
+                            <div class="resource-meta">Video Operator • $50/hr</div>
+                        </div>
+                        <span class="assignment-indicator"></span>
+                    </div>
+
+                    <div class="draggable-resource" draggable="true" data-type="operator" data-id="amy">
+                        <span class="resource-icon">🎬</span>
+                        <div class="resource-info">
+                            <div class="resource-name">Amy L.</div>
+                            <div class="resource-meta">Director • $75/hr</div>
+                        </div>
+                        <span class="assignment-indicator"></span>
+                    </div>
+
+                    <div class="draggable-resource" draggable="true" data-type="operator" data-id="tyler">
+                        <span class="resource-icon">🎥</span>
+                        <div class="resource-info">
+                            <div class="resource-name">Tyler C.</div>
+                            <div class="resource-meta">Video Operator • $50/hr</div>
+                        </div>
+                        <span class="assignment-indicator"></span>
+                    </div>
+                </div>
+
+                <!-- Gear Kits Section -->
+                <div class="resource-section">
+                    <div class="section-header">
+                        <span>📦 GEAR KITS</span>
+                        <span class="resource-count">5 Kits</span>
+                    </div>
+
+                    <div class="draggable-resource" draggable="true" data-type="kit" data-id="video-pro">
+                        <span class="resource-icon">📦</span>
+                        <div class="resource-info">
+                            <div class="resource-name">Video Pro Kit</div>
+                            <div class="resource-meta">8 items • Cameras, Lenses, Tripods</div>
+                        </div>
+                        <span class="assignment-indicator"></span>
+                    </div>
+
+                    <div class="draggable-resource" draggable="true" data-type="kit" data-id="photo-kit">
+                        <span class="resource-icon">📦</span>
+                        <div class="resource-info">
+                            <div class="resource-name">Photo Kit</div>
+                            <div class="resource-meta">6 items • DSLR, Flash, Reflectors</div>
+                        </div>
+                        <span class="assignment-indicator"></span>
+                    </div>
+
+                    <div class="draggable-resource" draggable="true" data-type="kit" data-id="audio-kit">
+                        <span class="resource-icon">📦</span>
+                        <div class="resource-info">
+                            <div class="resource-name">Audio Kit</div>
+                            <div class="resource-meta">4 items • Mics, Mixer, Recorder</div>
+                        </div>
+                        <span class="assignment-indicator"></span>
+                    </div>
+
+                    <div class="draggable-resource" draggable="true" data-type="kit" data-id="lighting-kit">
+                        <span class="resource-icon">📦</span>
+                        <div class="resource-info">
+                            <div class="resource-name">Lighting Kit</div>
+                            <div class="resource-meta">5 items • LED Panels, Stands</div>
+                        </div>
+                        <span class="assignment-indicator"></span>
+                    </div>
+
+                    <div class="draggable-resource" draggable="true" data-type="kit" data-id="gimbal-kit">
+                        <span class="resource-icon">📦</span>
+                        <div class="resource-info">
+                            <div class="resource-name">Gimbal Kit</div>
+                            <div class="resource-meta">3 items • Gimbal, Batteries, Case</div>
+                        </div>
+                        <span class="assignment-indicator"></span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // State Management
+        let selectedEvent = null;
+        let assignments = {
+            kinetic: { operators: [], kits: [] },
+            grad: { operators: [], kits: [] },
+            '7attitudes': { operators: [], kits: [] },
+            lds: { operators: [], kits: [] }
+        };
+
+        // Event locations (for travel line calculation)
+        const eventLocations = {
+            kinetic: { x: 140, y: 150, name: 'Downtown Theater', distance: 12 },
+            grad: { x: 280, y: 120, name: 'City Center Hall', distance: 8 },
+            '7attitudes': { x: 90, y: 280, name: 'Westside Arena', distance: 15 },
+            lds: { x: 320, y: 260, name: 'Church Auditorium', distance: 6 }
+        };
+
+        const homeBase = { x: 200, y: 200 };
+
+        // Event Selection
+        function selectEvent(eventId) {
+            if (eventId === 'sunday-rest') return;
+
+            selectedEvent = eventId;
+
+            // Update timeline active state
+            document.querySelectorAll('.timeline-event').forEach(el => {
+                el.classList.remove('active');
+            });
+            document.querySelector(`.timeline-event[data-event="${eventId}"]`)?.classList.add('active');
+
+            // Update map active state
+            document.querySelectorAll('.location-marker').forEach(el => {
+                el.classList.remove('active');
+            });
+            document.querySelector(`.location-marker[data-event="${eventId}"]`)?.classList.add('active');
+
+            updateTravelLines();
+        }
+
+        // Drag and Drop for Resources
+        let draggedElement = null;
+
+        document.querySelectorAll('.draggable-resource').forEach(item => {
+            item.addEventListener('dragstart', (e) => {
+                draggedElement = {
+                    type: item.dataset.type,
+                    id: item.dataset.id,
+                    html: item.innerHTML,
+                    element: item
+                };
+                e.dataTransfer.effectAllowed = 'copy';
+            });
+        });
+
+        // Drop zones
+        document.querySelectorAll('.drop-zone').forEach(zone => {
+            zone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'copy';
+                zone.classList.add('drag-over');
+            });
+
+            zone.addEventListener('dragleave', () => {
+                zone.classList.remove('drag-over');
+            });
+
+            zone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                zone.classList.remove('drag-over');
+
+                if (!draggedElement) return;
+
+                const eventId = zone.dataset.event;
+
+                // Create assigned item
+                const assignedItem = document.createElement('div');
+                assignedItem.className = 'assigned-item';
+                assignedItem.innerHTML = `
+                    <span>${draggedElement.type === 'operator' ? '👤' : '📦'}</span>
+                    <span>${draggedElement.element.querySelector('.resource-name').textContent}</span>
+                    <span class="remove-btn">×</span>
+                `;
+
+                // Add remove functionality
+                assignedItem.querySelector('.remove-btn').addEventListener('click', () => {
+                    assignedItem.remove();
+                    // Remove from assignments
+                    const typeKey = draggedElement.type === 'operator' ? 'operators' : 'kits';
+                    const idx = assignments[eventId][typeKey].indexOf(draggedElement.id);
+                    if (idx > -1) assignments[eventId][typeKey].splice(idx, 1);
+
+                    // Update resource visual state
+                    draggedElement.element.classList.remove('assigned');
+                    draggedElement.element.querySelector('.assignment-indicator').textContent = '';
+
+                    updateTravelLines();
+                });
+
+                zone.appendChild(assignedItem);
+
+                // Track assignment
+                const typeKey = draggedElement.type === 'operator' ? 'operators' : 'kits';
+                if (!assignments[eventId][typeKey].includes(draggedElement.id)) {
+                    assignments[eventId][typeKey].push(draggedElement.id);
+                }
+
+                // Update resource visual state
+                draggedElement.element.classList.add('assigned');
+                draggedElement.element.querySelector('.assignment-indicator').textContent =
+                    `→ ${eventLocations[eventId].name}`;
+
+                // Update travel lines
+                updateTravelLines();
+            });
+        });
+
+        // Travel Lines Update
+        function updateTravelLines() {
+            const svg = document.getElementById('travelLines');
+            svg.innerHTML = '';
+
+            // Draw lines for events with assignments
+            Object.keys(assignments).forEach(eventId => {
+                const event = assignments[eventId];
+                if (event.operators.length > 0 || event.kits.length > 0) {
+                    const loc = eventLocations[eventId];
+                    if (!loc) return;
+
+                    // Draw line from home base to event location
+                    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                    line.setAttribute('x1', homeBase.x);
+                    line.setAttribute('y1', homeBase.y);
+                    line.setAttribute('x2', loc.x);
+                    line.setAttribute('y2', loc.y);
+                    line.classList.add('travel-line');
+                    svg.appendChild(line);
+
+                    // Draw travel time label
+                    const midX = (homeBase.x + loc.x) / 2;
+                    const midY = (homeBase.y + loc.y) / 2;
+                    const travelTime = Math.round(loc.distance / 30 * 60); // Assume 30 mph avg
+
+                    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                    text.setAttribute('x', midX);
+                    text.setAttribute('y', midY - 5);
+                    text.classList.add('travel-time-label');
+                    text.textContent = `${travelTime} min`;
+                    svg.appendChild(text);
+                }
+            });
+        }
+
+        // Initialize
+        updateTravelLines();
+    </script>
+
+</body>
+</html>

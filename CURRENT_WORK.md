@@ -1,19 +1,48 @@
 # CommandCentered - Current Work
 
 **Last Updated:** 2025-11-07
-**Status:** 🎨 UX Design Phase - Weekend Timeline Complete
+**Status:** 🎨 UX Design Phase - Weekend Planner Complete (Timeline/Map/Kit&Team)
 
 ---
 
 ## Latest Session (2025-11-07)
 
-### ✅ Completed: Weekend Timeline with Drag-and-Drop
+### ✅ Completed: Weekend Planner (3-Card Interactive View)
 
-**Goal:** Create weekend timeline for tracking gear/people across multiple events
+**Goal:** Create weekend planner for tracking gear/people/locations across multiple events
 
 **Latest Deliverable:**
 
-**Tactical-07-Weekend-Gantt.html** - **WEEKEND TIMELINE COMPLETE**
+**Tactical-08-Weekend-Planner.html** - **3-CARD WEEKEND PLANNER** ⭐
+   - ✅ Timeline Card (Left): 3-day schedule with event cards
+     - Friday: Kinetic Elements
+     - Saturday: GRAD Recital, 7Attitudes, LDS 2 Shows
+     - Sunday: Rest day
+     - Drop zones for team assignment on each event
+     - Click to select event (syncs with map)
+   - ✅ Map Card (Center): Interactive location visualization
+     - Home base (center point)
+     - 4 event locations plotted on map
+     - Click markers to select events
+     - Auto-updating travel lines when team assigned
+     - Travel time labels (calculated from distance)
+     - Animated dashed lines showing routes
+   - ✅ Kit & Team Card (Right): Resource assignment panel
+     - 5 Operators: Jake M., Sarah K., Mike R., Amy L., Tyler C.
+     - 5 Gear Kits: Video Pro, Photo, Audio, Lighting, Gimbal
+     - Drag-and-drop to timeline event drop zones
+     - Visual feedback when assigned (dimmed + location badge)
+     - Assignment tracking across all events
+   - ✅ Cross-panel synchronization:
+     - Select event → highlights in timeline + map
+     - Assign team → updates map with travel lines
+     - Travel lines auto-calculate based on assignments
+   - ✅ Tactical HUD aesthetic maintained throughout
+   - ✅ Equal 3-column grid layout (1fr 1fr 1fr)
+   - ✅ Events locked to locations (can't move on map)
+   - ✅ Kit/team can move freely between events
+
+**Tactical-07-Weekend-Gantt.html** - **WEEKEND TIMELINE** (previous iteration)
    - ✅ Single-page layout (no horizontal scroll)
    - ✅ Left sidebar with draggable resources:
      - 5 Operators: Jake M., Sarah K., Mike R., Amy L., Tyler C.
@@ -204,6 +233,7 @@ animation: gridMove 20s linear infinite;
 ## Files Modified This Session
 
 **New Files:**
+- `mockups/tactical-08-weekend-planner.html` ⭐ **3-CARD WEEKEND PLANNER** (Timeline/Map/Kit&Team)
 - `mockups/tactical-07-weekend-gantt.html` ⭐ **WEEKEND TIMELINE** (drag-and-drop, single-page, shift-based)
 - `mockups/tactical-06-weekend-timeline.html` (earlier iteration - 3-day timeline grid)
 - `mockups/tactical-01-dashboard.html` ⭐ **THE ONE TO BEAT**
@@ -230,6 +260,8 @@ animation: gridMove 20s linear infinite;
 
 > "need to fit it all on one page though without the horizontal scroll, would love to see just the events-subdivided into shifts, drag adn drop for operators/gear (gear already sorted into kits)"
 
+> "and then a map; like a weekend should have Timeline/Map/Kit&Team. We always plan weekends at a time. Events are locked to Location/travel time. Kit/team can move around. Lines on map auto update when team is assigned"
+
 ---
 
 ## Design Philosophy
@@ -255,17 +287,19 @@ Military command center meets modern logistics software. Terminal green on black
 
 ## Session Success Metrics
 
-✅ **Created:** 10 new mockup files (8 initial + 2 weekend timeline iterations)
+✅ **Created:** 11 new mockup files (8 initial + 3 weekend planning iterations)
 ✅ **Established:** Tactical HUD as baseline aesthetic
 ✅ **Documented:** Complete UX pattern library
-✅ **Completed:** Weekend timeline with drag-and-drop
+✅ **Completed:** 3-card weekend planner with map integration
 ✅ **Committed:** All work saved to git
 ✅ **User Approval:** "the one to beat!"
 
-**Total mockups:** 30 files
+**Total mockups:** 31 files
 **Spec status:** v2.3 LOCKED
 **Design status:** Tactical aesthetic APPROVED
-**Interactive prototype:** Weekend timeline COMPLETE
+**Interactive prototypes:**
+- Weekend timeline COMPLETE
+- Weekend planner (Timeline/Map/Kit&Team) COMPLETE
 
 ---
 
