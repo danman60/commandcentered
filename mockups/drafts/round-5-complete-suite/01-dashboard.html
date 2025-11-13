@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - CommandCentered</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Rajdhani', monospace, sans-serif;
+            background: #030712;
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(6, 182, 212, 0.05) 2px, rgba(6, 182, 212, 0.05) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(6, 182, 212, 0.05) 2px, rgba(6, 182, 212, 0.05) 4px),
+                radial-gradient(ellipse at center, #0a1628 0%, #030712 100%);
+            background-size: 40px 40px, 40px 40px, 100% 100%;
+            color: #e2e8f0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            min-width: 1200px;
+        }
+
+        .sidebar {
+            width: 260px;
+            background: linear-gradient(180deg, #0c1220 0%, #030712 100%);
+            border-right: 2px solid rgba(6, 182, 212, 0.3);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 32px rgba(6, 182, 212, 0.15);
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .logo {
+            padding: 28px 24px;
+            border-bottom: 2px solid rgba(6, 182, 212, 0.3);
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1) 0%, transparent 100%);
+        }
+
+        .logo-text {
+            font-family: 'Orbitron', monospace;
+            font-size: 24px;
+            font-weight: 900;
+            color: #22d3ee;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.8);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-subtitle {
+            font-size: 10px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 6px;
+            font-weight: 600;
+        }
+
+        .nav {
+            flex: 1;
+            padding: 24px 0;
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 24px;
+            color: #94a3b8;
+            text-decoration: none;
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .nav-item:hover {
+            background: rgba(6, 182, 212, 0.1);
+            color: #22d3ee;
+            border-left-color: rgba(6, 182, 212, 0.8);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(90deg, rgba(6, 182, 212, 0.2) 0%, transparent 100%);
+            color: #22d3ee;
+            border-left-color: #06b6d4;
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.5);
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            min-width: 0;
+        }
+
+        .top-bar {
+            background: linear-gradient(90deg, #0c1220 0%, #1e293b 100%);
+            border-bottom: 2px solid rgba(6, 182, 212, 0.3);
+            padding: 18px 36px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+            flex-shrink: 0;
+        }
+
+        .top-bar-left h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: 26px;
+            font-weight: 900;
+            color: #22d3ee;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.8);
+        }
+
+        .top-bar-left p {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 4px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .top-bar-right {
+            display: flex;
+            gap: 18px;
+            align-items: center;
+        }
+
+        .status-indicator {
+            padding: 8px 16px;
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.5);
+            border-radius: 4px;
+            color: #10b981;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .user-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 6px;
+            background: linear-gradient(135deg, #0e7490 0%, #0c4a6e 100%);
+            border: 2px solid rgba(6, 182, 212, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #22d3ee;
+            font-weight: 900;
+            font-size: 18px;
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.8);
+        }
+
+        .dashboard-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 28px 36px;
+        }
+
+        /* Cards */
+        .card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.5) 0%, rgba(15, 23, 42, 0.7) 100%);
+            border: 2px solid rgba(6, 182, 212, 0.4);
+            border-radius: 8px;
+            padding: 28px;
+            margin-bottom: 28px;
+        }
+
+        .card-header {
+            font-family: 'Orbitron', monospace;
+            font-size: 18px;
+            font-weight: 900;
+            color: #22d3ee;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.5);
+        }
+
+        /* Grid */
+        .grid {
+            display: grid;
+            gap: 28px;
+        }
+
+        .grid-2 { grid-template-columns: repeat(2, 1fr); }
+        .grid-3 { grid-template-columns: repeat(3, 1fr); }
+
+        /* View Toggle */
+        .view-toggle {
+            display: flex;
+            gap: 0;
+            margin-bottom: 28px;
+        }
+
+        .view-toggle-btn {
+            padding: 14px 28px;
+            background: rgba(15, 23, 42, 0.7);
+            border: 2px solid rgba(6, 182, 212, 0.3);
+            color: #64748b;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .view-toggle-btn:first-child {
+            border-right: none;
+            border-radius: 6px 0 0 6px;
+        }
+
+        .view-toggle-btn:last-child {
+            border-radius: 0 6px 6px 0;
+        }
+
+        .view-toggle-btn.active {
+            background: linear-gradient(135deg, #06b6d4 0%, #0e7490 100%);
+            border-color: #06b6d4;
+            color: #fff;
+        }
+
+        .view-toggle-btn:hover:not(.active) {
+            background: rgba(6, 182, 212, 0.1);
+            color: #22d3ee;
+        }
+
+        /* Utility */
+        .text-muted { color: #94a3b8; }
+        .text-accent { color: #22d3ee; }
+        .text-success { color: #10b981; }
+        .text-warning { color: #f59e0b; }
+        .mb-1 { margin-bottom: 0.5rem; }
+        .mb-2 { margin-bottom: 1rem; }
+        .mb-3 { margin-bottom: 1.5rem; }
+        .mb-4 { margin-bottom: 2rem; }
+
+        .button {
+            padding: 14px 28px;
+            background: linear-gradient(135deg, #0e7490 0%, #0c4a6e 100%);
+            border: 2px solid rgba(6, 182, 212, 0.6);
+            border-radius: 6px;
+            color: #e2e8f0;
+            font-weight: 900;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+
+        .button:hover {
+            background: linear-gradient(135deg, #06b6d4 0%, #0e7490 100%);
+            box-shadow: 0 0 40px rgba(6, 182, 212, 0.6);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <div class="logo-text">
+                <span>⚡</span>
+                <span>COMMAND</span>
+            </div>
+            <div class="logo-subtitle">StreamStage Operations</div>
+        </div>
+        <nav class="nav">
+            <a href="01-dashboard.html" class="nav-item active">
+                <span>📊</span>
+                <span>Dashboard</span>
+            </a>
+            <a href="02-pipeline.html" class="nav-item">
+                <span>⚡</span>
+                <span>Pipeline</span>
+            </a>
+            <a href="03-planning.html" class="nav-item">
+                <span>📅</span>
+                <span>Planning</span>
+            </a>
+            <a href="04-deliverables.html" class="nav-item">
+                <span>📦</span>
+                <span>Deliverables</span>
+            </a>
+            <a href="05-communications.html" class="nav-item">
+                <span>💬</span>
+                <span>Communications</span>
+            </a>
+            <a href="06-files.html" class="nav-item">
+                <span>📁</span>
+                <span>Files</span>
+            </a>
+            <a href="07-operators.html" class="nav-item">
+                <span>👥</span>
+                <span>Operators</span>
+            </a>
+            <a href="08-gear.html" class="nav-item">
+                <span>🎥</span>
+                <span>Gear</span>
+            </a>
+            <a href="09-reports.html" class="nav-item">
+                <span>📈</span>
+                <span>Reports</span>
+            </a>
+            <a href="10-customize.html" class="nav-item">
+                <span>⚙️</span>
+                <span>Customize</span>
+            </a>
+            <a href="11-settings.html" class="nav-item">
+                <span>🔧</span>
+                <span>Settings</span>
+            </a>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <div class="top-bar">
+            <div class="top-bar-left">
+                <h1>📊 DASHBOARD</h1>
+                <p>COMMAND OVERVIEW</p>
+            </div>
+            <div class="top-bar-right">
+                <div class="status-indicator">● SYSTEMS OPERATIONAL</div>
+                <div class="user-avatar">DA</div>
+            </div>
+        </div>
+        <div class="dashboard-content">
+            <!-- View Controls -->
+            <div class="view-toggle">
+                <button class="view-toggle-btn active" onclick="toggleView('card')">CARD VIEW</button>
+                <button class="view-toggle-btn" onclick="toggleView('table')">TABLE VIEW</button>
+            </div>
+
+            <div class="grid grid-2 mb-4" data-view="card">
+                <!-- Financial Snapshot (Half Width) + Pie Chart -->
+                <div class="card">
+                    <div class="card-header">Financial Snapshot</div>
+                    <div class="grid grid-2 mb-3">
+                        <div>
+                            <div class="text-muted mb-1">Month Revenue</div>
+                            <div style="font-size: 2rem; font-weight: 700; color: #10b981;">$45,230</div>
+                        </div>
+                        <div>
+                            <div class="text-muted mb-1">Pending</div>
+                            <div style="font-size: 2rem; font-weight: 700; color: #f59e0b;">$12,500</div>
+                        </div>
+                    </div>
+                    <div style="width: 100%; height: 200px; background: #030712; border: 1px solid #1f2937; display: flex; align-items: center; justify-content: center; position: relative;">
+                        <svg width="180" height="180" viewBox="0 0 180 180">
+                            <circle cx="90" cy="90" r="70" fill="none" stroke="#1f2937" stroke-width="20"/>
+                            <circle cx="90" cy="90" r="70" fill="none" stroke="#06b6d4" stroke-width="20"
+                                    stroke-dasharray="264" stroke-dashoffset="66" transform="rotate(-90 90 90)"/>
+                            <circle cx="90" cy="90" r="70" fill="none" stroke="#10b981" stroke-width="20"
+                                    stroke-dasharray="264" stroke-dashoffset="176" transform="rotate(0 90 90)"/>
+                            <circle cx="90" cy="90" r="70" fill="none" stroke="#f59e0b" stroke-width="20"
+                                    stroke-dasharray="264" stroke-dashoffset="242" transform="rotate(90 90 90)"/>
+                        </svg>
+                        <div style="position: absolute; right: 10px; top: 10px; font-size: 0.75rem;">
+                            <div><span style="color: #06b6d4;">■</span> Dance Recitals 45%</div>
+                            <div><span style="color: #10b981;">■</span> Concerts 30%</div>
+                            <div><span style="color: #f59e0b;">■</span> Promo Videos 25%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Next Actions Panel -->
+                <div class="card">
+                    <div class="card-header">⚡ Next Actions</div>
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <div style="background: #030712; border-left: 3px solid #ef4444; padding: 1rem;">
+                            <div style="font-weight: 700; margin-bottom: 0.25rem;">Contact Lead: ABC Dance Studio</div>
+                            <div class="text-muted" style="font-size: 0.875rem;">Pipeline: NEW → Last contact 5 days ago</div>
+                            <button class="button" style="margin-top: 0.75rem; padding: 0.5rem 1rem; font-size: 0.75rem;">OPEN IN PIPELINE →</button>
+                        </div>
+                        <div style="background: #030712; border-left: 3px solid #f59e0b; padding: 1rem;">
+                            <div style="font-weight: 700; margin-bottom: 0.25rem;">Send Contract: XYZ Corporation</div>
+                            <div class="text-muted" style="font-size: 0.875rem;">Pipeline: QUALIFIED → Follow-up due today</div>
+                            <button class="button" style="margin-top: 0.75rem; padding: 0.5rem 1rem; font-size: 0.75rem;">OPEN IN PIPELINE →</button>
+                        </div>
+                        <div style="background: #030712; border-left: 3px solid #3b82f6; padding: 1rem;">
+                            <div style="font-weight: 700; margin-bottom: 0.25rem;">Follow Up: Metro Promos</div>
+                            <div class="text-muted" style="font-size: 0.875rem;">Pipeline: PROPOSAL SENT → Sent 3 days ago</div>
+                            <button class="button" style="margin-top: 0.75rem; padding: 0.5rem 1rem; font-size: 0.75rem;">OPEN IN PIPELINE →</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calendar with Event Bars -->
+            <div class="card">
+                <div class="card-header">November 2025 - Event Calendar</div>
+                <div style="background: #030712; padding: 1rem; border: 1px solid #1f2937;">
+                    <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; background: #1f2937;">
+                        <div style="background: #111827; padding: 0.5rem; text-align: center; font-weight: 700; color: #06b6d4; font-size: 0.75rem;">MON</div>
+                        <div style="background: #111827; padding: 0.5rem; text-align: center; font-weight: 700; color: #06b6d4; font-size: 0.75rem;">TUE</div>
+                        <div style="background: #111827; padding: 0.5rem; text-align: center; font-weight: 700; color: #06b6d4; font-size: 0.75rem;">WED</div>
+                        <div style="background: #111827; padding: 0.5rem; text-align: center; font-weight: 700; color: #06b6d4; font-size: 0.75rem;">THU</div>
+                        <div style="background: #111827; padding: 0.5rem; text-align: center; font-weight: 700; color: #06b6d4; font-size: 0.75rem;">FRI</div>
+                        <div style="background: #111827; padding: 0.5rem; text-align: center; font-weight: 700; color: #06b6d4; font-size: 0.75rem;">SAT</div>
+                        <div style="background: #111827; padding: 0.5rem; text-align: center; font-weight: 700; color: #06b6d4; font-size: 0.75rem;">SUN</div>
+
+                        <div style="background: #030712; padding: 0.5rem; min-height: 80px; color: #9ca3af;"></div>
+                        <div style="background: #030712; padding: 0.5rem; min-height: 80px; color: #9ca3af;"></div>
+                        <div style="background: #030712; padding: 0.5rem; min-height: 80px; color: #9ca3af;"></div>
+                        <div style="background: #111827; padding: 0.5rem; min-height: 80px; color: #f9fafb;"><div style="font-weight: 700; font-size: 0.875rem;">1</div></div>
+                        <div style="background: #111827; padding: 0.5rem; min-height: 80px; color: #f9fafb;"><div style="font-weight: 700; font-size: 0.875rem;">2</div></div>
+                        <div style="background: #111827; padding: 0.5rem; min-height: 80px; color: #f9fafb;"><div style="font-weight: 700; font-size: 0.875rem;">3</div></div>
+                        <div style="background: #111827; padding: 0.5rem; min-height: 80px; color: #f9fafb;"><div style="font-weight: 700; font-size: 0.875rem;">4</div></div>
+                        <div style="background: #111827; padding: 0.5rem; min-height: 80px; color: #f9fafb;"><div style="font-weight: 700; font-size: 0.875rem;">5</div></div>
+                        <div style="background: #111827; padding: 0.5rem; min-height: 80px; color: #f9fafb;"><div style="font-weight: 700; font-size: 0.875rem;">6</div></div>
+                        <div style="background: #111827; padding: 0.5rem; min-height: 80px; color: #f9fafb;"><div style="font-weight: 700; font-size: 0.875rem;">7</div></div>
+                        <div style="background: #111827; padding: 0.5rem; min-height: 80px; color: #f9fafb;">
+                            <div style="font-weight: 700; font-size: 0.875rem;">8</div>
+                            <div style="background: #3b82f6; color: white; padding: 0.25rem; margin-top: 0.25rem; font-size: 0.75rem; border-radius: 2px; font-weight: 600;">ABC Dance Recital</div>
+                        </div>
+                        <div style="background: #111827; padding: 0.5rem; min-height: 80px; color: #f9fafb;"><div style="font-weight: 700; font-size: 0.875rem;">9</div></div>
+                        <div style="background: #111827; padding: 0.5rem; min-height: 80px; color: #f9fafb;"><div style="font-weight: 700; font-size: 0.875rem;">10</div></div>
+                        <div style="background: #111827; padding: 0.5rem; min-height: 80px; color: #f9fafb;"><div style="font-weight: 700; font-size: 0.875rem;">11</div></div>
+                        <div style="background: #111827; padding: 0.5rem; min-height: 80px; color: #f9fafb;"><div style="font-weight: 700; font-size: 0.875rem;">12</div></div>
+                        <div style="background: #111827; padding: 0.5rem; min-height: 80px; color: #f9fafb;"><div style="font-weight: 700; font-size: 0.875rem;">13</div></div>
+                        <div style="background: #111827; padding: 0.5rem; min-height: 80px; color: #f9fafb;"><div style="font-weight: 700; font-size: 0.875rem;">14</div></div>
+                        <div style="background: #111827; padding: 0.5rem; min-height: 80px; color: #f9fafb;">
+                            <div style="font-weight: 700; font-size: 0.875rem;">15</div>
+                            <div style="background: #10b981; color: white; padding: 0.25rem; margin-top: 0.25rem; font-size: 0.75rem; border-radius: 2px; font-weight: 600;">XYZ Concert</div>
+                        </div>
+                        <div style="background: #111827; padding: 0.5rem; min-height: 80px; color: #f9fafb;"><div style="font-weight: 700; font-size: 0.875rem;">16</div></div>
+                        <div style="background: #111827; padding: 0.5rem; min-height: 80px; color: #f9fafb;"><div style="font-weight: 700; font-size: 0.875rem;">17</div></div>
+                        <div style="background: #111827; padding: 0.5rem; min-height: 80px; color: #f9fafb;"><div style="font-weight: 700; font-size: 0.875rem;">18</div></div>
+                        <div style="background: #111827; padding: 0.5rem; min-height: 80px; color: #f9fafb;"><div style="font-weight: 700; font-size: 0.875rem;">19</div></div>
+                        <div style="background: #111827; padding: 0.5rem; min-height: 80px; color: #f9fafb;"><div style="font-weight: 700; font-size: 0.875rem;">20</div></div>
+                        <div style="background: #111827; padding: 0.5rem; min-height: 80px; color: #f9fafb;"><div style="font-weight: 700; font-size: 0.875rem;">21</div></div>
+                        <div style="background: #111827; padding: 0.5rem; min-height: 80px; color: #f9fafb;">
+                            <div style="font-weight: 700; font-size: 0.875rem;">22</div>
+                            <div style="background: #f59e0b; color: white; padding: 0.25rem; margin-top: 0.25rem; font-size: 0.75rem; border-radius: 2px; font-weight: 600;">Metro Promo Video</div>
+                        </div>
+                        <div style="background: #111827; padding: 0.5rem; min-height: 80px; color: #f9fafb;"><div style="font-weight: 700; font-size: 0.875rem;">23</div></div>
+                        <div style="background: #111827; padding: 0.5rem; min-height: 80px; color: #f9fafb;"><div style="font-weight: 700; font-size: 0.875rem;">24</div></div>
+                        <div style="background: #111827; padding: 0.5rem; min-height: 80px; color: #f9fafb;"><div style="font-weight: 700; font-size: 0.875rem;">25</div></div>
+                        <div style="background: #111827; padding: 0.5rem; min-height: 80px; color: #f9fafb;"><div style="font-weight: 700; font-size: 0.875rem;">26</div></div>
+                        <div style="background: #111827; padding: 0.5rem; min-height: 80px; color: #f9fafb;"><div style="font-weight: 700; font-size: 0.875rem;">27</div></div>
+                        <div style="background: #111827; padding: 0.5rem; min-height: 80px; color: #f9fafb;"><div style="font-weight: 700; font-size: 0.875rem;">28</div></div>
+                        <div style="background: #111827; padding: 0.5rem; min-height: 80px; color: #f9fafb;"><div style="font-weight: 700; font-size: 0.875rem;">29</div></div>
+                        <div style="background: #111827; padding: 0.5rem; min-height: 80px; color: #f9fafb;"><div style="font-weight: 700; font-size: 0.875rem;">30</div></div>
+                        <div style="background: #030712; padding: 0.5rem; min-height: 80px; color: #9ca3af;"></div>
+                        <div style="background: #030712; padding: 0.5rem; min-height: 80px; color: #9ca3af;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Critical Alerts Panel -->
+            <div class="grid grid-2 mb-4">
+                <div class="card">
+                    <div class="card-header" style="color: #ef4444;">⚠️ Critical Alerts</div>
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <div style="background: rgba(239, 68, 68, 0.1); border-left: 3px solid #ef4444; padding: 1rem;">
+                            <div style="font-weight: 700; margin-bottom: 0.25rem; color: #ef4444;">Equipment Conflict</div>
+                            <div class="text-muted" style="font-size: 0.875rem;">Canon EOS R5 double-booked for Nov 15 (XYZ Concert & Metro Promo)</div>
+                            <button class="button" style="margin-top: 0.75rem; padding: 0.5rem 1rem; font-size: 0.75rem; background: #ef4444;">RESOLVE →</button>
+                        </div>
+                        <div style="background: rgba(239, 68, 68, 0.1); border-left: 3px solid #ef4444; padding: 1rem;">
+                            <div style="font-weight: 700; margin-bottom: 0.25rem; color: #ef4444;">Incomplete Questionnaire</div>
+                            <div class="text-muted" style="font-size: 0.875rem;">ABC Dance Recital - 3 questions unanswered, event in 2 days</div>
+                            <button class="button" style="margin-top: 0.75rem; padding: 0.5rem 1rem; font-size: 0.75rem; background: #f59e0b;">SEND REMINDER →</button>
+                        </div>
+                        <div style="background: rgba(239, 68, 68, 0.1); border-left: 3px solid #ef4444; padding: 1rem;">
+                            <div style="font-weight: 700; margin-bottom: 0.25rem; color: #ef4444;">Unsigned Contract</div>
+                            <div class="text-muted" style="font-size: 0.875rem;">Metro Promo Video - Contract sent 7 days ago, no signature</div>
+                            <button class="button" style="margin-top: 0.75rem; padding: 0.5rem 1rem; font-size: 0.75rem; background: #3b82f6;">FOLLOW UP →</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity Feed -->
+                <div class="card">
+                    <div class="card-header" style="color: #10b981;">📋 Recent Activity</div>
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <div style="background: rgba(16, 185, 129, 0.1); border-left: 3px solid #10b981; padding: 1rem;">
+                            <div style="font-weight: 700; margin-bottom: 0.25rem; color: #10b981;">✓ Contract Signed</div>
+                            <div class="text-muted" style="font-size: 0.875rem;">XYZ Concert - Contract signed by John Smith, 2 hours ago</div>
+                            <button class="button" style="margin-top: 0.75rem; padding: 0.5rem 1rem; font-size: 0.75rem;">VIEW →</button>
+                        </div>
+                        <div style="background: rgba(16, 185, 129, 0.1); border-left: 3px solid #10b981; padding: 1rem;">
+                            <div style="font-weight: 700; margin-bottom: 0.25rem; color: #10b981;">✓ Payment Received</div>
+                            <div class="text-muted" style="font-size: 0.875rem;">ABC Dance Recital - $2,500 deposit received via Stripe</div>
+                            <button class="button" style="margin-top: 0.75rem; padding: 0.5rem 1rem; font-size: 0.75rem;">VIEW →</button>
+                        </div>
+                        <div style="background: rgba(239, 68, 68, 0.1); border-left: 3px solid #ef4444; padding: 1rem;">
+                            <div style="font-weight: 700; margin-bottom: 0.25rem; color: #ef4444;">⚠ Invoice Overdue</div>
+                            <div class="text-muted" style="font-size: 0.875rem;">Downtown Festival - Final payment $3,200 overdue by 5 days</div>
+                            <button class="button" style="margin-top: 0.75rem; padding: 0.5rem 1rem; font-size: 0.75rem; background: #f59e0b;">SEND REMINDER →</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-3 mb-4">
+                <div class="card">
+                    <div class="card-header">Active Events</div>
+                    <div style="font-size: 3rem; font-weight: 700; color: #06b6d4;">12</div>
+                    <div class="text-muted">This Month</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">Operators Available</div>
+                    <div style="font-size: 3rem; font-weight: 700; color: #10b981;">8</div>
+                    <div class="text-muted">Ready to Deploy</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">Pending Deliverables</div>
+                    <div style="font-size: 3rem; font-weight: 700; color: #f59e0b;">5</div>
+                    <div class="text-muted">Due This Week</div>
+                </div>
+            </div>
+
+            <!-- EVENT PIPELINE (NEW - Round 3) -->
+            <div class="card mb-4">
+                <div class="card-header" style="color: #06b6d4;">📊 Event Pipeline</div>
+                <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 1rem; padding: 1rem;">
+                    <div style="text-align: center; background: rgba(6, 182, 212, 0.1); padding: 1.5rem; border-radius: 4px; border: 2px solid rgba(6, 182, 212, 0.3);">
+                        <div style="font-size: 0.75rem; color: #64748b; font-weight: 700; letter-spacing: 1px; margin-bottom: 0.5rem;">PROPOSAL</div>
+                        <div style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.5rem;">SENT</div>
+                        <div style="font-size: 2.5rem; font-weight: 700; color: #06b6d4; margin-bottom: 0.25rem;">5</div>
+                        <div style="font-size: 0.875rem; color: #10b981; font-weight: 600;">$18K</div>
+                    </div>
+                    <div style="text-align: center; background: rgba(6, 182, 212, 0.1); padding: 1.5rem; border-radius: 4px; border: 2px solid rgba(6, 182, 212, 0.3);">
+                        <div style="font-size: 0.75rem; color: #64748b; font-weight: 700; letter-spacing: 1px; margin-bottom: 0.5rem;">CONTRACT</div>
+                        <div style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.5rem;">SIGNED</div>
+                        <div style="font-size: 2.5rem; font-weight: 700; color: #06b6d4; margin-bottom: 0.25rem;">3</div>
+                        <div style="font-size: 0.875rem; color: #10b981; font-weight: 600;">$12K</div>
+                    </div>
+                    <div style="text-align: center; background: rgba(6, 182, 212, 0.1); padding: 1.5rem; border-radius: 4px; border: 2px solid rgba(6, 182, 212, 0.3);">
+                        <div style="font-size: 0.75rem; color: #64748b; font-weight: 700; letter-spacing: 1px; margin-bottom: 0.5rem;">DEPOSIT</div>
+                        <div style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.5rem;">PAID</div>
+                        <div style="font-size: 2.5rem; font-weight: 700; color: #06b6d4; margin-bottom: 0.25rem;">8</div>
+                        <div style="font-size: 0.875rem; color: #10b981; font-weight: 600;">$32K</div>
+                    </div>
+                    <div style="text-align: center; background: rgba(6, 182, 212, 0.1); padding: 1.5rem; border-radius: 4px; border: 2px solid rgba(6, 182, 212, 0.3);">
+                        <div style="font-size: 0.75rem; color: #64748b; font-weight: 700; letter-spacing: 1px; margin-bottom: 0.5rem;">EVENT</div>
+                        <div style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.5rem;">CONFIRMED</div>
+                        <div style="font-size: 2.5rem; font-weight: 700; color: #06b6d4; margin-bottom: 0.25rem;">12</div>
+                        <div style="font-size: 0.875rem; color: #10b981; font-weight: 600;">$48K</div>
+                    </div>
+                    <div style="text-align: center; background: rgba(6, 182, 212, 0.1); padding: 1.5rem; border-radius: 4px; border: 2px solid rgba(6, 182, 212, 0.3);">
+                        <div style="font-size: 0.75rem; color: #64748b; font-weight: 700; letter-spacing: 1px; margin-bottom: 0.5rem;">EVENT</div>
+                        <div style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.5rem;">COMPLETE</div>
+                        <div style="font-size: 2.5rem; font-weight: 700; color: #06b6d4; margin-bottom: 0.25rem;">4</div>
+                        <div style="font-size: 0.875rem; color: #10b981; font-weight: 600;">$16K</div>
+                    </div>
+                    <div style="text-align: center; background: rgba(6, 182, 212, 0.1); padding: 1.5rem; border-radius: 4px; border: 2px solid rgba(6, 182, 212, 0.3);">
+                        <div style="font-size: 0.75rem; color: #64748b; font-weight: 700; letter-spacing: 1px; margin-bottom: 0.5rem;">FILES</div>
+                        <div style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.5rem;">DELIVERED</div>
+                        <div style="font-size: 2.5rem; font-weight: 700; color: #06b6d4; margin-bottom: 0.25rem;">2</div>
+                        <div style="font-size: 0.875rem; color: #10b981; font-weight: 600;">$8K</div>
+                    </div>
+                </div>
+                <div style="text-align: center; padding: 0.75rem; border-top: 1px solid #1f2937; color: #64748b; font-size: 0.875rem;">
+                    Click any stage to view events  •  Kanban-style view available in Pipeline page
+                </div>
+            </div>
+
+            <!-- ANNUAL REVENUE (NEW - Round 3) -->
+            <div class="card mb-4">
+                <div class="card-header" style="color: #10b981;">💰 Annual Revenue Summary</div>
+                <div style="padding: 2rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1rem;">
+                        <div style="font-size: 2.5rem; font-weight: 700; color: #10b981;">$124,500</div>
+                        <div style="font-size: 0.875rem; color: #64748b;">2025 Total Revenue</div>
+                    </div>
+                    <div style="background: #1f2937; border-radius: 8px; height: 24px; overflow: hidden; margin-bottom: 1rem;">
+                        <div style="background: linear-gradient(90deg, #10b981 0%, #06b6d4 100%); width: 68%; height: 100%; display: flex; align-items: center; justify-content: flex-end; padding-right: 1rem; color: white; font-size: 0.75rem; font-weight: 700;">68%</div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; color: #64748b; font-size: 0.875rem; margin-bottom: 2rem;">
+                        <span>$0</span>
+                        <span style="color: #06b6d4; font-weight: 600;">Goal: $180,000</span>
+                        <span>$180K</span>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; padding-top: 1rem; border-top: 1px solid #1f2937;">
+                        <div>
+                            <div style="font-size: 0.75rem; color: #64748b; margin-bottom: 0.5rem;">THIS MONTH</div>
+                            <div style="font-size: 1.5rem; font-weight: 700; color: #06b6d4;">$24,500</div>
+                            <div style="font-size: 0.875rem; color: #10b981; font-weight: 600;">↑ +12% vs last month</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.75rem; color: #64748b; margin-bottom: 0.5rem;">LAST MONTH</div>
+                            <div style="font-size: 1.5rem; font-weight: 700; color: #94a3b8;">$21,800</div>
+                            <div style="font-size: 0.875rem; color: #64748b;">October 2025</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="text-align: center; padding: 0.75rem; border-top: 1px solid #1f2937; color: #64748b; font-size: 0.875rem;">
+                    Simple motivational summary  •  Toggle on/off in Customize page
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleView(view) {
+            document.querySelectorAll('.view-toggle-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            document.querySelectorAll('[data-view]').forEach(el => {
+                el.style.display = 'none';
+            });
+            document.querySelectorAll('[data-view="' + view + '"]').forEach(el => {
+                el.style.display = 'block';
+            });
+        }
+    </script>
+</body>
+</html>
