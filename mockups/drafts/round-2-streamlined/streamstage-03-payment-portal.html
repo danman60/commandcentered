@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Portal - StreamStage</title>
+    <style>
+        :root {
+            --streamstage-primary: #1a1a1a;
+            --streamstage-secondary: #2a2a2a;
+            --streamstage-accent: #00bcd4;
+            --streamstage-success: #4caf50;
+            --streamstage-warning: #ff9800;
+            --streamstage-danger: #f44336;
+            --streamstage-text: #333333;
+            --streamstage-text-light: #666666;
+            --streamstage-border: #e0e0e0;
+            --streamstage-bg: #ffffff;
+            --streamstage-bg-secondary: #f5f5f5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--streamstage-bg-secondary);
+            color: var(--streamstage-text);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: var(--streamstage-bg);
+            border-bottom: 1px solid var(--streamstage-border);
+            padding: 20px 0;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--streamstage-primary);
+        }
+
+        .logo-accent {
+            color: var(--streamstage-accent);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 24px;
+        }
+
+        /* Page Header */
+        .page-header {
+            margin-bottom: 32px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--streamstage-primary);
+            margin-bottom: 8px;
+        }
+
+        .page-subtitle {
+            font-size: 16px;
+            color: var(--streamstage-text-light);
+        }
+
+        /* Summary Cards */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .summary-card {
+            background: var(--streamstage-bg);
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .summary-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--streamstage-text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .summary-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--streamstage-primary);
+            margin-bottom: 4px;
+        }
+
+        .summary-value.success {
+            color: var(--streamstage-success);
+        }
+
+        .summary-value.warning {
+            color: var(--streamstage-warning);
+        }
+
+        .summary-value.danger {
+            color: var(--streamstage-danger);
+        }
+
+        .summary-detail {
+            font-size: 14px;
+            color: var(--streamstage-text-light);
+        }
+
+        /* Payment Schedule Timeline */
+        .timeline-section {
+            background: var(--streamstage-bg);
+            border-radius: 8px;
+            padding: 32px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--streamstage-primary);
+            margin-bottom: 24px;
+        }
+
+        .payment-timeline {
+            position: relative;
+        }
+
+        .timeline-connector {
+            position: absolute;
+            left: 32px;
+            top: 20px;
+            width: 2px;
+            height: calc(100% - 40px);
+            background: var(--streamstage-border);
+        }
+
+        .payment-item {
+            position: relative;
+            display: grid;
+            grid-template-columns: 80px 1fr auto;
+            gap: 24px;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--streamstage-border);
+        }
+
+        .payment-item:last-child {
+            border-bottom: none;
+        }
+
+        .payment-status {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .status-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            z-index: 1;
+            background: var(--streamstage-bg);
+        }
+
+        .status-icon.completed {
+            background: var(--streamstage-success);
+            color: white;
+        }
+
+        .status-icon.pending {
+            background: var(--streamstage-warning);
+            color: white;
+        }
+
+        .status-icon.overdue {
+            background: var(--streamstage-danger);
+            color: white;
+        }
+
+        .status-icon.upcoming {
+            background: var(--streamstage-border);
+            color: var(--streamstage-text-light);
+        }
+
+        .payment-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .payment-type {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--streamstage-primary);
+        }
+
+        .payment-date {
+            font-size: 14px;
+            color: var(--streamstage-text-light);
+        }
+
+        .payment-date.overdue {
+            color: var(--streamstage-danger);
+            font-weight: 600;
+        }
+
+        .payment-amount {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--streamstage-primary);
+            text-align: right;
+        }
+
+        .payment-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--streamstage-accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0097a7;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 188, 212, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--streamstage-bg-secondary);
+            color: var(--streamstage-text);
+            border: 1px solid var(--streamstage-border);
+        }
+
+        .btn-secondary:hover {
+            background: #e8e8e8;
+        }
+
+        .btn-success {
+            background: var(--streamstage-success);
+            color: white;
+        }
+
+        .btn-disabled {
+            background: var(--streamstage-border);
+            color: var(--streamstage-text-light);
+            cursor: not-allowed;
+        }
+
+        /* Invoice Section */
+        .invoice-section {
+            background: var(--streamstage-bg);
+            border-radius: 8px;
+            padding: 32px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 32px;
+        }
+
+        .invoice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 2px solid var(--streamstage-border);
+        }
+
+        .invoice-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--streamstage-primary);
+            margin-bottom: 8px;
+        }
+
+        .invoice-number {
+            font-size: 14px;
+            color: var(--streamstage-text-light);
+        }
+
+        .invoice-dates {
+            text-align: right;
+        }
+
+        .invoice-date-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--streamstage-text-light);
+            text-transform: uppercase;
+        }
+
+        .invoice-date-value {
+            font-size: 14px;
+            color: var(--streamstage-text);
+        }
+
+        .invoice-table {
+            width: 100%;
+            margin-bottom: 24px;
+        }
+
+        .invoice-table th {
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--streamstage-text-light);
+            text-transform: uppercase;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--streamstage-border);
+        }
+
+        .invoice-table td {
+            padding: 16px 0;
+            border-bottom: 1px solid var(--streamstage-border);
+        }
+
+        .invoice-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .invoice-total {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 24px;
+        }
+
+        .total-box {
+            background: var(--streamstage-bg-secondary);
+            border-radius: 8px;
+            padding: 24px;
+            min-width: 320px;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .total-row.final {
+            font-size: 20px;
+            font-weight: 700;
+            padding-top: 12px;
+            border-top: 2px solid var(--streamstage-border);
+            color: var(--streamstage-primary);
+        }
+
+        /* Alert Boxes */
+        .alert {
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .alert-warning {
+            background: rgba(255, 152, 0, 0.1);
+            border-left: 4px solid var(--streamstage-warning);
+        }
+
+        .alert-danger {
+            background: rgba(244, 67, 54, 0.1);
+            border-left: 4px solid var(--streamstage-danger);
+        }
+
+        .alert-success {
+            background: rgba(76, 175, 80, 0.1);
+            border-left: 4px solid var(--streamstage-success);
+        }
+
+        .alert-icon {
+            font-size: 20px;
+            line-height: 1;
+        }
+
+        .alert-content {
+            flex: 1;
+        }
+
+        .alert-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .alert-text {
+            font-size: 14px;
+            color: var(--streamstage-text);
+        }
+
+        /* Status Badge */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-badge.paid {
+            background: rgba(76, 175, 80, 0.1);
+            color: var(--streamstage-success);
+        }
+
+        .status-badge.pending {
+            background: rgba(255, 152, 0, 0.1);
+            color: var(--streamstage-warning);
+        }
+
+        .status-badge.overdue {
+            background: rgba(244, 67, 54, 0.1);
+            color: var(--streamstage-danger);
+        }
+
+        .badge-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .payment-item {
+                grid-template-columns: 60px 1fr;
+                gap: 16px;
+            }
+
+            .payment-actions {
+                grid-column: 2;
+                margin-top: 12px;
+            }
+
+            .invoice-header {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .invoice-dates {
+                text-align: left;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">
+                Stream<span class="logo-accent">Stage</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Container -->
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="page-title">Payment Portal</div>
+            <div class="page-subtitle">Spring Recital 2025 - Elite Dance Studio</div>
+        </div>
+
+        <!-- Overdue Alert -->
+        <div class="alert alert-danger">
+            <div class="alert-icon">⚠️</div>
+            <div class="alert-content">
+                <div class="alert-title">Payment Overdue</div>
+                <div class="alert-text">Your final payment of $1,372.50 was due on June 8, 2025. Please submit payment immediately to avoid service interruption.</div>
+            </div>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="summary-grid">
+            <div class="summary-card">
+                <div class="summary-label">Total Amount</div>
+                <div class="summary-value">$2,745.00</div>
+                <div class="summary-detail">Contract #SS-2025-001234</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-label">Amount Paid</div>
+                <div class="summary-value success">$1,372.50</div>
+                <div class="summary-detail">1 of 2 payments completed</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-label">Amount Due</div>
+                <div class="summary-value danger">$1,372.50</div>
+                <div class="summary-detail">Overdue by 3 days</div>
+            </div>
+        </div>
+
+        <!-- Payment Schedule Timeline -->
+        <div class="timeline-section">
+            <div class="section-title">Payment Schedule</div>
+
+            <div class="payment-timeline">
+                <div class="timeline-connector"></div>
+
+                <!-- Deposit Payment (Completed) -->
+                <div class="payment-item">
+                    <div class="payment-status">
+                        <div class="status-icon completed">✓</div>
+                    </div>
+                    <div class="payment-info">
+                        <div class="payment-type">Deposit Payment (50%)</div>
+                        <div class="payment-date">Paid on January 8, 2025</div>
+                    </div>
+                    <div class="payment-amount">$1,372.50</div>
+                    <div class="payment-actions">
+                        <span class="status-badge paid">
+                            <span class="badge-dot"></span>
+                            Paid
+                        </span>
+                        <button class="btn btn-secondary" onclick="viewReceipt('deposit')">
+                            View Receipt
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Final Payment (Overdue) -->
+                <div class="payment-item">
+                    <div class="payment-status">
+                        <div class="status-icon overdue">!</div>
+                    </div>
+                    <div class="payment-info">
+                        <div class="payment-type">Final Payment (50%)</div>
+                        <div class="payment-date overdue">Due: June 8, 2025 (3 days overdue)</div>
+                    </div>
+                    <div class="payment-amount">$1,372.50</div>
+                    <div class="payment-actions">
+                        <span class="status-badge overdue">
+                            <span class="badge-dot"></span>
+                            Overdue
+                        </span>
+                        <button class="btn btn-primary" onclick="makePayment('final')">
+                            Pay Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Invoice Section -->
+        <div class="invoice-section">
+            <div class="invoice-header">
+                <div>
+                    <div class="invoice-title">Invoice</div>
+                    <div class="invoice-number">INV-SS-2025-001234</div>
+                </div>
+                <div class="invoice-dates">
+                    <div>
+                        <div class="invoice-date-label">Issue Date</div>
+                        <div class="invoice-date-value">January 8, 2025</div>
+                    </div>
+                    <div style="margin-top: 12px;">
+                        <div class="invoice-date-label">Due Date</div>
+                        <div class="invoice-date-value">June 8, 2025</div>
+                    </div>
+                </div>
+            </div>
+
+            <table class="invoice-table">
+                <thead>
+                    <tr>
+                        <th>Service Description</th>
+                        <th style="text-align: right;">Quantity</th>
+                        <th style="text-align: right;">Unit Price</th>
+                        <th style="text-align: right;">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <strong>2-Camera Multi-Angle Setup</strong><br>
+                            <span style="font-size: 14px; color: var(--streamstage-text-light);">Professional multi-camera recording with audio capture</span>
+                        </td>
+                        <td style="text-align: right;">1</td>
+                        <td style="text-align: right;">$750.00</td>
+                        <td style="text-align: right; font-weight: 600;">$750.00</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>Drone Aerial Footage</strong><br>
+                            <span style="font-size: 14px; color: var(--streamstage-text-light);">4K drone footage of venue exterior</span>
+                        </td>
+                        <td style="text-align: right;">1</td>
+                        <td style="text-align: right;">$200.00</td>
+                        <td style="text-align: right; font-weight: 600;">$200.00</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>Same-Day Highlight Reel</strong><br>
+                            <span style="font-size: 14px; color: var(--streamstage-text-light);">3-5 minute highlight video delivered within 24 hours</span>
+                        </td>
+                        <td style="text-align: right;">1</td>
+                        <td style="text-align: right;">$300.00</td>
+                        <td style="text-align: right; font-weight: 600;">$300.00</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>Individual Performance Videos</strong><br>
+                            <span style="font-size: 14px; color: var(--streamstage-text-light);">Professionally edited individual dance routines</span>
+                        </td>
+                        <td style="text-align: right;">120</td>
+                        <td style="text-align: right;">$15.00</td>
+                        <td style="text-align: right; font-weight: 600;">$1,800.00</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="invoice-total">
+                <div class="total-box">
+                    <div class="total-row">
+                        <span>Subtotal</span>
+                        <span>$3,050.00</span>
+                    </div>
+                    <div class="total-row">
+                        <span>Volume Discount (10%)</span>
+                        <span>-$305.00</span>
+                    </div>
+                    <div class="total-row">
+                        <span>Tax (0%)</span>
+                        <span>$0.00</span>
+                    </div>
+                    <div class="total-row final">
+                        <span>Total</span>
+                        <span>$2,745.00</span>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 24px; display: flex; gap: 12px; justify-content: flex-end;">
+                <button class="btn btn-secondary" onclick="downloadInvoice()">
+                    Download PDF
+                </button>
+                <button class="btn btn-secondary" onclick="emailInvoice()">
+                    Email Invoice
+                </button>
+            </div>
+        </div>
+
+        <!-- Payment History -->
+        <div class="timeline-section">
+            <div class="section-title">Payment History</div>
+
+            <table class="invoice-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Payment Type</th>
+                        <th>Method</th>
+                        <th>Status</th>
+                        <th style="text-align: right;">Amount</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Jan 8, 2025</td>
+                        <td>Deposit Payment</td>
+                        <td>Visa •••• 4242</td>
+                        <td>
+                            <span class="status-badge paid">
+                                <span class="badge-dot"></span>
+                                Paid
+                            </span>
+                        </td>
+                        <td style="text-align: right; font-weight: 600;">$1,372.50</td>
+                        <td>
+                            <button class="btn btn-secondary" onclick="viewReceipt('deposit')">
+                                Receipt
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Help Section -->
+        <div class="alert alert-success" style="margin-top: 32px;">
+            <div class="alert-icon">💳</div>
+            <div class="alert-content">
+                <div class="alert-title">Secure Payment Processing</div>
+                <div class="alert-text">All payments are processed securely through Stripe. We never store your credit card information. Need help? Contact us at billing@streamstage.app or (555) 987-6543.</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function makePayment(type) {
+            alert('Redirecting to secure payment page...\n\nAmount: $1,372.50\nPayment Type: ' + type.toUpperCase());
+            // In real implementation: redirect to Stripe Checkout
+        }
+
+        function viewReceipt(type) {
+            alert('Opening receipt for ' + type + ' payment...');
+            // In real implementation: open PDF receipt in new tab
+        }
+
+        function downloadInvoice() {
+            alert('Downloading invoice PDF...');
+            // In real implementation: trigger PDF download
+        }
+
+        function emailInvoice() {
+            const email = prompt('Enter email address:');
+            if (email) {
+                alert('Invoice will be sent to: ' + email);
+            }
+        }
+    </script>
+</body>
+</html>

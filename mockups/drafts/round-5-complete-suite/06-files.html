@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Files - CommandCentered</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Rajdhani', monospace, sans-serif;
+            background: #030712;
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(6, 182, 212, 0.05) 2px, rgba(6, 182, 212, 0.05) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(6, 182, 212, 0.05) 2px, rgba(6, 182, 212, 0.05) 4px),
+                radial-gradient(ellipse at center, #0a1628 0%, #030712 100%);
+            background-size: 40px 40px, 40px 40px, 100% 100%;
+            color: #e2e8f0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            min-width: 1200px;
+        }
+
+        .sidebar {
+            width: 260px;
+            background: linear-gradient(180deg, #0c1220 0%, #030712 100%);
+            border-right: 2px solid rgba(6, 182, 212, 0.3);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 32px rgba(6, 182, 212, 0.15);
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .logo {
+            padding: 28px 24px;
+            border-bottom: 2px solid rgba(6, 182, 212, 0.3);
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1) 0%, transparent 100%);
+        }
+
+        .logo-text {
+            font-family: 'Orbitron', monospace;
+            font-size: 24px;
+            font-weight: 900;
+            color: #22d3ee;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.8);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-subtitle {
+            font-size: 10px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 6px;
+            font-weight: 600;
+        }
+
+        .nav {
+            flex: 1;
+            padding: 24px 0;
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 24px;
+            color: #94a3b8;
+            text-decoration: none;
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .nav-item:hover {
+            background: rgba(6, 182, 212, 0.1);
+            color: #22d3ee;
+            border-left-color: rgba(6, 182, 212, 0.8);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(90deg, rgba(6, 182, 212, 0.2) 0%, transparent 100%);
+            color: #22d3ee;
+            border-left-color: #06b6d4;
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.5);
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            min-width: 0;
+        }
+
+        .top-bar {
+            background: linear-gradient(90deg, #0c1220 0%, #1e293b 100%);
+            border-bottom: 2px solid rgba(6, 182, 212, 0.3);
+            padding: 18px 36px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+            flex-shrink: 0;
+        }
+
+        .top-bar-left h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: 26px;
+            font-weight: 900;
+            color: #22d3ee;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.8);
+        }
+
+        .top-bar-left p {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 4px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .top-bar-right {
+            display: flex;
+            gap: 18px;
+            align-items: center;
+        }
+
+        .status-indicator {
+            padding: 8px 16px;
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.5);
+            border-radius: 4px;
+            color: #10b981;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .user-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 6px;
+            background: linear-gradient(135deg, #0e7490 0%, #0c4a6e 100%);
+            border: 2px solid rgba(6, 182, 212, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #22d3ee;
+            font-weight: 900;
+            font-size: 18px;
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.8);
+        }
+
+        .dashboard-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 28px 36px;
+        }
+
+        .section {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.5) 0%, rgba(15, 23, 42, 0.7) 100%);
+            border: 2px solid rgba(6, 182, 212, 0.4);
+            border-radius: 8px;
+            padding: 28px;
+            margin-bottom: 28px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid rgba(6, 182, 212, 0.3);
+        }
+
+        .section-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 18px;
+            font-weight: 900;
+            color: #22d3ee;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.5);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 28px;
+            border-bottom: 2px solid rgba(6, 182, 212, 0.3);
+        }
+
+        .tab {
+            padding: 14px 28px;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            color: #64748b;
+            font-weight: 900;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.2) 0%, transparent 100%);
+            border-bottom-color: #06b6d4;
+            color: #22d3ee;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 12px 16px;
+            background: rgba(15, 23, 42, 0.7);
+            border: 2px solid rgba(6, 182, 212, 0.3);
+            border-radius: 6px;
+            color: #e2e8f0;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 14px;
+        }
+
+        .search-input::placeholder {
+            color: #64748b;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #06b6d4;
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
+        }
+
+        .filter-btn {
+            padding: 12px 20px;
+            background: rgba(15, 23, 42, 0.7);
+            border: 2px solid rgba(6, 182, 212, 0.3);
+            border-radius: 6px;
+            color: #22d3ee;
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover {
+            background: rgba(6, 182, 212, 0.1);
+            border-color: #06b6d4;
+        }
+
+        .button {
+            padding: 14px 28px;
+            background: linear-gradient(135deg, #0e7490 0%, #0c4a6e 100%);
+            border: 2px solid rgba(6, 182, 212, 0.6);
+            border-radius: 6px;
+            color: #e2e8f0;
+            font-weight: 900;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .button:hover {
+            background: linear-gradient(135deg, #06b6d4 0%, #0e7490 100%);
+            box-shadow: 0 0 40px rgba(6, 182, 212, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .button-secondary {
+            padding: 14px 28px;
+            background: transparent;
+            border: 2px solid rgba(6, 182, 212, 0.4);
+            border-radius: 6px;
+            color: #22d3ee;
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .button-secondary:hover {
+            background: rgba(6, 182, 212, 0.1);
+            border-color: #06b6d4;
+        }
+
+        /* Cards */
+        .card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.5) 0%, rgba(15, 23, 42, 0.7) 100%);
+            border: 2px solid rgba(6, 182, 212, 0.4);
+            border-radius: 8px;
+            padding: 28px;
+            margin-bottom: 28px;
+        }
+
+        .card-header {
+            font-family: 'Orbitron', monospace;
+            font-size: 16px;
+            font-weight: 900;
+            color: #22d3ee;
+            margin-bottom: 1rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 6px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th {
+            text-align: left;
+            padding: 14px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            border-bottom: 2px solid rgba(6, 182, 212, 0.3);
+        }
+
+        td {
+            padding: 18px 14px;
+            color: #94a3b8;
+            border-bottom: 1px solid rgba(6, 182, 212, 0.2);
+        }
+
+        tr:hover {
+            background: rgba(6, 182, 212, 0.1);
+        }
+
+        .action-btn {
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #0e7490 0%, #0c4a6e 100%);
+            border: 2px solid rgba(6, 182, 212, 0.6);
+            border-radius: 4px;
+            color: #e2e8f0;
+            font-weight: 700;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .action-btn:hover {
+            background: linear-gradient(135deg, #06b6d4 0%, #0e7490 100%);
+            box-shadow: 0 0 30px rgba(6, 182, 212, 0.4);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2000;
+            width: 90%;
+            max-width: 600px;
+            max-height: 85vh;
+            overflow-y: auto;
+            background: linear-gradient(135deg, #0c1220 0%, #1e293b 100%);
+            border: 2px solid #06b6d4;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(6, 182, 212, 0.4);
+        }
+
+        .modal.active {
+            display: block;
+        }
+
+        .backdrop {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1999;
+            backdrop-filter: blur(4px);
+        }
+
+        .backdrop.active {
+            display: block;
+        }
+
+        .modal h2 {
+            font-family: 'Orbitron', monospace;
+            font-size: 24px;
+            font-weight: 900;
+            color: #22d3ee;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.6);
+        }
+
+        .modal-subtitle {
+            color: #64748b;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 28px;
+            font-weight: 600;
+        }
+
+        .modal h3 {
+            font-family: 'Orbitron', monospace;
+            font-size: 14px;
+            color: #22d3ee;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-top: 28px;
+            margin-bottom: 16px;
+        }
+
+        .modal input, .modal select, .modal textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 16px;
+            background: rgba(15, 23, 42, 0.7);
+            border: 2px solid rgba(6, 182, 212, 0.4);
+            border-radius: 6px;
+            color: #e2e8f0;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .modal input::placeholder {
+            color: #64748b;
+        }
+
+        .modal input:focus, .modal select:focus, .modal textarea:focus {
+            outline: none;
+            border-color: #06b6d4;
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 32px;
+        }
+
+        .btn-primary {
+            flex: 1;
+            padding: 14px 28px;
+            background: linear-gradient(135deg, #06b6d4 0%, #0e7490 100%);
+            border: 2px solid rgba(6, 182, 212, 0.6);
+            border-radius: 6px;
+            color: #fff;
+            font-weight: 900;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 0 40px rgba(6, 182, 212, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            flex: 1;
+            padding: 14px 28px;
+            background: rgba(30, 41, 59, 0.5);
+            border: 2px solid rgba(100, 116, 139, 0.4);
+            border-radius: 6px;
+            color: #94a3b8;
+            font-weight: 900;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(30, 41, 59, 0.8);
+            border-color: rgba(100, 116, 139, 0.6);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            border: 2px solid rgba(239, 68, 68, 0.6);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-danger:hover {
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+        }
+
+        /* Proposal Builder Layout */
+        .proposal-builder {
+            display: grid;
+            grid-template-columns: 200px 1fr 250px;
+            gap: 2rem;
+            height: 600px;
+        }
+
+        .builder-section {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            border-radius: 6px;
+        }
+
+        .builder-section-title {
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            color: #22d3ee;
+            margin-bottom: 1rem;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .elements-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .element-item {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            padding: 0.75rem;
+            cursor: grab;
+            transition: all 0.3s;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 12px;
+            text-align: center;
+            color: #94a3b8;
+        }
+
+        .element-item:hover {
+            background: rgba(6, 182, 212, 0.1);
+            border-color: #06b6d4;
+            color: #22d3ee;
+        }
+
+        .canvas {
+            background: rgba(15, 23, 42, 0.3);
+            border: 2px dashed rgba(6, 182, 212, 0.4);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            position: relative;
+            overflow-y: auto;
+            border-radius: 6px;
+        }
+
+        .canvas.has-content {
+            align-items: flex-start;
+            justify-content: flex-start;
+            border-style: solid;
+        }
+
+        .canvas-drop-hint {
+            text-align: center;
+            pointer-events: none;
+        }
+
+        .canvas-element {
+            background: rgba(6, 182, 212, 0.05);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #e2e8f0;
+            border-radius: 4px;
+        }
+
+        .canvas-remove-btn {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            border: none;
+            padding: 0.35rem 0.75rem;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 2px;
+        }
+
+        .preview-content {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            padding: 1rem;
+            flex: 1;
+            overflow-y: auto;
+            color: #e2e8f0;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            border-radius: 4px;
+        }
+
+        /* Status Badges */
+        .status {
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            border-radius: 2px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        .status-accepted { background: #10b981; color: white; }
+        .status-sent { background: #3b82f6; color: white; }
+        .status-signed { background: #8b5cf6; color: white; }
+        .status-paid { background: #10b981; color: white; }
+        .status-pending { background: #f59e0b; color: white; }
+        .status-complete { background: #10b981; color: white; }
+
+        .flex { display: flex; }
+        .gap-1 { gap: 0.5rem; }
+
+        /* View Toggle Styles */
+        .view-toggle {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .view-toggle-btn {
+            padding: 10px 20px;
+            background: rgba(30, 41, 59, 0.5);
+            border: 2px solid rgba(100, 116, 139, 0.4);
+            border-radius: 6px;
+            color: #94a3b8;
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .view-toggle-btn:hover {
+            background: rgba(30, 41, 59, 0.8);
+            border-color: rgba(100, 116, 139, 0.6);
+        }
+
+        .view-toggle-btn.active {
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+            border-color: #06b6d4;
+            color: #fff;
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <div class="logo-text">
+                <span>⚡</span>
+                <span>COMMAND</span>
+            </div>
+            <div class="logo-subtitle">StreamStage Operations</div>
+        </div>
+        <nav class="nav">
+            <a href="01-dashboard.html" class="nav-item">
+                <span>📊</span>
+                <span>Dashboard</span>
+            </a>
+            <a href="02-pipeline.html" class="nav-item">
+                <span>⚡</span>
+                <span>Pipeline</span>
+            </a>
+            <a href="03-planning.html" class="nav-item">
+                <span>📅</span>
+                <span>Planning</span>
+            </a>
+            <a href="04-deliverables.html" class="nav-item">
+                <span>📦</span>
+                <span>Deliverables</span>
+            </a>
+            <a href="05-communications.html" class="nav-item">
+                <span>💬</span>
+                <span>Communications</span>
+            </a>
+            <a href="06-files.html" class="nav-item active">
+                <span>📁</span>
+                <span>Files</span>
+            </a>
+            <a href="07-operators.html" class="nav-item">
+                <span>👥</span>
+                <span>Operators</span>
+            </a>
+            <a href="08-gear.html" class="nav-item">
+                <span>🎥</span>
+                <span>Gear</span>
+            </a>
+            <a href="09-reports.html" class="nav-item">
+                <span>📈</span>
+                <span>Reports</span>
+            </a>
+            <a href="10-customize.html" class="nav-item">
+                <span>⚙️</span>
+                <span>Customize</span>
+            </a>
+            <a href="11-settings.html" class="nav-item">
+                <span>🔧</span>
+                <span>Settings</span>
+            </a>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <div class="top-bar">
+            <div class="top-bar-left">
+                <h1>📁 FILES</h1>
+                <p>PROPOSALS • CONTRACTS • INVOICES • QUESTIONNAIRES</p>
+            </div>
+            <div class="top-bar-right">
+                <div class="status-indicator">● SYSTEMS OPERATIONAL</div>
+                <div class="user-avatar">DA</div>
+            </div>
+        </div>
+        <div class="dashboard-content">
+            <!-- Tab Navigation -->
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('proposals-tab')">PROPOSALS</button>
+                <button class="tab" onclick="switchTab('contracts-tab')">CONTRACTS</button>
+                <button class="tab" onclick="switchTab('invoices-tab')">INVOICES</button>
+                <button class="tab" onclick="switchTab('questionnaires-tab')">QUESTIONNAIRES</button>
+                <button class="tab" onclick="switchTab('livestreams-tab')" style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(6, 182, 212, 0.2) 100%); border: 2px solid #ef4444;">📡 LIVESTREAMS (NEW)</button>
+            </div>
+
+        <!-- TAB 1: PROPOSALS -->
+        <div id="proposals-tab" class="tab-content active">
+            <!-- View Controls -->
+            <div class="view-toggle">
+                <button class="view-toggle-btn active" onclick="toggleView('card')">CARD VIEW</button>
+                <button class="view-toggle-btn" onclick="toggleView('table')">TABLE VIEW</button>
+            </div>
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <div></div>
+                    <button class="button" onclick="showModal('proposal-builder-modal')">+ NEW PROPOSAL</button>
+                    <div>
+                        <input type="text" placeholder="🔍 Search proposals..." style="background: #030712; border: 1px solid #1f2937; color: #f9fafb; padding: 0.75rem 1rem; width: 250px;">
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>CLIENT</th>
+                                <th>SERVICE</th>
+                                <th>AMOUNT</th>
+                                <th>STATUS</th>
+                                <th>DATE</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>ABC Dance Studio</strong></td>
+                                <td>Dance Recital</td>
+                                <td style="color: #10b981; font-weight: 700;">$4,500</td>
+                                <td><span class="status status-accepted">ACCEPT</span></td>
+                                <td>Nov 8</td>
+                                <td class="flex gap-1">
+                                    <button class="action-btn">👁️</button>
+                                    <button class="action-btn">📧</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>XYZ Competitions</strong></td>
+                                <td>Concert Coverage</td>
+                                <td style="color: #10b981; font-weight: 700;">$6,200</td>
+                                <td><span class="status status-sent">SENT</span></td>
+                                <td>Nov 5</td>
+                                <td class="flex gap-1">
+                                    <button class="action-btn">👁️</button>
+                                    <button class="action-btn">📧</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Metro Dance Academy</strong></td>
+                                <td>Promo Video</td>
+                                <td style="color: #10b981; font-weight: 700;">$3,800</td>
+                                <td><span class="status status-sent">SENT</span></td>
+                                <td>Nov 2</td>
+                                <td class="flex gap-1">
+                                    <button class="action-btn">👁️</button>
+                                    <button class="action-btn">📧</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: CONTRACTS -->
+        <div id="contracts-tab" class="tab-content">
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <div></div>
+                    <button class="button" onclick="showModal('contract-modal')">+ NEW CONTRACT</button>
+                    <div>
+                        <input type="text" placeholder="🔍 Search contracts..." style="background: #030712; border: 1px solid #1f2937; color: #f9fafb; padding: 0.75rem 1rem; width: 250px;">
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>CLIENT</th>
+                                <th>EVENTS</th>
+                                <th>VALUE</th>
+                                <th>STATUS</th>
+                                <th>DATE</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>ABC Dance Studio</strong></td>
+                                <td>Nov 15</td>
+                                <td style="color: #10b981; font-weight: 700;">$4,500</td>
+                                <td><span class="status status-signed">SIGNED ✓</span></td>
+                                <td>Nov 9</td>
+                                <td class="flex gap-1">
+                                    <button class="action-btn">👁️</button>
+                                    <button class="action-btn">📄</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Metro Dance</strong></td>
+                                <td>Nov 15, Nov 22<br>(Multi)</td>
+                                <td style="color: #10b981; font-weight: 700;">$8,900</td>
+                                <td><span class="status status-sent">SENT</span></td>
+                                <td>Nov 3</td>
+                                <td class="flex gap-1">
+                                    <button class="action-btn">👁️</button>
+                                    <button class="action-btn">📧</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>XYZ Competitions</strong></td>
+                                <td>Nov 20, Nov 27</td>
+                                <td style="color: #10b981; font-weight: 700;">$6,200</td>
+                                <td><span class="status status-sent">SENT</span></td>
+                                <td>Oct 28</td>
+                                <td class="flex gap-1">
+                                    <button class="action-btn">👁️</button>
+                                    <button class="action-btn">📧</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: INVOICES -->
+        <div id="invoices-tab" class="tab-content">
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <div></div>
+                    <button class="button" onclick="showModal('invoice-modal')">+ NEW INVOICE</button>
+                    <div>
+                        <input type="text" placeholder="🔍 Search invoices..." style="background: #030712; border: 1px solid #1f2937; color: #f9fafb; padding: 0.75rem 1rem; width: 250px;">
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>CLIENT</th>
+                                <th>AMOUNT</th>
+                                <th>STATUS</th>
+                                <th>PAID</th>
+                                <th>DUE</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>ABC Dance Studio</strong></td>
+                                <td style="color: #10b981; font-weight: 700;">$2,250 (50%)</td>
+                                <td><span class="status status-paid">PAID ✓</span></td>
+                                <td style="color: #10b981;">$2,250</td>
+                                <td>Nov 9 (deposit)</td>
+                                <td class="flex gap-1">
+                                    <button class="action-btn">👁️</button>
+                                    <button class="action-btn">📄</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>XYZ Competitions</strong></td>
+                                <td style="color: #10b981; font-weight: 700;">$6,200</td>
+                                <td><span class="status status-pending">PEND</span></td>
+                                <td>$0</td>
+                                <td>Nov 15</td>
+                                <td class="flex gap-1">
+                                    <button class="action-btn">👁️</button>
+                                    <button class="action-btn">📧</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Metro Dance Academy</strong></td>
+                                <td style="color: #10b981; font-weight: 700;">$1,900</td>
+                                <td><span class="status status-paid">PAID ✓</span></td>
+                                <td style="color: #10b981;">$1,900</td>
+                                <td>Nov 7</td>
+                                <td class="flex gap-1">
+                                    <button class="action-btn">👁️</button>
+                                    <button class="action-btn">📄</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 4: QUESTIONNAIRES -->
+        <div id="questionnaires-tab" class="tab-content">
+            <!-- Templates Section -->
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <div class="card-header" style="margin: 0;">QUESTIONNAIRE TEMPLATES</div>
+                    <button class="button" onclick="showModal('new-template-modal')">+ NEW TEMPLATE</button>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>SERVICE TYPE</th>
+                                <th>QUESTIONS</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Dance Recital</strong></td>
+                                <td>12 questions</td>
+                                <td class="flex gap-1">
+                                    <button class="action-btn" title="Edit">✏️</button>
+                                    <button class="action-btn" title="Preview">👁️</button>
+                                    <button class="action-btn" title="Export">📥</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Promo Video</strong></td>
+                                <td>8 questions</td>
+                                <td class="flex gap-1">
+                                    <button class="action-btn" title="Edit">✏️</button>
+                                    <button class="action-btn" title="Preview">👁️</button>
+                                    <button class="action-btn" title="Export">📥</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Concert Coverage</strong></td>
+                                <td>10 questions</td>
+                                <td class="flex gap-1">
+                                    <button class="action-btn" title="Edit">✏️</button>
+                                    <button class="action-btn" title="Preview">👁️</button>
+                                    <button class="action-btn" title="Export">📥</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Completed Questionnaires Section -->
+            <div class="card" style="margin-top: 2rem;">
+                <div class="card-header">COMPLETED QUESTIONNAIRES</div>
+
+                <div class="questionnaire-tracker">
+                    <div class="questionnaire-card">
+                        <div>
+                            <div class="questionnaire-title">ABC Dance Studio - Nov 15 Event</div>
+                            <div class="questionnaire-meta">
+                                <div>Status: <span class="status-complete">Complete ✓</span></div>
+                                <div>Completed: Nov 9, 2025</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 0.75rem;">
+                            <button class="btn" style="flex: 1;">VIEW</button>
+                            <button class="btn-secondary" style="flex: 1;">EXPORT</button>
+                        </div>
+                    </div>
+
+                    <div class="questionnaire-card">
+                        <div>
+                            <div class="questionnaire-title">Metro Dance - Nov 15 Event</div>
+                            <div class="questionnaire-meta">
+                                <div>Status: <span class="status-complete">Complete ✓</span></div>
+                                <div>Completed: Nov 11, 2025</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 0.75rem;">
+                            <button class="btn" style="flex: 1;">VIEW</button>
+                            <button class="btn-secondary" style="flex: 1;">EXPORT</button>
+                        </div>
+                    </div>
+
+                    <div class="questionnaire-card">
+                        <div>
+                            <div class="questionnaire-title">XYZ Competitions - Nov 20 Event</div>
+                            <div class="questionnaire-meta">
+                                <div class="text-muted">Status: Pending Response</div>
+                                <div><span class="days-until">4 days</span> until event</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 0.75rem;">
+                            <button class="btn-secondary" style="flex: 1;">REMIND</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 5: LIVESTREAMS (NEW - Round 3) -->
+        <div id="livestreams-tab" class="tab-content">
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h2 style="color: #ef4444;">📡 Vimeo Livestream Events</h2>
+                    <button class="button">+ CREATE LIVESTREAM</button>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>EVENT</th>
+                                <th>VIMEO STATUS</th>
+                                <th>STREAM KEY</th>
+                                <th>EMBED CODE</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>ABC Dance<br>Nov 15</strong></td>
+                                <td><span class="status status-accepted">✅ CREATED</span><br><small>Nov 9</small></td>
+                                <td><code style="font-size: 0.75rem; color: #06b6d4;">rtmp://rtmp.vi...</code></td>
+                                <td><code style="font-size: 0.75rem; color: #64748b;">&lt;iframe...&gt;</code></td>
+                                <td class="flex gap-1">
+                                    <button class="action-btn" title="Copy Stream Key">📋</button>
+                                    <button class="action-btn" title="View Landing">👁️</button>
+                                    <button class="action-btn" title="Email Details">📧</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>XYZ Concert<br>Nov 8</strong></td>
+                                <td><span class="status status-pending">⚠️ NOT CREATED</span></td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td><button class="button" style="padding: 0.5rem;">GENERATE</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- Backdrop -->
+    <div id="backdrop" class="backdrop" onclick="closeAllModals()"></div>
+
+    <!-- MODAL: Proposal Builder -->
+    <div id="proposal-builder-modal" class="modal">
+        <h2>PROPOSAL BUILDER</h2>
+        <p class="modal-subtitle">Drag elements to build your proposal</p>
+                <div class="proposal-builder">
+                    <!-- Elements Panel -->
+                    <div class="builder-section">
+                        <div class="builder-section-title">ELEMENTS</div>
+                        <div class="elements-list">
+                            <div class="element-item" draggable="true" ondragstart="dragStart(event, 'Header')">Header</div>
+                            <div class="element-item" draggable="true" ondragstart="dragStart(event, 'Video Coverage')">Video Coverage</div>
+                            <div class="element-item" draggable="true" ondragstart="dragStart(event, 'Photo Package')">Photo Package</div>
+                            <div class="element-item" draggable="true" ondragstart="dragStart(event, 'Add-ons')">Add-ons</div>
+                            <div class="element-item" draggable="true" ondragstart="dragStart(event, 'Timeline')">Timeline</div>
+                            <div class="element-item" draggable="true" ondragstart="dragStart(event, 'Pricing')">Pricing</div>
+                            <div class="element-item" draggable="true" ondragstart="dragStart(event, 'Terms & Conditions')">Terms & Conditions</div>
+                        </div>
+                    </div>
+
+                    <!-- Canvas Area -->
+                    <div class="canvas" id="proposal-canvas" ondrop="dropElement(event)" ondragover="allowDrop(event)">
+                        <div class="canvas-drop-hint">
+                            <div style="font-size: 1.25rem; margin-bottom: 0.5rem;">↓</div>
+                            <div>Drag elements here to build proposal</div>
+                        </div>
+                    </div>
+
+                    <!-- Preview Panel -->
+                    <div class="builder-section">
+                        <div class="builder-section-title">PREVIEW</div>
+                        <div class="preview-content" id="proposal-preview">
+                            <strong style="color: #06b6d4;">StreamStage Live</strong><br>
+                            <strong style="color: #06b6d4;">Proposal for</strong><br>
+                            ABC Dance Studio
+                        </div>
+                    </div>
+                </div>
+        <div class="button-group">
+            <button class="btn-secondary" onclick="closeAllModals()">CANCEL</button>
+            <button class="button" onclick="saveProposal(); closeAllModals();">SAVE PROPOSAL</button>
+        </div>
+    </div>
+
+    <!-- MODAL: Contract (Multi-date) -->
+    <div id="contract-modal" class="modal">
+        <h2>NEW CONTRACT</h2>
+        <p class="modal-subtitle">Create a new contract for client</p>
+        <div>
+                <div class="mb-3">
+                    <label style="display: block; font-weight: 700; margin-bottom: 0.5rem;">CLIENT</label>
+                    <input type="text" placeholder="Select or type client name..." style="width: 100%; padding: 0.75rem; background: #030712; border: 1px solid #1f2937; color: #f9fafb;">
+                </div>
+
+                <div class="mb-3">
+                    <label style="display: block; font-weight: 700; margin-bottom: 0.5rem;">CONTRACT VALUE</label>
+                    <input type="text" placeholder="$" style="width: 100%; padding: 0.75rem; background: #030712; border: 1px solid #1f2937; color: #f9fafb;">
+                </div>
+
+                <div class="mb-3">
+                    <label style="display: block; font-weight: 700; margin-bottom: 0.5rem;">EVENTS (Multi-date support)</label>
+                    <div id="event-dates" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                        <div style="display: flex; gap: 0.5rem;">
+                            <input type="date" style="flex: 1; padding: 0.75rem; background: #030712; border: 1px solid #1f2937; color: #f9fafb;">
+                            <button class="btn-danger" style="padding: 0.75rem 1rem;">REMOVE</button>
+                        </div>
+                    </div>
+                    <button class="btn-secondary" style="width: 100%; margin-top: 0.75rem;">+ ADD EVENT DATE</button>
+                </div>
+
+                <div class="mb-3">
+                    <label style="display: block; font-weight: 700; margin-bottom: 0.5rem;">NOTES</label>
+                    <textarea style="width: 100%; padding: 0.75rem; background: #030712; border: 1px solid #1f2937; color: #f9fafb; height: 100px;"></textarea>
+                </div>
+
+        <div class="button-group">
+            <button class="btn-secondary" onclick="closeAllModals()">CANCEL</button>
+            <button class="button" onclick="saveContract(); closeAllModals();">CREATE CONTRACT</button>
+        </div>
+        </div>
+    </div>
+
+    <!-- MODAL: Invoice -->
+    <div id="invoice-modal" class="modal">
+        <h2>NEW INVOICE</h2>
+        <p class="modal-subtitle">Create invoice for payment collection</p>
+        <div>
+                <div class="mb-3">
+                    <label style="display: block; font-weight: 700; margin-bottom: 0.5rem;">CLIENT</label>
+                    <input type="text" placeholder="Select client..." style="width: 100%; padding: 0.75rem; background: #030712; border: 1px solid #1f2937; color: #f9fafb;">
+                </div>
+
+                <div class="mb-3">
+                    <label style="display: block; font-weight: 700; margin-bottom: 0.5rem;">INVOICE AMOUNT</label>
+                    <input type="text" placeholder="$" style="width: 100%; padding: 0.75rem; background: #030712; border: 1px solid #1f2937; color: #f9fafb;">
+                </div>
+
+                <div class="mb-3">
+                    <label style="display: block; font-weight: 700; margin-bottom: 0.5rem;">DUE DATE</label>
+                    <input type="date" style="width: 100%; padding: 0.75rem; background: #030712; border: 1px solid #1f2937; color: #f9fafb;">
+                </div>
+
+                <div class="mb-3">
+                    <label style="display: block; font-weight: 700; margin-bottom: 0.5rem;">PAYMENT TYPE</label>
+                    <select style="width: 100%; padding: 0.75rem; background: #030712; border: 1px solid #1f2937; color: #f9fafb;">
+                        <option>Stripe</option>
+                        <option>E-transfer</option>
+                        <option>Bank Transfer</option>
+                        <option>Cash</option>
+                    </select>
+                </div>
+
+        <div class="button-group">
+            <button class="btn-secondary" onclick="closeAllModals()">CANCEL</button>
+            <button class="button" onclick="saveInvoice(); closeAllModals();">CREATE INVOICE</button>
+        </div>
+        </div>
+    </div>
+
+    <!-- MODAL: New Template -->
+    <div id="new-template-modal" class="modal">
+        <h2>NEW QUESTIONNAIRE TEMPLATE</h2>
+        <p class="modal-subtitle">Create a new template for questionnaires</p>
+        <div>
+                <div class="mb-3">
+                    <label style="display: block; font-weight: 700; margin-bottom: 0.5rem;">TEMPLATE NAME</label>
+                    <input type="text" placeholder="e.g., Wedding Coverage" style="width: 100%; padding: 0.75rem; background: #030712; border: 1px solid #1f2937; color: #f9fafb;">
+                </div>
+
+                <div class="mb-3">
+                    <label style="display: block; font-weight: 700; margin-bottom: 0.5rem;">SERVICE TYPE</label>
+                    <select style="width: 100%; padding: 0.75rem; background: #030712; border: 1px solid #1f2937; color: #f9fafb;">
+                        <option>Dance Recital</option>
+                        <option>Concert Coverage</option>
+                        <option>Promo Video</option>
+                        <option>Corporate Event</option>
+                        <option>Wedding</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label style="display: block; font-weight: 700; margin-bottom: 0.5rem;">QUESTIONS</label>
+                    <div id="template-questions" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                        <input type="text" placeholder="Question 1" style="width: 100%; padding: 0.75rem; background: #030712; border: 1px solid #1f2937; color: #f9fafb;">
+                    </div>
+                    <button class="btn-secondary" style="width: 100%; margin-top: 0.75rem;">+ ADD QUESTION</button>
+                </div>
+
+        <div class="button-group">
+            <button class="btn-secondary" onclick="closeAllModals()">CANCEL</button>
+            <button class="button" onclick="saveTemplate(); closeAllModals();">CREATE TEMPLATE</button>
+        </div>
+        </div>
+    </div>
+
+    <script>
+        // View toggle function
+        function toggleView(view) {
+            document.querySelectorAll('.view-toggle-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Card view is default, table view would need additional table structure
+            console.log('View toggled to:', view);
+        }
+
+        // Tab switching
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+
+            event.target.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        // Modal controls
+        function showModal(modalId) {
+            closeAllModals();
+            document.getElementById('backdrop').classList.add('active');
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        function closeAllModals() {
+            document.getElementById('backdrop').classList.remove('active');
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.classList.remove('active');
+            });
+        }
+
+        // ESC key closes modals
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeAllModals();
+            }
+        });
+
+        // Proposal Builder Drag-Drop
+        let draggedElement = null;
+
+        function dragStart(event, elementName) {
+            draggedElement = elementName;
+            event.dataTransfer.effectAllowed = 'copy';
+        }
+
+        function allowDrop(event) {
+            event.preventDefault();
+            event.dataTransfer.dropEffect = 'copy';
+            document.getElementById('proposal-canvas').style.borderColor = '#10b981';
+        }
+
+        function dropElement(event) {
+            event.preventDefault();
+            document.getElementById('proposal-canvas').style.borderColor = '#06b6d4';
+
+            if (draggedElement) {
+                const canvas = document.getElementById('proposal-canvas');
+
+                // Clear hint on first element
+                if (canvas.querySelector('.canvas-drop-hint')) {
+                    canvas.innerHTML = '';
+                }
+
+                canvas.classList.add('has-content');
+
+                const elementDiv = document.createElement('div');
+                elementDiv.className = 'canvas-element';
+                elementDiv.innerHTML = `
+                    <span>${draggedElement}</span>
+                    <button class="canvas-remove-btn" onclick="this.parentElement.remove()">REMOVE</button>
+                `;
+
+                canvas.appendChild(elementDiv);
+
+                // Update preview
+                updatePreview();
+            }
+
+            draggedElement = null;
+        }
+
+        function updatePreview() {
+            const canvas = document.getElementById('proposal-canvas');
+            const elements = Array.from(canvas.querySelectorAll('.canvas-element span')).map(el => el.textContent);
+
+            let previewHTML = '<strong style="color: #06b6d4;">StreamStage Live</strong><br>';
+            previewHTML += '<strong style="color: #06b6d4;">Proposal for</strong><br>';
+            previewHTML += 'ABC Dance Studio<br><br>';
+
+            if (elements.length > 0) {
+                previewHTML += '<strong style="color: #06b6d4; margin-top: 1rem; display: block;">SECTIONS INCLUDED:</strong>';
+                elements.forEach(element => {
+                    previewHTML += `<div style="margin-top: 0.5rem; padding: 0.5rem; background: #030712; border-left: 2px solid #06b6d4;">• ${element}</div>`;
+                });
+            }
+
+            document.getElementById('proposal-preview').innerHTML = previewHTML;
+        }
+
+        function saveProposal() {
+            alert('Proposal saved successfully!');
+        }
+
+        function saveContract() {
+            alert('Contract created successfully!');
+        }
+
+        function saveInvoice() {
+            alert('Invoice created successfully!');
+        }
+
+        function saveTemplate() {
+            alert('Template created successfully!');
+        }
+    </script>
+</body>
+</html>

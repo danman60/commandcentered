@@ -1,0 +1,1487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gear - CommandCentered</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Rajdhani', monospace, sans-serif;
+            background: #030712;
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(6, 182, 212, 0.05) 2px, rgba(6, 182, 212, 0.05) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(6, 182, 212, 0.05) 2px, rgba(6, 182, 212, 0.05) 4px),
+                radial-gradient(ellipse at center, #0a1628 0%, #030712 100%);
+            background-size: 40px 40px, 40px 40px, 100% 100%;
+            color: #e2e8f0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            min-width: 1200px;
+        }
+
+        .sidebar {
+            width: 260px;
+            background: linear-gradient(180deg, #0c1220 0%, #030712 100%);
+            border-right: 2px solid rgba(6, 182, 212, 0.3);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 32px rgba(6, 182, 212, 0.15);
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .logo {
+            padding: 28px 24px;
+            border-bottom: 2px solid rgba(6, 182, 212, 0.3);
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1) 0%, transparent 100%);
+        }
+
+        .logo-text {
+            font-family: 'Orbitron', monospace;
+            font-size: 24px;
+            font-weight: 900;
+            color: #22d3ee;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.8);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-subtitle {
+            font-size: 10px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 6px;
+            font-weight: 600;
+        }
+
+        .nav {
+            flex: 1;
+            padding: 24px 0;
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 24px;
+            color: #94a3b8;
+            text-decoration: none;
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .nav-item:hover {
+            background: rgba(6, 182, 212, 0.1);
+            color: #22d3ee;
+            border-left-color: rgba(6, 182, 212, 0.8);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(90deg, rgba(6, 182, 212, 0.2) 0%, transparent 100%);
+            color: #22d3ee;
+            border-left-color: #06b6d4;
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.5);
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            min-width: 0;
+        }
+
+        .top-bar {
+            background: linear-gradient(90deg, #0c1220 0%, #1e293b 100%);
+            border-bottom: 2px solid rgba(6, 182, 212, 0.3);
+            padding: 18px 36px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+            flex-shrink: 0;
+        }
+
+        .top-bar-left h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: 26px;
+            font-weight: 900;
+            color: #22d3ee;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.8);
+        }
+
+        .top-bar-left p {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 4px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .top-bar-right {
+            display: flex;
+            gap: 18px;
+            align-items: center;
+        }
+
+        .status-indicator {
+            padding: 8px 16px;
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.5);
+            border-radius: 4px;
+            color: #10b981;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .user-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 6px;
+            background: linear-gradient(135deg, #0e7490 0%, #0c4a6e 100%);
+            border: 2px solid rgba(6, 182, 212, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #22d3ee;
+            font-weight: 900;
+            font-size: 18px;
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.8);
+        }
+
+        .dashboard-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 28px 36px;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 28px;
+            border-bottom: 2px solid rgba(6, 182, 212, 0.3);
+        }
+
+        .tab {
+            padding: 14px 28px;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            color: #64748b;
+            font-weight: 900;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab:hover {
+            color: #22d3ee;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.2) 0%, transparent 100%);
+            border-bottom-color: #06b6d4;
+            color: #22d3ee;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            background: #06b6d4;
+            color: #030712;
+            border: none;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+        }
+
+        .btn:hover {
+            background: #0891b2;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+        }
+
+        .btn-secondary {
+            background: #111827;
+            color: #f9fafb;
+            border: 1px solid #1f2937;
+        }
+
+        .btn-secondary:hover {
+            background: #1f2937;
+            border-color: #06b6d4;
+        }
+
+        .btn-small {
+            padding: 0.5rem 1rem;
+            font-size: 0.75rem;
+        }
+
+        /* Cards */
+        .card {
+            background: #111827;
+            border: 1px solid #1f2937;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-header {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #06b6d4;
+            margin-bottom: 1rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+            background: #111827;
+            border: 1px solid #1f2937;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #030712;
+            color: #06b6d4;
+            padding: 1rem;
+            text-align: left;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+            border-bottom: 2px solid #06b6d4;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #1f2937;
+            color: #f9fafb;
+        }
+
+        tr:hover {
+            background: rgba(6, 182, 212, 0.05);
+        }
+
+        /* Grid */
+        .grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .grid-2 { grid-template-columns: repeat(2, 1fr); }
+        .grid-3 { grid-template-columns: repeat(3, 1fr); }
+        .grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+        /* View Toggle */
+        .view-toggle {
+            display: flex;
+            gap: 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .view-toggle-btn {
+            padding: 0.75rem 1.5rem;
+            background: #111827;
+            border: 1px solid #1f2937;
+            color: #9ca3af;
+            font-family: 'Orbitron', monospace;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+        }
+
+        .view-toggle-btn:first-child {
+            border-right: none;
+        }
+
+        .view-toggle-btn.active {
+            background: #06b6d4;
+            color: #030712;
+            border-color: #06b6d4;
+        }
+
+        .view-toggle-btn:hover:not(.active) {
+            background: #1f2937;
+            color: #f9fafb;
+        }
+
+        /* Gear Cards */
+        .gear-card {
+            background: #111827;
+            border: 1px solid #1f2937;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .gear-image {
+            width: 100%;
+            height: 150px;
+            background: #030712;
+            border: 1px solid #1f2937;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9ca3af;
+            font-size: 2rem;
+        }
+
+        .gear-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .gear-name {
+            font-weight: 700;
+            color: #06b6d4;
+        }
+
+        .gear-detail {
+            font-size: 0.875rem;
+            color: #9ca3af;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 2px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            width: fit-content;
+        }
+
+        .status-available { background: #10b981; color: #030712; }
+        .status-in-use { background: #3b82f6; color: #f9fafb; }
+        .status-repair { background: #f59e0b; color: #030712; }
+        .status-retired { background: #ef4444; color: #f9fafb; }
+
+        /* Kit Items List */
+        .kit-items {
+            background: #030712;
+            border: 1px solid #1f2937;
+            padding: 1rem;
+            margin: 1rem 0;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .kit-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #1f2937;
+            font-size: 0.875rem;
+        }
+
+        .kit-item:last-child {
+            border-bottom: none;
+        }
+
+        .kit-item-name {
+            font-weight: 600;
+        }
+
+        .kit-item-status {
+            font-size: 0.75rem;
+            color: #9ca3af;
+        }
+
+        /* Maintenance Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline-item {
+            padding-bottom: 2rem;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -1.5rem;
+            top: 0;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #06b6d4;
+            border: 2px solid #111827;
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: -1.45rem;
+            top: 12px;
+            width: 2px;
+            height: calc(100% - 12px);
+            background: #1f2937;
+        }
+
+        .timeline-item:last-child::after {
+            display: none;
+        }
+
+        .timeline-date {
+            font-weight: 700;
+            color: #06b6d4;
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .timeline-description {
+            color: #9ca3af;
+            font-size: 0.875rem;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #111827;
+            border: 2px solid #06b6d4;
+            max-width: 90%;
+            width: 600px;
+            max-height: 90%;
+            overflow: auto;
+            position: relative;
+        }
+
+        .modal-header {
+            background: #030712;
+            padding: 1.5rem;
+            border-bottom: 2px solid #06b6d4;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #06b6d4;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: #9ca3af;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            line-height: 1;
+        }
+
+        .modal-close:hover {
+            color: #06b6d4;
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #f9fafb;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            background: #030712;
+            border: 1px solid #1f2937;
+            color: #f9fafb;
+            padding: 0.75rem;
+            font-family: 'Rajdhani', sans-serif;
+            margin-bottom: 0.25rem;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: #06b6d4;
+            box-shadow: 0 0 8px rgba(6, 182, 212, 0.3);
+        }
+
+        /* Utility */
+        .text-muted { color: #9ca3af; }
+        .text-accent { color: #06b6d4; }
+        .text-success { color: #10b981; }
+        .text-warning { color: #f59e0b; }
+        .text-danger { color: #ef4444; }
+
+        .mb-1 { margin-bottom: 0.5rem; }
+        .mb-2 { margin-bottom: 1rem; }
+        .mb-3 { margin-bottom: 1.5rem; }
+        .mb-4 { margin-bottom: 2rem; }
+
+        .flex { display: flex; }
+        .justify-between { justify-content: space-between; }
+        .items-center { align-items: center; }
+        .gap-1 { gap: 0.5rem; }
+        .gap-2 { gap: 1rem; }
+
+        .alert {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-left: 3px solid;
+            background: #030712;
+        }
+
+        .alert-warning {
+            border-left-color: #f59e0b;
+        }
+
+        .alert-danger {
+            border-left-color: #ef4444;
+        }
+
+        .alert-info {
+            border-left-color: #3b82f6;
+        }
+
+        /* Conflict indicators */
+        .conflict-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid #ef4444;
+            border-radius: 2px;
+            font-size: 0.875rem;
+        }
+
+        .conflict-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ef4444;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <div class="logo-text">
+                <span>⚡</span>
+                <span>COMMAND</span>
+            </div>
+            <div class="logo-subtitle">StreamStage Operations</div>
+        </div>
+        <nav class="nav">
+            <a href="01-dashboard.html" class="nav-item">
+                <span>📊</span>
+                <span>Dashboard</span>
+            </a>
+            <a href="02-pipeline.html" class="nav-item">
+                <span>⚡</span>
+                <span>Pipeline</span>
+            </a>
+            <a href="03-planning.html" class="nav-item">
+                <span>📅</span>
+                <span>Planning</span>
+            </a>
+            <a href="04-deliverables.html" class="nav-item">
+                <span>📦</span>
+                <span>Deliverables</span>
+            </a>
+            <a href="05-communications.html" class="nav-item">
+                <span>💬</span>
+                <span>Communications</span>
+            </a>
+            <a href="06-files.html" class="nav-item">
+                <span>📁</span>
+                <span>Files</span>
+            </a>
+            <a href="07-operators.html" class="nav-item">
+                <span>👥</span>
+                <span>Operators</span>
+            </a>
+            <a href="08-gear.html" class="nav-item active">
+                <span>🎥</span>
+                <span>Gear</span>
+            </a>
+            <a href="09-reports.html" class="nav-item">
+                <span>📈</span>
+                <span>Reports</span>
+            </a>
+            <a href="10-customize.html" class="nav-item">
+                <span>⚙️</span>
+                <span>Customize</span>
+            </a>
+            <a href="11-settings.html" class="nav-item">
+                <span>🔧</span>
+                <span>Settings</span>
+            </a>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <div class="top-bar">
+            <div class="top-bar-left">
+                <h1>🎥 GEAR</h1>
+                <p>EQUIPMENT MANAGEMENT</p>
+            </div>
+            <div class="top-bar-right">
+                <div class="status-indicator">● SYSTEMS OPERATIONAL</div>
+                <div class="user-avatar">DA</div>
+            </div>
+        </div>
+        <div class="dashboard-content">
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('inventory')">INVENTORY</button>
+            <button class="tab" onclick="switchTab('calendar')">CALENDAR</button>
+            <button class="tab" onclick="switchTab('maintenance')">MAINTENANCE</button>
+            <button class="tab" onclick="switchTab('kits')">KITS</button>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- INVENTORY TAB -->
+        <!-- ============================================ -->
+        <div id="inventory" class="tab-content active">
+            <div style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
+                <h2 style="font-size: 1.5rem; color: #06b6d4;">Gear Inventory</h2>
+                <div class="view-toggle">
+                    <button class="view-toggle-btn active" onclick="toggleInventoryView('cards')">CARD VIEW</button>
+                    <button class="view-toggle-btn" onclick="toggleInventoryView('table')">TABLE VIEW</button>
+                </div>
+            </div>
+
+            <!-- Card View -->
+            <div id="inventory-cards" data-view="cards">
+                <div class="grid grid-4">
+                    <!-- Gear Card 1 -->
+                    <div class="gear-card">
+                        <div class="gear-image">📷</div>
+                        <div class="gear-info">
+                            <div class="gear-name">Canon EOS R5</div>
+                            <div class="gear-detail">Category: Camera</div>
+                            <div class="gear-detail">Type: Full-Frame Mirrorless</div>
+                            <div class="gear-detail">Serial: CFJ012345</div>
+                            <div class="gear-detail">Purchase: 2023-01-15</div>
+                            <div style="margin-top: 0.5rem;">
+                                <span class="status-badge status-available">Available</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gear Card 2 -->
+                    <div class="gear-card">
+                        <div class="gear-image">🎥</div>
+                        <div class="gear-info">
+                            <div class="gear-name">Sony FX30</div>
+                            <div class="gear-detail">Category: Camera</div>
+                            <div class="gear-detail">Type: Cinema Camera</div>
+                            <div class="gear-detail">Serial: SONY98765</div>
+                            <div class="gear-detail">Purchase: 2023-06-20</div>
+                            <div style="margin-top: 0.5rem;">
+                                <span class="status-badge status-in-use">In Use</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gear Card 3 -->
+                    <div class="gear-card">
+                        <div class="gear-image">🔊</div>
+                        <div class="gear-info">
+                            <div class="gear-name">Rode Wireless GO II</div>
+                            <div class="gear-detail">Category: Audio</div>
+                            <div class="gear-detail">Type: Wireless Microphone</div>
+                            <div class="gear-detail">Serial: RODE54321</div>
+                            <div class="gear-detail">Purchase: 2023-03-10</div>
+                            <div style="margin-top: 0.5rem;">
+                                <span class="status-badge status-available">Available</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gear Card 4 -->
+                    <div class="gear-card">
+                        <div class="gear-image">💡</div>
+                        <div class="gear-info">
+                            <div class="gear-name">Neewer LED Panel</div>
+                            <div class="gear-detail">Category: Lighting</div>
+                            <div class="gear-detail">Type: Bi-Color LED</div>
+                            <div class="gear-detail">Serial: NWLED99999</div>
+                            <div class="gear-detail">Purchase: 2023-02-28</div>
+                            <div style="margin-top: 0.5rem;">
+                                <span class="status-badge status-repair">In Repair</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gear Card 5 -->
+                    <div class="gear-card">
+                        <div class="gear-image">🔌</div>
+                        <div class="gear-info">
+                            <div class="gear-name">HDMI Cable Bundle</div>
+                            <div class="gear-detail">Category: Cable</div>
+                            <div class="gear-detail">Type: Audio/Video Cable Set</div>
+                            <div class="gear-detail">Serial: CABLE00001</div>
+                            <div class="gear-detail">Purchase: 2023-01-05</div>
+                            <div style="margin-top: 0.5rem;">
+                                <span class="status-badge status-available">Available</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gear Card 6 -->
+                    <div class="gear-card">
+                        <div class="gear-image">🎬</div>
+                        <div class="gear-info">
+                            <div class="gear-name">Ronin 4D Gimbal</div>
+                            <div class="gear-detail">Category: Rigging</div>
+                            <div class="gear-detail">Type: Stabilization Gimbal</div>
+                            <div class="gear-detail">Serial: DJI456789</div>
+                            <div class="gear-detail">Purchase: 2024-01-12</div>
+                            <div style="margin-top: 0.5rem;">
+                                <span class="status-badge status-retired">Retired</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table View -->
+            <div id="inventory-table" data-view="table" style="display: none;">
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Category</th>
+                                <th>Type</th>
+                                <th>Serial #</th>
+                                <th>Purchase Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Canon EOS R5</td>
+                                <td>Camera</td>
+                                <td>Full-Frame Mirrorless</td>
+                                <td>CFJ012345</td>
+                                <td>2023-01-15</td>
+                                <td><span class="status-badge status-available">Available</span></td>
+                                <td><button class="btn btn-small">Edit</button></td>
+                            </tr>
+                            <tr>
+                                <td>Sony FX30</td>
+                                <td>Camera</td>
+                                <td>Cinema Camera</td>
+                                <td>SONY98765</td>
+                                <td>2023-06-20</td>
+                                <td><span class="status-badge status-in-use">In Use</span></td>
+                                <td><button class="btn btn-small">Edit</button></td>
+                            </tr>
+                            <tr>
+                                <td>Rode Wireless GO II</td>
+                                <td>Audio</td>
+                                <td>Wireless Microphone</td>
+                                <td>RODE54321</td>
+                                <td>2023-03-10</td>
+                                <td><span class="status-badge status-available">Available</span></td>
+                                <td><button class="btn btn-small">Edit</button></td>
+                            </tr>
+                            <tr>
+                                <td>Neewer LED Panel</td>
+                                <td>Lighting</td>
+                                <td>Bi-Color LED</td>
+                                <td>NWLED99999</td>
+                                <td>2023-02-28</td>
+                                <td><span class="status-badge status-repair">In Repair</span></td>
+                                <td><button class="btn btn-small">Edit</button></td>
+                            </tr>
+                            <tr>
+                                <td>HDMI Cable Bundle</td>
+                                <td>Cable</td>
+                                <td>Audio/Video Cable Set</td>
+                                <td>CABLE00001</td>
+                                <td>2023-01-05</td>
+                                <td><span class="status-badge status-available">Available</span></td>
+                                <td><button class="btn btn-small">Edit</button></td>
+                            </tr>
+                            <tr>
+                                <td>Ronin 4D Gimbal</td>
+                                <td>Rigging</td>
+                                <td>Stabilization Gimbal</td>
+                                <td>DJI456789</td>
+                                <td>2024-01-12</td>
+                                <td><span class="status-badge status-retired">Retired</span></td>
+                                <td><button class="btn btn-small">Edit</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- CALENDAR TAB -->
+        <!-- ============================================ -->
+        <div id="calendar" class="tab-content">
+            <div class="card">
+                <div class="card-header">Gear Assignment Calendar</div>
+                <p class="text-muted" style="margin-bottom: 1.5rem;">View when gear is assigned to events and deployments</p>
+
+                <div style="background: #030712; padding: 1rem; border: 1px solid #1f2937;">
+                    <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; background: #1f2937;">
+                        ${['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'].map(day => `
+                            <div style="background: #111827; padding: 0.5rem; text-align: center; font-weight: 700; color: #06b6d4; font-size: 0.75rem;">${day}</div>
+                        `).join('')}
+
+                        <div style="background: #111827; padding: 1rem; min-height: 80px; color: #9ca3af;">
+                            <div style="font-weight: 700; font-size: 0.875rem; color: #f9fafb; margin-bottom: 0.5rem;">4</div>
+                            <div style="background: #06b6d4; color: #030712; padding: 0.25rem; margin-bottom: 0.25rem; font-size: 0.7rem; border-radius: 2px; font-weight: 600; white-space: nowrap;">Canon R5</div>
+                            <div style="background: #3b82f6; color: #f9fafb; padding: 0.25rem; font-size: 0.7rem; border-radius: 2px; font-weight: 600; white-space: nowrap;">Audio Kit</div>
+                        </div>
+                        <div style="background: #111827; padding: 1rem; min-height: 80px; color: #9ca3af;">5</div>
+                        <div style="background: #111827; padding: 1rem; min-height: 80px; color: #9ca3af;">6</div>
+                        <div style="background: #111827; padding: 1rem; min-height: 80px; color: #9ca3af;">7</div>
+                        <div style="background: #111827; padding: 1rem; min-height: 80px; color: #9ca3af;">8</div>
+                        <div style="background: #111827; padding: 1rem; min-height: 80px; color: #9ca3af;">9</div>
+                        <div style="background: #111827; padding: 1rem; min-height: 80px; color: #9ca3af;">10</div>
+
+                        <div style="background: #111827; padding: 1rem; min-height: 80px; color: #9ca3af;">11</div>
+                        <div style="background: #111827; padding: 1rem; min-height: 80px; color: #9ca3af;">12</div>
+                        <div style="background: #111827; padding: 1rem; min-height: 80px; color: #9ca3af;">
+                            <div style="font-weight: 700; font-size: 0.875rem; color: #f9fafb; margin-bottom: 0.5rem;">13</div>
+                            <div style="background: #10b981; color: #030712; padding: 0.25rem; font-size: 0.7rem; border-radius: 2px; font-weight: 600; white-space: nowrap;">LED Panel</div>
+                        </div>
+                        <div style="background: #111827; padding: 1rem; min-height: 80px; color: #9ca3af;">14</div>
+                        <div style="background: #111827; padding: 1rem; min-height: 80px; color: #9ca3af;">15</div>
+                        <div style="background: #111827; padding: 1rem; min-height: 80px; color: #9ca3af;">16</div>
+                        <div style="background: #111827; padding: 1rem; min-height: 80px; color: #9ca3af;">17</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Active Assignments</div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Gear</th>
+                                <th>Event</th>
+                                <th>From Date</th>
+                                <th>To Date</th>
+                                <th>Pack Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Canon EOS R5</td>
+                                <td>ABC Dance Recital</td>
+                                <td>2025-11-08</td>
+                                <td>2025-11-08</td>
+                                <td><span class="status-badge status-available">Packed</span></td>
+                            </tr>
+                            <tr>
+                                <td>Sony FX30</td>
+                                <td>XYZ Concert</td>
+                                <td>2025-11-15</td>
+                                <td>2025-11-16</td>
+                                <td><span class="status-badge status-in-use">At Event</span></td>
+                            </tr>
+                            <tr>
+                                <td>Rode Wireless GO II</td>
+                                <td>Metro Promo Video</td>
+                                <td>2025-11-22</td>
+                                <td>2025-11-22</td>
+                                <td><span class="status-badge status-available">Needs Packing</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- MAINTENANCE TAB -->
+        <!-- ============================================ -->
+        <div id="maintenance" class="tab-content">
+            <div style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
+                <h2 style="font-size: 1.5rem; color: #06b6d4;">Maintenance & Service History</h2>
+                <button class="btn" onclick="openModal('maintenanceModal')">+ LOG MAINTENANCE</button>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Canon EOS R5 - Service Timeline</div>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-date">2025-10-15</div>
+                        <div class="timeline-description">Sensor cleaning performed by technician. Status: AVAILABLE</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2025-09-20</div>
+                        <div class="timeline-description">Software update (v1.4.2) installed. No issues found.</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2025-08-10</div>
+                        <div class="timeline-description">Annual maintenance check-up. All components functioning normally.</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2025-07-05</div>
+                        <div class="timeline-description">Battery replaced. Original battery at 85% capacity.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Neewer LED Panel - Service Timeline</div>
+                <div class="alert alert-warning">
+                    <strong>Currently In Repair</strong> - Expected completion: 2025-11-20
+                </div>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-date">2025-11-01</div>
+                        <div class="timeline-description">Sent to technician. Issue: Power supply malfunction. Status: IN REPAIR</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2025-10-28</div>
+                        <div class="timeline-description">Intermittent power issues reported during event.</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2025-08-15</div>
+                        <div class="timeline-description">Warranty service: LED cooling fan replacement.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Upcoming Maintenance Schedule</div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Gear</th>
+                                <th>Maintenance Type</th>
+                                <th>Due Date</th>
+                                <th>Priority</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Sony FX30</td>
+                                <td>Sensor Cleaning</td>
+                                <td>2025-12-01</td>
+                                <td><span class="status-badge status-available">Scheduled</span></td>
+                            </tr>
+                            <tr>
+                                <td>Rode Wireless GO II</td>
+                                <td>Battery Check</td>
+                                <td>2025-11-25</td>
+                                <td><span class="status-badge status-available">Scheduled</span></td>
+                            </tr>
+                            <tr>
+                                <td>HDMI Cable Bundle</td>
+                                <td>Visual Inspection</td>
+                                <td>2025-12-15</td>
+                                <td><span class="status-badge status-available">Scheduled</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- KITS TAB (CRITICAL NEW FEATURE) -->
+        <!-- ============================================ -->
+        <div id="kits" class="tab-content">
+            <div style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
+                <h2 style="font-size: 1.5rem; color: #06b6d4;">Gear Kits</h2>
+                <button class="btn" onclick="openModal('createKitModal')">+ CREATE KIT</button>
+            </div>
+
+            <!-- Kit 1: Standard Dance Kit -->
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+                    <div>
+                        <div class="card-header">Standard Dance Kit</div>
+                        <div class="text-muted" style="font-size: 0.875rem;">Complete setup for single-camera dance events</div>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button class="btn btn-small" onclick="openModal('editKitModal')">EDIT</button>
+                        <button class="btn btn-secondary btn-small">ARCHIVE</button>
+                    </div>
+                </div>
+
+                <div class="kit-items">
+                    <div class="kit-item">
+                        <div>
+                            <div class="kit-item-name">Canon EOS R5</div>
+                            <div class="kit-item-status">Full-Frame Mirrorless Camera</div>
+                        </div>
+                        <span class="status-badge status-available">Available</span>
+                    </div>
+                    <div class="kit-item">
+                        <div>
+                            <div class="kit-item-name">Rode Wireless GO II</div>
+                            <div class="kit-item-status">Wireless Microphone System</div>
+                        </div>
+                        <span class="status-badge status-available">Available</span>
+                    </div>
+                    <div class="kit-item">
+                        <div>
+                            <div class="kit-item-name">HDMI Cable Bundle</div>
+                            <div class="kit-item-status">Audio/Video Cable Set</div>
+                        </div>
+                        <span class="status-badge status-available">Available</span>
+                    </div>
+                </div>
+
+                <div style="padding-top: 1rem; border-top: 1px solid #1f2937;">
+                    <button class="btn" onclick="openModal('deployKitModal')">DEPLOY TO EVENT</button>
+                    <span class="text-success" style="margin-left: 1rem; font-weight: 600;">✓ All items available</span>
+                </div>
+            </div>
+
+            <!-- Kit 2: Drone Package -->
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+                    <div>
+                        <div class="card-header">Drone Package</div>
+                        <div class="text-muted" style="font-size: 0.875rem;">Aerial footage kit with backup batteries</div>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button class="btn btn-small" onclick="openModal('editKitModal')">EDIT</button>
+                        <button class="btn btn-secondary btn-small">ARCHIVE</button>
+                    </div>
+                </div>
+
+                <div class="kit-items">
+                    <div class="kit-item">
+                        <div>
+                            <div class="kit-item-name">DJI Air 3S</div>
+                            <div class="kit-item-status">4K Drone with Gimbal</div>
+                        </div>
+                        <span class="status-badge status-available">Available</span>
+                    </div>
+                    <div class="kit-item">
+                        <div>
+                            <div class="kit-item-name">Extra Battery Pack (x3)</div>
+                            <div class="kit-item-status">DJI Flight Batteries</div>
+                        </div>
+                        <span class="status-badge status-in-use">In Use</span>
+                    </div>
+                    <div class="kit-item">
+                        <div>
+                            <div class="kit-item-name">ND Filter Set</div>
+                            <div class="kit-item-status">Neutral Density Filters</div>
+                        </div>
+                        <span class="status-badge status-available">Available</span>
+                    </div>
+                </div>
+
+                <div style="padding-top: 1rem; border-top: 1px solid #1f2937;">
+                    <div class="conflict-indicator">
+                        <div class="conflict-dot"></div>
+                        <span>Warning: 1 item already assigned to "XYZ Concert" event (Nov 15)</span>
+                    </div>
+                    <button class="btn" style="margin-top: 0.75rem;" onclick="alert('Cannot deploy: Battery pack in use. Check assignment or reassign items.')">DEPLOY TO EVENT</button>
+                </div>
+            </div>
+
+            <!-- Kit 3: Audio Kit -->
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+                    <div>
+                        <div class="card-header">Audio Kit</div>
+                        <div class="text-muted" style="font-size: 0.875rem;">Professional audio recording and monitoring setup</div>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button class="btn btn-small" onclick="openModal('editKitModal')">EDIT</button>
+                        <button class="btn btn-secondary btn-small">ARCHIVE</button>
+                    </div>
+                </div>
+
+                <div class="kit-items">
+                    <div class="kit-item">
+                        <div>
+                            <div class="kit-item-name">Sony FX30</div>
+                            <div class="kit-item-status">Cinema Camera with Audio I/O</div>
+                        </div>
+                        <span class="status-badge status-in-use">In Use</span>
+                    </div>
+                    <div class="kit-item">
+                        <div>
+                            <div class="kit-item-name">Sennheiser EW 100 G4</div>
+                            <div class="kit-item-status">Wireless Mic System</div>
+                        </div>
+                        <span class="status-badge status-available">Available</span>
+                    </div>
+                    <div class="kit-item">
+                        <div>
+                            <div class="kit-item-name">Audio Interface & XLR Bundle</div>
+                            <div class="kit-item-status">Audio Connectors & Equipment</div>
+                        </div>
+                        <span class="status-badge status-available">Available</span>
+                    </div>
+                </div>
+
+                <div style="padding-top: 1rem; border-top: 1px solid #1f2937;">
+                    <div class="conflict-indicator">
+                        <div class="conflict-dot"></div>
+                        <span>Missing item detection: Sony FX30 assigned to "ABC Dance Recital" (Nov 8)</span>
+                    </div>
+                    <button class="btn" style="margin-top: 0.75rem;" onclick="alert('Cannot deploy: Main camera in use at different event. Reassign or wait for return.')">DEPLOY TO EVENT</button>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- MODALS -->
+    <!-- ============================================ -->
+
+    <!-- Create Kit Modal -->
+    <div id="createKitModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Create New Kit</div>
+                <button class="modal-close" onclick="closeModal('createKitModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Kit Name *</label>
+                    <input type="text" class="form-input" placeholder="e.g., Standard Dance Kit" value="">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-textarea" rows="3" placeholder="What is this kit for? What situations?"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Add Items to Kit *</label>
+                    <p class="text-muted" style="font-size: 0.875rem; margin-bottom: 1rem;">Select gear items to include</p>
+
+                    <div style="background: #030712; border: 1px solid #1f2937; padding: 1rem; max-height: 250px; overflow-y: auto;">
+                        <label style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; cursor: pointer;">
+                            <input type="checkbox" style="cursor: pointer;">
+                            <span>Canon EOS R5 (Camera)</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; cursor: pointer;">
+                            <input type="checkbox" style="cursor: pointer;">
+                            <span>Sony FX30 (Camera)</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; cursor: pointer;">
+                            <input type="checkbox" style="cursor: pointer;">
+                            <span>Rode Wireless GO II (Audio)</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; cursor: pointer;">
+                            <input type="checkbox" style="cursor: pointer;">
+                            <span>Neewer LED Panel (Lighting)</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="checkbox" style="cursor: pointer;">
+                            <span>HDMI Cable Bundle (Cable)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button class="btn" onclick="closeModal('createKitModal'); alert('Kit created successfully!');">CREATE KIT</button>
+                    <button class="btn btn-secondary" onclick="closeModal('createKitModal')">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Kit Modal -->
+    <div id="editKitModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Edit Kit</div>
+                <button class="modal-close" onclick="closeModal('editKitModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Kit Name *</label>
+                    <input type="text" class="form-input" placeholder="Kit name" value="Standard Dance Kit">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-textarea" rows="3" placeholder="Description">Complete setup for single-camera dance events</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Kit Items</label>
+                    <p class="text-muted" style="font-size: 0.875rem; margin-bottom: 1rem;">Manage items in this kit</p>
+
+                    <div style="background: #030712; border: 1px solid #1f2937; padding: 1rem;">
+                        <label style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; cursor: pointer;">
+                            <input type="checkbox" style="cursor: pointer;" checked>
+                            <span>Canon EOS R5 (Camera)</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; cursor: pointer;">
+                            <input type="checkbox" style="cursor: pointer;" checked>
+                            <span>Rode Wireless GO II (Audio)</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="checkbox" style="cursor: pointer;" checked>
+                            <span>HDMI Cable Bundle (Cable)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button class="btn" onclick="closeModal('editKitModal'); alert('Kit updated successfully!');">SAVE CHANGES</button>
+                    <button class="btn btn-secondary" onclick="closeModal('editKitModal')">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Deploy Kit Modal -->
+    <div id="deployKitModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Deploy Kit to Event</div>
+                <button class="modal-close" onclick="closeModal('deployKitModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info" style="margin-bottom: 1.5rem;">
+                    <strong>Standard Dance Kit</strong><br>
+                    Ready to deploy: Canon EOS R5 • Rode Wireless GO II • HDMI Cable Bundle
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Select Event *</label>
+                    <select class="form-select">
+                        <option value="">-- Choose Event --</option>
+                        <option value="abc-dance">ABC Dance Recital (Nov 8, 2025)</option>
+                        <option value="xyz-concert">XYZ Concert (Nov 15, 2025)</option>
+                        <option value="metro-promo">Metro Promo Video (Nov 22, 2025)</option>
+                        <option value="new-event">+ Create New Event</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Load Date *</label>
+                    <input type="date" class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Return Date *</label>
+                    <input type="date" class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Notes</label>
+                    <textarea class="form-textarea" rows="3" placeholder="Any special handling instructions?"></textarea>
+                </div>
+
+                <div class="alert alert-info">
+                    <strong>Conflict Check:</strong> All items verified available for deployment ✓
+                </div>
+
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button class="btn" onclick="closeModal('deployKitModal'); alert('Kit deployed to event successfully!');">DEPLOY KIT</button>
+                    <button class="btn btn-secondary" onclick="closeModal('deployKitModal')">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Log Maintenance Modal -->
+    <div id="maintenanceModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Log Maintenance</div>
+                <button class="modal-close" onclick="closeModal('maintenanceModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Select Gear *</label>
+                    <select class="form-select">
+                        <option value="">-- Choose Gear --</option>
+                        <option value="canon">Canon EOS R5</option>
+                        <option value="sony">Sony FX30</option>
+                        <option value="rode">Rode Wireless GO II</option>
+                        <option value="led">Neewer LED Panel</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Maintenance Type *</label>
+                    <select class="form-select">
+                        <option value="">-- Choose Type --</option>
+                        <option value="repair">Repair</option>
+                        <option value="cleaning">Cleaning</option>
+                        <option value="update">Software Update</option>
+                        <option value="battery">Battery Replacement</option>
+                        <option value="inspection">Inspection</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Date *</label>
+                    <input type="date" class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Description *</label>
+                    <textarea class="form-textarea" rows="4" placeholder="What maintenance was performed?"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Technician Name</label>
+                    <input type="text" class="form-input" placeholder="Who performed the maintenance?">
+                </div>
+
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button class="btn" onclick="closeModal('maintenanceModal'); alert('Maintenance logged successfully!');">LOG MAINTENANCE</button>
+                    <button class="btn btn-secondary" onclick="closeModal('maintenanceModal')">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab switching
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+
+            event.target.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        // Inventory view toggle
+        function toggleInventoryView(view) {
+            document.querySelectorAll('[data-view]').forEach(el => {
+                el.style.display = 'none';
+            });
+
+            document.querySelectorAll('.view-toggle-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            if (view === 'cards') {
+                document.getElementById('inventory-cards').style.display = 'block';
+                document.querySelectorAll('.view-toggle-btn')[0].classList.add('active');
+            } else {
+                document.getElementById('inventory-table').style.display = 'block';
+                document.querySelectorAll('.view-toggle-btn')[1].classList.add('active');
+            }
+        }
+
+        // Modal controls
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // Close modal on ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal').forEach(modal => {
+                    modal.classList.remove('active');
+                });
+            }
+        });
+
+        // Close modal on backdrop click
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

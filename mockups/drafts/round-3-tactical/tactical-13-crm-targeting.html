@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM Targeting Interface - CommandCentered</title>
+    <style>
+        :root {
+            --cc-bg-primary: #0a0e14;
+            --cc-bg-secondary: #121820;
+            --cc-bg-tertiary: #1a2028;
+            --cc-accent-green: #00ff41;
+            --cc-accent-cyan: #00d4ff;
+            --cc-accent-yellow: #ffea00;
+            --cc-accent-red: #ff3d00;
+            --cc-text-primary: #00ff41;
+            --cc-text-secondary: #00d4ff;
+            --cc-text-muted: #6b7d8f;
+            --cc-border: #2a3440;
+            --cc-glow: rgba(0, 255, 65, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: var(--cc-bg-primary);
+            color: var(--cc-text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated Grid Background */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(0, 255, 65, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 65, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+            animation: gridScroll 20s linear infinite;
+        }
+
+        @keyframes gridScroll {
+            0% { background-position: 0 0; }
+            100% { background-position: 40px 40px; }
+        }
+
+        /* Corner HUD Frames */
+        .hud-frame {
+            position: fixed;
+            width: 80px;
+            height: 80px;
+            border: 2px solid var(--cc-accent-green);
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .hud-frame.top-left {
+            top: 0;
+            left: 0;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .hud-frame.top-right {
+            top: 0;
+            right: 0;
+            border-left: none;
+            border-bottom: none;
+        }
+
+        .hud-frame.bottom-left {
+            bottom: 0;
+            left: 0;
+            border-right: none;
+            border-top: none;
+        }
+
+        .hud-frame.bottom-right {
+            bottom: 0;
+            right: 0;
+            border-left: none;
+            border-top: none;
+        }
+
+        /* Header */
+        .header {
+            position: relative;
+            background: var(--cc-bg-secondary);
+            border-bottom: 2px solid var(--cc-accent-green);
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 0 20px var(--cc-glow);
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--cc-accent-green);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px var(--cc-accent-green);
+        }
+
+        .system-status {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            font-size: 12px;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .status-dot.active {
+            background: var(--cc-accent-green);
+            box-shadow: 0 0 10px var(--cc-accent-green);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Container */
+        .container {
+            position: relative;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 24px;
+            z-index: 1;
+        }
+
+        /* Page Header */
+        .page-header {
+            margin-bottom: 24px;
+            padding: 16px;
+            background: var(--cc-bg-secondary);
+            border: 1px solid var(--cc-border);
+            border-left: 4px solid var(--cc-accent-green);
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--cc-accent-green);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 4px;
+            text-shadow: 0 0 10px var(--cc-accent-green);
+        }
+
+        .page-subtitle {
+            font-size: 12px;
+            color: var(--cc-text-muted);
+            text-transform: uppercase;
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: var(--cc-bg-secondary);
+            border: 1px solid var(--cc-border);
+            border-left: 3px solid var(--cc-accent-cyan);
+            padding: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--cc-accent-cyan), transparent);
+        }
+
+        .stat-label {
+            font-size: 10px;
+            color: var(--cc-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--cc-accent-green);
+            text-shadow: 0 0 10px var(--cc-accent-green);
+        }
+
+        /* Filters Bar */
+        .filters-bar {
+            background: var(--cc-bg-secondary);
+            border: 1px solid var(--cc-border);
+            padding: 16px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .filter-label {
+            font-size: 10px;
+            color: var(--cc-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .filter-select {
+            background: var(--cc-bg-tertiary);
+            border: 1px solid var(--cc-border);
+            color: var(--cc-accent-green);
+            padding: 8px 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            border-radius: 2px;
+            cursor: pointer;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--cc-accent-green);
+            box-shadow: 0 0 10px var(--cc-glow);
+        }
+
+        .search-box {
+            background: var(--cc-bg-tertiary);
+            border: 1px solid var(--cc-border);
+            color: var(--cc-accent-green);
+            padding: 8px 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            width: 300px;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: var(--cc-accent-green);
+            box-shadow: 0 0 10px var(--cc-glow);
+        }
+
+        .btn-tactical {
+            background: var(--cc-bg-tertiary);
+            border: 1px solid var(--cc-accent-green);
+            color: var(--cc-accent-green);
+            padding: 8px 16px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-tactical:hover {
+            background: var(--cc-accent-green);
+            color: var(--cc-bg-primary);
+            box-shadow: 0 0 20px var(--cc-glow);
+        }
+
+        /* CRM Table */
+        .crm-table-wrapper {
+            background: var(--cc-bg-secondary);
+            border: 1px solid var(--cc-border);
+            overflow-x: auto;
+        }
+
+        .crm-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        .crm-table thead {
+            background: var(--cc-bg-tertiary);
+            border-bottom: 2px solid var(--cc-accent-green);
+        }
+
+        .crm-table th {
+            padding: 12px;
+            text-align: left;
+            color: var(--cc-accent-cyan);
+            text-transform: uppercase;
+            font-weight: 700;
+            font-size: 10px;
+            letter-spacing: 1px;
+        }
+
+        .crm-table tbody tr {
+            border-bottom: 1px solid var(--cc-border);
+            transition: all 0.2s;
+        }
+
+        .crm-table tbody tr:hover {
+            background: var(--cc-bg-tertiary);
+            box-shadow: inset 4px 0 0 var(--cc-accent-green);
+        }
+
+        .crm-table td {
+            padding: 12px;
+            color: var(--cc-text-secondary);
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 8px;
+            border-radius: 2px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            border: 1px solid;
+        }
+
+        .status-badge.new {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: var(--cc-accent-cyan);
+            color: var(--cc-accent-cyan);
+        }
+
+        .status-badge.contacted {
+            background: rgba(255, 234, 0, 0.1);
+            border-color: var(--cc-accent-yellow);
+            color: var(--cc-accent-yellow);
+        }
+
+        .status-badge.proposal-sent {
+            background: rgba(0, 255, 65, 0.1);
+            border-color: var(--cc-accent-green);
+            color: var(--cc-accent-green);
+        }
+
+        .status-badge.won {
+            background: rgba(0, 255, 65, 0.2);
+            border-color: var(--cc-accent-green);
+            color: var(--cc-accent-green);
+            box-shadow: 0 0 10px var(--cc-glow);
+        }
+
+        .status-badge.lost {
+            background: rgba(255, 61, 0, 0.1);
+            border-color: var(--cc-accent-red);
+            color: var(--cc-accent-red);
+        }
+
+        .badge-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+            animation: pulse 2s infinite;
+        }
+
+        .action-btn {
+            background: transparent;
+            border: 1px solid var(--cc-border);
+            color: var(--cc-text-muted);
+            padding: 4px 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 10px;
+            cursor: pointer;
+            margin-right: 4px;
+            transition: all 0.2s;
+        }
+
+        .action-btn:hover {
+            border-color: var(--cc-accent-green);
+            color: var(--cc-accent-green);
+            box-shadow: 0 0 10px var(--cc-glow);
+        }
+
+        /* Bulk Actions Bar */
+        .bulk-actions {
+            background: var(--cc-bg-tertiary);
+            border: 1px solid var(--cc-accent-yellow);
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .bulk-actions-left {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .selected-count {
+            color: var(--cc-accent-yellow);
+            font-weight: 700;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 24px;
+        }
+
+        .page-btn {
+            background: var(--cc-bg-secondary);
+            border: 1px solid var(--cc-border);
+            color: var(--cc-text-secondary);
+            padding: 8px 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .page-btn:hover, .page-btn.active {
+            border-color: var(--cc-accent-green);
+            color: var(--cc-accent-green);
+            box-shadow: 0 0 10px var(--cc-glow);
+        }
+
+        .checkbox {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            accent-color: var(--cc-accent-green);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .filters-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .crm-table {
+                font-size: 10px;
+            }
+
+            .crm-table th,
+            .crm-table td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Grid Background -->
+    <div class="grid-bg"></div>
+
+    <!-- HUD Corner Frames -->
+    <div class="hud-frame top-left"></div>
+    <div class="hud-frame top-right"></div>
+    <div class="hud-frame bottom-left"></div>
+    <div class="hud-frame bottom-right"></div>
+
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">COMMANDCENTERED</div>
+        <div class="system-status">
+            <div class="status-item">
+                <div class="status-dot active"></div>
+                <span>SYSTEM ONLINE</span>
+            </div>
+            <div class="status-item">
+                <span>LEADS: 247</span>
+            </div>
+            <div class="status-item">
+                <span>USER: COMMANDER</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Container -->
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="page-title">CRM TARGETING INTERFACE</div>
+            <div class="page-subtitle">Lead Acquisition & Conversion Tracking</div>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-label">Total Leads</div>
+                <div class="stat-value">247</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Active Proposals</div>
+                <div class="stat-value">18</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Conversion Rate</div>
+                <div class="stat-value">32%</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Pipeline Value</div>
+                <div class="stat-value">$87K</div>
+            </div>
+        </div>
+
+        <!-- Filters Bar -->
+        <div class="filters-bar">
+            <div class="filter-group">
+                <div class="filter-label">Status</div>
+                <select class="filter-select" id="statusFilter">
+                    <option value="all">All Statuses</option>
+                    <option value="new">New</option>
+                    <option value="contacted">Contacted</option>
+                    <option value="proposal_sent">Proposal Sent</option>
+                    <option value="won">Won</option>
+                    <option value="lost">Lost</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <div class="filter-label">Service Type</div>
+                <select class="filter-select" id="serviceFilter">
+                    <option value="all">All Services</option>
+                    <option value="recital">Dance Recital</option>
+                    <option value="event">Event Video</option>
+                    <option value="corporate">Corporate</option>
+                    <option value="concert">Concert</option>
+                    <option value="promo">Promo Video</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <div class="filter-label">Date Range</div>
+                <select class="filter-select" id="dateFilter">
+                    <option value="all">All Time</option>
+                    <option value="today">Today</option>
+                    <option value="week">This Week</option>
+                    <option value="month">This Month</option>
+                    <option value="quarter">This Quarter</option>
+                </select>
+            </div>
+
+            <div class="filter-group" style="flex: 1;">
+                <div class="filter-label">Search</div>
+                <input type="text" class="search-box" placeholder="Search leads (name, email, studio)..." id="searchBox">
+            </div>
+
+            <div class="filter-group">
+                <div class="filter-label">&nbsp;</div>
+                <button class="btn-tactical" onclick="exportLeads()">EXPORT CSV</button>
+            </div>
+        </div>
+
+        <!-- Bulk Actions (shown when items selected) -->
+        <div class="bulk-actions" id="bulkActions" style="display: none;">
+            <div class="bulk-actions-left">
+                <span class="selected-count" id="selectedCount">3 leads selected</span>
+                <button class="btn-tactical" onclick="bulkSendProposal()">SEND PROPOSAL</button>
+                <button class="btn-tactical" onclick="bulkMarkContacted()">MARK CONTACTED</button>
+                <button class="btn-tactical" onclick="bulkDisqualify()">DISQUALIFY</button>
+            </div>
+            <button class="action-btn" onclick="clearSelection()">CLEAR SELECTION</button>
+        </div>
+
+        <!-- CRM Table -->
+        <div class="crm-table-wrapper">
+            <table class="crm-table">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" class="checkbox" onclick="toggleSelectAll()"></th>
+                        <th>Studio Name</th>
+                        <th>Contact</th>
+                        <th>Phone</th>
+                        <th>Service Type</th>
+                        <th>Event Date</th>
+                        <th>Status</th>
+                        <th>Last Contact</th>
+                        <th>Est. Value</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="checkbox" class="checkbox lead-checkbox"></td>
+                        <td>Elite Dance Studio</td>
+                        <td>info@elitedance.com</td>
+                        <td>(555) 123-4567</td>
+                        <td>Dance Recital</td>
+                        <td>2025-06-15</td>
+                        <td>
+                            <span class="status-badge proposal-sent">
+                                <span class="badge-dot"></span>
+                                Proposal Sent
+                            </span>
+                        </td>
+                        <td>2 days ago</td>
+                        <td>$2,745</td>
+                        <td>
+                            <button class="action-btn" onclick="viewLead(1)">VIEW</button>
+                            <button class="action-btn" onclick="sendEmail(1)">EMAIL</button>
+                            <button class="action-btn" onclick="callLead(1)">CALL</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" class="checkbox lead-checkbox"></td>
+                        <td>Starlight Academy</td>
+                        <td>admin@starlightdance.com</td>
+                        <td>(555) 234-5678</td>
+                        <td>Dance Recital</td>
+                        <td>2025-05-20</td>
+                        <td>
+                            <span class="status-badge new">
+                                <span class="badge-dot"></span>
+                                New
+                            </span>
+                        </td>
+                        <td>Just now</td>
+                        <td>$3,200</td>
+                        <td>
+                            <button class="action-btn" onclick="viewLead(2)">VIEW</button>
+                            <button class="action-btn" onclick="sendEmail(2)">EMAIL</button>
+                            <button class="action-btn" onclick="callLead(2)">CALL</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" class="checkbox lead-checkbox"></td>
+                        <td>Tech Corp</td>
+                        <td>events@techcorp.com</td>
+                        <td>(555) 345-6789</td>
+                        <td>Corporate Video</td>
+                        <td>2025-04-10</td>
+                        <td>
+                            <span class="status-badge contacted">
+                                <span class="badge-dot"></span>
+                                Contacted
+                            </span>
+                        </td>
+                        <td>5 hours ago</td>
+                        <td>$5,500</td>
+                        <td>
+                            <button class="action-btn" onclick="viewLead(3)">VIEW</button>
+                            <button class="action-btn" onclick="sendEmail(3)">EMAIL</button>
+                            <button class="action-btn" onclick="callLead(3)">CALL</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" class="checkbox lead-checkbox"></td>
+                        <td>Movement Dance Co.</td>
+                        <td>director@movementdance.org</td>
+                        <td>(555) 456-7890</td>
+                        <td>Dance Promo</td>
+                        <td>2025-03-15</td>
+                        <td>
+                            <span class="status-badge won">
+                                <span class="badge-dot"></span>
+                                Won
+                            </span>
+                        </td>
+                        <td>1 week ago</td>
+                        <td>$1,800</td>
+                        <td>
+                            <button class="action-btn" onclick="viewLead(4)">VIEW</button>
+                            <button class="action-btn" onclick="sendEmail(4)">EMAIL</button>
+                            <button class="action-btn" onclick="callLead(4)">CALL</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" class="checkbox lead-checkbox"></td>
+                        <td>Rhythm Studios</td>
+                        <td>contact@rhythmstudios.ca</td>
+                        <td>(555) 567-8901</td>
+                        <td>Concert Video</td>
+                        <td>2025-07-01</td>
+                        <td>
+                            <span class="status-badge proposal-sent">
+                                <span class="badge-dot"></span>
+                                Proposal Sent
+                            </span>
+                        </td>
+                        <td>4 days ago</td>
+                        <td>$4,200</td>
+                        <td>
+                            <button class="action-btn" onclick="viewLead(5)">VIEW</button>
+                            <button class="action-btn" onclick="sendEmail(5)">EMAIL</button>
+                            <button class="action-btn" onclick="callLead(5)">CALL</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" class="checkbox lead-checkbox"></td>
+                        <td>Graceful Arts Dance</td>
+                        <td>info@gracefularts.com</td>
+                        <td>(555) 678-9012</td>
+                        <td>Event Video</td>
+                        <td>2025-08-12</td>
+                        <td>
+                            <span class="status-badge new">
+                                <span class="badge-dot"></span>
+                                New
+                            </span>
+                        </td>
+                        <td>3 hours ago</td>
+                        <td>$2,900</td>
+                        <td>
+                            <button class="action-btn" onclick="viewLead(6)">VIEW</button>
+                            <button class="action-btn" onclick="sendEmail(6)">EMAIL</button>
+                            <button class="action-btn" onclick="callLead(6)">CALL</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" class="checkbox lead-checkbox"></td>
+                        <td>Premier Dance Academy</td>
+                        <td>admin@premierdance.net</td>
+                        <td>(555) 789-0123</td>
+                        <td>Dance Recital</td>
+                        <td>2025-06-28</td>
+                        <td>
+                            <span class="status-badge lost">
+                                <span class="badge-dot"></span>
+                                Lost
+                            </span>
+                        </td>
+                        <td>2 weeks ago</td>
+                        <td>$3,100</td>
+                        <td>
+                            <button class="action-btn" onclick="viewLead(7)">VIEW</button>
+                            <button class="action-btn" onclick="sendEmail(7)">EMAIL</button>
+                            <button class="action-btn" onclick="callLead(7)">CALL</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            <button class="page-btn">«</button>
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn">3</button>
+            <button class="page-btn">4</button>
+            <button class="page-btn">5</button>
+            <button class="page-btn">»</button>
+        </div>
+    </div>
+
+    <script>
+        // Checkbox selection tracking
+        const checkboxes = document.querySelectorAll('.lead-checkbox');
+        const bulkActionsBar = document.getElementById('bulkActions');
+        const selectedCountEl = document.getElementById('selectedCount');
+
+        checkboxes.forEach(cb => {
+            cb.addEventListener('change', updateBulkActions);
+        });
+
+        function updateBulkActions() {
+            const selected = Array.from(checkboxes).filter(cb => cb.checked);
+            if (selected.length > 0) {
+                bulkActionsBar.style.display = 'flex';
+                selectedCountEl.textContent = `${selected.length} lead${selected.length > 1 ? 's' : ''} selected`;
+            } else {
+                bulkActionsBar.style.display = 'none';
+            }
+        }
+
+        function toggleSelectAll() {
+            const selectAll = event.target.checked;
+            checkboxes.forEach(cb => cb.checked = selectAll);
+            updateBulkActions();
+        }
+
+        function clearSelection() {
+            checkboxes.forEach(cb => cb.checked = false);
+            updateBulkActions();
+        }
+
+        function viewLead(id) {
+            alert(`[SYSTEM] Opening lead detail view for ID: ${id}`);
+        }
+
+        function sendEmail(id) {
+            alert(`[SYSTEM] Composing email to lead ID: ${id}`);
+        }
+
+        function callLead(id) {
+            alert(`[SYSTEM] Initiating call to lead ID: ${id}`);
+        }
+
+        function bulkSendProposal() {
+            const count = Array.from(checkboxes).filter(cb => cb.checked).length;
+            alert(`[SYSTEM] Sending proposals to ${count} selected leads`);
+        }
+
+        function bulkMarkContacted() {
+            const count = Array.from(checkboxes).filter(cb => cb.checked).length;
+            alert(`[SYSTEM] Marking ${count} leads as contacted`);
+        }
+
+        function bulkDisqualify() {
+            const count = Array.from(checkboxes).filter(cb => cb.checked).length;
+            if (confirm(`[CONFIRM] Disqualify ${count} selected leads?`)) {
+                alert(`[SYSTEM] ${count} leads disqualified`);
+                clearSelection();
+            }
+        }
+
+        function exportLeads() {
+            alert('[SYSTEM] Generating CSV export...\n\nDownload will begin shortly.');
+        }
+    </script>
+</body>
+</html>

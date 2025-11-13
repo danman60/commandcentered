@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warning Patterns - CommandCentered</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f3f4f6;
+            color: #111827;
+            padding: 24px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 24px 32px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        /* Pattern Grid */
+        .pattern-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 24px;
+        }
+
+        .pattern-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .pattern-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 16px;
+        }
+
+        /* Warning Dialogs */
+        .warning-dialog {
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border-left: 4px solid;
+        }
+
+        .warning-dialog:last-child {
+            margin-bottom: 0;
+        }
+
+        .warning-header {
+            display: flex;
+            align-items: start;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .warning-icon {
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .warning-content {
+            flex: 1;
+        }
+
+        .warning-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .warning-message {
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .warning-details {
+            background: rgba(0,0,0,0.05);
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            margin-bottom: 12px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .warning-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .btn-secondary:hover {
+            background: #e5e7eb;
+        }
+
+        .btn-override {
+            background: #dc2626;
+            color: white;
+        }
+
+        .btn-override:hover {
+            background: #b91c1c;
+        }
+
+        .btn-proceed {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .btn-proceed:hover {
+            background: #d97706;
+        }
+
+        .btn-primary {
+            background: #1d4ed8;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1e40af;
+        }
+
+        /* INFO Level */
+        .warning-dialog.info {
+            background: #eff6ff;
+            border-left-color: #1d4ed8;
+        }
+
+        .warning-dialog.info .warning-title {
+            color: #1e40af;
+        }
+
+        .warning-dialog.info .warning-message {
+            color: #1e3a8a;
+        }
+
+        /* WARNING Level */
+        .warning-dialog.warning {
+            background: #fef3c7;
+            border-left-color: #f59e0b;
+        }
+
+        .warning-dialog.warning .warning-title {
+            color: #92400e;
+        }
+
+        .warning-dialog.warning .warning-message {
+            color: #78350f;
+        }
+
+        /* CRITICAL Level */
+        .warning-dialog.critical {
+            background: #fee2e2;
+            border-left-color: #dc2626;
+        }
+
+        .warning-dialog.critical .warning-title {
+            color: #991b1b;
+        }
+
+        .warning-dialog.critical .warning-message {
+            color: #7f1d1d;
+        }
+
+        /* Commander Mode Badge */
+        .commander-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: linear-gradient(135deg, #1d4ed8, #3730a3);
+            color: white;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 16px;
+        }
+
+        /* Use Case Examples */
+        .use-case {
+            padding: 16px;
+            background: #f9fafb;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .use-case:last-child {
+            margin-bottom: 0;
+        }
+
+        .use-case-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 8px;
+        }
+
+        .use-case-description {
+            font-size: 13px;
+            color: #6b7280;
+            line-height: 1.5;
+        }
+
+        /* Philosophy Card */
+        .philosophy {
+            background: linear-gradient(135deg, #1d4ed8, #3730a3);
+            color: white;
+            padding: 32px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .philosophy h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .philosophy p {
+            font-size: 16px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Warning System Patterns</h1>
+            <p>Commander Mode: Warn, Never Block</p>
+        </div>
+
+        <div class="philosophy">
+            <h2>🎯 Core Philosophy</h2>
+            <p>
+                CommandCentered never blocks the Commander. All warnings can be overridden.
+                <br>
+                The system provides information to assist decisions, not enforce rules.
+                <br><br>
+                <strong>Warn → Inform → Allow Override</strong>
+            </p>
+        </div>
+
+        <div class="pattern-grid">
+            <!-- INFO Level -->
+            <div class="pattern-card">
+                <div class="commander-badge">
+                    ℹ️ INFO LEVEL
+                </div>
+                <div class="pattern-title">Informational Notices</div>
+
+                <div class="warning-dialog info">
+                    <div class="warning-header">
+                        <div class="warning-icon">ℹ️</div>
+                        <div class="warning-content">
+                            <div class="warning-title">FYI: Equipment Preference</div>
+                            <div class="warning-message">
+                                John typically uses Camera #1 for this type of event. Camera #2 is assigned.
+                            </div>
+                            <div class="warning-actions">
+                                <button class="btn btn-secondary">Got It</button>
+                                <button class="btn btn-primary">Proceed Anyway</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="warning-dialog info">
+                    <div class="warning-header">
+                        <div class="warning-icon">ℹ️</div>
+                        <div class="warning-content">
+                            <div class="warning-title">Note: First Time Client</div>
+                            <div class="warning-message">
+                                This is Sarah's first event with StreamStage. Consider sending welcome package.
+                            </div>
+                            <div class="warning-actions">
+                                <button class="btn btn-secondary">Remind Me Later</button>
+                                <button class="btn btn-primary">Continue</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="use-case">
+                    <div class="use-case-title">When to use INFO:</div>
+                    <div class="use-case-description">
+                        • Helpful suggestions<br>
+                        • Operator preferences<br>
+                        • Best practices<br>
+                        • Process reminders
+                    </div>
+                </div>
+            </div>
+
+            <!-- WARNING Level -->
+            <div class="pattern-card">
+                <div class="commander-badge">
+                    ⚠️ WARNING LEVEL
+                </div>
+                <div class="pattern-title">Potential Issues</div>
+
+                <div class="warning-dialog warning">
+                    <div class="warning-header">
+                        <div class="warning-icon">⚠️</div>
+                        <div class="warning-content">
+                            <div class="warning-title">Equipment Double-Booked</div>
+                            <div class="warning-message">
+                                DJI Mavic 3 Drone is already assigned to another event on this date.
+                            </div>
+                            <div class="warning-details">
+                                Conflict: Corporate Retreat - March 28, 2025 (9:00 AM - 5:00 PM)<br>
+                                Your event: Tech Conference - March 28, 2025 (2:00 PM - 6:00 PM)
+                            </div>
+                            <div class="warning-actions">
+                                <button class="btn btn-secondary">Cancel</button>
+                                <button class="btn btn-proceed">Proceed Anyway</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="warning-dialog warning">
+                    <div class="warning-header">
+                        <div class="warning-icon">⚠️</div>
+                        <div class="warning-content">
+                            <div class="warning-title">No Deposit Received</div>
+                            <div class="warning-message">
+                                Creating event without deposit. Total contract value: $8,500
+                            </div>
+                            <div class="warning-details">
+                                Payment Status: $0 / $8,500 (0% paid)<br>
+                                Deposit typically: 50% = $4,250
+                            </div>
+                            <div class="warning-actions">
+                                <button class="btn btn-secondary">Go Back</button>
+                                <button class="btn btn-proceed">Create Event</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="use-case">
+                    <div class="use-case-title">When to use WARNING:</div>
+                    <div class="use-case-description">
+                        • Resource conflicts<br>
+                        • Missing payments<br>
+                        • Unsigned contracts<br>
+                        • Scheduling overlaps
+                    </div>
+                </div>
+            </div>
+
+            <!-- CRITICAL Level -->
+            <div class="pattern-card">
+                <div class="commander-badge">
+                    🚨 CRITICAL LEVEL
+                </div>
+                <div class="pattern-title">Serious Problems</div>
+
+                <div class="warning-dialog critical">
+                    <div class="warning-header">
+                        <div class="warning-icon">🚨</div>
+                        <div class="warning-content">
+                            <div class="warning-title">Operator Already Fully Booked</div>
+                            <div class="warning-message">
+                                John Doe is assigned to 3 events on January 24th with no time gaps.
+                            </div>
+                            <div class="warning-details">
+                                9:00 AM - 12:00 PM: Wedding at Grand Hotel<br>
+                                1:00 PM - 5:00 PM: Corporate Event Downtown<br>
+                                6:00 PM - 10:00 PM: Birthday Party Suburbs<br>
+                                <br>
+                                Your event: Tech Conference 2:00 PM - 6:00 PM (conflicts with #2)
+                            </div>
+                            <div class="warning-actions">
+                                <button class="btn btn-secondary">Choose Different Operator</button>
+                                <button class="btn btn-override">Override & Assign</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="warning-dialog critical">
+                    <div class="warning-header">
+                        <div class="warning-icon">🚨</div>
+                        <div class="warning-content">
+                            <div class="warning-title">Deleting Paid Event</div>
+                            <div class="warning-message">
+                                You're about to delete an event with confirmed payment and signed contract.
+                            </div>
+                            <div class="warning-details">
+                                Event: Tech Innovators Conference<br>
+                                Contract Value: $8,500 (100% paid)<br>
+                                Status: Confirmed, operators assigned<br>
+                                <br>
+                                ⚠️ This action should be "Cancel" not "Delete" to preserve records.
+                            </div>
+                            <div class="warning-actions">
+                                <button class="btn btn-secondary">Go Back</button>
+                                <button class="btn btn-proceed">Cancel Event Instead</button>
+                                <button class="btn btn-override">Delete Anyway</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="use-case">
+                    <div class="use-case-title">When to use CRITICAL:</div>
+                    <div class="use-case-description">
+                        • Data loss risk<br>
+                        • Financial implications<br>
+                        • Client relationship impact<br>
+                        • Impossible logistics
+                    </div>
+                </div>
+            </div>
+
+            <!-- Confirmation Pattern -->
+            <div class="pattern-card">
+                <div class="commander-badge">
+                    ✓ CONFIRMATION PATTERN
+                </div>
+                <div class="pattern-title">Explicit Confirmations</div>
+
+                <div class="warning-dialog warning">
+                    <div class="warning-header">
+                        <div class="warning-icon">🔄</div>
+                        <div class="warning-content">
+                            <div class="warning-title">Confirm Voice Command</div>
+                            <div class="warning-message">
+                                I heard: "Send invoice for $4,250 to Tech Innovators"
+                            </div>
+                            <div class="warning-details">
+                                Client: Tech Innovators Inc.<br>
+                                Amount: $4,250 (50% deposit)<br>
+                                Email: billing@techinnovators.com<br>
+                                <br>
+                                This will generate and send an invoice immediately.
+                            </div>
+                            <div class="warning-actions">
+                                <button class="btn btn-secondary">Cancel</button>
+                                <button class="btn btn-primary">Confirm & Send</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="warning-dialog critical">
+                    <div class="warning-header">
+                        <div class="warning-icon">💰</div>
+                        <div class="warning-content">
+                            <div class="warning-title">Confirm Large Payment Change</div>
+                            <div class="warning-message">
+                                You're changing the contract value from $8,500 to $12,000.
+                            </div>
+                            <div class="warning-details">
+                                Previous: $8,500<br>
+                                New: $12,000<br>
+                                Difference: +$3,500 (41% increase)<br>
+                                <br>
+                                ⚠️ Client has already paid $4,250. Balance will increase.
+                            </div>
+                            <div class="warning-actions">
+                                <button class="btn btn-secondary">Cancel</button>
+                                <button class="btn btn-primary">Confirm Change</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="use-case">
+                    <div class="use-case-title">When to use CONFIRMATION:</div>
+                    <div class="use-case-description">
+                        • Financial changes > $500<br>
+                        • Voice DELETE commands<br>
+                        • Contract modifications<br>
+                        • Bulk operations
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

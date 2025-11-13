@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polish Elements Showcase - CommandCentered</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Rajdhani', monospace, sans-serif;
+            background: #030712;
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(6, 182, 212, 0.05) 2px, rgba(6, 182, 212, 0.05) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(6, 182, 212, 0.05) 2px, rgba(6, 182, 212, 0.05) 4px),
+                radial-gradient(ellipse at center, #0a1628 0%, #030712 100%);
+            background-size: 40px 40px, 40px 40px, 100% 100%;
+            color: #e2e8f0;
+            padding: 40px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .logo {
+            font-family: 'Orbitron', monospace;
+            font-size: 48px;
+            font-weight: 900;
+            color: #22d3ee;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            text-shadow: 0 0 20px rgba(34, 211, 238, 0.8);
+            margin-bottom: 16px;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 600;
+        }
+
+        .section {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.5) 0%, rgba(15, 23, 42, 0.7) 100%);
+            border: 2px solid rgba(6, 182, 212, 0.4);
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 20px;
+            font-weight: 900;
+            color: #22d3ee;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 24px;
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.5);
+        }
+
+        /* Skeleton Loading States */
+        .skeleton {
+            background: linear-gradient(
+                90deg,
+                rgba(30, 41, 59, 0.5) 0%,
+                rgba(6, 182, 212, 0.1) 50%,
+                rgba(30, 41, 59, 0.5) 100%
+            );
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+            border-radius: 6px;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .skeleton-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .skeleton-table td {
+            padding: 18px 14px;
+            border-bottom: 1px solid rgba(6, 182, 212, 0.2);
+        }
+
+        .skeleton-line {
+            height: 14px;
+            margin-bottom: 8px;
+        }
+
+        .skeleton-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 2px solid rgba(6, 182, 212, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        /* Empty States */
+        .empty-state {
+            text-align: center;
+            padding: 80px 40px;
+            color: #64748b;
+        }
+
+        .empty-icon {
+            font-size: 80px;
+            margin-bottom: 24px;
+            opacity: 0.5;
+        }
+
+        .empty-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 24px;
+            font-weight: 700;
+            color: #94a3b8;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .empty-text {
+            font-size: 16px;
+            color: #64748b;
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .toast {
+            min-width: 320px;
+            background: linear-gradient(135deg, #0c1220 0%, #1e293b 100%);
+            border-left: 4px solid;
+            border-radius: 8px;
+            padding: 16px 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .toast.success {
+            border-color: #10b981;
+        }
+
+        .toast.error {
+            border-color: #ef4444;
+        }
+
+        .toast.warning {
+            border-color: #f59e0b;
+        }
+
+        .toast.info {
+            border-color: #22d3ee;
+        }
+
+        .toast-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .toast-icon {
+            font-size: 20px;
+        }
+
+        .toast-title {
+            font-weight: 700;
+            color: #e2e8f0;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        .toast-message {
+            color: #94a3b8;
+            font-size: 14px;
+            line-height: 1.6;
+            padding-left: 32px;
+        }
+
+        /* Button States */
+        button {
+            padding: 14px 28px;
+            background: linear-gradient(135deg, #0e7490 0%, #0c4a6e 100%);
+            border: 2px solid rgba(6, 182, 212, 0.6);
+            border-radius: 6px;
+            color: #e2e8f0;
+            font-weight: 900;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #06b6d4 0%, #0e7490 100%);
+            box-shadow: 0 0 40px rgba(6, 182, 212, 0.6);
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        button.loading {
+            position: relative;
+            color: transparent;
+        }
+
+        button.loading::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* Table Hover States */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th {
+            text-align: left;
+            padding: 14px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            border-bottom: 2px solid rgba(6, 182, 212, 0.3);
+        }
+
+        td {
+            padding: 18px 14px;
+            color: #94a3b8;
+            border-bottom: 1px solid rgba(6, 182, 212, 0.2);
+            transition: all 0.2s;
+        }
+
+        tr:hover td {
+            background: rgba(6, 182, 212, 0.05);
+            color: #e2e8f0;
+        }
+
+        /* Card Hover States */
+        .hover-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 2px solid rgba(6, 182, 212, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .hover-card:hover {
+            background: rgba(15, 23, 42, 0.9);
+            border-color: #06b6d4;
+            box-shadow: 0 8px 32px rgba(6, 182, 212, 0.3);
+            transform: translateY(-4px);
+        }
+
+        /* Focus States */
+        button:focus, input:focus, select:focus, textarea:focus {
+            outline: 3px solid rgba(6, 182, 212, 0.5);
+            outline-offset: 2px;
+        }
+
+        .example-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">⚡ COMMANDCENTERED</div>
+            <div class="subtitle">Polish Elements Showcase</div>
+        </div>
+
+        <!-- Loading States -->
+        <div class="section">
+            <div class="section-title">1. LOADING STATES</div>
+
+            <h3 style="color: #22d3ee; margin-bottom: 16px; font-size: 14px;">Skeleton Table</h3>
+            <table class="skeleton-table">
+                <thead>
+                    <tr>
+                        <th>ORGANIZATION</th>
+                        <th>CONTACT</th>
+                        <th>SERVICE</th>
+                        <th>STATUS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><div class="skeleton skeleton-line" style="width: 70%;"></div></td>
+                        <td><div class="skeleton skeleton-line" style="width: 60%;"></div></td>
+                        <td><div class="skeleton skeleton-line" style="width: 80%;"></div></td>
+                        <td><div class="skeleton skeleton-line" style="width: 50%;"></div></td>
+                    </tr>
+                    <tr>
+                        <td><div class="skeleton skeleton-line" style="width: 65%;"></div></td>
+                        <td><div class="skeleton skeleton-line" style="width: 70%;"></div></td>
+                        <td><div class="skeleton skeleton-line" style="width: 75%;"></div></td>
+                        <td><div class="skeleton skeleton-line" style="width: 45%;"></div></td>
+                    </tr>
+                    <tr>
+                        <td><div class="skeleton skeleton-line" style="width: 75%;"></div></td>
+                        <td><div class="skeleton skeleton-line" style="width: 55%;"></div></td>
+                        <td><div class="skeleton skeleton-line" style="width: 70%;"></div></td>
+                        <td><div class="skeleton skeleton-line" style="width: 60%;"></div></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 style="color: #22d3ee; margin: 32px 0 16px; font-size: 14px;">Skeleton Cards</h3>
+            <div class="skeleton-card">
+                <div class="skeleton skeleton-line" style="width: 40%; height: 20px; margin-bottom: 12px;"></div>
+                <div class="skeleton skeleton-line" style="width: 80%;"></div>
+                <div class="skeleton skeleton-line" style="width: 60%;"></div>
+            </div>
+
+            <h3 style="color: #22d3ee; margin: 32px 0 16px; font-size: 14px;">Button Loading State</h3>
+            <div style="display: flex; gap: 12px;">
+                <button>NORMAL</button>
+                <button class="loading">LOADING</button>
+                <button disabled>DISABLED</button>
+            </div>
+        </div>
+
+        <!-- Empty States -->
+        <div class="section">
+            <div class="section-title">2. EMPTY STATES</div>
+
+            <div class="example-grid">
+                <div style="background: rgba(15, 23, 42, 0.3); border: 1px solid rgba(6, 182, 212, 0.2); border-radius: 8px;">
+                    <div class="empty-state">
+                        <div class="empty-icon">📋</div>
+                        <div class="empty-title">No Leads Yet</div>
+                        <div class="empty-text">Click "+ NEW LEAD" to add your first lead to the pipeline.</div>
+                        <button>+ NEW LEAD</button>
+                    </div>
+                </div>
+
+                <div style="background: rgba(15, 23, 42, 0.3); border: 1px solid rgba(6, 182, 212, 0.2); border-radius: 8px;">
+                    <div class="empty-state">
+                        <div class="empty-icon">📅</div>
+                        <div class="empty-title">No Events Scheduled</div>
+                        <div class="empty-text">Your calendar is empty. Create your first event to get started.</div>
+                        <button>+ NEW EVENT</button>
+                    </div>
+                </div>
+
+                <div style="background: rgba(15, 23, 42, 0.3); border: 1px solid rgba(6, 182, 212, 0.2); border-radius: 8px;">
+                    <div class="empty-state">
+                        <div class="empty-icon">📦</div>
+                        <div class="empty-title">No Equipment Assigned</div>
+                        <div class="empty-text">This event has no equipment assigned yet.</div>
+                        <button>ASSIGN EQUIPMENT</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Notifications -->
+        <div class="section">
+            <div class="section-title">3. TOAST NOTIFICATIONS</div>
+
+            <div style="display: flex; flex-direction: column; gap: 16px;">
+                <div class="toast success">
+                    <div class="toast-header">
+                        <div class="toast-icon">✓</div>
+                        <div class="toast-title">Success</div>
+                    </div>
+                    <div class="toast-message">Event "ABC Dance Recital" created successfully</div>
+                </div>
+
+                <div class="toast error">
+                    <div class="toast-header">
+                        <div class="toast-icon">✗</div>
+                        <div class="toast-title">Error</div>
+                    </div>
+                    <div class="toast-message">Failed to send email: Invalid recipient address</div>
+                </div>
+
+                <div class="toast warning">
+                    <div class="toast-header">
+                        <div class="toast-icon">⚠</div>
+                        <div class="toast-title">Warning</div>
+                    </div>
+                    <div class="toast-message">Draft saved automatically (connection unstable)</div>
+                </div>
+
+                <div class="toast info">
+                    <div class="toast-header">
+                        <div class="toast-icon">ℹ</div>
+                        <div class="toast-title">Info</div>
+                    </div>
+                    <div class="toast-message">New operator "John Smith" assigned to this event</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hover States -->
+        <div class="section">
+            <div class="section-title">4. HOVER STATES</div>
+
+            <h3 style="color: #22d3ee; margin-bottom: 16px; font-size: 14px;">Button Hover (hover to see effect)</h3>
+            <div style="display: flex; gap: 12px; margin-bottom: 32px;">
+                <button>HOVER ME</button>
+                <button style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-color: rgba(16, 185, 129, 0.6);">SUCCESS</button>
+                <button style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); border-color: rgba(239, 68, 68, 0.6);">DANGER</button>
+            </div>
+
+            <h3 style="color: #22d3ee; margin-bottom: 16px; font-size: 14px;">Table Row Hover (hover over rows)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>EVENT</th>
+                        <th>DATE</th>
+                        <th>STATUS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="color: #e2e8f0; font-weight: 600;">ABC Dance Recital</td>
+                        <td>Nov 15, 2025</td>
+                        <td><span style="background: rgba(16, 185, 129, 0.2); color: #10b981; padding: 4px 12px; border-radius: 12px; font-size: 11px; font-weight: 700;">CONFIRMED</span></td>
+                    </tr>
+                    <tr>
+                        <td style="color: #e2e8f0; font-weight: 600;">XYZ Concert</td>
+                        <td>Nov 20, 2025</td>
+                        <td><span style="background: rgba(245, 158, 11, 0.2); color: #f59e0b; padding: 4px 12px; border-radius: 12px; font-size: 11px; font-weight: 700;">PENDING</span></td>
+                    </tr>
+                    <tr>
+                        <td style="color: #e2e8f0; font-weight: 600;">Metro Promo</td>
+                        <td>Nov 22, 2025</td>
+                        <td><span style="background: rgba(34, 211, 238, 0.2); color: #22d3ee; padding: 4px 12px; border-radius: 12px; font-size: 11px; font-weight: 700;">DRAFT</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 style="color: #22d3ee; margin: 32px 0 16px; font-size: 14px;">Card Hover (hover over cards)</h3>
+            <div class="example-grid">
+                <div class="hover-card">
+                    <div style="font-size: 14px; font-weight: 700; color: #22d3ee; margin-bottom: 8px;">EVENT CARD</div>
+                    <div style="color: #94a3b8; font-size: 13px;">Hover to see lift effect</div>
+                </div>
+                <div class="hover-card">
+                    <div style="font-size: 14px; font-weight: 700; color: #22d3ee; margin-bottom: 8px;">LEAD CARD</div>
+                    <div style="color: #94a3b8; font-size: 13px;">Shadow and border glow on hover</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Focus States -->
+        <div class="section">
+            <div class="section-title">5. FOCUS STATES (Accessibility)</div>
+
+            <p style="color: #94a3b8; margin-bottom: 24px;">Press TAB to navigate and see focus states:</p>
+
+            <div style="display: flex; flex-direction: column; gap: 16px;">
+                <input type="text" placeholder="Focus me with TAB" style="width: 100%; padding: 12px; background: rgba(15, 23, 42, 0.7); border: 2px solid rgba(6, 182, 212, 0.4); border-radius: 6px; color: #e2e8f0; font-family: 'Rajdhani', sans-serif; font-size: 14px;">
+                <button>TAB TO ME</button>
+                <button>AND ME</button>
+                <select style="width: 100%; padding: 12px; background: rgba(15, 23, 42, 0.7); border: 2px solid rgba(6, 182, 212, 0.4); border-radius: 6px; color: #e2e8f0; font-family: 'Rajdhani', sans-serif; font-size: 14px;">
+                    <option>Focus me too</option>
+                    <option>Option 2</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

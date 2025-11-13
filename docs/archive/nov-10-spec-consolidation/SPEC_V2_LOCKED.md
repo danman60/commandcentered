@@ -1,8 +1,8 @@
-# CommandCentered - Specification v2.3 LOCKED
+# CommandCentered - Specification v2.6 LOCKED
 
-**Date:** 2025-11-06
+**Date:** 2025-01-08
 **Status:** ✅ LOCKED - Ready for Implementation
-**Previous Version:** v2.2 → v2.3 (enhanced terminology for command center theme)
+**Previous Version:** v2.5 → v2.6 (Phase 3 decisions finalized)
 
 ---
 
@@ -50,11 +50,76 @@
 - `operator_equipment` → `operator_gear` (personal loadouts)
 - Equipment sets → `loadouts` (not "loadout kits")
 
+### v2.3 → v2.5: Phase 3 - Client Management & Sales Pipeline
+
+**Major Addition: Suite 1 (StreamStage Client-Facing)**
+
+**New in v2.5:**
+1. **Lead Management System** - Capture, track, nurture leads from inquiry to contract
+2. **Proposal Builder Builder** - Meta-tool to create custom proposal builders (drag-and-drop)
+3. **Contract Generation & E-Signature** - Auto-generate contracts from proposals, e-signature integration
+4. **Payment Processing** - Stripe integration with payment schedules, webhooks, invoices
+5. **Client Portal** - Client-facing portal (proposals, contracts, payments, questionnaires)
+6. **Email Tracking** - Mailgun integration with open/click tracking for proposals/contracts
+7. **Alerts & Notifications System** - 25+ alert types across client lifecycle (real-time + digest)
+8. **Suite 1 ↔ Suite 2 Handoff** - Contract signed → Auto-create event in logistics system
+9. **Google Drive Integration** - Auto-create organized project folders + email notifications on updates
+10. **Dual Branding** - StreamStage (client-facing) + CommandCentered (internal operations)
+
+### v2.5 → v2.6: Phase 3 Decisions Finalized
+
+**Critical Changes:**
+1. **Handoff Trigger Simplified** - Contract signed → Event created (payment NOT required)
+2. **Email Service Changed** - Mailgun (user already set up) instead of SendGrid/Resend
+3. **Proposal Expiration Removed** - Proposals never expire, active indefinitely
+4. **Auto-Counter-Signature** - Contracts pre-signed by vendor when sent to client
+5. **Domain Clarified** - streamstage.live (existing) + commandcentered.app (new)
+6. **Service Templates Count** - 4 templates (Recital, Promo, Concert, Event) not 5
+
+**New Features Added:**
+1. **Auto-Deploy Proposals** - Publish template → Live URL on streamstage.live/proposals/{slug}
+2. **Google Drive Email Notifications** - Watch folders, auto-email client when files added
+3. **Client Touch Email Flow** - Contract signed → Questionnaire sent → Automated reminders
+4. **Payment Schedule Builder** - Manual configuration like HoneyBook (50% signing, 50% delivery default)
+5. **Alert for Missing Technical Info** - Constant alerts when event info incomplete
+
+**Phase 3 Tables Added (18 new tables):**
+- Lead management (leads, lead_notes)
+- Proposal system (proposal_templates, proposals, proposal_config_items, proposal_submissions)
+- Contracts (contracts, contract_signatures)
+- Payments (payments, payment_schedules)
+- Clients (clients)
+- Email tracking (email_tracking)
+- Alerts (alerts, alert_preferences)
+- Integration logs (integration_logs)
+
+**Critical Integration Points:**
+- Contract signed → `events` table (Phase 2) auto-populated (payment NOT required)
+- Event creation triggers: Google Drive folder, client questionnaire, confirmation email
+- Stripe webhooks update payment status (tracked separately, informational only)
+- Mailgun webhooks track proposal engagement, update lead status
+- Google Drive webhooks email client when files added to project folder
+
+**Service Types (No Weddings):**
+1. Dance Recital Media
+2. Dance Promo Videos
+3. Concert Coverage
+4. Event Videography
+
+**Pricing Models Supported:**
+1. Tiered by quantity (0-100: $15, 101-200: $12, 201+: $10)
+2. Base day rate + add-ons ($750 + optional extras)
+3. Fixed package tiers (Bronze/Silver/Gold)
+4. Volume discounts ($2000+: 10%, $3000+: 15%)
+5. Conditional pricing (IF video AND photo THEN 10% discount)
+
 ---
 
 ## 📊 Database Schema Summary
 
-### Core Tables (18 total) ✅ UPDATED v2.2
+### Phase 2 Tables (Logistics - Suite 2) - 21 total ✅ UPDATED v2.3
+
+**Phase 2 = CommandCentered Internal Operations (Tactical HUD aesthetic)**
 
 **Tenant & Auth:**
 1. `tenants` - Multi-tenant isolation
@@ -111,9 +176,55 @@
 - `base_location` replaces `home_address` (operator base)
 - `gear_kits` replaces `equipment_templates` (pre-defined loadouts)
 
+### Phase 3 Tables (Client Management - Suite 1) - 18 new tables ✅ NEW v2.5
+
+**Phase 3 = StreamStage Client-Facing (Professional aesthetic)**
+
+**Lead Management:**
+1. `leads` - Potential clients (inquiry → proposal → contract)
+2. `lead_notes` - Notes & interactions per lead
+
+**Proposal System:**
+3. `proposal_templates` - Reusable proposal builders (drag-and-drop configs)
+4. `proposals` - Generated proposals (sent to clients)
+5. `proposal_config_items` - Individual elements in proposal (text, pricing, toggles, etc.)
+6. `proposal_submissions` - Client-submitted proposal data
+
+**Contracts:**
+7. `contracts` - Generated contracts from proposals
+8. `contract_signatures` - E-signature records (client + vendor)
+
+**Payments:**
+9. `payments` - Individual payment records (linked to Stripe)
+10. `payment_schedules` - Payment milestones (deposit, milestone, final)
+
+**Clients:**
+11. `clients` - Converted leads → paying clients
+
+**Email Tracking:**
+12. `email_tracking` - Track proposal/contract opens, clicks
+
+**Alerts (Shared):**
+13. `alerts` - Expanded to include Phase 3 alerts (proposal viewed, payment due, etc.)
+14. `alert_preferences` - Per-tenant, per-alert-type delivery settings
+
+**Integration Logs:**
+15. `integration_logs` - Audit trail for Stripe, Google Drive, SendGrid events
+
+**Questionnaires (Phase 3.5):**
+16. `questionnaires` - Client questionnaire templates (pre-event info gathering)
+17. `questionnaire_responses` - Client answers per event
+
+**Deliverables (Phase 3.5):**
+18. `deliverables` - Final files to deliver (videos, photos, etc.)
+
+**Critical Link:** `events.contract_id` (Phase 2) links back to `contracts.id` (Phase 3)
+
 ---
 
 ## 🎯 Key Features
+
+### Phase 2 Features (Logistics - Suite 2)
 
 ### 1. Multi-Day Events with Shifts ✅ UPDATED v2.2
 
@@ -1379,20 +1490,324 @@ See mockup tactical-09-deliverables-dashboard.html (to be created)
 
 ---
 
-## 🚀 Next Steps
+## Phase 3 Features (Client Management - Suite 1)
 
-1. ✅ Spec v2.2 finalized and locked
-2. ✅ UX specification created (Commander-centric dashboard)
-3. ✅ Deliverables & Post-Production spec added (v2.4)
-4. 🔜 Begin Phase 1 implementation
-5. 🔜 Initialize Next.js 14 project
-6. 🔜 Create Supabase project
-7. 🔜 Implement Prisma schema (27 tables + all v2.x fields)
-8. 🔜 Setup authentication
-9. 🔜 Write first tests
+### 1. Lead Management System ✅ NEW v2.5
 
-**Target Launch:** January 2025 (before Feb-June event season)
+**Lead Lifecycle:**
+```
+New → Contacted → Proposal Sent → Proposal Viewed → Engaged →
+Proposal Submitted → Contract Sent → Won (signed + paid) / Lost / Disqualified
+```
+
+**Lead Capture:**
+- Website form → API endpoint → Database
+- Auto-send proposal if service type matches published template
+- Track lead source (website_form, referral, repeat_client, social_media)
+
+**Lead Dashboard:**
+- CRM Targeting Interface (internal, tactical aesthetic)
+- Filter by status, service type, date range
+- Bulk actions (send proposal, mark contacted, disqualify)
+- Duplicate detection (email-based)
+
+**Alerts:**
+- New lead captured (high priority)
+- Lead inactive 7 days (medium priority)
+- Proposal unopened 14 days (low priority)
+
+### 2. Proposal Builder Builder ✅ NEW v2.5
+
+**Meta-Tool Concept:**
+- Build the tool that creates proposal builders
+- Drag-and-drop element palette (text blocks, pricing calculators, toggles, media embeds)
+- Live preview as you build
+- Publish → Generate shareable proposal URL
+
+**Element Types (17 total):**
+1. Hero section (title, subtitle, background image)
+2. Text blocks (rich text, markdown support)
+3. Service toggle cards (on/off with pricing)
+4. Quantity inputs (dancer count, video count, etc.)
+5. Pricing calculator (tiered, volume, conditional, fixed packages, base+addons)
+6. Date picker (event date)
+7. Dropdown select (venue type, event type)
+8. Text input (venue name, contact info)
+9. Address input (venue address with Google Maps autocomplete)
+10. File upload (reference photos, shot list PDFs)
+11. Checkbox group (add-ons, extras)
+12. Radio buttons (package tiers: Bronze/Silver/Gold)
+13. Vimeo embed (promo videos, samples)
+14. Image gallery (portfolio samples)
+15. FAQ accordion (common questions)
+16. Testimonials carousel (client reviews)
+17. Payment schedule display (deposit 50%, final 50%)
+
+**Pricing Models:**
+1. **Tiered by quantity:** 0-100 dancers: $15/ea, 101-200: $12/ea, 201+: $10/ea
+2. **Base rate + add-ons:** $750 base + drone ($200) + same-day edit ($300)
+3. **Fixed packages:** Bronze ($1500), Silver ($2500), Gold ($4000)
+4. **Volume discounts:** Total >$2000: 10% off, >$3000: 15% off
+5. **Conditional pricing:** IF video AND photo THEN 10% discount
+
+**Live Calculation:**
+- Client-side JavaScript calculates totals in real-time
+- Server-side validation on submission (prevent tampering)
+- Display itemized breakdown (subtotal, discounts, taxes, total)
+
+### 3. Contract Generation & E-Signature ✅ NEW v2.5
+
+**Auto-Generation:**
+- Proposal submitted → Generate contract
+- Populate contract with proposal data (services, pricing, event details)
+- Handlebars templates with merge fields: `{{client_name}}`, `{{total_amount}}`, `{{event_date}}`
+
+**E-Signature Integration:**
+- SignWell API or DocuSign integration
+- Client signature + vendor counter-signature
+- Audit trail: `signed_at`, `signature_ip`, `signature_user_agent`
+
+**Contract States:**
+```
+Draft → Sent → Viewed → Signed → Paid (triggers event creation)
+```
+
+**Alerts:**
+- Contract pending signature 48h (medium priority)
+- Contract signed (high priority)
+- Contract viewed 3x but not signed (medium priority)
+
+### 4. Payment Processing (Stripe) ✅ NEW v2.5
+
+**Payment Schedules:**
+- Deposit (50% upfront)
+- Milestone payments (e.g., 25% after pre-production meeting)
+- Final payment (25% before event day)
+
+**Stripe Integration:**
+- Create Stripe customer on first payment
+- Generate payment intents for each milestone
+- Webhook handling:
+  - `payment_intent.succeeded` → Update payment status, trigger event creation if first payment
+  - `payment_intent.payment_failed` → Alert user, send retry link to client
+  - `charge.refunded` → Update payment status
+  - `charge.dispute.created` → CRITICAL alert, evidence due date
+
+**Invoicing:**
+- Auto-generate Stripe invoices
+- Send to client via email
+- Track paid/pending/overdue status
+
+**Alerts:**
+- Payment received (medium priority)
+- Payment due in 3 days (medium priority)
+- Payment overdue (high priority)
+- Payment failed (critical priority)
+- Payment disputed (critical priority)
+
+### 5. Client Portal ✅ NEW v2.5
+
+**Client-Facing Pages (StreamStage branding):**
+1. **Proposal Builder** - Interactive proposal form with live pricing
+2. **Contract Viewer** - View contract, e-sign, download PDF
+3. **Payment Portal** - View invoices, payment schedule, pay online
+4. **Questionnaire** - Pre-event info gathering (timeline, VIPs, special requests)
+5. **Project Portal** - View deliverables, download files, Google Drive access
+
+**Authentication:**
+- Magic link login (email-based, no password)
+- Session management
+- Client-specific data isolation
+
+### 6. Email Tracking (SendGrid) ✅ NEW v2.5
+
+**Tracked Events:**
+- Proposal sent
+- Proposal opened (via tracking pixel)
+- Proposal link clicked
+- Contract sent
+- Contract opened
+- Contract link clicked
+
+**Webhook Handling:**
+- `email.open` → Update `email_tracking.opened_at`, create alert
+- `email.click` → Update `email_tracking.clicked_at`, update lead status to 'engaged'
+- `email.bounce` → Mark email as invalid
+- `email.spam_report` → Auto-unsubscribe lead
+
+**Lead Status Updates:**
+- Proposal opened → Status: 'proposal_viewed'
+- Link clicked → Status: 'engaged'
+- Proposal submitted → Status: 'proposal_submitted'
+
+### 7. Alerts & Notifications System ✅ NEW v2.5
+
+**25+ Alert Types:**
+
+**Lead Alerts:**
+- New lead captured
+- Lead inactive 7 days
+- Lead going cold 14 days
+
+**Proposal Alerts:**
+- Proposal viewed
+- Proposal link clicked
+- Proposal submitted (CRITICAL)
+- Proposal expiring in 3 days
+
+**Contract Alerts:**
+- Contract pending signature 48h
+- Contract signed
+- Contract viewed but not signed
+
+**Payment Alerts:**
+- Payment received
+- Payment due in 3 days
+- Payment overdue
+- Payment failed (CRITICAL)
+- Payment disputed (CRITICAL)
+
+**Questionnaire Alerts:**
+- Questionnaire incomplete 7 days before event
+- Questionnaire partially completed
+- Questionnaire completed
+
+**Pre-Event Alerts:**
+- Missing event info 14 days before
+- Gear not assigned 7 days before
+- Operators not assigned 7 days before (CRITICAL)
+- Event tomorrow
+
+**Deliverable Alerts:**
+- Deliverable due in 3 days
+- Deliverable overdue (CRITICAL)
+- Deliverable completed
+
+**System Alerts:**
+- Integration failure (Stripe/Google Drive/SendGrid)
+- Database backup failed
+- Orphaned contract detected (signed + paid but no event)
+
+**Priority Levels:**
+- **CRITICAL** (red) - Immediate action required (payment disputed, no operators assigned)
+- **HIGH** (orange) - Action within 24h (proposal submitted, payment overdue)
+- **MEDIUM** (yellow) - Action within 48-72h (proposal viewed, payment due soon)
+- **LOW** (green) - Informational (deliverable completed, lead going cold)
+
+**Delivery Channels:**
+- In-app alerts (primary) - Real-time dropdown panel, badge count
+- Email notifications (secondary) - Immediate or daily digest
+
+**User Preferences:**
+- Configure per alert type (enable/disable, immediate vs digest)
+- Do Not Disturb mode
+- Quiet hours (no emails 10pm-8am)
+
+### 8. Suite 1 ↔ Suite 2 Handoff ✅ NEW v2.5
+
+**Critical Integration Point:**
+
+**Trigger:** Contract status = 'signed' AND first payment status = 'completed'
+
+**Workflow:**
+```
+1. Stripe webhook: payment_intent.succeeded
+2. Update payment record: status = 'completed'
+3. Check if first payment + contract signed
+4. IF YES:
+   a. Create event in Phase 2 events table
+   b. Populate event fields from proposal config:
+      - service_type
+      - event_date (from proposal date picker)
+      - venue_name (from proposal text input)
+      - venue_address (from proposal address input)
+      - total_amount (from contract)
+   c. Link: events.contract_id = contracts.id
+   d. Create Google Drive project folder
+   e. Send client questionnaire email
+   f. Send confirmation email
+   g. Create alert: "New event created from contract"
+```
+
+**Data Extraction:**
+- Proposal config items stored as JSONB
+- Extract by `element_type` and `config.label`
+- Fallback to default values if missing
+
+**Rollback Strategy:**
+- If event creation fails → Log to `integration_logs`
+- Payment status remains 'completed' (money collected)
+- Admin alert: "Orphaned contract - manual event creation required"
+- Daily cron job finds orphaned contracts, sends report
+
+### 9. Google Drive Integration ✅ NEW v2.5
+
+**Auto-Folder Creation:**
+
+**Folder Structure:**
+```
+StreamStage Projects/
+  2025/
+    [Client Name] - [Service Type] - [Event Date]/
+      01_Raw_Footage/
+      02_Edited_Files/
+      03_Final_Deliverables/
+      04_Client_Questionnaire/
+      05_Contract_Documents/
+```
+
+**Integration:**
+- Google Drive API via service account
+- Tenant-specific service account credentials (encrypted)
+- Auto-create folders when contract signed + paid
+- Share folder with client (view-only)
+- Store folder ID and URL in `events.google_drive_folder_id`
+
+**Error Handling:**
+- Retry 3x with exponential backoff
+- If all retries fail → Admin alert, don't block event creation
+- Manual folder creation required
+
+### 10. Dual Branding Strategy ✅ NEW v2.5
+
+**StreamStage (Client-Facing):**
+- Professional, clean aesthetic
+- CSS variables: `--streamstage-primary`, `--streamstage-accent`
+- White background, minimal design
+- Proposal builders, contracts, client portal
+
+**CommandCentered (Internal Operations):**
+- Tactical HUD aesthetic (neon green, grid backgrounds, corner frames)
+- Military-inspired terminology
+- CRM Targeting Interface, Lead Dashboard, Admin Tools
+- Weekend timeline, operator scheduling, gear tracking
+
+**Routing:**
+- `streamstage.app/*` → Client-facing (Suite 1)
+- `commandcentered.app/dashboard/*` → Internal operations (Suite 2)
 
 ---
 
-**Spec v2.4 locked. Ready to build. 🎬**
+## 🚀 Next Steps
+
+1. ✅ Spec v2.2 finalized and locked (Phase 2: Logistics)
+2. ✅ UX specification created (Commander-centric dashboard)
+3. ✅ Deliverables & Post-Production spec added (v2.4)
+4. ✅ Phase 3 specification complete (v2.5: Client Management & Sales Pipeline)
+5. 🔜 Begin Phase 2 implementation (Logistics - Suite 2)
+6. 🔜 Initialize Next.js 14 project
+7. 🔜 Create Supabase project
+8. 🔜 Implement Prisma schema (39 tables total: 21 Phase 2 + 18 Phase 3)
+9. 🔜 Setup authentication
+10. 🔜 Write first tests
+
+**Phase 2 Implementation Priority:** Weekend timeline, operator scheduling, gear tracking
+**Phase 3 Implementation Priority:** Lead capture, Proposal Builder Builder, contract handoff
+
+**Target Launch:**
+- Phase 2 MVP: February 2025 (before Feb-June event season)
+- Phase 3 MVP: April 2025 (sales pipeline for summer/fall events)
+
+---
+
+**Spec v2.5 locked. Ready to build. 🎬**

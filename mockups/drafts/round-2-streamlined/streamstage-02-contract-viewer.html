@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contract Viewer - StreamStage</title>
+    <style>
+        :root {
+            --streamstage-primary: #1a1a1a;
+            --streamstage-secondary: #2a2a2a;
+            --streamstage-accent: #00bcd4;
+            --streamstage-success: #4caf50;
+            --streamstage-warning: #ff9800;
+            --streamstage-text: #333333;
+            --streamstage-text-light: #666666;
+            --streamstage-border: #e0e0e0;
+            --streamstage-bg: #ffffff;
+            --streamstage-bg-secondary: #f5f5f5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--streamstage-bg-secondary);
+            color: var(--streamstage-text);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: var(--streamstage-bg);
+            border-bottom: 1px solid var(--streamstage-border);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--streamstage-primary);
+        }
+
+        .logo-accent {
+            color: var(--streamstage-accent);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 24px;
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 24px;
+        }
+
+        /* Contract Document */
+        .contract-document {
+            background: var(--streamstage-bg);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 48px;
+        }
+
+        .contract-header {
+            text-align: center;
+            margin-bottom: 48px;
+            padding-bottom: 24px;
+            border-bottom: 2px solid var(--streamstage-border);
+        }
+
+        .contract-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--streamstage-primary);
+            margin-bottom: 8px;
+        }
+
+        .contract-subtitle {
+            font-size: 14px;
+            color: var(--streamstage-text-light);
+        }
+
+        .contract-section {
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--streamstage-primary);
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--streamstage-border);
+        }
+
+        .contract-text {
+            font-size: 14px;
+            line-height: 1.8;
+            color: var(--streamstage-text);
+            margin-bottom: 16px;
+        }
+
+        .contract-list {
+            padding-left: 24px;
+            margin-bottom: 16px;
+        }
+
+        .contract-list li {
+            margin-bottom: 8px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--streamstage-text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--streamstage-primary);
+        }
+
+        .price-breakdown {
+            background: var(--streamstage-bg-secondary);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .price-row.total {
+            font-size: 18px;
+            font-weight: 700;
+            padding-top: 12px;
+            border-top: 2px solid var(--streamstage-border);
+            color: var(--streamstage-primary);
+        }
+
+        /* Signature Section */
+        .signature-section {
+            margin-top: 48px;
+            padding-top: 32px;
+            border-top: 2px solid var(--streamstage-border);
+        }
+
+        .signature-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+
+        .signature-box {
+            text-align: center;
+        }
+
+        .signature-line {
+            width: 100%;
+            height: 80px;
+            border: 2px solid var(--streamstage-border);
+            border-radius: 8px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--streamstage-bg-secondary);
+        }
+
+        .signature-line.signed {
+            border-color: var(--streamstage-success);
+            background: rgba(76, 175, 80, 0.1);
+        }
+
+        .signature-text {
+            font-family: 'Brush Script MT', cursive;
+            font-size: 32px;
+            color: var(--streamstage-primary);
+        }
+
+        .signature-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--streamstage-text-light);
+            text-transform: uppercase;
+        }
+
+        .signature-date {
+            font-size: 14px;
+            color: var(--streamstage-text);
+            margin-top: 4px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .sidebar-card {
+            background: var(--streamstage-bg);
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--streamstage-primary);
+            margin-bottom: 16px;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .status-badge.pending {
+            background: rgba(255, 152, 0, 0.1);
+            color: var(--streamstage-warning);
+        }
+
+        .status-badge.signed {
+            background: rgba(76, 175, 80, 0.1);
+            color: var(--streamstage-success);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .action-button {
+            width: 100%;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 12px;
+        }
+
+        .action-button.primary {
+            background: var(--streamstage-accent);
+            color: white;
+        }
+
+        .action-button.primary:hover {
+            background: #0097a7;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 188, 212, 0.3);
+        }
+
+        .action-button.secondary {
+            background: var(--streamstage-bg-secondary);
+            color: var(--streamstage-text);
+            border: 1px solid var(--streamstage-border);
+        }
+
+        .action-button.secondary:hover {
+            background: #e8e8e8;
+        }
+
+        .action-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 32px;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 24px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -26px;
+            top: 6px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--streamstage-border);
+        }
+
+        .timeline-item.completed::before {
+            background: var(--streamstage-success);
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: -21px;
+            top: 18px;
+            width: 2px;
+            height: calc(100% - 12px);
+            background: var(--streamstage-border);
+        }
+
+        .timeline-item:last-child::after {
+            display: none;
+        }
+
+        .timeline-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--streamstage-primary);
+            margin-bottom: 4px;
+        }
+
+        .timeline-date {
+            font-size: 12px;
+            color: var(--streamstage-text-light);
+        }
+
+        .help-text {
+            font-size: 12px;
+            color: var(--streamstage-text-light);
+            margin-top: 8px;
+            line-height: 1.4;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .contract-document {
+                padding: 24px;
+            }
+
+            .signature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">
+                Stream<span class="logo-accent">Stage</span>
+            </div>
+            <div class="header-actions">
+                <button class="action-button secondary" onclick="window.print()">
+                    Print Contract
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Contract Document -->
+        <div class="contract-document">
+            <div class="contract-header">
+                <div class="contract-title">Videography Services Agreement</div>
+                <div class="contract-subtitle">Contract #SS-2025-001234</div>
+            </div>
+
+            <!-- Parties Section -->
+            <div class="contract-section">
+                <div class="section-title">1. Parties</div>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Client</div>
+                        <div class="info-value">Elite Dance Studio</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Service Provider</div>
+                        <div class="info-value">StreamStage Productions</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Contact Email</div>
+                        <div class="info-value">info@elitedance.com</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Phone</div>
+                        <div class="info-value">(555) 123-4567</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Event Details Section -->
+            <div class="contract-section">
+                <div class="section-title">2. Event Details</div>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Event Name</div>
+                        <div class="info-value">Spring Recital 2025</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Event Date</div>
+                        <div class="info-value">June 15, 2025</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Venue</div>
+                        <div class="info-value">City Theater</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Event Time</div>
+                        <div class="info-value">6:00 PM - 9:00 PM</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Services Section -->
+            <div class="contract-section">
+                <div class="section-title">3. Services Included</div>
+                <ul class="contract-list">
+                    <li>2-Camera Multi-Angle Recording</li>
+                    <li>Professional Audio Capture</li>
+                    <li>Drone Aerial Footage</li>
+                    <li>Same-Day Highlight Reel (3-5 minutes)</li>
+                    <li>Full Event Edit (delivery within 14 days)</li>
+                    <li>Individual Performance Videos (120 dancers)</li>
+                    <li>4K Video Quality</li>
+                    <li>Online Viewing Portal</li>
+                </ul>
+            </div>
+
+            <!-- Payment Section -->
+            <div class="contract-section">
+                <div class="section-title">4. Payment Terms</div>
+                <div class="price-breakdown">
+                    <div class="price-row">
+                        <span>2-Camera Setup</span>
+                        <span>$750.00</span>
+                    </div>
+                    <div class="price-row">
+                        <span>Drone Footage</span>
+                        <span>$200.00</span>
+                    </div>
+                    <div class="price-row">
+                        <span>Same-Day Highlight Reel</span>
+                        <span>$300.00</span>
+                    </div>
+                    <div class="price-row">
+                        <span>Individual Videos (120 × $15)</span>
+                        <span>$1,800.00</span>
+                    </div>
+                    <div class="price-row">
+                        <span>Volume Discount (-10%)</span>
+                        <span>-$305.00</span>
+                    </div>
+                    <div class="price-row total">
+                        <span>Total Amount</span>
+                        <span>$2,745.00</span>
+                    </div>
+                </div>
+
+                <div class="contract-text">
+                    <strong>Payment Schedule:</strong>
+                </div>
+                <ul class="contract-list">
+                    <li>Deposit (50%): $1,372.50 - Due upon signing</li>
+                    <li>Final Payment (50%): $1,372.50 - Due 7 days before event</li>
+                </ul>
+            </div>
+
+            <!-- Terms Section -->
+            <div class="contract-section">
+                <div class="section-title">5. Terms & Conditions</div>
+                <div class="contract-text">
+                    <strong>5.1 Cancellation Policy:</strong><br>
+                    Cancellations made more than 30 days before the event will receive a full refund minus a $200 administrative fee. Cancellations made 15-30 days before the event will receive a 50% refund. Cancellations made less than 15 days before the event are non-refundable.
+                </div>
+                <div class="contract-text">
+                    <strong>5.2 Delivery Timeline:</strong><br>
+                    The same-day highlight reel will be delivered within 24 hours of the event. Full event edit and individual performance videos will be delivered within 14 business days. Client will be notified via email when files are ready for download.
+                </div>
+                <div class="contract-text">
+                    <strong>5.3 Copyright & Usage Rights:</strong><br>
+                    Client receives full usage rights for all delivered videos for personal, promotional, and commercial purposes. StreamStage retains the right to use footage for portfolio and marketing purposes unless otherwise requested in writing.
+                </div>
+                <div class="contract-text">
+                    <strong>5.4 Weather & Force Majeure:</strong><br>
+                    In the event of weather-related cancellations or force majeure events, services will be rescheduled at no additional cost, subject to availability.
+                </div>
+            </div>
+
+            <!-- Signatures -->
+            <div class="signature-section">
+                <div class="section-title">6. Signatures</div>
+                <div class="signature-grid">
+                    <div class="signature-box">
+                        <div class="signature-line pending">
+                            <span style="color: var(--streamstage-text-light); font-size: 14px; font-family: sans-serif;">Awaiting Signature</span>
+                        </div>
+                        <div class="signature-label">Client Signature</div>
+                        <div class="signature-date">—</div>
+                    </div>
+                    <div class="signature-box">
+                        <div class="signature-line signed">
+                            <span class="signature-text">Daniel Abrahamson</span>
+                        </div>
+                        <div class="signature-label">StreamStage Productions</div>
+                        <div class="signature-date">Signed: January 8, 2025</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- Status Card -->
+            <div class="sidebar-card">
+                <div class="sidebar-title">Contract Status</div>
+                <div class="status-badge pending">
+                    <span class="status-dot"></span>
+                    Awaiting Your Signature
+                </div>
+                <button class="action-button primary" onclick="signContract()">
+                    Sign Contract
+                </button>
+                <button class="action-button secondary" onclick="downloadPDF()">
+                    Download PDF
+                </button>
+                <div class="help-text">
+                    By signing, you agree to all terms and conditions outlined in this contract. Your signature will be legally binding.
+                </div>
+            </div>
+
+            <!-- Timeline Card -->
+            <div class="sidebar-card">
+                <div class="sidebar-title">Contract Timeline</div>
+                <div class="timeline">
+                    <div class="timeline-item completed">
+                        <div class="timeline-label">Contract Sent</div>
+                        <div class="timeline-date">Jan 8, 2025 2:30 PM</div>
+                    </div>
+                    <div class="timeline-item completed">
+                        <div class="timeline-label">Viewed by Client</div>
+                        <div class="timeline-date">Jan 8, 2025 3:15 PM</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-label">Client Signature</div>
+                        <div class="timeline-date">Pending</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-label">Deposit Payment</div>
+                        <div class="timeline-date">Pending</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Next Steps Card -->
+            <div class="sidebar-card">
+                <div class="sidebar-title">Next Steps</div>
+                <ul class="contract-list">
+                    <li>Review contract details carefully</li>
+                    <li>Sign contract electronically</li>
+                    <li>Submit deposit payment ($1,372.50)</li>
+                    <li>Complete event questionnaire</li>
+                    <li>Final payment due by June 8, 2025</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function signContract() {
+            if (confirm('Are you ready to sign this contract? This action is legally binding.')) {
+                alert('Redirecting to e-signature page...');
+                // In real implementation: redirect to e-signature flow
+            }
+        }
+
+        function downloadPDF() {
+            alert('Generating PDF download...');
+            // In real implementation: trigger PDF download
+        }
+    </script>
+</body>
+</html>

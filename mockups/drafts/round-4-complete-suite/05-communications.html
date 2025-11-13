@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Communications</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Rajdhani', monospace, sans-serif;
+            background: #030712;
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(6, 182, 212, 0.05) 2px, rgba(6, 182, 212, 0.05) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(6, 182, 212, 0.05) 2px, rgba(6, 182, 212, 0.05) 4px),
+                radial-gradient(ellipse at center, #0a1628 0%, #030712 100%);
+            background-size: 40px 40px, 40px 40px, 100% 100%;
+            color: #e2e8f0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            min-width: 1200px;
+        }
+
+        .sidebar {
+            width: 260px;
+            background: linear-gradient(180deg, #0c1220 0%, #030712 100%);
+            border-right: 2px solid rgba(6, 182, 212, 0.3);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 32px rgba(6, 182, 212, 0.15);
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .logo {
+            padding: 28px 24px;
+            border-bottom: 2px solid rgba(6, 182, 212, 0.3);
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1) 0%, transparent 100%);
+        }
+
+        .logo-text {
+            font-family: 'Orbitron', monospace;
+            font-size: 24px;
+            font-weight: 900;
+            color: #22d3ee;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.8);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-subtitle {
+            font-size: 10px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 6px;
+            font-weight: 600;
+        }
+
+        .nav {
+            flex: 1;
+            padding: 24px 0;
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 24px;
+            color: #94a3b8;
+            text-decoration: none;
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .nav-item:hover {
+            background: rgba(6, 182, 212, 0.1);
+            color: #22d3ee;
+            border-left-color: rgba(6, 182, 212, 0.8);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(90deg, rgba(6, 182, 212, 0.2) 0%, transparent 100%);
+            color: #22d3ee;
+            border-left-color: #06b6d4;
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.5);
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            min-width: 0;
+        }
+
+        .top-bar {
+            background: linear-gradient(90deg, #0c1220 0%, #1e293b 100%);
+            border-bottom: 2px solid rgba(6, 182, 212, 0.3);
+            padding: 18px 36px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+            flex-shrink: 0;
+        }
+
+        .top-bar-left h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: 26px;
+            font-weight: 900;
+            color: #22d3ee;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.8);
+        }
+
+        .top-bar-left p {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 4px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .top-bar-right {
+            display: flex;
+            gap: 18px;
+            align-items: center;
+        }
+
+        .status-indicator {
+            padding: 8px 16px;
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.5);
+            border-radius: 4px;
+            color: #10b981;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .user-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 6px;
+            background: linear-gradient(135deg, #0e7490 0%, #0c4a6e 100%);
+            border: 2px solid rgba(6, 182, 212, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #22d3ee;
+            font-weight: 900;
+            font-size: 18px;
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.8);
+        }
+
+        .dashboard-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 28px 36px;
+        }
+
+        .section {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.5) 0%, rgba(15, 23, 42, 0.7) 100%);
+            border: 2px solid rgba(6, 182, 212, 0.4);
+            border-radius: 8px;
+            padding: 28px;
+            margin-bottom: 28px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid rgba(6, 182, 212, 0.3);
+        }
+
+        .section-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 18px;
+            font-weight: 900;
+            color: #22d3ee;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.5);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-bottom: 28px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.5) 0%, rgba(15, 23, 42, 0.7) 100%);
+            border: 2px solid rgba(6, 182, 212, 0.4);
+            border-radius: 8px;
+            padding: 28px;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            border-color: #22d3ee;
+            box-shadow: 0 8px 40px rgba(6, 182, 212, 0.3);
+            transform: translateY(-4px);
+        }
+
+        .stat-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+        }
+
+        .stat-value {
+            font-family: 'Orbitron', monospace;
+            font-size: 48px;
+            font-weight: 900;
+            color: #22d3ee;
+            text-shadow: 0 0 15px rgba(34, 211, 238, 0.6);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th {
+            text-align: left;
+            padding: 14px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            border-bottom: 2px solid rgba(6, 182, 212, 0.3);
+        }
+
+        td {
+            padding: 18px 14px;
+            color: #94a3b8;
+            border-bottom: 1px solid rgba(6, 182, 212, 0.2);
+        }
+
+        button {
+            padding: 14px 28px;
+            background: linear-gradient(135deg, #0e7490 0%, #0c4a6e 100%);
+            border: 2px solid rgba(6, 182, 212, 0.6);
+            border-radius: 6px;
+            color: #e2e8f0;
+            font-weight: 900;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #06b6d4 0%, #0e7490 100%);
+            box-shadow: 0 0 40px rgba(6, 182, 212, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 28px;
+            border-bottom: 2px solid rgba(6, 182, 212, 0.3);
+        }
+
+        .tab {
+            padding: 14px 28px;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            color: #64748b;
+            font-weight: 900;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.2) 0%, transparent 100%);
+            border-bottom-color: #06b6d4;
+            color: #22d3ee;
+        }
+
+        .badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .badge-new { background: rgba(34, 211, 238, 0.2); color: #22d3ee; }
+        .badge-contacted { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+        .badge-sent { background: rgba(139, 92, 246, 0.2); color: #8b5cf6; }
+        .badge-signed { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+        .badge-paid { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+        .badge-pending { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+        .badge-warning { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .calendar-day {
+            background: rgba(15, 23, 42, 0.5);
+            border: 2px solid rgba(6, 182, 212, 0.3);
+            border-radius: 6px;
+            padding: 12px 8px;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .calendar-day-number {
+            font-family: 'Orbitron', monospace;
+            font-size: 18px;
+            font-weight: 900;
+            color: #e2e8f0;
+            margin-bottom: 8px;
+        }
+
+        .event-bar {
+            height: 6px;
+            border-radius: 2px;
+            box-shadow: 0 0 8px currentColor;
+        }
+
+        @keyframes pulse-voice {
+            0%, 100% { box-shadow: 0 0 30px rgba(6, 182, 212, 0.6); }
+            50% { box-shadow: 0 0 50px rgba(6, 182, 212, 0.9); }
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2000;
+            width: 90%;
+            max-width: 600px;
+            max-height: 85vh;
+            overflow-y: auto;
+            background: linear-gradient(135deg, #0c1220 0%, #1e293b 100%);
+            border: 2px solid #06b6d4;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(6, 182, 212, 0.4);
+        }
+
+        .modal.active {
+            display: block;
+        }
+
+        .backdrop {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1999;
+            backdrop-filter: blur(4px);
+        }
+
+        .backdrop.active {
+            display: block;
+        }
+
+        .modal h2 {
+            font-family: 'Orbitron', monospace;
+            font-size: 24px;
+            font-weight: 900;
+            color: #22d3ee;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.6);
+        }
+
+        .modal-subtitle {
+            color: #64748b;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 28px;
+            font-weight: 600;
+        }
+
+        .modal h3 {
+            font-family: 'Orbitron', monospace;
+            font-size: 14px;
+            color: #22d3ee;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-top: 28px;
+            margin-bottom: 16px;
+        }
+
+        .modal input, .modal select, .modal textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 16px;
+            background: rgba(15, 23, 42, 0.7);
+            border: 2px solid rgba(6, 182, 212, 0.4);
+            border-radius: 6px;
+            color: #e2e8f0;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .modal input::placeholder {
+            color: #64748b;
+        }
+
+        .modal input:focus, .modal select:focus, .modal textarea:focus {
+            outline: none;
+            border-color: #06b6d4;
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
+        }
+
+        .info-box {
+            background: rgba(34, 211, 238, 0.1);
+            border-left: 4px solid #22d3ee;
+            padding: 16px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .info-box p {
+            color: #94a3b8;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .warning-box {
+            background: rgba(245, 158, 11, 0.1);
+            border-left: 4px solid #f59e0b;
+            padding: 16px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning-box p {
+            color: #94a3b8;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .critical-box {
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 4px solid #ef4444;
+            padding: 16px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .critical-box p {
+            color: #94a3b8;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 32px;
+        }
+
+        .btn-primary {
+            flex: 1;
+            padding: 14px 28px;
+            background: linear-gradient(135deg, #06b6d4 0%, #0e7490 100%);
+            border: 2px solid rgba(6, 182, 212, 0.6);
+            border-radius: 6px;
+            color: #fff;
+            font-weight: 900;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 0 40px rgba(6, 182, 212, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            flex: 1;
+            padding: 14px 28px;
+            background: rgba(30, 41, 59, 0.5);
+            border: 2px solid rgba(100, 116, 139, 0.4);
+            border-radius: 6px;
+            color: #94a3b8;
+            font-weight: 900;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(30, 41, 59, 0.8);
+            border-color: rgba(100, 116, 139, 0.6);
+        }
+
+        .btn-warning {
+            flex: 1;
+            padding: 14px 28px;
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            border: 2px solid rgba(245, 158, 11, 0.6);
+            border-radius: 6px;
+            color: #fff;
+            font-weight: 900;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-warning:hover {
+            box-shadow: 0 0 40px rgba(245, 158, 11, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .btn-critical {
+            flex: 1;
+            padding: 14px 28px;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            border: 2px solid rgba(239, 68, 68, 0.6);
+            border-radius: 6px;
+            color: #fff;
+            font-weight: 900;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-critical:hover {
+            box-shadow: 0 0 40px rgba(239, 68, 68, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .pulse {
+            animation: pulse-modal 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-modal {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.05); }
+        }
+
+        .event-item {
+            background: rgba(6, 182, 212, 0.05);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 12px;
+        }
+
+        .event-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .event-item-title {
+            font-weight: 700;
+            color: #22d3ee;
+            margin-bottom: 4px;
+        }
+
+        .event-item-date {
+            color: #94a3b8;
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .btn-remove {
+            padding: 8px 16px;
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            border-radius: 4px;
+            color: #ef4444;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-remove:hover {
+            background: rgba(239, 68, 68, 0.3);
+            border-color: rgba(239, 68, 68, 0.6);
+        }
+
+        .btn-add {
+            width: 100%;
+            padding: 14px;
+            background: rgba(6, 182, 212, 0.1);
+            border: 2px dashed rgba(6, 182, 212, 0.4);
+            border-radius: 6px;
+            color: #22d3ee;
+            font-weight: 700;
+            font-size: 14px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 20px;
+        }
+
+        .btn-add:hover {
+            background: rgba(6, 182, 212, 0.2);
+            border-color: rgba(6, 182, 212, 0.6);
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <div class="logo-text">
+                <span>⚡</span>
+                <span>COMMAND</span>
+            </div>
+            <div class="logo-subtitle">StreamStage Operations</div>
+        </div>
+        <nav class="nav">
+            
+            <a href="01-dashboard.html" class="nav-item">
+                <span>📊</span>
+                <span>Dashboard</span>
+            </a>
+            <a href="02-pipeline.html" class="nav-item">
+                <span>⚡</span>
+                <span>Pipeline</span>
+            </a>
+            <a href="03-planning.html" class="nav-item">
+                <span>📅</span>
+                <span>Planning</span>
+            </a>
+            <a href="04-deliverables.html" class="nav-item">
+                <span>📦</span>
+                <span>Deliverables</span>
+            </a>
+            <a href="05-communications.html" class="nav-item active">
+                <span>💬</span>
+                <span>Communications</span>
+            </a>
+            <a href="06-files.html" class="nav-item">
+                <span>📁</span>
+                <span>Files</span>
+            </a>
+            <a href="07-operators.html" class="nav-item">
+                <span>👥</span>
+                <span>Operators</span>
+            </a>
+            <a href="08-gear.html" class="nav-item">
+                <span>🎥</span>
+                <span>Gear</span>
+            </a>
+            <a href="09-reports.html" class="nav-item">
+                <span>📈</span>
+                <span>Reports</span>
+            </a>
+            <a href="10-customize.html" class="nav-item">
+                <span>⚙️</span>
+                <span>Customize</span>
+            </a>
+            <a href="11-settings.html" class="nav-item">
+                <span>🔧</span>
+                <span>Settings</span>
+            </a>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <div class="top-bar">
+            <div class="top-bar-left">
+                <h1>⚡ COMMUNICATIONS</h1>
+                <p>EMAIL & NOTIFICATIONS</p>
+            </div>
+            <div class="top-bar-right">
+                <div class="status-indicator">● SYSTEMS OPERATIONAL</div>
+                <div class="user-avatar">DA</div>
+            </div>
+        </div>
+        <div class="dashboard-content">
+        <div class="tabs">
+            <button class="tab active">EMAIL HISTORY</button>
+            <button class="tab">TEMPLATES</button>
+            <button class="tab">NOTIFICATION LOG</button>
+        </div>
+
+        <div class="section">
+            <div style="display: flex; flex-direction: column; gap: 16px;">
+                <div style="border-left: 4px solid #06b6d4; padding: 18px; background: rgba(6, 182, 212, 0.05);">
+                    <div style="font-weight: 700; color: #e2e8f0; font-size: 16px; margin-bottom: 8px;">📧 Proposal sent: ABC Dance Studio</div>
+                    <div style="font-size: 13px; color: #94a3b8; margin-bottom: 6px;">Nov 8, 2025 10:30 AM → jane@abcdance.com</div>
+                    <div style="font-size: 12px; color: #64748b;">Subject: Dance Recital Media Proposal - Nov 15</div>
+                    <div style="display: flex; gap: 12px; margin-top: 12px;">
+                        <button style="padding: 8px 16px; font-size: 12px;">VIEW</button>
+                        <button style="padding: 8px 16px; font-size: 12px;">REPLY</button>
+                    </div>
+                </div>
+                <div style="border-left: 4px solid #10b981; padding: 18px; background: rgba(16, 185, 129, 0.05);">
+                    <div style="font-weight: 700; color: #e2e8f0; font-size: 16px; margin-bottom: 8px;">💬 Reply received: XYZ Dance Competition</div>
+                    <div style="font-size: 13px; color: #94a3b8; margin-bottom: 6px;">Nov 7, 2025 2:15 PM ← john@xyzdance.com</div>
+                    <div style="font-size: 12px; color: #64748b;">Subject: Re: Concert Coverage Proposal</div>
+                    <div style="display: flex; gap: 12px; margin-top: 12px;">
+                        <button style="padding: 8px 16px; font-size: 12px;">VIEW</button>
+                        <button style="padding: 8px 16px; font-size: 12px;">REPLY</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <div onclick="showModal('voice-modal')" style="position: fixed; bottom: 80px; right: 40px; width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, #06b6d4 0%, #0e7490 100%); border: 2px solid rgba(6, 182, 212, 0.6); display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1000; animation: pulse-voice 2s ease-in-out infinite;">
+        <span style="font-size: 28px;">🎤</span>
+    </div>
+    
+    <!-- Backdrop -->
+    <div id="backdrop" class="backdrop" onclick="closeAllModals()"></div>
+
+    <!-- Voice Assistant Modal -->
+    <div id="voice-modal" class="modal">
+        <h2>🎤 VOICE COMMAND</h2>
+        <p class="modal-subtitle">SPEAK YOUR COMMAND</p>
+
+        <div style="text-align: center; margin: 30px 0;">
+            <div style="font-size: 64px; color: #22d3ee;" class="pulse">🎤</div>
+            <p style="color: #64748b; margin-top: 16px; font-weight: 600;">LISTENING...</p>
+        </div>
+
+        <div class="info-box">
+            <p><strong style="color: #22d3ee;">I HEARD:</strong> "Create event for ABC Dance on Friday at 2pm"</p>
+        </div>
+
+        <div class="button-group">
+            <button class="btn-primary" onclick="closeAllModals()">✓ CONFIRM</button>
+            <button class="btn-secondary" onclick="closeAllModals()">✗ CANCEL</button>
+        </div>
+
+        <div style="margin-top: 32px; padding-top: 24px; border-top: 2px solid rgba(6, 182, 212, 0.2);">
+            <h3>RECENT COMMANDS</h3>
+            <div style="color: #94a3b8; font-size: 13px; line-height: 2;">
+                <div>"Show me events next week"</div>
+                <div>"What's the status of ABC Dance contract?"</div>
+                <div>"Send reminder to Jane about questionnaire"</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Manual Entry Modal (NEW CLIENT) -->
+    <div id="manual-entry-modal" class="modal">
+        <h2>+ NEW CLIENT + EVENT</h2>
+        <p class="modal-subtitle">SKIP PIPELINE • CREATE DRAFT CONTRACT</p>
+
+        <h3>📋 CLIENT INFORMATION</h3>
+        <input type="text" placeholder="Client Organization (e.g., ABC Dance Studio)">
+        <input type="text" placeholder="Contact Name (e.g., Jane Smith)">
+        <input type="tel" placeholder="Phone Number (555-1234)">
+        <input type="email" placeholder="Email Address (jane@abcdance.com)">
+
+        <h3>🎬 EVENT INFORMATION</h3>
+        <input type="text" placeholder="Event Name (e.g., Fall Showcase)">
+        <input type="date" value="2025-11-15">
+        <input type="time" value="14:00">
+        <input type="text" placeholder="Venue (e.g., Lincoln Center)">
+
+        <label style="display: block; margin-bottom: 8px; color: #94a3b8; font-weight: 600;">Service Type</label>
+        <select>
+            <option>Dance Recital Media</option>
+            <option>Concert Coverage</option>
+            <option>Corporate Event</option>
+            <option>Promo Video</option>
+        </select>
+
+        <div class="info-box">
+            <p>ℹ️ <strong>This will create:</strong> Client Record + Event + Draft Contract (skips Lead/Proposal stages)</p>
+        </div>
+
+        <div class="button-group">
+            <button class="btn-primary" onclick="closeAllModals()">✓ CREATE CLIENT + EVENT</button>
+            <button class="btn-secondary" onclick="closeAllModals()">CANCEL</button>
+        </div>
+    </div>
+
+    <!-- INFO Modal -->
+    <div id="info-modal" class="modal">
+        <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px;">
+            <div style="font-size: 48px;">ℹ️</div>
+            <div>
+                <h2>INFO</h2>
+                <p class="modal-subtitle">INFORMATION NOTICE</p>
+            </div>
+        </div>
+
+        <p style="color: #e2e8f0; line-height: 1.8; margin-bottom: 20px;">
+            <strong style="color: #22d3ee;">Incomplete Questionnaire:</strong>
+            ABC Dance Studio's questionnaire for Fall Showcase (Nov 15) is only 60% complete.
+            Event is in 7 days. Missing: Audio preferences, Special requests, Emergency contacts.
+        </p>
+
+        <div class="info-box">
+            <p>ℹ️ You can send a reminder or proceed without complete information.</p>
+        </div>
+
+        <div class="button-group">
+            <button class="btn-primary" onclick="closeAllModals()">SEND REMINDER</button>
+            <button class="btn-secondary" onclick="closeAllModals()">PROCEED ANYWAY</button>
+        </div>
+    </div>
+
+    <!-- WARNING Modal -->
+    <div id="warning-modal" class="modal">
+        <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px;">
+            <div style="font-size: 48px;">⚠️</div>
+            <div>
+                <h2 style="color: #f59e0b;">WARNING</h2>
+                <p class="modal-subtitle">ATTENTION REQUIRED</p>
+            </div>
+        </div>
+
+        <p style="color: #e2e8f0; line-height: 1.8; margin-bottom: 20px;">
+            <strong style="color: #f59e0b;">Equipment Conflict Detected:</strong>
+            Camera A (Sony A7S III) is assigned to TWO events on Nov 15:
+        </p>
+        <ul style="color: #94a3b8; margin: 16px 0 16px 24px; line-height: 1.8;">
+            <li>ABC Dance Fall Showcase @ 2:00 PM</li>
+            <li>XYZ Concert Coverage @ 6:00 PM</li>
+        </ul>
+
+        <div class="warning-box">
+            <p>⚠️ Proceeding will create unresolved conflict. Consider reassigning equipment or adjusting schedules.</p>
+        </div>
+
+        <div class="button-group">
+            <button class="btn-warning" onclick="closeAllModals()">🚨 PROCEED ANYWAY</button>
+            <button class="btn-secondary" onclick="closeAllModals()">CANCEL</button>
+        </div>
+    </div>
+
+    <!-- CRITICAL Modal -->
+    <div id="critical-modal" class="modal">
+        <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px;">
+            <div style="font-size: 48px;">🚨</div>
+            <div>
+                <h2 style="color: #ef4444;">CRITICAL</h2>
+                <p class="modal-subtitle">SERIOUS PROBLEM DETECTED</p>
+            </div>
+        </div>
+
+        <p style="color: #e2e8f0; line-height: 1.8; margin-bottom: 20px;">
+            <strong style="color: #ef4444;">No Deposit Received:</strong>
+            Contract #2025-AB-1234 for Fall Showcase (Nov 15, $4,500) was sent 21 days ago.
+            Contract is unsigned and no deposit received. Event is in 7 days.
+        </p>
+
+        <div class="critical-box">
+            <p>🚨 <strong>Financial Risk:</strong> Proceeding without signed contract and deposit violates company policy. This action will be logged in audit trail.</p>
+        </div>
+
+        <div class="button-group">
+            <button class="btn-critical" onclick="closeAllModals()">🚨 PROCEED ANYWAY</button>
+            <button class="btn-secondary" onclick="closeAllModals()">CANCEL</button>
+        </div>
+    </div>
+
+    <!-- Multi-Date Contract Modal -->
+    <div id="multidate-modal" class="modal">
+        <h2>📄 MULTI-DATE CONTRACT</h2>
+        <p class="modal-subtitle">MANAGE EVENTS IN THIS CONTRACT</p>
+
+        <h3>📅 EVENTS IN THIS CONTRACT</h3>
+
+        <div class="event-item">
+            <div class="event-item-header">
+                <div>
+                    <div class="event-item-title">Event 1: Fall Showcase</div>
+                    <div class="event-item-date">📅 November 15, 2025 • 2:00 PM • Lincoln Center</div>
+                </div>
+                <button class="btn-remove" onclick="alert('Remove event 1')">REMOVE</button>
+            </div>
+        </div>
+
+        <div class="event-item">
+            <div class="event-item-header">
+                <div>
+                    <div class="event-item-title">Event 2: Winter Recital</div>
+                    <div class="event-item-date">📅 December 20, 2025 • 6:00 PM • City Hall Theatre</div>
+                </div>
+                <button class="btn-remove" onclick="alert('Remove event 2')">REMOVE</button>
+            </div>
+        </div>
+
+        <button class="btn-add" onclick="alert('Add event')">+ ADD ANOTHER EVENT</button>
+
+        <div class="info-box">
+            <p>ℹ️ <strong>Total Contract Value:</strong> $8,900 • Covers 2 events with bulk discount applied</p>
+        </div>
+
+        <div class="button-group">
+            <button class="btn-primary" onclick="closeAllModals()">✓ SAVE CHANGES</button>
+            <button class="btn-secondary" onclick="closeAllModals()">CANCEL</button>
+        </div>
+    </div>
+
+    <!-- Create Event Modal -->
+    <div id="create-event-modal" class="modal">
+        <h2>+ NEW EVENT</h2>
+        <p class="modal-subtitle">CREATE NEW EVENT</p>
+
+        <h3>🎬 EVENT DETAILS</h3>
+        <input type="text" placeholder="Event Name">
+        <input type="date" value="2025-11-20">
+        <input type="time" value="18:00">
+        <input type="text" placeholder="Venue">
+
+        <label style="display: block; margin-bottom: 8px; color: #94a3b8; font-weight: 600;">Client</label>
+        <select>
+            <option>ABC Dance Studio</option>
+            <option>XYZ Concert Hall</option>
+            <option>Smith Productions</option>
+        </select>
+
+        <label style="display: block; margin-bottom: 8px; color: #94a3b8; font-weight: 600;">Service Type</label>
+        <select>
+            <option>Dance Recital Media</option>
+            <option>Concert Coverage</option>
+            <option>Corporate Event</option>
+        </select>
+
+        <div class="button-group">
+            <button class="btn-primary" onclick="closeAllModals()">✓ CREATE EVENT</button>
+            <button class="btn-secondary" onclick="closeAllModals()">CANCEL</button>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-modal" class="modal">
+        <h2 style="color: #ef4444;">⚠️ CONFIRM DELETE</h2>
+        <p class="modal-subtitle">THIS ACTION CANNOT BE UNDONE</p>
+
+        <p style="color: #e2e8f0; line-height: 1.8; margin: 24px 0;">
+            Are you sure you want to delete <strong style="color: #22d3ee;">"ABC Dance Fall Showcase"</strong>?
+        </p>
+
+        <div class="critical-box">
+            <p>🚨 <strong>Warning:</strong> This will permanently delete the event, all associated files, and email history. This action cannot be reversed.</p>
+        </div>
+
+        <div class="button-group">
+            <button class="btn-critical" onclick="closeAllModals()">DELETE PERMANENTLY</button>
+            <button class="btn-secondary" onclick="closeAllModals()">CANCEL</button>
+        </div>
+    </div>
+  
+    
+    <script>
+        function showModal(modalId) {
+            closeAllModals();
+            document.getElementById('backdrop').classList.add('active');
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        function closeAllModals() {
+            document.getElementById('backdrop').classList.remove('active');
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.classList.remove('active');
+            });
+        }
+
+        // ESC key closes modals
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeAllModals();
+            }
+        });
+
+        // Add click handlers to demonstration buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            // Example: Add onclick to NEW CLIENT buttons
+            document.querySelectorAll('button').forEach(button => {
+                if (button.textContent.includes('NEW CLIENT')) {
+                    button.setAttribute('onclick', "showModal('manual-entry-modal')");
+                }
+                if (button.textContent.includes('NEW EVENT')) {
+                    button.setAttribute('onclick', "showModal('create-event-modal')");
+                }
+            });
+        });
+    </script>
+  
+</body>
+</html>

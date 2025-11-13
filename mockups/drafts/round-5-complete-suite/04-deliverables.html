@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deliverables - CommandCentered</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Rajdhani', monospace, sans-serif;
+            background: #030712;
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(6, 182, 212, 0.05) 2px, rgba(6, 182, 212, 0.05) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(6, 182, 212, 0.05) 2px, rgba(6, 182, 212, 0.05) 4px),
+                radial-gradient(ellipse at center, #0a1628 0%, #030712 100%);
+            background-size: 40px 40px, 40px 40px, 100% 100%;
+            color: #e2e8f0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            min-width: 1200px;
+        }
+
+        .sidebar {
+            width: 260px;
+            background: linear-gradient(180deg, #0c1220 0%, #030712 100%);
+            border-right: 2px solid rgba(6, 182, 212, 0.3);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 32px rgba(6, 182, 212, 0.15);
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .logo {
+            padding: 28px 24px;
+            border-bottom: 2px solid rgba(6, 182, 212, 0.3);
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1) 0%, transparent 100%);
+        }
+
+        .logo-text {
+            font-family: 'Orbitron', monospace;
+            font-size: 24px;
+            font-weight: 900;
+            color: #22d3ee;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.8);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-subtitle {
+            font-size: 10px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 6px;
+            font-weight: 600;
+        }
+
+        .nav {
+            flex: 1;
+            padding: 24px 0;
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 24px;
+            color: #94a3b8;
+            text-decoration: none;
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .nav-item:hover {
+            background: rgba(6, 182, 212, 0.1);
+            color: #22d3ee;
+            border-left-color: rgba(6, 182, 212, 0.8);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(90deg, rgba(6, 182, 212, 0.2) 0%, transparent 100%);
+            color: #22d3ee;
+            border-left-color: #06b6d4;
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.5);
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            min-width: 0;
+        }
+
+        .top-bar {
+            background: linear-gradient(90deg, #0c1220 0%, #1e293b 100%);
+            border-bottom: 2px solid rgba(6, 182, 212, 0.3);
+            padding: 18px 36px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+            flex-shrink: 0;
+        }
+
+        .top-bar-left h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: 26px;
+            font-weight: 900;
+            color: #22d3ee;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.8);
+        }
+
+        .top-bar-left p {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 4px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .top-bar-right {
+            display: flex;
+            gap: 18px;
+            align-items: center;
+        }
+
+        .status-indicator {
+            padding: 8px 16px;
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.5);
+            border-radius: 4px;
+            color: #10b981;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .user-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 6px;
+            background: linear-gradient(135deg, #0e7490 0%, #0c4a6e 100%);
+            border: 2px solid rgba(6, 182, 212, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #22d3ee;
+            font-weight: 900;
+            font-size: 18px;
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.8);
+        }
+
+        .dashboard-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 28px 36px;
+        }
+
+        .section {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.5) 0%, rgba(15, 23, 42, 0.7) 100%);
+            border: 2px solid rgba(6, 182, 212, 0.4);
+            border-radius: 8px;
+            padding: 28px;
+            margin-bottom: 28px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid rgba(6, 182, 212, 0.3);
+        }
+
+        .section-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 18px;
+            font-weight: 900;
+            color: #22d3ee;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.5);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 28px;
+            border-bottom: 2px solid rgba(6, 182, 212, 0.3);
+        }
+
+        .tab {
+            padding: 14px 28px;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            color: #64748b;
+            font-weight: 900;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.2) 0%, transparent 100%);
+            border-bottom-color: #06b6d4;
+            color: #22d3ee;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.5) 0%, rgba(15, 23, 42, 0.7) 100%);
+            border: 2px solid rgba(6, 182, 212, 0.4);
+            border-radius: 8px;
+            padding: 28px;
+            margin-bottom: 28px;
+        }
+
+        .card-header {
+            font-family: 'Orbitron', monospace;
+            font-size: 18px;
+            font-weight: 900;
+            color: #22d3ee;
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.5);
+        }
+
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .filter-label {
+            font-weight: 700;
+            color: #22d3ee;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+            letter-spacing: 1px;
+        }
+
+        select, input {
+            padding: 12px 16px;
+            background: rgba(15, 23, 42, 0.7);
+            border: 2px solid rgba(6, 182, 212, 0.3);
+            border-radius: 6px;
+            color: #e2e8f0;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        select:hover, input:hover {
+            border-color: #06b6d4;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: #06b6d4;
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
+        }
+
+        select option {
+            background: #030712;
+            color: #e2e8f0;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            background: rgba(15, 23, 42, 0.5);
+            border: 2px solid rgba(6, 182, 212, 0.3);
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th {
+            text-align: left;
+            padding: 14px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            border-bottom: 2px solid rgba(6, 182, 212, 0.3);
+        }
+
+        td {
+            padding: 18px 14px;
+            color: #94a3b8;
+            border-bottom: 1px solid rgba(6, 182, 212, 0.2);
+        }
+
+        tr:hover {
+            background: rgba(6, 182, 212, 0.1);
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .view-toggle-btn {
+            padding: 0.75rem 1.5rem;
+            background: rgba(15, 23, 42, 0.7);
+            border: 2px solid rgba(6, 182, 212, 0.3);
+            border-radius: 0;
+            color: #94a3b8;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .view-toggle-btn:first-child {
+            border-right: none;
+            border-radius: 6px 0 0 6px;
+        }
+
+        .view-toggle-btn:last-child {
+            border-radius: 0 6px 6px 0;
+        }
+
+        .view-toggle-btn.active {
+            background: linear-gradient(135deg, #0e7490 0%, #0c4a6e 100%);
+            color: #e2e8f0;
+            border-color: rgba(6, 182, 212, 0.6);
+        }
+
+        .view-toggle-btn:hover:not(.active) {
+            background: rgba(6, 182, 212, 0.1);
+            border-color: #06b6d4;
+        }
+
+        .grid {
+            display: grid;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .grid-3 { grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); }
+
+        .grid-card {
+            background: rgba(15, 23, 42, 0.7);
+            border: 2px solid rgba(6, 182, 212, 0.3);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .grid-card:hover {
+            border-color: #06b6d4;
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.2);
+            background: rgba(6, 182, 212, 0.05);
+        }
+
+        .grid-card-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #22d3ee;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .grid-card-subtitle {
+            color: #94a3b8;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        .progress-container {
+            margin: 1rem 0;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(6, 182, 212, 0.1);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            overflow: hidden;
+            position: relative;
+            border-radius: 2px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #06b6d4, #0e7490);
+            transition: width 0.3s;
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .service-badge {
+            display: inline-block;
+            background: rgba(6, 182, 212, 0.15);
+            border: 1px solid rgba(6, 182, 212, 0.5);
+            padding: 0.35rem 0.75rem;
+            border-radius: 4px;
+            color: #06b6d4;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .editor-link {
+            color: #22d3ee;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .editor-link:hover {
+            color: #06b6d4;
+            text-decoration: underline;
+        }
+
+        .drive-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.35rem 0.75rem;
+            background: rgba(6, 182, 212, 0.1);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #06b6d4;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .drive-indicator.active::before {
+            content: '●';
+            color: #10b981;
+            animation: pulse 2s infinite;
+        }
+
+        .drive-indicator.inactive::before {
+            content: '○';
+            color: #9ca3af;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: 1px solid;
+        }
+
+        .status-draft {
+            background: rgba(156, 163, 175, 0.15);
+            color: #9ca3af;
+            border-color: #9ca3af;
+        }
+
+        .status-in-progress {
+            background: rgba(59, 130, 246, 0.15);
+            color: #3b82f6;
+            border-color: #3b82f6;
+        }
+
+        .status-review {
+            background: rgba(245, 158, 11, 0.15);
+            color: #f59e0b;
+            border-color: #f59e0b;
+        }
+
+        .status-delivered {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+            border-color: #10b981;
+        }
+
+        .text-muted { color: #94a3b8; }
+        .text-accent { color: #22d3ee; }
+        .text-success { color: #10b981; }
+        .text-warning { color: #f59e0b; }
+        .text-danger { color: #ef4444; }
+
+        .mb-1 { margin-bottom: 0.5rem; }
+        .mb-2 { margin-bottom: 1rem; }
+        .mb-3 { margin-bottom: 1.5rem; }
+        .mb-4 { margin-bottom: 2rem; }
+
+        .flex { display: flex; }
+        .justify-between { justify-content: space-between; }
+        .items-center { align-items: center; }
+        .gap-1 { gap: 0.5rem; }
+        .gap-2 { gap: 1rem; }
+        .gap-3 { gap: 1.5rem; }
+
+        .button {
+            padding: 14px 28px;
+            background: linear-gradient(135deg, #0e7490 0%, #0c4a6e 100%);
+            border: 2px solid rgba(6, 182, 212, 0.6);
+            border-radius: 6px;
+            color: #e2e8f0;
+            font-weight: 900;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Orbitron', monospace;
+        }
+
+        .button:hover {
+            background: linear-gradient(135deg, #06b6d4 0%, #0e7490 100%);
+            box-shadow: 0 0 40px rgba(6, 182, 212, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .button-secondary {
+            padding: 14px 28px;
+            background: transparent;
+            border: 2px solid rgba(6, 182, 212, 0.4);
+            border-radius: 6px;
+            color: #22d3ee;
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .button-secondary:hover {
+            background: rgba(6, 182, 212, 0.1);
+            border-color: #06b6d4;
+        }
+
+        @media (max-width: 768px) {
+            .filters {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-group {
+                flex-direction: column;
+            }
+
+            .grid-3 {
+                grid-template-columns: 1fr;
+            }
+
+            table {
+                font-size: 0.875rem;
+            }
+
+            td, th {
+                padding: 0.75rem 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <div class="logo-text">
+                <span>⚡</span>
+                <span>COMMAND</span>
+            </div>
+            <div class="logo-subtitle">StreamStage Operations</div>
+        </div>
+        <nav class="nav">
+            <a href="01-dashboard.html" class="nav-item">
+                <span>📊</span>
+                <span>Dashboard</span>
+            </a>
+            <a href="02-pipeline.html" class="nav-item">
+                <span>⚡</span>
+                <span>Pipeline</span>
+            </a>
+            <a href="03-planning.html" class="nav-item">
+                <span>📅</span>
+                <span>Planning</span>
+            </a>
+            <a href="04-deliverables.html" class="nav-item active">
+                <span>📦</span>
+                <span>Deliverables</span>
+            </a>
+            <a href="05-communications.html" class="nav-item">
+                <span>💬</span>
+                <span>Communications</span>
+            </a>
+            <a href="06-files.html" class="nav-item">
+                <span>📁</span>
+                <span>Files</span>
+            </a>
+            <a href="07-operators.html" class="nav-item">
+                <span>👥</span>
+                <span>Operators</span>
+            </a>
+            <a href="08-gear.html" class="nav-item">
+                <span>🎥</span>
+                <span>Gear</span>
+            </a>
+            <a href="09-reports.html" class="nav-item">
+                <span>📈</span>
+                <span>Reports</span>
+            </a>
+            <a href="10-customize.html" class="nav-item">
+                <span>⚙️</span>
+                <span>Customize</span>
+            </a>
+            <a href="11-settings.html" class="nav-item">
+                <span>🔧</span>
+                <span>Settings</span>
+            </a>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <div class="top-bar">
+            <div class="top-bar-left">
+                <h1>📦 DELIVERABLES</h1>
+                <p>PRODUCTION & CLIENT FILES</p>
+            </div>
+            <div class="top-bar-right">
+                <div class="status-indicator">● SYSTEMS OPERATIONAL</div>
+                <div class="user-avatar">DA</div>
+            </div>
+        </div>
+        <div class="dashboard-content">
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('all-deliverables')">All Deliverables</button>
+            <button class="tab" onclick="switchTab('pending')">Pending</button>
+            <button class="tab" onclick="switchTab('in-review')">In Review</button>
+            <button class="tab" onclick="switchTab('delivered')">Delivered</button>
+            <button class="tab" onclick="switchTab('add-new')">+ Add New</button>
+        </div>
+
+        <!-- All Deliverables Tab -->
+        <div id="all-deliverables" class="tab-content active">
+            <div class="card">
+                <div class="card-header">Deliverables Management</div>
+
+                <!-- Filters -->
+                <div class="filters">
+                    <div class="filter-group">
+                        <label class="filter-label">Service Type</label>
+                        <select>
+                            <option value="">All Services</option>
+                            <option value="landscape-video">1 min landscape video</option>
+                            <option value="social-reels">3x 10s social media reels</option>
+                            <option value="highlight">Full event highlight (3-5 min)</option>
+                            <option value="photo-gallery">Photo gallery (50+ images)</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="filter-label">Status</label>
+                        <select>
+                            <option value="">All Statuses</option>
+                            <option value="draft">Draft</option>
+                            <option value="in-progress">In Progress</option>
+                            <option value="review">In Review</option>
+                            <option value="delivered">Delivered</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="filter-label">Editor</label>
+                        <select>
+                            <option value="">All Editors</option>
+                            <option value="alex">Alex Mitchell</option>
+                            <option value="jordan">Jordan Chen</option>
+                            <option value="samantha">Samantha Rodriguez</option>
+                            <option value="marcus">Marcus Thompson</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="filter-label">Due Date</label>
+                        <input type="date">
+                    </div>
+                </div>
+
+                <!-- View Toggle -->
+                <div class="view-toggle">
+                    <button class="view-toggle-btn active" onclick="toggleView('table')">Table View</button>
+                    <button class="view-toggle-btn" onclick="toggleView('card')">Card View</button>
+                </div>
+
+                <!-- Table View -->
+                <div data-view="table" style="display: block;">
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>EVENT</th>
+                                    <th>SERVICE TYPE</th>
+                                    <th>EDITOR</th>
+                                    <th>DRIVE</th>
+                                    <th>STATUS</th>
+                                    <th>DUE</th>
+                                    <th>ACTIONS</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>ABC Dance<br>Nov 15</strong></td>
+                                    <td style="color: #06b6d4;">1 min landscape video</td>
+                                    <td style="color: #10b981;"><a href="mailto:sarah@example.com" style="color: #10b981;">Sarah J.</a><br><small style="color: #64748b;">(email)</small></td>
+                                    <td><button class="action-btn">📁</button></td>
+                                    <td><span class="status-badge status-in-progress">IN PROGRESS</span></td>
+                                    <td>Nov 29</td>
+                                    <td class="flex gap-1">
+                                        <button class="action-btn">📤</button>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td><strong>XYZ Concert Series</strong></td>
+                                    <td><span class="service-badge">3x Social Reels</span></td>
+                                    <td>
+                                        <a href="mailto:jordan.chen@commandcentered.com" class="editor-link">
+                                            <span>→</span> Jordan Chen
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <div class="progress-container">
+                                            <div class="progress-label">
+                                                <span>50%</span>
+                                            </div>
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width: 50%;"></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="status-badge status-in-progress">In Progress</span></td>
+                                    <td><span class="text-muted">Nov 20, 2025</span></td>
+                                    <td><span class="drive-indicator active">Drive Active</span></td>
+                                </tr>
+
+                                <tr>
+                                    <td><strong>Metro Promo Video</strong></td>
+                                    <td><span class="service-badge">1 min Landscape</span></td>
+                                    <td>
+                                        <a href="mailto:samantha.rodriguez@commandcentered.com" class="editor-link">
+                                            <span>→</span> Samantha Rodriguez
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <div class="progress-container">
+                                            <div class="progress-label">
+                                                <span>95%</span>
+                                            </div>
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width: 95%;"></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="status-badge status-review">In Review</span></td>
+                                    <td><span class="text-muted">Nov 15, 2025</span></td>
+                                    <td><span class="drive-indicator inactive">Drive Idle</span></td>
+                                </tr>
+
+                                <tr>
+                                    <td><strong>Summer Festival 2025</strong></td>
+                                    <td><span class="service-badge">Photo Gallery</span></td>
+                                    <td>
+                                        <a href="mailto:marcus.thompson@commandcentered.com" class="editor-link">
+                                            <span>→</span> Marcus Thompson
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <div class="progress-container">
+                                            <div class="progress-label">
+                                                <span>100%</span>
+                                            </div>
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width: 100%;"></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="status-badge status-delivered">Delivered</span></td>
+                                    <td><span class="text-success">Nov 10, 2025</span></td>
+                                    <td><span class="drive-indicator inactive">Drive Idle</span></td>
+                                </tr>
+
+                                <tr>
+                                    <td><strong>Holiday Showcase</strong></td>
+                                    <td><span class="service-badge">Full Event Highlight</span></td>
+                                    <td>
+                                        <a href="mailto:alex.mitchell@commandcentered.com" class="editor-link">
+                                            <span>→</span> Alex Mitchell
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <div class="progress-container">
+                                            <div class="progress-label">
+                                                <span>25%</span>
+                                            </div>
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width: 25%;"></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="status-badge status-in-progress">In Progress</span></td>
+                                    <td><span class="text-warning">Nov 28, 2025</span></td>
+                                    <td><span class="drive-indicator active">Drive Active</span></td>
+                                </tr>
+
+                                <tr>
+                                    <td><strong>Corporate Training Video</strong></td>
+                                    <td><span class="service-badge">1 min Landscape</span></td>
+                                    <td>
+                                        <a href="mailto:jordan.chen@commandcentered.com" class="editor-link">
+                                            <span>→</span> Jordan Chen
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <div class="progress-container">
+                                            <div class="progress-label">
+                                                <span>10%</span>
+                                            </div>
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width: 10%;"></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="status-badge status-draft">Draft</span></td>
+                                    <td><span class="text-danger">Nov 25, 2025</span></td>
+                                    <td><span class="drive-indicator inactive">Drive Idle</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Card View -->
+                <div data-view="card" style="display: none;">
+                    <div class="grid grid-3">
+                        <div class="grid-card">
+                            <div class="grid-card-title">ABC Dance Recital</div>
+                            <div class="grid-card-subtitle">Full Event Highlight</div>
+                            <div class="mb-2">
+                                <span class="service-badge">Full Event Highlight</span>
+                            </div>
+                            <div class="mb-2">
+                                <strong>Editor:</strong><br>
+                                <a href="mailto:alex.mitchell@commandcentered.com" class="editor-link" style="display: inline-flex;">
+                                    Alex Mitchell →
+                                </a>
+                            </div>
+                            <div class="progress-container">
+                                <div class="progress-label">
+                                    <span style="color: #06b6d4;">Progress: 75%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 75%;"></div>
+                                </div>
+                            </div>
+                            <div class="flex gap-1 mb-2" style="margin-top: 1rem;">
+                                <span class="status-badge status-in-progress">In Progress</span>
+                                <span class="drive-indicator active">Drive Active</span>
+                            </div>
+                            <div class="text-muted" style="font-size: 0.875rem;">Due: Nov 18, 2025</div>
+                        </div>
+
+                        <div class="grid-card">
+                            <div class="grid-card-title">XYZ Concert Series</div>
+                            <div class="grid-card-subtitle">3x Social Media Reels</div>
+                            <div class="mb-2">
+                                <span class="service-badge">3x Social Reels</span>
+                            </div>
+                            <div class="mb-2">
+                                <strong>Editor:</strong><br>
+                                <a href="mailto:jordan.chen@commandcentered.com" class="editor-link" style="display: inline-flex;">
+                                    Jordan Chen →
+                                </a>
+                            </div>
+                            <div class="progress-container">
+                                <div class="progress-label">
+                                    <span style="color: #06b6d4;">Progress: 50%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 50%;"></div>
+                                </div>
+                            </div>
+                            <div class="flex gap-1 mb-2" style="margin-top: 1rem;">
+                                <span class="status-badge status-in-progress">In Progress</span>
+                                <span class="drive-indicator active">Drive Active</span>
+                            </div>
+                            <div class="text-muted" style="font-size: 0.875rem;">Due: Nov 20, 2025</div>
+                        </div>
+
+                        <div class="grid-card">
+                            <div class="grid-card-title">Metro Promo Video</div>
+                            <div class="grid-card-subtitle">1 Minute Landscape</div>
+                            <div class="mb-2">
+                                <span class="service-badge">1 min Landscape</span>
+                            </div>
+                            <div class="mb-2">
+                                <strong>Editor:</strong><br>
+                                <a href="mailto:samantha.rodriguez@commandcentered.com" class="editor-link" style="display: inline-flex;">
+                                    Samantha Rodriguez →
+                                </a>
+                            </div>
+                            <div class="progress-container">
+                                <div class="progress-label">
+                                    <span style="color: #06b6d4;">Progress: 95%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 95%;"></div>
+                                </div>
+                            </div>
+                            <div class="flex gap-1 mb-2" style="margin-top: 1rem;">
+                                <span class="status-badge status-review">In Review</span>
+                                <span class="drive-indicator inactive">Drive Idle</span>
+                            </div>
+                            <div class="text-muted" style="font-size: 0.875rem;">Due: Nov 15, 2025</div>
+                        </div>
+
+                        <div class="grid-card">
+                            <div class="grid-card-title">Summer Festival</div>
+                            <div class="grid-card-subtitle">Photo Gallery</div>
+                            <div class="mb-2">
+                                <span class="service-badge">Photo Gallery</span>
+                            </div>
+                            <div class="mb-2">
+                                <strong>Editor:</strong><br>
+                                <a href="mailto:marcus.thompson@commandcentered.com" class="editor-link" style="display: inline-flex;">
+                                    Marcus Thompson →
+                                </a>
+                            </div>
+                            <div class="progress-container">
+                                <div class="progress-label">
+                                    <span style="color: #06b6d4;">Progress: 100%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 100%;"></div>
+                                </div>
+                            </div>
+                            <div class="flex gap-1 mb-2" style="margin-top: 1rem;">
+                                <span class="status-badge status-delivered">Delivered</span>
+                                <span class="drive-indicator inactive">Drive Idle</span>
+                            </div>
+                            <div class="text-success" style="font-size: 0.875rem;">Due: Nov 10, 2025</div>
+                        </div>
+
+                        <div class="grid-card">
+                            <div class="grid-card-title">Holiday Showcase</div>
+                            <div class="grid-card-subtitle">Full Event Highlight</div>
+                            <div class="mb-2">
+                                <span class="service-badge">Full Event Highlight</span>
+                            </div>
+                            <div class="mb-2">
+                                <strong>Editor:</strong><br>
+                                <a href="mailto:alex.mitchell@commandcentered.com" class="editor-link" style="display: inline-flex;">
+                                    Alex Mitchell →
+                                </a>
+                            </div>
+                            <div class="progress-container">
+                                <div class="progress-label">
+                                    <span style="color: #06b6d4;">Progress: 25%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 25%;"></div>
+                                </div>
+                            </div>
+                            <div class="flex gap-1 mb-2" style="margin-top: 1rem;">
+                                <span class="status-badge status-in-progress">In Progress</span>
+                                <span class="drive-indicator active">Drive Active</span>
+                            </div>
+                            <div class="text-warning" style="font-size: 0.875rem;">Due: Nov 28, 2025</div>
+                        </div>
+
+                        <div class="grid-card">
+                            <div class="grid-card-title">Corporate Training</div>
+                            <div class="grid-card-subtitle">1 Minute Landscape</div>
+                            <div class="mb-2">
+                                <span class="service-badge">1 min Landscape</span>
+                            </div>
+                            <div class="mb-2">
+                                <strong>Editor:</strong><br>
+                                <a href="mailto:jordan.chen@commandcentered.com" class="editor-link" style="display: inline-flex;">
+                                    Jordan Chen →
+                                </a>
+                            </div>
+                            <div class="progress-container">
+                                <div class="progress-label">
+                                    <span style="color: #06b6d4;">Progress: 10%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 10%;"></div>
+                                </div>
+                            </div>
+                            <div class="flex gap-1 mb-2" style="margin-top: 1rem;">
+                                <span class="status-badge status-draft">Draft</span>
+                                <span class="drive-indicator inactive">Drive Idle</span>
+                            </div>
+                            <div class="text-danger" style="font-size: 0.875rem;">Due: Nov 25, 2025</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pending Tab -->
+        <div id="pending" class="tab-content">
+            <div class="card">
+                <div class="card-header">Pending Deliverables</div>
+                <p class="text-muted mb-3">Deliverables with Draft or In Progress status</p>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Project</th>
+                                <th>Service Type</th>
+                                <th>Assigned Editor</th>
+                                <th>Progress</th>
+                                <th>Status</th>
+                                <th>Due Date</th>
+                                <th>Drive Activity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>ABC Dance Recital 2025</strong></td>
+                                <td><span class="service-badge">Full Event Highlight</span></td>
+                                <td>
+                                    <a href="mailto:alex.mitchell@commandcentered.com" class="editor-link">
+                                        <span>→</span> Alex Mitchell
+                                    </a>
+                                </td>
+                                <td>
+                                    <div class="progress-container">
+                                        <div class="progress-label">
+                                            <span>75%</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 75%;"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="status-badge status-in-progress">In Progress</span></td>
+                                <td><span class="text-muted">Nov 18, 2025</span></td>
+                                <td><span class="drive-indicator active">Drive Active</span></td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>Holiday Showcase</strong></td>
+                                <td><span class="service-badge">Full Event Highlight</span></td>
+                                <td>
+                                    <a href="mailto:alex.mitchell@commandcentered.com" class="editor-link">
+                                        <span>→</span> Alex Mitchell
+                                    </a>
+                                </td>
+                                <td>
+                                    <div class="progress-container">
+                                        <div class="progress-label">
+                                            <span>25%</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 25%;"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="status-badge status-in-progress">In Progress</span></td>
+                                <td><span class="text-warning">Nov 28, 2025</span></td>
+                                <td><span class="drive-indicator active">Drive Active</span></td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>Corporate Training Video</strong></td>
+                                <td><span class="service-badge">1 min Landscape</span></td>
+                                <td>
+                                    <a href="mailto:jordan.chen@commandcentered.com" class="editor-link">
+                                        <span>→</span> Jordan Chen
+                                    </a>
+                                </td>
+                                <td>
+                                    <div class="progress-container">
+                                        <div class="progress-label">
+                                            <span>10%</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 10%;"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="status-badge status-draft">Draft</span></td>
+                                <td><span class="text-danger">Nov 25, 2025</span></td>
+                                <td><span class="drive-indicator inactive">Drive Idle</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- In Review Tab -->
+        <div id="in-review" class="tab-content">
+            <div class="card">
+                <div class="card-header">In Review</div>
+                <p class="text-muted mb-3">Deliverables awaiting client approval</p>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Project</th>
+                                <th>Service Type</th>
+                                <th>Assigned Editor</th>
+                                <th>Progress</th>
+                                <th>Status</th>
+                                <th>Days in Review</th>
+                                <th>Drive Activity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Metro Promo Video</strong></td>
+                                <td><span class="service-badge">1 min Landscape</span></td>
+                                <td>
+                                    <a href="mailto:samantha.rodriguez@commandcentered.com" class="editor-link">
+                                        <span>→</span> Samantha Rodriguez
+                                    </a>
+                                </td>
+                                <td>
+                                    <div class="progress-container">
+                                        <div class="progress-label">
+                                            <span>95%</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 95%;"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="status-badge status-review">In Review</span></td>
+                                <td><span class="text-warning">2 days</span></td>
+                                <td><span class="drive-indicator inactive">Drive Idle</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Delivered Tab -->
+        <div id="delivered" class="tab-content">
+            <div class="card">
+                <div class="card-header">Delivered Deliverables</div>
+                <p class="text-muted mb-3">Successfully completed and delivered projects</p>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Project</th>
+                                <th>Service Type</th>
+                                <th>Assigned Editor</th>
+                                <th>Progress</th>
+                                <th>Status</th>
+                                <th>Delivered Date</th>
+                                <th>Client Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Summer Festival 2025</strong></td>
+                                <td><span class="service-badge">Photo Gallery</span></td>
+                                <td>
+                                    <a href="mailto:marcus.thompson@commandcentered.com" class="editor-link">
+                                        <span>→</span> Marcus Thompson
+                                    </a>
+                                </td>
+                                <td>
+                                    <div class="progress-container">
+                                        <div class="progress-label">
+                                            <span>100%</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 100%;"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="status-badge status-delivered">Delivered</span></td>
+                                <td><span class="text-success">Nov 10, 2025</span></td>
+                                <td><span class="text-muted">"Excellent work!"</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add New Deliverable Tab -->
+        <div id="add-new" class="tab-content">
+            <div class="card">
+                <div class="card-header">Add New Deliverable</div>
+
+                <form style="display: grid; gap: 1.5rem;">
+                    <div style="display: grid; gap: 0.5rem;">
+                        <label style="color: #06b6d4; font-weight: 600; text-transform: uppercase; font-size: 0.875rem;">Project Name</label>
+                        <input type="text" placeholder="Enter project name" style="padding: 1rem;">
+                    </div>
+
+                    <div style="display: grid; gap: 0.5rem;">
+                        <label style="color: #06b6d4; font-weight: 600; text-transform: uppercase; font-size: 0.875rem;">Service Type</label>
+                        <select style="padding: 1rem;">
+                            <option value="">Select a service...</option>
+                            <option value="landscape-video">1 min landscape video</option>
+                            <option value="social-reels">3x 10s social media reels</option>
+                            <option value="highlight">Full event highlight (3-5 min)</option>
+                            <option value="photo-gallery">Photo gallery (50+ images)</option>
+                        </select>
+                    </div>
+
+                    <div style="display: grid; gap: 0.5rem;">
+                        <label style="color: #06b6d4; font-weight: 600; text-transform: uppercase; font-size: 0.875rem;">Assigned Editor</label>
+                        <select style="padding: 1rem;">
+                            <option value="">Select an editor...</option>
+                            <option value="alex">Alex Mitchell</option>
+                            <option value="jordan">Jordan Chen</option>
+                            <option value="samantha">Samantha Rodriguez</option>
+                            <option value="marcus">Marcus Thompson</option>
+                        </select>
+                    </div>
+
+                    <div style="display: grid; gap: 0.5rem;">
+                        <label style="color: #06b6d4; font-weight: 600; text-transform: uppercase; font-size: 0.875rem;">Due Date</label>
+                        <input type="date" style="padding: 1rem;">
+                    </div>
+
+                    <div style="display: grid; gap: 0.5rem;">
+                        <label style="color: #06b6d4; font-weight: 600; text-transform: uppercase; font-size: 0.875rem;">Notes</label>
+                        <textarea style="padding: 1rem; font-family: 'Rajdhani', sans-serif; resize: vertical; min-height: 120px;" placeholder="Add any special instructions..."></textarea>
+                    </div>
+
+                    <div style="display: flex; gap: 1rem;">
+                        <button type="submit" class="btn">Create Deliverable</button>
+                        <button type="reset" class="btn btn-secondary">Clear</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab switching
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+
+            event.target.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        // View toggle
+        function toggleView(view) {
+            document.querySelectorAll('.view-toggle-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            document.querySelectorAll('[data-view]').forEach(el => {
+                el.style.display = 'none';
+            });
+            document.querySelectorAll('[data-view="' + view + '"]').forEach(el => {
+                el.style.display = 'block';
+            });
+        }
+    </script>
+</body>
+</html>

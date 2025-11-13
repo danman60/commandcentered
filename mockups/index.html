@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CommandCentered - Mockup Gallery</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rajdhani', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0a0e1a;
+            background-image:
+                linear-gradient(rgba(29, 78, 216, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(29, 78, 216, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+            padding: 20px;
+            color: #e2e8f0;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            padding: 24px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3), inset 0 1px 0 rgba(59, 130, 246, 0.1);
+        }
+
+        h1 {
+            color: #e2e8f0;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+        }
+
+        .subtitle {
+            color: #94a3b8;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .mockup-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .mockup-card {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .mockup-card:hover {
+            border-color: rgba(59, 130, 246, 0.6);
+            box-shadow: 0 8px 32px rgba(59, 130, 246, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .mockup-preview {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 64px;
+            border-bottom: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .mockup-info {
+            padding: 20px;
+        }
+
+        .mockup-title {
+            font-weight: 700;
+            color: #e2e8f0;
+            margin-bottom: 8px;
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .mockup-description {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .mockup-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: 1px solid;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #1d4ed8, #1e40af);
+            color: white;
+            border-color: rgba(59, 130, 246, 0.5);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #1e40af, #1e3a8a);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(30, 41, 59, 0.8);
+            color: #94a3b8;
+            border-color: rgba(148, 163, 184, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(30, 41, 59, 1);
+            color: #e2e8f0;
+            border-color: rgba(148, 163, 184, 0.5);
+        }
+
+        .iteration-note {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(217, 119, 6, 0.1) 100%);
+            border-left: 4px solid #f59e0b;
+            padding: 20px;
+            border-radius: 4px;
+            margin-bottom: 24px;
+            border-top: 1px solid rgba(245, 158, 11, 0.2);
+            border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .iteration-note h3 {
+            color: #fbbf24;
+            font-size: 16px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .iteration-note p {
+            color: #cbd5e1;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .design-note {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(37, 99, 235, 0.1) 100%);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            padding: 20px;
+            border-radius: 4px;
+            margin-bottom: 24px;
+        }
+
+        .design-note h3 {
+            color: #60a5fa;
+            font-size: 16px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .design-note p {
+            color: #cbd5e1;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>⚡ CommandCentered Mockup Gallery</h1>
+        <p class="subtitle">Tactical-Professional Hybrid • Round 4</p>
+    </div>
+
+    <div class="design-note">
+        <h3>🎯 Design Direction: Tactical + Professional (80/20 blend)</h3>
+        <p>
+            <strong>Tactical Elements:</strong> Dark backgrounds, angular design, grid patterns, command-style typography (Rajdhani), glowing effects, military-inspired color accents<br><br>
+            <strong>Professional Elements:</strong> Clean layouts, readable hierarchy, business-appropriate blues instead of greens, modern UX patterns, accessible contrast
+        </p>
+    </div>
+
+    <div class="iteration-note">
+        <h3>🔄 Iteration Process</h3>
+        <p>Each mockup blends tactical aesthetics with professional usability. Provide feedback like "Make the grid more subtle" or "Increase glow effects on buttons" and I'll update the HTML/CSS directly.</p>
+    </div>
+
+    <div class="mockup-grid">
+        <!-- Dashboard Mockup -->
+        <div class="mockup-card">
+            <div class="mockup-preview">📊</div>
+            <div class="mockup-info">
+                <h3 class="mockup-title">Command Dashboard</h3>
+                <p class="mockup-description">Dark tactical HUD with stats grid, calendar heatmap, mission-style activity feed</p>
+                <div class="mockup-actions">
+                    <a href="dashboard.html" class="btn btn-primary">View Mockup</a>
+                    <a href="dashboard.html" target="_blank" class="btn btn-secondary">Fullscreen</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Event Detail Mockup -->
+        <div class="mockup-card">
+            <div class="mockup-preview">📅</div>
+            <div class="mockup-info">
+                <h3 class="mockup-title">Event Detail</h3>
+                <p class="mockup-description">Mission brief layout with operator roster, equipment loadout, tactical timeline</p>
+                <div class="mockup-actions">
+                    <a href="event-detail.html" class="btn btn-primary">View Mockup</a>
+                    <a href="event-detail.html" target="_blank" class="btn btn-secondary">Fullscreen</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lead Pipeline Mockup -->
+        <div class="mockup-card">
+            <div class="mockup-preview">👥</div>
+            <div class="mockup-info">
+                <h3 class="mockup-title">Lead Pipeline</h3>
+                <p class="mockup-description">Dark kanban board with target cards, opportunity tracking, strike indicators</p>
+                <div class="mockup-actions">
+                    <a href="lead-pipeline.html" class="btn btn-primary">View Mockup</a>
+                    <a href="lead-pipeline.html" target="_blank" class="btn btn-secondary">Fullscreen</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Voice Interface Mockup -->
+        <div class="mockup-card">
+            <div class="mockup-preview">🎤</div>
+            <div class="mockup-info">
+                <h3 class="mockup-title">Voice Command</h3>
+                <p class="mockup-description">Heads-up voice interface with waveform viz, command history, confirmation protocols</p>
+                <div class="mockup-actions">
+                    <a href="voice-interface.html" class="btn btn-primary">View Mockup</a>
+                    <a href="voice-interface.html" target="_blank" class="btn btn-secondary">Fullscreen</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Warning Dialog Mockup -->
+        <div class="mockup-card">
+            <div class="mockup-preview">⚠️</div>
+            <div class="mockup-info">
+                <h3 class="mockup-title">Warning System</h3>
+                <p class="mockup-description">Tactical alert patterns with severity levels, always-override capability</p>
+                <div class="mockup-actions">
+                    <a href="warning-dialog.html" class="btn btn-primary">View Mockup</a>
+                    <a href="warning-dialog.html" target="_blank" class="btn btn-secondary">Fullscreen</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Dashboard Mockup -->
+        <div class="mockup-card">
+            <div class="mockup-preview">📱</div>
+            <div class="mockup-info">
+                <h3 class="mockup-title">Mobile Command</h3>
+                <p class="mockup-description">Responsive field interface with quick stats, action buttons, activity stream</p>
+                <div class="mockup-actions">
+                    <a href="mobile-dashboard.html" class="btn btn-primary">View Mockup</a>
+                    <a href="mobile-dashboard.html" target="_blank" class="btn btn-secondary">Fullscreen</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header">
+        <h2 style="font-size: 18px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">How to Provide Feedback</h2>
+        <ul style="color: #94a3b8; font-size: 14px; line-height: 1.8; padding-left: 20px;">
+            <li>Open each mockup and review the tactical-professional blend</li>
+            <li>Tell me "More tactical" or "Less tactical" for specific elements</li>
+            <li>Request changes like "Make sidebar darker" or "Add more glow effects"</li>
+            <li>Ask for adjustments like "Grid pattern too strong" or "Need more contrast"</li>
+            <li>I'll iterate the HTML/CSS based on your feedback</li>
+        </ul>
+    </div>
+</body>
+</html>

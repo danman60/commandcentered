@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Detail - CommandCentered</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f3f4f6;
+            color: #111827;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        /* Header */
+        .event-header {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .event-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 16px;
+        }
+
+        .event-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 8px;
+        }
+
+        .event-subtitle {
+            font-size: 16px;
+            color: #6b7280;
+        }
+
+        .status-badge {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .status-badge.confirmed {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .event-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .meta-label {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #6b7280;
+            letter-spacing: 0.05em;
+        }
+
+        .meta-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        /* Grid Layout */
+        .event-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        @media (max-width: 1024px) {
+            .event-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .card-action {
+            padding: 6px 12px;
+            background: #f3f4f6;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .card-action:hover {
+            background: #e5e7eb;
+        }
+
+        /* Operator Cards */
+        .operator-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .operator-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: #f9fafb;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .operator-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1d4ed8, #3730a3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .operator-info {
+            flex: 1;
+        }
+
+        .operator-name {
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 4px;
+        }
+
+        .operator-role {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .operator-status {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .operator-status.confirmed {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        /* Equipment List */
+        .equipment-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .equipment-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: #f9fafb;
+            border-radius: 6px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .equipment-name {
+            font-weight: 500;
+            color: #111827;
+        }
+
+        .equipment-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .equipment-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10b981;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 32px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #e5e7eb;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 24px;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -28px;
+            top: 4px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid #1d4ed8;
+            z-index: 1;
+        }
+
+        .timeline-dot.completed {
+            background: #10b981;
+            border-color: #10b981;
+        }
+
+        .timeline-content {
+            padding: 12px;
+            background: #f9fafb;
+            border-radius: 6px;
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 4px;
+        }
+
+        .timeline-time {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        /* Contract Info */
+        .contract-summary {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            padding: 20px;
+            background: #f9fafb;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .contract-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .contract-label {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .contract-value {
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .contract-value.large {
+            font-size: 20px;
+            color: #1d4ed8;
+        }
+
+        .contract-total {
+            padding-top: 16px;
+            border-top: 2px solid #e5e7eb;
+        }
+
+        /* Deliverables Checklist */
+        .checklist {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: #f9fafb;
+            border-radius: 6px;
+            border: 1px solid #e5e7eb;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .checklist-item:hover {
+            background: #f3f4f6;
+        }
+
+        .checklist-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #d1d5db;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .checklist-item.completed .checklist-checkbox {
+            background: #10b981;
+            border-color: #10b981;
+        }
+
+        .checklist-item.completed .checklist-checkbox::after {
+            content: '✓';
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .checklist-text {
+            flex: 1;
+            color: #111827;
+        }
+
+        .checklist-item.completed .checklist-text {
+            color: #6b7280;
+            text-decoration: line-through;
+        }
+
+        /* Actions Bar */
+        .actions-bar {
+            background: white;
+            border-radius: 12px;
+            padding: 20px 32px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #1d4ed8;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1e40af;
+        }
+
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .btn-secondary:hover {
+            background: #e5e7eb;
+        }
+
+        .btn-danger {
+            background: #dc2626;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #b91c1c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Event Header -->
+        <div class="event-header">
+            <div class="event-title-row">
+                <div>
+                    <h1 class="event-title">Corporate Conference 2025</h1>
+                    <p class="event-subtitle">Tech Innovators Inc.</p>
+                </div>
+                <span class="status-badge confirmed">Confirmed</span>
+            </div>
+
+            <div class="event-meta">
+                <div class="meta-item">
+                    <span class="meta-label">Date</span>
+                    <span class="meta-value">January 24, 2025</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Time</span>
+                    <span class="meta-value">9:00 AM - 5:00 PM</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Venue</span>
+                    <span class="meta-value">Grand Convention Center</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Contract Value</span>
+                    <span class="meta-value">$8,500</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="event-grid">
+            <!-- Left Column -->
+            <div>
+                <!-- Operators Assigned -->
+                <div class="card" style="margin-bottom: 24px;">
+                    <div class="card-header">
+                        <h2 class="card-title">Operators Assigned</h2>
+                        <button class="card-action">+ Add Operator</button>
+                    </div>
+                    <div class="operator-list">
+                        <div class="operator-card">
+                            <div class="operator-avatar">JD</div>
+                            <div class="operator-info">
+                                <div class="operator-name">John Doe</div>
+                                <div class="operator-role">Lead Videographer</div>
+                            </div>
+                            <span class="operator-status confirmed">Confirmed</span>
+                        </div>
+                        <div class="operator-card">
+                            <div class="operator-avatar">SK</div>
+                            <div class="operator-info">
+                                <div class="operator-name">Sarah Kim</div>
+                                <div class="operator-role">Camera Operator</div>
+                            </div>
+                            <span class="operator-status confirmed">Confirmed</span>
+                        </div>
+                        <div class="operator-card">
+                            <div class="operator-avatar">MP</div>
+                            <div class="operator-info">
+                                <div class="operator-name">Mike Peters</div>
+                                <div class="operator-role">Audio Technician</div>
+                            </div>
+                            <span class="operator-status confirmed">Confirmed</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Equipment Allocated -->
+                <div class="card" style="margin-bottom: 24px;">
+                    <div class="card-header">
+                        <h2 class="card-title">Equipment Allocated</h2>
+                        <button class="card-action">+ Add Equipment</button>
+                    </div>
+                    <div class="equipment-list">
+                        <div class="equipment-item">
+                            <span class="equipment-name">Sony A7S III (Camera #1)</span>
+                            <div class="equipment-status">
+                                <span class="equipment-indicator"></span>
+                                <span>Available</span>
+                            </div>
+                        </div>
+                        <div class="equipment-item">
+                            <span class="equipment-name">Sony A7S III (Camera #2)</span>
+                            <div class="equipment-status">
+                                <span class="equipment-indicator"></span>
+                                <span>Available</span>
+                            </div>
+                        </div>
+                        <div class="equipment-item">
+                            <span class="equipment-name">DJI Ronin RSC 2</span>
+                            <div class="equipment-status">
+                                <span class="equipment-indicator"></span>
+                                <span>Available</span>
+                            </div>
+                        </div>
+                        <div class="equipment-item">
+                            <span class="equipment-name">Rode Wireless GO II</span>
+                            <div class="equipment-status">
+                                <span class="equipment-indicator"></span>
+                                <span>Available</span>
+                            </div>
+                        </div>
+                        <div class="equipment-item">
+                            <span class="equipment-name">DJI Mavic 3 Drone</span>
+                            <div class="equipment-status">
+                                <span class="equipment-indicator"></span>
+                                <span>Available</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Deliverables -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Deliverables</h2>
+                        <button class="card-action">+ Add Item</button>
+                    </div>
+                    <div class="checklist">
+                        <div class="checklist-item completed">
+                            <div class="checklist-checkbox"></div>
+                            <span class="checklist-text">Conference highlight reel (3-5 min)</span>
+                        </div>
+                        <div class="checklist-item completed">
+                            <div class="checklist-checkbox"></div>
+                            <span class="checklist-text">Full keynote recording (edited)</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-checkbox"></div>
+                            <span class="checklist-text">Individual speaker sessions (8 sessions)</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-checkbox"></div>
+                            <span class="checklist-text">Social media clips (15 sec each, 10 clips)</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-checkbox"></div>
+                            <span class="checklist-text">Drone venue footage (raw + edited)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div>
+                <!-- Timeline -->
+                <div class="card" style="margin-bottom: 24px;">
+                    <div class="card-header">
+                        <h2 class="card-title">Event Timeline</h2>
+                    </div>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-dot completed"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-title">Contract Signed</div>
+                                <div class="timeline-time">December 15, 2024</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot completed"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-title">Deposit Received</div>
+                                <div class="timeline-time">December 18, 2024</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot completed"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-title">Pre-Event Call</div>
+                                <div class="timeline-time">January 10, 2025</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-title">Event Day</div>
+                                <div class="timeline-time">January 24, 2025</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-title">First Draft Due</div>
+                                <div class="timeline-time">February 7, 2025</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-title">Final Delivery</div>
+                                <div class="timeline-time">February 21, 2025</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contract & Payment -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Contract & Payment</h2>
+                    </div>
+                    <div class="contract-summary">
+                        <div class="contract-row">
+                            <span class="contract-label">Base Package</span>
+                            <span class="contract-value">$6,500</span>
+                        </div>
+                        <div class="contract-row">
+                            <span class="contract-label">Drone Add-on</span>
+                            <span class="contract-value">$1,200</span>
+                        </div>
+                        <div class="contract-row">
+                            <span class="contract-label">Rush Delivery</span>
+                            <span class="contract-value">$800</span>
+                        </div>
+                        <div class="contract-row contract-total">
+                            <span class="contract-label">Total Contract Value</span>
+                            <span class="contract-value large">$8,500</span>
+                        </div>
+                        <div class="contract-row">
+                            <span class="contract-label">Paid to Date</span>
+                            <span class="contract-value" style="color: #059669;">$4,250 (50%)</span>
+                        </div>
+                        <div class="contract-row">
+                            <span class="contract-label">Balance Due</span>
+                            <span class="contract-value" style="color: #dc2626;">$4,250</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions Bar -->
+        <div class="actions-bar">
+            <button class="btn btn-secondary">View Contract</button>
+            <button class="btn btn-secondary">Send Invoice</button>
+            <button class="btn btn-primary">Mark Complete</button>
+            <button class="btn btn-danger">Cancel Event</button>
+        </div>
+    </div>
+</body>
+</html>

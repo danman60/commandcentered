@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Elements Showcase - CommandCentered</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Rajdhani', monospace, sans-serif;
+            background: #030712;
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(6, 182, 212, 0.05) 2px, rgba(6, 182, 212, 0.05) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(6, 182, 212, 0.05) 2px, rgba(6, 182, 212, 0.05) 4px),
+                radial-gradient(ellipse at center, #0a1628 0%, #030712 100%);
+            background-size: 40px 40px, 40px 40px, 100% 100%;
+            color: #e2e8f0;
+            padding: 40px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .logo {
+            font-family: 'Orbitron', monospace;
+            font-size: 48px;
+            font-weight: 900;
+            color: #22d3ee;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            text-shadow: 0 0 20px rgba(34, 211, 238, 0.8);
+            margin-bottom: 16px;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 600;
+        }
+
+        .section {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.5) 0%, rgba(15, 23, 42, 0.7) 100%);
+            border: 2px solid rgba(6, 182, 212, 0.4);
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 20px;
+            font-weight: 900;
+            color: #22d3ee;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 24px;
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.5);
+        }
+
+        .example-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .example-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 8px;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .example-card h3 {
+            font-family: 'Orbitron', monospace;
+            font-size: 14px;
+            color: #22d3ee;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .example-card p {
+            color: #94a3b8;
+            font-size: 13px;
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+
+        button {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+            border: none;
+            border-radius: 6px;
+            color: #fff;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            box-shadow: 0 4px 20px rgba(6, 182, 212, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2000;
+            width: 90%;
+            max-width: 600px;
+            max-height: 85vh;
+            overflow-y: auto;
+            background: linear-gradient(135deg, #0c1220 0%, #1e293b 100%);
+            border: 2px solid #06b6d4;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(6, 182, 212, 0.4);
+        }
+
+        .modal.active {
+            display: block;
+        }
+
+        .backdrop {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(3, 7, 18, 0.9);
+            z-index: 1999;
+        }
+
+        .backdrop.active {
+            display: block;
+        }
+
+        .modal h2 {
+            font-family: 'Orbitron', monospace;
+            font-size: 24px;
+            color: #22d3ee;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .modal-subtitle {
+            color: #64748b;
+            font-size: 13px;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            background: rgba(6, 182, 212, 0.05);
+            border: 2px solid rgba(6, 182, 212, 0.3);
+            border-radius: 6px;
+            color: #e2e8f0;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        input::placeholder {
+            color: #64748b;
+        }
+
+        label {
+            display: block;
+            color: #94a3b8;
+            font-size: 12px;
+            margin-bottom: 6px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .info-box {
+            background: rgba(6, 182, 212, 0.1);
+            border-left: 4px solid #06b6d4;
+            padding: 12px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .info-box p {
+            color: #22d3ee;
+            font-size: 13px;
+            margin: 0;
+        }
+
+        .warning-box {
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 4px solid #ef4444;
+            padding: 12px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning-box p {
+            color: #f87171;
+            font-size: 13px;
+            margin: 0;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .btn-primary {
+            flex: 1;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        .btn-warning {
+            flex: 1;
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+
+        .btn-critical {
+            flex: 1;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+
+        .btn-secondary {
+            padding: 14px 24px;
+            background: transparent;
+            border: 2px solid #64748b;
+            color: #64748b;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .pulse {
+            animation: pulse 1.5s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">⚡ COMMAND</div>
+            <div class="subtitle">Interactive Elements Showcase</div>
+        </div>
+
+        <!-- Voice Assistant -->
+        <div class="section">
+            <div class="section-title">🎤 VOICE ASSISTANT</div>
+            <div class="example-grid">
+                <div class="example-card">
+                    <h3>Voice Input Modal</h3>
+                    <p>Shows when voice FAB is clicked. Displays listening state, command interpretation, and confirmation.</p>
+                    <button onclick="showModal('voice-modal')">SHOW EXAMPLE</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Warning Modals -->
+        <div class="section">
+            <div class="section-title">⚠️ WARNING/OVERRIDE SYSTEM</div>
+            <div class="example-grid">
+                <div class="example-card">
+                    <h3>INFO Level</h3>
+                    <p>Informational notice. Operator already assigned elsewhere but may be available.</p>
+                    <button onclick="showModal('info-modal')">SHOW EXAMPLE</button>
+                </div>
+                <div class="example-card">
+                    <h3>WARNING Level</h3>
+                    <p>Potential issue detected. Equipment double-booking conflict.</p>
+                    <button onclick="showModal('warning-modal')">SHOW EXAMPLE</button>
+                </div>
+                <div class="example-card">
+                    <h3>CRITICAL Level</h3>
+                    <p>Serious problem. No deposit received, contract unsigned.</p>
+                    <button onclick="showModal('critical-modal')">SHOW EXAMPLE</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- CRUD Modals -->
+        <div class="section">
+            <div class="section-title">📝 CRUD OPERATIONS</div>
+            <div class="example-grid">
+                <div class="example-card">
+                    <h3>Manual Entry (NEW CLIENT)</h3>
+                    <p>Phone booking workflow. Creates Client + Event + Draft Contract, skips pipeline.</p>
+                    <button onclick="showModal('manual-entry-modal')">SHOW EXAMPLE</button>
+                </div>
+                <div class="example-card">
+                    <h3>Create Event</h3>
+                    <p>Standard event creation form with all required fields.</p>
+                    <button onclick="showModal('create-event-modal')">SHOW EXAMPLE</button>
+                </div>
+                <div class="example-card">
+                    <h3>Delete Confirmation</h3>
+                    <p>Confirms destructive action. Always allows override.</p>
+                    <button onclick="showModal('delete-modal')">SHOW EXAMPLE</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Multi-Date Contracts -->
+        <div class="section">
+            <div class="section-title">📄 MULTI-DATE CONTRACTS</div>
+            <div class="example-grid">
+                <div class="example-card">
+                    <h3>Add Events to Contract</h3>
+                    <p>Shows how multiple events can be added to a single contract.</p>
+                    <button onclick="showModal('multidate-modal')">SHOW EXAMPLE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Voice Assistant Modal -->
+    <div id="voice-modal" class="modal">
+        <h2>🎤 VOICE COMMAND</h2>
+        <div class="modal-subtitle">Natural Language Interface</div>
+
+        <div style="text-align: center; margin: 30px 0;">
+            <div style="font-size: 64px; color: #22d3ee;" class="pulse">🎤</div>
+            <p style="color: #64748b; margin-top: 16px; font-size: 16px; font-weight: 700; letter-spacing: 2px;">LISTENING...</p>
+        </div>
+
+        <div class="info-box">
+            <p><strong>I HEARD:</strong> "Create event for ABC Dance on Friday at 2pm"</p>
+        </div>
+
+        <div style="background: rgba(6, 182, 212, 0.05); border: 2px solid rgba(6, 182, 212, 0.2); border-radius: 8px; padding: 20px; margin: 20px 0;">
+            <p style="color: #64748b; font-size: 12px; margin-bottom: 12px; font-weight: 700;">INTERPRETED AS:</p>
+            <p style="color: #22d3ee; font-size: 15px; line-height: 1.8;">
+                <strong>Action:</strong> Create Event<br>
+                <strong>Client:</strong> ABC Dance<br>
+                <strong>Date:</strong> Friday, November 15, 2025<br>
+                <strong>Time:</strong> 2:00 PM
+            </p>
+        </div>
+
+        <div class="button-group">
+            <button class="btn-primary" onclick="closeModal()">✓ CONFIRM</button>
+            <button class="btn-secondary" onclick="closeModal()">✗ CANCEL</button>
+        </div>
+
+        <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid rgba(6, 182, 212, 0.2);">
+            <p style="color: #64748b; font-size: 12px; margin-bottom: 12px; font-weight: 700;">RECENT COMMANDS:</p>
+            <div style="font-size: 13px; color: #94a3b8; line-height: 2;">
+                • "Show me Saturday's schedule" <span style="color: #64748b;">(2 min ago)</span><br>
+                • "Assign John to XYZ event" <span style="color: #64748b;">(5 min ago)</span><br>
+                • "What equipment is available Nov 15" <span style="color: #64748b;">(8 min ago)</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- INFO Modal -->
+    <div id="info-modal" class="modal">
+        <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
+            <div style="font-size: 48px;">ℹ️</div>
+            <div>
+                <h2 style="font-size: 20px; margin-bottom: 4px;">INFO</h2>
+                <p class="modal-subtitle" style="margin: 0;">Informational Notice</p>
+            </div>
+        </div>
+
+        <p style="color: #e2e8f0; font-size: 15px; line-height: 1.8; margin: 20px 0;">
+            This operator is already assigned to another event at this time. They may be available if the previous event ends early.
+        </p>
+
+        <div class="info-box">
+            <p>ℹ️ Current Assignment: XYZ Event, 12:00 PM - 4:00 PM</p>
+        </div>
+
+        <div class="button-group">
+            <button class="btn-primary" onclick="closeModal()">✓ PROCEED ANYWAY</button>
+            <button class="btn-secondary" onclick="closeModal()">CANCEL</button>
+        </div>
+    </div>
+
+    <!-- WARNING Modal -->
+    <div id="warning-modal" class="modal">
+        <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
+            <div style="font-size: 48px;">⚠️</div>
+            <div>
+                <h2 style="font-size: 20px; margin-bottom: 4px; color: #f59e0b;">WARNING</h2>
+                <p class="modal-subtitle" style="margin: 0;">Potential Issue Detected</p>
+            </div>
+        </div>
+
+        <p style="color: #e2e8f0; font-size: 15px; line-height: 1.8; margin: 20px 0;">
+            <strong style="color: #f59e0b;">Equipment Conflict:</strong> Camera A is already assigned to XYZ event on Nov 15 at 2PM. Proceeding will create a double-booking.
+        </p>
+
+        <div style="background: rgba(245, 158, 11, 0.1); border-left: 4px solid #f59e0b; padding: 12px; margin: 20px 0; border-radius: 4px;">
+            <p style="color: #fbbf24; font-size: 13px; margin: 0;">⚠️ Double-booking detected. Override will be logged in audit trail.</p>
+        </div>
+
+        <div class="button-group">
+            <button class="btn-warning" onclick="closeModal()">⚠️ PROCEED ANYWAY</button>
+            <button class="btn-secondary" onclick="closeModal()">CANCEL</button>
+        </div>
+    </div>
+
+    <!-- CRITICAL Modal -->
+    <div id="critical-modal" class="modal">
+        <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
+            <div style="font-size: 48px;">🚨</div>
+            <div>
+                <h2 style="font-size: 20px; margin-bottom: 4px; color: #ef4444;">CRITICAL</h2>
+                <p class="modal-subtitle" style="margin: 0;">Serious Problem Detected</p>
+            </div>
+        </div>
+
+        <p style="color: #e2e8f0; font-size: 15px; line-height: 1.8; margin: 20px 0;">
+            <strong style="color: #ef4444;">No Deposit Received:</strong> Contract is unsigned and no deposit has been received for this $4,500 event happening in 3 days. Confirm you want to proceed with operator assignment?
+        </p>
+
+        <div class="warning-box">
+            <p>🚨 This action will be logged in the audit trail. Event may be at risk.</p>
+        </div>
+
+        <div class="button-group">
+            <button class="btn-critical" onclick="closeModal()">🚨 PROCEED ANYWAY</button>
+            <button class="btn-secondary" onclick="closeModal()">CANCEL</button>
+        </div>
+    </div>
+
+    <!-- Manual Entry Modal -->
+    <div id="manual-entry-modal" class="modal">
+        <h2>+ NEW CLIENT + EVENT</h2>
+        <p class="modal-subtitle">Skip Pipeline • Create Draft Contract</p>
+
+        <h3 style="font-size: 14px; color: #06b6d4; margin: 24px 0 16px 0; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700;">📋 CLIENT INFORMATION</h3>
+
+        <div class="form-group">
+            <label>Organization *</label>
+            <input type="text" placeholder="ABC Dance Studio" value="ABC Dance Studio">
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Contact Name *</label>
+                <input type="text" placeholder="Jane Smith" value="Jane Smith">
+            </div>
+            <div class="form-group">
+                <label>Phone *</label>
+                <input type="tel" placeholder="555-1234" value="555-1234">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Email *</label>
+            <input type="email" placeholder="jane@abcdance.com" value="jane@abcdance.com">
+        </div>
+
+        <h3 style="font-size: 14px; color: #06b6d4; margin: 24px 0 16px 0; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700;">🎬 EVENT INFORMATION</h3>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Event Date *</label>
+                <input type="date" value="2025-11-15">
+            </div>
+            <div class="form-group">
+                <label>Start Time *</label>
+                <input type="time" value="14:00">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Service Type *</label>
+            <select>
+                <option>Dance Recital Media</option>
+                <option>Concert Coverage</option>
+                <option>Promo Video</option>
+                <option>Corporate Event</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Venue</label>
+            <input type="text" placeholder="123 Main Street, Toronto ON" value="ABC Dance Studio, 123 Main St">
+        </div>
+
+        <div class="info-box">
+            <p>ℹ️ This will create: Client + Event + Draft Contract (skips Lead/Proposal stages)</p>
+        </div>
+
+        <div class="button-group">
+            <button class="btn-primary" onclick="closeModal()">✓ CREATE CLIENT + EVENT</button>
+            <button class="btn-secondary" onclick="closeModal()">CANCEL</button>
+        </div>
+    </div>
+
+    <!-- Create Event Modal -->
+    <div id="create-event-modal" class="modal">
+        <h2>+ CREATE EVENT</h2>
+        <p class="modal-subtitle">New Event for Existing Client</p>
+
+        <div class="form-group">
+            <label>Select Client *</label>
+            <select>
+                <option>ABC Dance Studio</option>
+                <option>XYZ Dance Competition</option>
+                <option>Metro Dance</option>
+            </select>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Event Date *</label>
+                <input type="date" value="2025-11-15">
+            </div>
+            <div class="form-group">
+                <label>Start Time *</label>
+                <input type="time" value="14:00">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Service Type *</label>
+            <select>
+                <option>Dance Recital Media</option>
+                <option>Concert Coverage</option>
+                <option>Promo Video</option>
+                <option>Corporate Event</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Venue</label>
+            <input type="text" placeholder="123 Main Street, Toronto ON">
+        </div>
+
+        <div class="form-group">
+            <label>Estimated Duration (hours)</label>
+            <input type="number" placeholder="4" value="4">
+        </div>
+
+        <div class="button-group">
+            <button class="btn-primary" onclick="closeModal()">✓ CREATE EVENT</button>
+            <button class="btn-secondary" onclick="closeModal()">CANCEL</button>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-modal" class="modal">
+        <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
+            <div style="font-size: 48px; color: #ef4444;">🗑️</div>
+            <div>
+                <h2 style="font-size: 20px; margin-bottom: 4px; color: #ef4444;">CONFIRM DELETE</h2>
+                <p class="modal-subtitle" style="margin: 0;">This action cannot be undone</p>
+            </div>
+        </div>
+
+        <p style="color: #e2e8f0; font-size: 15px; line-height: 1.8; margin: 20px 0;">
+            Are you sure you want to delete <strong style="color: #22d3ee;">"ABC Dance Recital - Nov 15"</strong>? This will:
+        </p>
+
+        <ul style="color: #94a3b8; font-size: 14px; line-height: 2; margin: 20px 0 20px 24px;">
+            <li>Remove the event from the schedule</li>
+            <li>Unassign all operators</li>
+            <li>Remove equipment assignments</li>
+            <li>Archive associated files</li>
+        </ul>
+
+        <div class="warning-box">
+            <p>⚠️ Client contracts and payments will NOT be deleted. Event status will be set to "Cancelled".</p>
+        </div>
+
+        <div class="button-group">
+            <button class="btn-critical" onclick="closeModal()">🗑️ DELETE EVENT</button>
+            <button class="btn-secondary" onclick="closeModal()">CANCEL</button>
+        </div>
+    </div>
+
+    <!-- Multi-Date Contract Modal -->
+    <div id="multidate-modal" class="modal">
+        <h2>📄 MULTI-DATE CONTRACT</h2>
+        <p class="modal-subtitle">Add Events to Single Contract</p>
+
+        <div class="form-group">
+            <label>Contract For</label>
+            <input type="text" value="Metro Dance - Fall Season 2025" disabled style="opacity: 0.7;">
+        </div>
+
+        <h3 style="font-size: 14px; color: #06b6d4; margin: 24px 0 16px 0; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700;">📅 EVENTS IN THIS CONTRACT</h3>
+
+        <div style="background: rgba(6, 182, 212, 0.05); border: 2px solid rgba(6, 182, 212, 0.2); border-radius: 8px; padding: 20px; margin-bottom: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <div>
+                    <div style="font-weight: 700; color: #22d3ee; font-size: 15px;">Event 1: Fall Showcase</div>
+                    <div style="color: #94a3b8; font-size: 13px; margin-top: 4px;">📅 November 15, 2025 • 2:00 PM</div>
+                </div>
+                <button style="padding: 6px 12px; font-size: 12px; background: rgba(239, 68, 68, 0.2); border: 2px solid #ef4444; color: #ef4444;">REMOVE</button>
+            </div>
+        </div>
+
+        <div style="background: rgba(6, 182, 212, 0.05); border: 2px solid rgba(6, 182, 212, 0.2); border-radius: 8px; padding: 20px; margin-bottom: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <div>
+                    <div style="font-weight: 700; color: #22d3ee; font-size: 15px;">Event 2: Winter Recital</div>
+                    <div style="color: #94a3b8; font-size: 13px; margin-top: 4px;">📅 December 20, 2025 • 6:00 PM</div>
+                </div>
+                <button style="padding: 6px 12px; font-size: 12px; background: rgba(239, 68, 68, 0.2); border: 2px solid #ef4444; color: #ef4444;">REMOVE</button>
+            </div>
+        </div>
+
+        <button style="width: 100%; margin-bottom: 20px; background: rgba(6, 182, 212, 0.1); border: 2px dashed rgba(6, 182, 212, 0.5); color: #22d3ee;">+ ADD ANOTHER EVENT</button>
+
+        <div class="info-box">
+            <p>ℹ️ Total Contract Value: $8,900 • Covers 2 events • Shared terms and payment schedule</p>
+        </div>
+
+        <div class="button-group">
+            <button class="btn-primary" onclick="closeModal()">✓ SAVE CONTRACT</button>
+            <button class="btn-secondary" onclick="closeModal()">CANCEL</button>
+        </div>
+    </div>
+
+    <!-- Backdrop -->
+    <div id="backdrop" class="backdrop" onclick="closeModal()"></div>
+
+    <script>
+        function showModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+            document.getElementById('backdrop').classList.add('active');
+        }
+
+        function closeModal() {
+            document.querySelectorAll('.modal').forEach(modal => modal.classList.remove('active'));
+            document.getElementById('backdrop').classList.remove('active');
+        }
+
+        // ESC key to close
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+    </script>
+</body>
+</html>

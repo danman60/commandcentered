@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customize - CommandCentered</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Rajdhani', monospace, sans-serif;
+            background: #030712;
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(6, 182, 212, 0.05) 2px, rgba(6, 182, 212, 0.05) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(6, 182, 212, 0.05) 2px, rgba(6, 182, 212, 0.05) 4px),
+                radial-gradient(ellipse at center, #0a1628 0%, #030712 100%);
+            background-size: 40px 40px, 40px 40px, 100% 100%;
+            color: #e2e8f0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            min-width: 1200px;
+        }
+
+        .sidebar {
+            width: 260px;
+            background: linear-gradient(180deg, #0c1220 0%, #030712 100%);
+            border-right: 2px solid rgba(6, 182, 212, 0.3);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 32px rgba(6, 182, 212, 0.15);
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .logo {
+            padding: 28px 24px;
+            border-bottom: 2px solid rgba(6, 182, 212, 0.3);
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1) 0%, transparent 100%);
+        }
+
+        .logo-text {
+            font-family: 'Orbitron', monospace;
+            font-size: 24px;
+            font-weight: 900;
+            color: #22d3ee;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.8);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-subtitle {
+            font-size: 10px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 6px;
+            font-weight: 600;
+        }
+
+        .nav {
+            flex: 1;
+            padding: 24px 0;
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 24px;
+            color: #94a3b8;
+            text-decoration: none;
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .nav-item:hover {
+            background: rgba(6, 182, 212, 0.1);
+            color: #22d3ee;
+            border-left-color: rgba(6, 182, 212, 0.8);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(90deg, rgba(6, 182, 212, 0.2) 0%, transparent 100%);
+            color: #22d3ee;
+            border-left-color: #06b6d4;
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.5);
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            min-width: 0;
+        }
+
+        .top-bar {
+            background: linear-gradient(90deg, #0c1220 0%, #1e293b 100%);
+            border-bottom: 2px solid rgba(6, 182, 212, 0.3);
+            padding: 18px 36px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+            flex-shrink: 0;
+        }
+
+        .top-bar-left h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: 26px;
+            font-weight: 900;
+            color: #22d3ee;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.8);
+        }
+
+        .top-bar-left p {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 4px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .top-bar-right {
+            display: flex;
+            gap: 18px;
+            align-items: center;
+        }
+
+        .status-indicator {
+            padding: 8px 16px;
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.5);
+            border-radius: 4px;
+            color: #10b981;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .user-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 6px;
+            background: linear-gradient(135deg, #0e7490 0%, #0c4a6e 100%);
+            border: 2px solid rgba(6, 182, 212, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #22d3ee;
+            font-weight: 900;
+            font-size: 18px;
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.8);
+        }
+
+        .dashboard-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 28px 36px;
+        }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 0; }
+
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 28px;
+            border-bottom: 2px solid rgba(6, 182, 212, 0.3);
+        }
+
+        .tab {
+            padding: 14px 28px;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            color: #64748b;
+            font-weight: 900;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.2) 0%, transparent 100%);
+            border-bottom-color: #06b6d4;
+            color: #22d3ee;
+        }
+
+        .tab:hover {
+            color: #22d3ee;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Cards */
+        .card {
+            background: #111827;
+            border: 1px solid #1f2937;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-header {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #06b6d4;
+            margin-bottom: 1rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            background: #06b6d4;
+            color: #030712;
+            border: none;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+        }
+
+        .btn:hover {
+            background: #0891b2;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+        }
+
+        .btn-secondary {
+            background: #111827;
+            color: #f9fafb;
+            border: 1px solid #1f2937;
+        }
+
+        .btn-secondary:hover {
+            background: #1f2937;
+            border-color: #06b6d4;
+        }
+
+        .btn-small {
+            padding: 0.5rem 1rem;
+            font-size: 0.75rem;
+        }
+
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #1f2937;
+            transition: 0.4s;
+            border-radius: 24px;
+            border: 1px solid #374151;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 2px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: #06b6d4;
+            border-color: #06b6d4;
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+            background: #111827;
+            border: 1px solid #1f2937;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #0f172a;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 700;
+            color: #06b6d4;
+            border-bottom: 2px solid #1f2937;
+            font-family: 'Orbitron', monospace;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #1f2937;
+        }
+
+        tr:hover {
+            background: #1a202c;
+        }
+
+        /* Widget Configuration */
+        .widget-config {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .widget-list {
+            background: #111827;
+            border: 1px solid #1f2937;
+            padding: 1.5rem;
+            border-radius: 4px;
+        }
+
+        .widget-list-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #06b6d4;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .widget-item {
+            background: #1a202c;
+            border: 1px solid #2d3748;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            cursor: move;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 4px;
+        }
+
+        .widget-item:hover {
+            border-color: #06b6d4;
+            background: #111827;
+            transform: translateX(4px);
+        }
+
+        .widget-item.dragging {
+            opacity: 0.5;
+            border-color: #06b6d4;
+        }
+
+        .widget-item-name {
+            font-weight: 600;
+            color: #f9fafb;
+        }
+
+        .widget-item-handle {
+            color: #06b6d4;
+            cursor: grab;
+            font-weight: 700;
+        }
+
+        .widget-item-handle:active {
+            cursor: grabbing;
+        }
+
+        .active-widgets {
+            background: #111827;
+            border: 2px dashed #06b6d4;
+            padding: 1.5rem;
+            border-radius: 4px;
+            min-height: 300px;
+        }
+
+        .active-widgets-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #06b6d4;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .active-widget-item {
+            background: #0f172a;
+            border: 1px solid #1f2937;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: move;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .active-widget-item:hover {
+            border-color: #06b6d4;
+            background: #1a2335;
+        }
+
+        .active-widget-item.drag-over {
+            background: rgba(6, 182, 212, 0.1);
+            border-color: #06b6d4;
+        }
+
+        .widget-order {
+            font-family: 'Orbitron', monospace;
+            color: #06b6d4;
+            font-weight: 700;
+            min-width: 40px;
+        }
+
+        .widget-remove {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            border-radius: 4px;
+            font-size: 0.75rem;
+        }
+
+        .widget-remove:hover {
+            background: #dc2626;
+        }
+
+        /* Notification Preferences */
+        .notification-table {
+            width: 100%;
+        }
+
+        .notification-type {
+            font-weight: 600;
+            color: #f9fafb;
+        }
+
+        .notification-toggle {
+            text-align: center;
+        }
+
+        .toggle-center {
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Form Fields */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #f9fafb;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+            letter-spacing: 0.5px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            background: #0f172a;
+            border: 1px solid #1f2937;
+            color: #f9fafb;
+            font-family: 'Rajdhani', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #06b6d4;
+            box-shadow: 0 0 8px rgba(6, 182, 212, 0.3);
+        }
+
+        .form-input::placeholder {
+            color: #6b7280;
+        }
+
+        /* Input Row */
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        /* Settings Row */
+        .settings-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #1f2937;
+        }
+
+        .settings-row:last-child {
+            border-bottom: none;
+        }
+
+        .settings-label {
+            flex: 1;
+        }
+
+        .settings-label-title {
+            font-weight: 600;
+            color: #f9fafb;
+            margin-bottom: 0.25rem;
+        }
+
+        .settings-label-desc {
+            font-size: 0.875rem;
+            color: #9ca3af;
+        }
+
+        .settings-control {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* Alert Thresholds */
+        .threshold-group {
+            background: #0f172a;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid #1f2937;
+            border-radius: 4px;
+        }
+
+        .threshold-title {
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            color: #06b6d4;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+        }
+
+        .threshold-input-group {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-end;
+        }
+
+        .threshold-input-group input {
+            width: 100px;
+        }
+
+        .threshold-unit {
+            color: #9ca3af;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        /* Save Section */
+        .save-section {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid #1f2937;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .widget-config {
+                grid-template-columns: 1fr;
+            }
+
+            .input-row {
+                grid-template-columns: 1fr;
+            }
+
+            .tabs {
+                gap: 0.25rem;
+            }
+
+            .tab {
+                padding: 0.75rem 1rem;
+                font-size: 0.75rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .settings-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .settings-control {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <div class="logo-text">
+                <span>⚡</span>
+                <span>COMMAND</span>
+            </div>
+            <div class="logo-subtitle">StreamStage Operations</div>
+        </div>
+        <nav class="nav">
+            <a href="01-dashboard.html" class="nav-item">
+                <span>📊</span>
+                <span>Dashboard</span>
+            </a>
+            <a href="02-pipeline.html" class="nav-item">
+                <span>⚡</span>
+                <span>Pipeline</span>
+            </a>
+            <a href="03-planning.html" class="nav-item">
+                <span>📅</span>
+                <span>Planning</span>
+            </a>
+            <a href="04-deliverables.html" class="nav-item">
+                <span>📦</span>
+                <span>Deliverables</span>
+            </a>
+            <a href="05-communications.html" class="nav-item">
+                <span>💬</span>
+                <span>Communications</span>
+            </a>
+            <a href="06-files.html" class="nav-item">
+                <span>📁</span>
+                <span>Files</span>
+            </a>
+            <a href="07-operators.html" class="nav-item">
+                <span>👥</span>
+                <span>Operators</span>
+            </a>
+            <a href="08-gear.html" class="nav-item">
+                <span>🎥</span>
+                <span>Gear</span>
+            </a>
+            <a href="09-reports.html" class="nav-item">
+                <span>📈</span>
+                <span>Reports</span>
+            </a>
+            <a href="09-customize.html" class="nav-item active">
+                <span>⚙️</span>
+                <span>Customize</span>
+            </a>
+            <a href="11-settings.html" class="nav-item">
+                <span>🔧</span>
+                <span>Settings</span>
+            </a>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <div class="top-bar">
+            <div class="top-bar-left">
+                <h1>⚙️ CUSTOMIZE</h1>
+                <p>PERSONALIZATION</p>
+            </div>
+            <div class="top-bar-right">
+                <div class="status-indicator">● SYSTEMS OPERATIONAL</div>
+                <div class="user-avatar">DA</div>
+            </div>
+        </div>
+        <div class="dashboard-content">
+            <div class="tabs">
+            <button class="tab active" onclick="switchTab('widgets')">Dashboard Widgets</button>
+            <button class="tab" onclick="switchTab('notifications')">Notifications</button>
+            <button class="tab" onclick="switchTab('templates')">Templates</button>
+            <button class="tab" onclick="switchTab('alerts')">Alerts</button>
+            </div>
+
+            <!-- TAB 1: DASHBOARD WIDGETS -->
+            <div id="widgets" class="tab-content active">
+            <div class="card">
+                <div class="card-header">Configure Dashboard Layout</div>
+
+                <div class="widget-config">
+                    <!-- Available Widgets -->
+                    <div>
+                        <div class="widget-list">
+                            <div class="widget-list-title">Available Widgets</div>
+                            <div id="available-widgets">
+                                <div class="widget-item" draggable="true" ondragstart="dragStart(event)" ondragend="dragEnd(event)">
+                                    <span class="widget-item-name">Financial Snapshot</span>
+                                    <span class="widget-item-handle">⋮⋮</span>
+                                </div>
+                                <div class="widget-item" draggable="true" ondragstart="dragStart(event)" ondragend="dragEnd(event)">
+                                    <span class="widget-item-name">New Leads</span>
+                                    <span class="widget-item-handle">⋮⋮</span>
+                                </div>
+                                <div class="widget-item" draggable="true" ondragstart="dragStart(event)" ondragend="dragEnd(event)">
+                                    <span class="widget-item-name">Active Proposals</span>
+                                    <span class="widget-item-handle">⋮⋮</span>
+                                </div>
+                                <div class="widget-item" draggable="true" ondragstart="dragStart(event)" ondragend="dragEnd(event)">
+                                    <span class="widget-item-name">Team Performance</span>
+                                    <span class="widget-item-handle">⋮⋮</span>
+                                </div>
+                                <div class="widget-item" draggable="true" ondragstart="dragStart(event)" ondragend="dragEnd(event)">
+                                    <span class="widget-item-name">Pending Tasks</span>
+                                    <span class="widget-item-handle">⋮⋮</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Active Widgets -->
+                    <div>
+                        <div class="active-widgets" id="active-widgets-container" ondrop="dropWidget(event)" ondragover="dragOver(event)" ondragleave="dragLeave(event)">
+                            <div class="active-widgets-title">Active Widgets</div>
+                            <div id="active-widgets">
+                                <div class="active-widget-item" draggable="true" ondragstart="dragStart(event)" ondragend="dragEnd(event)">
+                                    <div>
+                                        <span class="widget-order">1.</span>
+                                        <span>Financial Snapshot</span>
+                                    </div>
+                                    <button class="widget-remove" onclick="removeWidget(this)">Remove</button>
+                                </div>
+                                <div class="active-widget-item" draggable="true" ondragstart="dragStart(event)" ondragend="dragEnd(event)">
+                                    <div>
+                                        <span class="widget-order">2.</span>
+                                        <span>Calendar</span>
+                                    </div>
+                                    <button class="widget-remove" onclick="removeWidget(this)">Remove</button>
+                                </div>
+                                <div class="active-widget-item" draggable="true" ondragstart="dragStart(event)" ondragend="dragEnd(event)">
+                                    <div>
+                                        <span class="widget-order">3.</span>
+                                        <span>Critical Alerts</span>
+                                    </div>
+                                    <button class="widget-remove" onclick="removeWidget(this)">Remove</button>
+                                </div>
+                                <div class="active-widget-item" draggable="true" ondragstart="dragStart(event)" ondragend="dragEnd(event)">
+                                    <div>
+                                        <span class="widget-order">4.</span>
+                                        <span>Recent Activity</span>
+                                    </div>
+                                    <button class="widget-remove" onclick="removeWidget(this)">Remove</button>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="margin-top: 1rem; color: #9ca3af; font-size: 0.875rem;">Drag to reorder or add/remove widgets</p>
+                    </div>
+                </div>
+
+                <div class="save-section">
+                    <button class="btn">Save Changes</button>
+                    <button class="btn btn-secondary">Reset to Default</button>
+                </div>
+            </div>
+            </div>
+
+            <!-- TAB 2: NOTIFICATIONS -->
+            <div id="notifications" class="tab-content">
+                <div class="card">
+                <div class="card-header">Notification Preferences</div>
+
+                <div class="table-container">
+                    <table class="notification-table">
+                        <thead>
+                            <tr>
+                                <th>Notification Type</th>
+                                <th style="text-align: center;">Email</th>
+                                <th style="text-align: center;">SMS</th>
+                                <th style="text-align: center;">Telegram</th>
+                                <th style="text-align: center;">In-App</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="notification-type">New Lead</td>
+                                <td class="notification-toggle">
+                                    <div class="toggle-center">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                                <td class="notification-toggle">
+                                    <div class="toggle-center">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox">
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                                <td class="notification-toggle">
+                                    <div class="toggle-center">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox">
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                                <td class="notification-toggle">
+                                    <div class="toggle-center">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="notification-type">Contract Signed</td>
+                                <td class="notification-toggle">
+                                    <div class="toggle-center">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                                <td class="notification-toggle">
+                                    <div class="toggle-center">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                                <td class="notification-toggle">
+                                    <div class="toggle-center">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                                <td class="notification-toggle">
+                                    <div class="toggle-center">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="notification-type">Payment Received</td>
+                                <td class="notification-toggle">
+                                    <div class="toggle-center">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                                <td class="notification-toggle">
+                                    <div class="toggle-center">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                                <td class="notification-toggle">
+                                    <div class="toggle-center">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox">
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                                <td class="notification-toggle">
+                                    <div class="toggle-center">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="notification-type">Equipment Conflict</td>
+                                <td class="notification-toggle">
+                                    <div class="toggle-center">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                                <td class="notification-toggle">
+                                    <div class="toggle-center">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox">
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                                <td class="notification-toggle">
+                                    <div class="toggle-center">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox">
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                                <td class="notification-toggle">
+                                    <div class="toggle-center">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="notification-type">Proposal Viewed</td>
+                                <td class="notification-toggle">
+                                    <div class="toggle-center">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                                <td class="notification-toggle">
+                                    <div class="toggle-center">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox">
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                                <td class="notification-toggle">
+                                    <div class="toggle-center">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox">
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                                <td class="notification-toggle">
+                                    <div class="toggle-center">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="save-section">
+                    <button class="btn">Save Preferences</button>
+                </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: TEMPLATES -->
+            <div id="templates" class="tab-content">
+                <div class="card">
+                <div class="card-header">Template Customization</div>
+
+                <div class="form-group">
+                    <label class="form-label">Email Template Library</label>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Template Name</th>
+                                    <th>Usage</th>
+                                    <th>Last Modified</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>New Lead Welcome</td>
+                                    <td style="color: #06b6d4;">12 uses</td>
+                                    <td>Nov 8, 2024</td>
+                                    <td><button class="btn btn-secondary btn-small">Edit</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Contract Ready for Signature</td>
+                                    <td style="color: #06b6d4;">8 uses</td>
+                                    <td>Nov 5, 2024</td>
+                                    <td><button class="btn btn-secondary btn-small">Edit</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Payment Invoice</td>
+                                    <td style="color: #06b6d4;">5 uses</td>
+                                    <td>Nov 1, 2024</td>
+                                    <td><button class="btn btn-secondary btn-small">Edit</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Event Confirmation</td>
+                                    <td style="color: #06b6d4;">3 uses</td>
+                                    <td>Oct 28, 2024</td>
+                                    <td><button class="btn btn-secondary btn-small">Edit</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Proposal Template</label>
+                    <div class="input-row">
+                        <div>
+                            <label class="form-label" style="font-size: 0.75rem;">Brand Color</label>
+                            <input type="color" class="form-input" value="#06b6d4" style="height: 40px; cursor: pointer;">
+                        </div>
+                        <div>
+                            <label class="form-label" style="font-size: 0.75rem;">Logo Upload</label>
+                            <button class="btn btn-secondary">Choose File</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Default Font Family</label>
+                    <select class="form-input">
+                        <option>Rajdhani</option>
+                        <option>Arial</option>
+                        <option>Helvetica</option>
+                        <option>Georgia</option>
+                    </select>
+                </div>
+
+                <div class="save-section">
+                    <button class="btn">Save Templates</button>
+                </div>
+                </div>
+            </div>
+
+            <!-- TAB 4: ALERTS -->
+            <div id="alerts" class="tab-content">
+                <div class="card">
+                <div class="card-header">Alert Thresholds</div>
+
+                <div class="threshold-group">
+                    <div class="threshold-title">Incomplete Questionnaire Alert</div>
+                    <div class="threshold-input-group">
+                        <input type="number" class="form-input" value="7" min="1" max="90" style="width: 80px;">
+                        <span class="threshold-unit">days before event</span>
+                    </div>
+                </div>
+
+                <div class="threshold-group">
+                    <div class="threshold-title">Unsigned Contract Alert</div>
+                    <div class="threshold-input-group">
+                        <input type="number" class="form-input" value="14" min="1" max="90" style="width: 80px;">
+                        <span class="threshold-unit">days after sent</span>
+                    </div>
+                </div>
+
+                <div class="threshold-group">
+                    <div class="threshold-title">Overdue Payment Alert</div>
+                    <div class="threshold-input-group">
+                        <input type="number" class="form-input" value="3" min="1" max="90" style="width: 80px;">
+                        <span class="threshold-unit">days after due date</span>
+                    </div>
+                </div>
+
+                <div class="threshold-group">
+                    <div class="threshold-title">Equipment Double-Booking</div>
+                    <div class="threshold-input-group">
+                        <span class="threshold-unit">Immediate notification (not configurable)</span>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-top: 2rem; background: #0f172a;">
+                    <div class="card-header">Reminder Cadence</div>
+
+                    <div class="threshold-group">
+                        <div class="threshold-title">First Questionnaire Reminder</div>
+                        <div class="threshold-input-group">
+                            <input type="number" class="form-input" value="3" min="1" max="90" style="width: 80px;">
+                            <span class="threshold-unit">days after contract</span>
+                        </div>
+                    </div>
+
+                    <div class="threshold-group">
+                        <div class="threshold-title">Second Reminder</div>
+                        <div class="threshold-input-group">
+                            <input type="number" class="form-input" value="14" min="1" max="90" style="width: 80px;">
+                            <span class="threshold-unit">days before event</span>
+                        </div>
+                    </div>
+
+                    <div class="threshold-group">
+                        <div class="threshold-title">Final Reminder</div>
+                        <div class="threshold-input-group">
+                            <input type="number" class="form-input" value="7" min="1" max="90" style="width: 80px;">
+                            <span class="threshold-unit">days before event</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="save-section">
+                    <button class="btn">Save Alert Configuration</button>
+                    <button class="btn btn-secondary">Reset to Defaults</button>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab Switching
+        function switchTab(tabName) {
+            // Hide all tab contents
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+
+        // Drag and Drop for Widgets
+        let draggedElement = null;
+
+        function dragStart(e) {
+            draggedElement = e.target.closest('.widget-item, .active-widget-item');
+            draggedElement.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+        }
+
+        function dragEnd(e) {
+            if (draggedElement) {
+                draggedElement.classList.remove('dragging');
+            }
+        }
+
+        function dragOver(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            const activeContainer = document.getElementById('active-widgets-container');
+            activeContainer.classList.add('drag-over');
+        }
+
+        function dragLeave(e) {
+            const activeContainer = document.getElementById('active-widgets-container');
+            activeContainer.classList.remove('drag-over');
+        }
+
+        function dropWidget(e) {
+            e.preventDefault();
+            const activeContainer = document.getElementById('active-widgets-container');
+            activeContainer.classList.remove('drag-over');
+
+            if (draggedElement && draggedElement.classList.contains('widget-item')) {
+                const newWidget = draggedElement.cloneNode(true);
+                const activeList = document.getElementById('active-widgets');
+                const orderNumber = activeList.children.length + 1;
+
+                newWidget.className = 'active-widget-item';
+                newWidget.draggable = true;
+                newWidget.ondragstart = function(e) { dragStart(e); };
+                newWidget.ondragend = function(e) { dragEnd(e); };
+
+                const widgetName = draggedElement.querySelector('.widget-item-name').textContent;
+                newWidget.innerHTML = `
+                    <div>
+                        <span class="widget-order">${orderNumber}.</span>
+                        <span>${widgetName}</span>
+                    </div>
+                    <button class="widget-remove" onclick="removeWidget(this)">Remove</button>
+                `;
+
+                activeList.appendChild(newWidget);
+            }
+        }
+
+        function removeWidget(button) {
+            button.closest('.active-widget-item').remove();
+            // Re-number widgets
+            const widgets = document.querySelectorAll('#active-widgets .active-widget-item');
+            widgets.forEach((widget, index) => {
+                widget.querySelector('.widget-order').textContent = (index + 1) + '.';
+            });
+        }
+    </script>
+</body>
+</html>
