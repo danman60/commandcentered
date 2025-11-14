@@ -236,7 +236,347 @@ const permissions = {
 
 ---
 
-## 📊 DATABASE SCHEMA (47 Tables)
+## 🏢 MULTI-TENANT ARCHITECTURE (CRITICAL)
+
+### Core Principle: StreamStage is Tenant #1, Not the Only Tenant
+
+**Business Model:**
+- CommandCentered is a **multi-tenant SaaS platform**
+- StreamStage (user's company) is the **first tenant**, not the only tenant
+- Future tenants: Other video production companies, event agencies, content studios
+- Each tenant gets isolated data, custom subdomain, separate billing
+
+### Tenant Isolation Strategy
+
+**Database Level: Row-Level Security (RLS)**
+
+```sql
+-- Every table has tenant_id (UUID)
+CREATE TABLE events (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  tenant_id UUID NOT NULL REFERENCES tenants(id) ON DELETE CASCADE,
+  name VARCHAR(255) NOT NULL,
+  -- ... other fields
+  CONSTRAINT events_tenant_fk FOREIGN KEY (tenant_id) REFERENCES tenants(id)
+);
+
+-- RLS Policy: Users can only see their tenant's data
+CREATE POLICY tenant_isolation ON events
+  FOR ALL
+  USING (tenant_id = current_setting('app.current_tenant_id')::UUID);
+
+-- Enable RLS on ALL tables
+ALTER TABLE events ENABLE ROW LEVEL SECURITY;
+```
+
+**Application Level: Tenant Context**
+
+```typescript
+// Middleware sets tenant_id from subdomain or auth token
+import { NextRequest } from 'next/server';
+
+export async function middleware(req: NextRequest) {
+  const subdomain = req.headers.get('host')?.split('.')[0];
+
+  // Map subdomain to tenant_id
+  const tenant = await getTenantBySubdomain(subdomain);
+
+  // Set Supabase context for RLS
+  await supabase.rpc('set_tenant_context', {
+    tenant_id: tenant.id
+  });
+
+  // All subsequent queries auto-filtered by tenant_id
+  return next();
+}
+```
+
+### Tenant Onboarding Flow
+
+**First Tenant (StreamStage):**
+```sql
+-- Seed data (run once on production deploy)
+INSERT INTO tenants (id, subdomain, company_name, plan_tier, created_at)
+VALUES (
+  'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',  -- Fixed UUID for StreamStage
+  'streamstage',
+  'StreamStage Productions',
+  'founder',  -- Special tier, no billing
+  NOW()
+);
+
+-- Create first Commander user
+INSERT INTO users (id, tenant_id, email, role, created_at)
+VALUES (
+  gen_random_uuid(),
+  'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+  'user@streamstage.com',  -- User's actual email
+  'COMMANDER',
+  NOW()
+);
+```
+
+**Future Tenants (Self-Service Signup):**
+```typescript
+// Sign up flow at commandcentered.app/signup
+async function createTenant(data: TenantSignup) {
+  // 1. Create tenant record
+  const tenant = await db.tenants.create({
+    data: {
+      subdomain: data.company_slug,  // e.g., "acmevideo"
+      company_name: data.company_name,
+      plan_tier: 'trial',  // 14-day trial, then paid
+    }
+  });
+
+  // 2. Create Commander user
+  const user = await db.users.create({
+    data: {
+      tenant_id: tenant.id,
+      email: data.email,
+      role: 'COMMANDER',
+    }
+  });
+
+  // 3. Send welcome email with subdomain
+  await sendEmail({
+    to: data.email,
+    subject: 'Welcome to CommandCentered',
+    body: `Your account is ready at https://${data.company_slug}.commandcentered.app`
+  });
+
+  // 4. Redirect to onboarding
+  return { subdomain: data.company_slug, tenant_id: tenant.id };
+}
+```
+
+### Domain Routing
+
+**Subdomain Structure:**
+```
+streamstage.commandcentered.app      → StreamStage tenant
+acmevideo.commandcentered.app        → Future Tenant #2
+pixelpro.commandcentered.app         → Future Tenant #3
+
+streamstage.operators.commandcentered.app  → StreamStage operators portal
+acmevideo.operators.commandcentered.app    → Future Tenant #2 operators
+
+streamstage.live                     → StreamStage client-facing
+acmevideo.live (future)              → Future Tenant #2 client-facing
+```
+
+**Routing Logic:**
+```typescript
+// Extract tenant from subdomain
+const host = req.headers.host; // "streamstage.commandcentered.app"
+const subdomain = host.split('.')[0]; // "streamstage"
+
+// Lookup tenant
+const tenant = await db.tenants.findUnique({
+  where: { subdomain }
+});
+
+if (!tenant) {
+  return redirect('/signup'); // Unknown subdomain
+}
+
+// Set tenant context for all queries
+setTenantContext(tenant.id);
+```
+
+### Tenant Schema (Tenants Table)
+
+```sql
+CREATE TABLE tenants (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  subdomain VARCHAR(50) UNIQUE NOT NULL,  -- "streamstage", "acmevideo"
+  company_name VARCHAR(255) NOT NULL,
+
+  -- Billing
+  plan_tier VARCHAR(50) NOT NULL,  -- 'trial', 'starter', 'pro', 'founder'
+  stripe_customer_id VARCHAR(255),
+  subscription_status VARCHAR(50),  -- 'active', 'past_due', 'canceled'
+  trial_ends_at TIMESTAMPTZ,
+
+  -- Settings
+  settings JSONB DEFAULT '{}',  -- Tenant-specific config
+
+  -- Branding (optional future feature)
+  logo_url VARCHAR(500),
+  primary_color VARCHAR(7),  -- "#1a73e8"
+
+  -- Audit
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  deleted_at TIMESTAMPTZ  -- Soft delete
+);
+
+-- Index for fast subdomain lookup
+CREATE UNIQUE INDEX tenants_subdomain_idx ON tenants(subdomain);
+```
+
+### Tables WITH tenant_id (ALL data tables)
+
+**Pattern: EVERY table except system tables has tenant_id**
+
+```sql
+-- ✅ HAS tenant_id (user data)
+events, clients, operators, equipment, invoices, proposals,
+contracts, deliverables, leads, communications, etc.
+
+-- ❌ NO tenant_id (system tables)
+tenants (itself), audit_log (references tenant_id but not filtered)
+```
+
+**Example: Events Table**
+```sql
+CREATE TABLE events (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  tenant_id UUID NOT NULL REFERENCES tenants(id) ON DELETE CASCADE,
+  -- ... all other fields
+
+  CONSTRAINT events_tenant_fk FOREIGN KEY (tenant_id) REFERENCES tenants(id)
+);
+
+-- RLS Policy
+CREATE POLICY tenant_isolation_events ON events
+  FOR ALL
+  USING (tenant_id = current_setting('app.current_tenant_id')::UUID);
+
+ALTER TABLE events ENABLE ROW LEVEL SECURITY;
+```
+
+### Data Isolation Guarantees
+
+**Database Level:**
+1. ✅ RLS policies on ALL tables (queries auto-filtered by tenant_id)
+2. ✅ Foreign key constraints enforce tenant_id on relations
+3. ✅ Indexes include tenant_id for performance
+4. ✅ Supabase Auth maps user → tenant_id automatically
+
+**Application Level:**
+1. ✅ Middleware extracts tenant from subdomain
+2. ✅ All API routes verify tenant_id matches user.tenant_id
+3. ✅ No cross-tenant queries possible (RLS blocks at DB)
+4. ✅ File uploads namespaced: `/uploads/{tenant_id}/{file}`
+
+**Testing Isolation:**
+```sql
+-- Create test tenants
+INSERT INTO tenants (id, subdomain, company_name) VALUES
+  ('tenant-a-uuid', 'testa', 'Test Company A'),
+  ('tenant-b-uuid', 'testb', 'Test Company B');
+
+-- Create test data
+INSERT INTO events (tenant_id, name) VALUES
+  ('tenant-a-uuid', 'Event A1'),
+  ('tenant-b-uuid', 'Event B1');
+
+-- Set tenant context to A
+SELECT set_config('app.current_tenant_id', 'tenant-a-uuid', false);
+
+-- Query events (should only see Event A1)
+SELECT * FROM events;
+-- Result: 1 row (Event A1 only)
+
+-- CANNOT see Event B1 even with direct query
+SELECT * FROM events WHERE id = 'event-b1-id';
+-- Result: 0 rows (RLS blocks)
+```
+
+### Pricing Tiers (Future)
+
+```typescript
+interface PlanTier {
+  name: string;
+  monthly_price: number;
+  limits: {
+    events_per_month: number;
+    operators: number;
+    storage_gb: number;
+  };
+}
+
+const PLANS = {
+  founder: {  // StreamStage only
+    name: 'Founder',
+    monthly_price: 0,
+    limits: { events_per_month: 999, operators: 999, storage_gb: 999 }
+  },
+  trial: {
+    name: '14-Day Trial',
+    monthly_price: 0,
+    limits: { events_per_month: 5, operators: 3, storage_gb: 10 }
+  },
+  starter: {
+    name: 'Starter',
+    monthly_price: 49,
+    limits: { events_per_month: 20, operators: 5, storage_gb: 50 }
+  },
+  pro: {
+    name: 'Pro',
+    monthly_price: 149,
+    limits: { events_per_month: 100, operators: 20, storage_gb: 200 }
+  }
+};
+```
+
+### StreamStage First Tenant Setup
+
+**Production Deploy Script:**
+```bash
+# 1. Deploy app to Vercel
+vercel deploy --prod
+
+# 2. Run tenant seed (one-time)
+psql $DATABASE_URL -f scripts/seed_streamstage_tenant.sql
+
+# 3. Verify tenant exists
+psql $DATABASE_URL -c "SELECT * FROM tenants WHERE subdomain = 'streamstage';"
+
+# 4. Create first Commander user via Supabase Auth
+# (or signup flow at streamstage.commandcentered.app/signup)
+
+# 5. Verify RLS policies
+psql $DATABASE_URL -f scripts/verify_rls_policies.sql
+```
+
+**Seed Script:**
+```sql
+-- scripts/seed_streamstage_tenant.sql
+BEGIN;
+
+-- Create StreamStage tenant
+INSERT INTO tenants (id, subdomain, company_name, plan_tier)
+VALUES (
+  'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+  'streamstage',
+  'StreamStage Productions',
+  'founder'
+) ON CONFLICT (subdomain) DO NOTHING;
+
+-- Verify
+SELECT * FROM tenants WHERE subdomain = 'streamstage';
+
+COMMIT;
+```
+
+### Week 2 Multi-Tenant Validation
+
+Add to Week 2 checklist:
+
+- [ ] Every table has tenant_id column (except system tables)
+- [ ] RLS policies created for ALL tables
+- [ ] RLS policies tested (tenant A can't see tenant B data)
+- [ ] Middleware extracts tenant from subdomain
+- [ ] API routes verify tenant_id matches auth user
+- [ ] File uploads namespaced by tenant_id
+- [ ] StreamStage seed script ready
+- [ ] Tenant signup flow designed (for future tenants)
+
+---
+
+## 📊 DATABASE SCHEMA (50+ Tables)
 
 ### Critical Relationships
 
