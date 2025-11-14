@@ -1,10 +1,10 @@
-# CommandCentered - MASTER SPECIFICATION v5.0
+# CommandCentered - MASTER SPECIFICATION v6.0
 ## Complete System Requirements After All Interviews
 
-**Date:** 2025-11-13
-**Status:** UPDATED - Round 5 Mockup Feedback Applied
-**Rounds Completed:** Initial + Round 1 + Round 2 + Round 3 (Vision) + Round 5 (UX/UI)
-**Total Decisions:** 85+ captured
+**Date:** 2025-11-14
+**Status:** UPDATED - Round 5 Interview Answers Applied
+**Rounds Completed:** Initial + Round 1 + Round 2 + Round 3 (Vision) + Round 5 (Planning & Products)
+**Total Decisions:** 100+ captured
 **Phase Priority:** SCHEDULING FIRST (changed from Registration first)
 
 ---
@@ -72,6 +72,21 @@ interface UserPreferences {
 - Save layout preferences to database
 - Restore layout on login
 - "Reset to Default" option
+- **Small "X" button** on each widget to hide (saves preference, can re-enable in Settings)
+
+**Widget Customization Modal:**
+- **"Customize Dashboard" button** in dashboard header
+- Opens modal with checkboxes for each widget type
+- Available widgets:
+  - Event Pipeline (6-stage visualization)
+  - Annual Revenue (progress bar toward goal)
+  - Upcoming Events (next 7 days)
+  - Communications Timeline (recent touchpoints)
+  - Critical Alerts (missing operators/kits)
+  - Revenue by Product Focus (future feature)
+- Check/uncheck to show/hide widgets
+- Changes save immediately
+- **Modular architecture** - future users can add new widget types via plugins
 
 #### 2. **View Toggle Icons**
 **Change:** Remove full text labels like "Card View" / "Table View"
@@ -926,10 +941,28 @@ interface InlineEditField {
 ```
 
 **Product Focus Tracking:**
-- [PENDING INTERVIEW] Multi-product tracking per client
-- Filters per product focus
-- Status/progress per product
-- Details TBD after interview Q6-Q7
+- **4 Major Products:**
+  1. **Studio Sage Chatbot** - AI assistant for dance studios
+  2. **Dance Recital Package** - Recital video production services
+  3. **Competition Software** - Dance competition management platform
+  4. **Core Video Production Services** - Umbrella for all media production
+
+- **Multi-Depth Tracking Per Client:**
+  - Each product tracked separately with:
+    - **Status progression:** Not Interested → Contacted → Proposal Sent → Active → Completed
+    - **Revenue amount** per product (tracks multiple revenue streams per client)
+    - **Notes field** per product (specific notes for each product line)
+    - **"Interested" checkbox** for quick tagging (visual indicator in table)
+
+- **Filters:**
+  - Filter by product focus (show all clients interested in specific product)
+  - Filter by status within product (e.g., all Dance Recital proposals sent)
+  - Combined filters (e.g., Active Competition Software clients)
+
+- **UI Design:**
+  - Pipeline table shows primary product focus per client
+  - Click client row → detail view shows all products with status/revenue/notes
+  - Checkbox column for each product in detail view
 
 **CRM Enhancements (Already in spec):**
 - Last Contacted, Next Follow-Up, Contact Frequency columns (from Round 3)
@@ -940,7 +973,7 @@ interface InlineEditField {
 
 **Architecture:**
 - **3-Panel Layout:** Operators panel | Kits panel | Calendar panel
-  - [PENDING INTERVIEW] Calendar view type (month/week/day/all)
+  - **Calendar View:** Month view by default for high-level visibility
   - All panels resizable (draggable dividers)
   - Panels show drag targets when dragging operators/kits
 
@@ -950,22 +983,49 @@ interface InlineEditField {
 - Keyboard shortcut: F11 or custom hotkey
 
 **Event Detail View:**
-- Click event on calendar → opens event detail within Planning page (NOT popup tooltip)
-- Event detail shows:
+- Click event on calendar → opens **detailed modal** for granular scheduling
+- Event detail modal shows:
   - Event info (client, date, location, hotel)
-  - Shift builder [PENDING INTERVIEW Q2, Q5]
+  - **Shift Builder** (see below)
   - Operator assignment per shift
-  - Kit assignment [PENDING INTERVIEW Q12 - event-level or shift-level]
-  - Conflicts highlighted in red [PENDING INTERVIEW Q4 - conflict rules]
+  - Kit assignment (defaults to entire event, can override per shift)
+  - Conflicts highlighted in **red** (operators or kits double-booked)
 
-**Operator/Kit Icons on Event Bars:**
-- [PENDING INTERVIEW Q3] Display operator initials + kit icons inside event bars
-- Visual design TBD
+**Shift Builder (within Event Modal):**
+- Define event hours (e.g., 2 PM – 10 PM)
+- **Two options for shift creation:**
+  1. **Manual:** Create shifts manually with custom times
+  2. **Templates:** Use pre-defined templates (e.g., "Recital: Setup / Event / Teardown")
+- **Single-shift events can skip shift builder entirely** (assign operators/kits to whole event)
+- Operators assigned per shift
+- Kits default to entire event, can be overridden per shift if needed
+
+**Calendar Indicators (Event Bars):**
+- Each event bar displays:
+  - **Client name** (e.g., "EMPWR Dance")
+  - **Operator initials** (JD, ST)
+  - **Kit icons** (camera symbol, etc.)
+- **Event color indicates status:** Booked, Pending, Completed
+- Compact but informative design
+
+**Conflict Detection:**
+- Conflicts trigger **only when they matter:**
+  - Overlapping shifts for same operator
+  - Operator marked unavailable
+  - Kit double-booked on overlapping events
+- **No warnings for same-day non-overlapping work**
+- Visual indicator: Red highlight on conflicting events/shifts
+
+**Alerts for Missing Assignments:**
+- Dashboard and Planning page show alerts for:
+  - Events missing operators
+  - Events missing kits
+- Alert panel shows list of incomplete events
 
 **Main Planning View - Panels:**
 - **Operators Panel:** List of all operators with availability indicators
 - **Kits Panel:** List of all kits with assignment status
-- **Calendar Panel:** Month view (or other view based on Q1) showing all events
+- **Calendar Panel:** Month view showing all events with operator initials + kit icons
 
 ---
 
@@ -1021,9 +1081,20 @@ interface ServiceDeliverable {
    - Button to create new group
    - Invite operators to group
 
-**Communication Touch Points:**
-- [PENDING INTERVIEW Q13] Full list of touch points to track
-- Progress bar shows: Initial Contact → Proposal → Contract → ... → Rebooking
+**Communication Touch Points (8 Tracked Touchpoints):**
+1. **Initial contact email** - First outreach to potential client
+2. **Proposal sent** - Proposal delivered to client
+3. **Contract sent / signed** - Contract lifecycle tracking
+4. **Questionnaire sent / completed** - Technical questionnaire for event details
+5. **Invoice sent / paid** - Payment tracking
+6. **Pre-event reminders** - Reminders before event date
+7. **Post-event follow-up** - Thank-you and delivery notification
+8. **Rebooking outreach** - Follow-up for repeat business
+
+**Progress Bar:**
+- Visual progress bar shows: Initial Contact → Proposal → Contract → Questionnaire → Invoice → Event → Delivery → Rebooking
+- Color-coded status indicators (pending, sent, completed)
+- Click touchpoint to view email history and status
 
 **Gmail Integration:**
 - Track "Last Contacted" by scanning Gmail for sent emails to client
@@ -1164,10 +1235,34 @@ interface GearItem {
 - Yellow badge: "Can be used but needs repair"
 - Green badge: "Perfect condition"
 
-**Subcategory Structure:**
-- [PENDING INTERVIEW Q8-Q10] Gear dependency logic
-- Camera → requires Lens + Battery + SD Card
-- Event type → recommended gear checklist
+**Gear Categories (9 Core Categories):**
+1. **Cameras** - Sony A7S III, Canon R5, etc.
+2. **Lenses** - 24-70mm, 70-200mm, primes
+3. **Accessories** - Batteries, SD cards, HDMI cables, adapters
+4. **Audio** - Microphones, recorders, mixers
+5. **Rigging** - Tripods, monopods, sliders, jibs
+6. **Lighting** - LED panels, softboxes, practical lights
+7. **Stabilizers / Gimbals** - DJI Ronin, handheld stabilizers
+8. **Drones** - DJI Mavic, FPV drones
+9. **Monitors** - Field monitors, preview screens
+
+**Gear Dependencies ("Suggest, Don't Assume" Pattern):**
+- When camera added → **gentle reminder** shows:
+  - "Camera requires: Lens, Battery, SD Card"
+  - Shows list of missing dependencies with checkboxes
+  - User remains in full control (can dismiss or add items)
+  - **No auto-insertion** - commander decides what to add
+- Pattern applies to all dependent gear:
+  - Audio recorder → requires SD card, batteries
+  - Gimbal → requires camera, batteries
+  - Drone → requires batteries, SD cards, controller
+
+**Event-Type Gear Suggestions:**
+- Each **Event Type** (Recital, Content Capture, Competition) has **recommended gear checklist**
+- When creating kit for event → system suggests items based on event type
+- Example: "Dance Recital" event → suggests 2 cameras, wireless audio, LED lights
+- **Context-aware kit building** speeds setup while staying flexible
+- User can accept all, accept some, or ignore suggestions
 
 **Maintenance Log:**
 - Track repair history per item
@@ -1178,14 +1273,32 @@ interface GearItem {
 
 ### Kits Page
 
-**Modal Sizing:**
-- Kit creation modal: 80% screen size
-- Shows full gear inventory with checkboxes
-- Live preview of kit contents
-- Event assignment dropdown
+**Kit Creation Flow (Step-by-Step):**
+1. Click **"Create Kit"** button from Planning page (or Kits page)
+2. Modal opens at **80% screen width**
+3. Fill **Kit Name** (e.g., "Recital Kit A", "Corporate Package 1")
+4. Choose **Event** from dropdown (links kit to specific event)
+5. **Browse or search** full gear inventory:
+   - Gear organized by category tabs (Cameras, Audio, Rigging, etc.)
+   - Checkboxes next to each item
+   - Search bar filters items by name
+   - Shows availability status (available, in use, needs repair)
+6. Click **"Create Kit"**
+7. Kit instantly links to selected event
+8. Modal closes, kit appears in Kits panel and event detail
 
-**Kit Workflow:**
-- [PENDING INTERVIEW Q11-Q12] Kit creation step-by-step + event vs shift assignment
+**Kit Assignment Logic:**
+- **Default behavior:** Kits remain with the event all day
+- **Operators rotate by shift** (operators change, kits stay)
+- **Kits can be swapped mid-event** if necessary (e.g., different setups)
+- **Manual overrides always allowed** - never restricted by rule
+- **Flexible resource allocation** respecting real-world workflow
+
+**Kit Management:**
+- Live preview of kit contents in modal
+- Edit kit after creation (add/remove items)
+- Duplicate kit for similar events
+- Kit templates for recurring event types (future feature)
 
 ---
 
@@ -1389,21 +1502,51 @@ interface ServiceTemplate {
 
 ## 📧 EMAIL AUTOMATION (EXPANDED)
 
-### Automatic Triggers (Updated)
+### Automatic Triggers (7 Automated Email Types)
 
-**Contract & Payment Flow:**
-1. **Contract signed** → send deposit invoice
-2. **Deposit paid** → send technical questionnaire
-3. **Payment overdue** → automatic reminder (configurable delay)
+**Email Automation Overview:**
+- All automated emails fully customizable (templates, timing, conditions)
+- Can be enabled/disabled per email type
+- Trigger conditions configurable per tenant
 
-**Pre-Event Flow:**
-4. **1 month before event** → missing info reminders
-5. **48 hours before DANCE RECITAL** → request show program PDF (NEW)
-6. **48 hours before any event** → send operator details + schedule
+**1. Show Program Reminder (48h before recital)**
+- **Trigger:** 48 hours before dance recital event
+- **Purpose:** Request show program PDF for titling
+- **Content:** Request PDF upload, link to upload interface
 
-**Post-Event Flow:**
-7. **After event** → thank-you + replay/deliverable notice
-8. **2-4 weeks after delivery** → rebooking reminder (NEW)
+**2. Rebooking Follow-Up (2-4 weeks after delivery)**
+- **Trigger:** 2-4 weeks after delivery marked complete (configurable delay)
+- **Purpose:** Increase repeat business
+- **Content:** "Book your next event" email, link to proposal/contact form
+
+**3. Contract Signature Reminder**
+- **Trigger:** X days after contract sent, not yet signed (configurable)
+- **Purpose:** Gentle reminder to sign contract
+- **Content:** Link to sign contract, deadline notice
+
+**4. Questionnaire Completion Reminder**
+- **Trigger:** X days after questionnaire sent, not completed (configurable)
+- **Purpose:** Collect technical event details
+- **Content:** Link to complete questionnaire, importance notice
+
+**5. Payment Due Reminder**
+- **Trigger:** Payment overdue (configurable grace period)
+- **Purpose:** Collect outstanding payments
+- **Content:** Invoice details, payment link, friendly reminder
+
+**6. Delivery Notification**
+- **Trigger:** When deliverable marked complete
+- **Purpose:** Notify client their video is ready
+- **Content:** Link to Google Drive folder, download instructions
+
+**7. Thank-You / Feedback Request**
+- **Trigger:** After event completion (configurable delay)
+- **Purpose:** Build relationship, collect testimonials
+- **Content:** Thank-you message, feedback form link, review request
+
+**Additional Pre-Event Triggers (Non-Automated):**
+- 1 month before event → missing info reminders (manual)
+- 48 hours before any event → send operator details + schedule (manual with template)
 
 ### Dance Recital Show Program (NEW - MEDIUM PRIORITY)
 **Purpose:** Automate last-minute show program collection for titling
@@ -1674,20 +1817,21 @@ Based on Round 2 discoveries:
 
 ---
 
-## ✅ SPECIFICATION UPDATED (v5.0)
+## ✅ SPECIFICATION UPDATED (v6.0)
 
-This document represents the complete system specification after all interviews and refinements, including Round 5 UX/UI feedback.
+This document represents the complete system specification after all interviews and refinements, including Round 5 Planning & Product Decisions.
 
-**Total decisions captured:** 85+
+**Total decisions captured:** 100+
 **Edge cases resolved:** 40+
 **Features excluded:** 10+
 **New features added (Round 3):** 15
 **UX/UI enhancements (Round 5):** 20+
+**Planning & Product decisions (Round 5):** 15 questions answered
 **Architecture locked:** Yes (with customization layer added)
 **Phase priority:** SCHEDULING FIRST
-**Pending interview questions:** 15 (clarifications needed before mockup Round 6)
+**Specification confidence:** 95%
 
-**Ready for implementation after interview Round 5 clarifications.**
+**Ready for Week 2 schema validation.**
 
 ---
 
