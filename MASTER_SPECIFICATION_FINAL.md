@@ -193,6 +193,47 @@ interface TableColumn {
 - Gear/Inventory (status, category, last used)
 - All other table views
 
+#### 8. **Microphone FAB (Floating Action Button)**
+**Rule:** Voice control accessible from every page
+
+**Implementation:**
+```typescript
+interface MicrophoneFAB {
+  position: 'fixed';
+  bottom: '24px';
+  right: '24px';
+  z_index: 9999;  // Above all other elements
+  size: '56px';   // Material Design standard FAB size
+  behavior: 'click-to-talk' | 'push-to-talk';
+}
+
+// Mobile adjustments
+@media (max-width: 768px) {
+  bottom: '80px';  // Above mobile nav if present
+  right: '16px';
+}
+```
+
+**Features:**
+- **Click to activate:** Microphone icon turns red, listening mode
+- **Voice transcription:** Real-time display of spoken words
+- **Command execution:** AI parses intent → executes action
+- **Visual feedback:** Success/error states
+- **Keyboard shortcut:** Cmd/Ctrl + K to activate
+
+**Placement Rules:**
+- Must not overlap other fixed elements (see Round 5 feedback)
+- Check existing fixed positions: widgets, chat buttons, etc.
+- Minimum 16px gap from other fixed elements
+- Mobile: Move up if bottom nav exists
+
+**Accessibility:**
+- ARIA label: "Voice command"
+- Keyboard accessible
+- Screen reader friendly
+
+**Implementation Priority:** Week 7-8 (Frontend Build phase)
+
 ---
 
 ## 🏗️ ARCHITECTURE OVERVIEW
@@ -245,6 +286,16 @@ const permissions = {
 - StreamStage (user's company) is the **first tenant**, not the only tenant
 - Future tenants: Other video production companies, event agencies, content studios
 - Each tenant gets isolated data, custom subdomain, separate billing
+
+**Go-To-Market Strategy:**
+- **Phase 1 (Months 1-6):** Build for StreamStage, validate product-market fit
+- **Phase 2 (Months 7-12):** Refine based on StreamStage feedback, prepare for multi-tenant
+- **Phase 3 (Year 2+):** Sell to other video production companies
+  - Target: Mid-size production companies ($500k-$5M annual revenue)
+  - Positioning: "HoneyBook for video production companies with scheduling focus"
+  - Competitive advantage: Voice control + operator scheduling + Vimeo integration
+- **Pricing Model:** Monthly SaaS scaled by company size (see Pricing Tiers below)
+- **Goal:** Sellable, sustainable SaaS business serving video production industry
 
 ### Tenant Isolation Strategy
 
@@ -1575,14 +1626,34 @@ Based on Round 2 discoveries:
 
 ## 📏 SUCCESS METRICS
 
+### North Star Metric
+**"Less Mental Load"** - If the system reduces stress during event season, it's working.
+
+> "Finally having a unified logistics and scheduling brain that reduces chaos and gives peace of mind during event season"
+
+**Measured by:**
+- Calm efficiency (not data volume)
+- Reduced time scrambling for contract/event details
+- Fewer operator scheduling conflicts
+- Less manual follow-up needed
+
 ### Primary Goals
 1. **Reduce scheduling friction** - Measured by time per booking
 2. **Enable voice control** - Measured by commands per day
 3. **Survive busy season** - June without meltdown
+4. **Improve user well-being** - Stress reduction, peace of mind
+
+### Success Indicators
+- ✅ No more scrambling for info
+- ✅ Seamless automated client communication
+- ✅ Minimal manual scheduling friction
+- ✅ Operators always know their assignments
+- ✅ Commander can manage weekends at a glance without stress
 
 ### Non-Goals
 - Complex automation
 - Predictive analytics
+- Deep analytics dashboards
 - Multi-business scaling (yet)
 
 ---
@@ -1594,6 +1665,12 @@ Based on Round 2 discoveries:
 3. **Record Reality** - Track what happened, don't prevent
 4. **Assist Decisions** - Information, not automation
 5. **Simple Wins** - No bulk ops, no complex rules
+6. **Full Flexibility** - No locked text anywhere
+   - All email templates fully editable
+   - All contract terms customizable
+   - All questionnaire questions editable
+   - No hard-coded client-facing text
+   - Commander can override any default
 
 ---
 
