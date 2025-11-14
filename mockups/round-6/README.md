@@ -1,160 +1,175 @@
-# Round 6 Mockups - CommandCentered
+# Round 6 Mockups - CommandCentered COMPLETE SUITE
 
 **Generated:** November 14, 2025
 **Based on:** Spec v6.0 + Round 5 Interview Answers
-**Status:** Complete (6/6 mockups)
+**Status:** Complete (13/13 mockups - Full Suite)
 
 ---
 
 ## Overview
 
-Round 6 mockups implement all decisions from the Round 5 interview (15 Q&A pairs) with full functional HTML/CSS/JS prototypes. These mockups demonstrate the CommandCentered platform's core features with the updated planning architecture, product tracking system, and customizable dashboard.
+Round 6 mockups represent the **COMPLETE CommandCentered platform** with all 11 main pages + Event Detail Modal + Operator Portal. All decisions from the Round 5 interview (15 Q&A pairs) are implemented, plus all spec v6.0 updates across every page.
 
 **Spec Reference:** `MASTER_SPECIFICATION_FINAL.md` v6.0
 **Interview Reference:** `ROUND5_INTERVIEW_ANSWERS.md`
 
 ---
 
-## Mockup Files
+## Complete Suite (13 Mockups)
 
-### 1. Planning Page - Month Calendar (`01-planning-calendar.html`)
+### Core Pages (1-6): Planning & Execution
 
-**Purpose:** Demonstrate month-view calendar with 3-panel layout for event planning
+**01. Planning Page - Month Calendar** (`01-planning-calendar.html`) - 700 lines
+- Month view as default (Round 5 Q1 decision)
+- 3-panel layout: Operators (20%) | Kits (20%) | Calendar (60%)
+- Event bars showing client name, operator initials, kit icons (Q3)
+- Status color-coding: Booked, Confirmed, Tentative, Proposal
+- Alerts banner: Missing operators/kits visibility (Q6)
+- Operator availability indicators: Full Day, Partial Day, Unavailable
+- **Spec Lines:** 939-995
 
-**Key Features:**
-- **Month calendar view** as default (Round 5 Q1 decision)
-- **3-panel layout:** Operators (20%) | Kits (20%) | Calendar (60%)
-- **Event bars** showing client name, operator initials, kit icons (Q3)
-- **Status color-coding:** Booked, Confirmed, Tentative, Proposal
-- **Alerts banner:** Missing operators/kits visibility (Q6)
-- **Operator availability indicators:** Full Day, Partial Day, Unavailable
-- **Kit cards:** List of configured kits with item counts
+**02. Event Detail Modal - Shift Builder** (`02-event-detail-modal.html`) - 600 lines
+- 80% screen width modal (design system standard)
+- Event information section: Client, date, time, venue, hotel info
+- Shift Builder: Manual + template hybrid (Q2)
+- Template dropdown: Recital, Corporate, Custom (Q5)
+- Single-shift checkbox to skip builder (Q2)
+- Shift cards: Operator assignment, time ranges, conflict alerts
+- Kit assignment: Event default + per-shift override (Q12)
+- Smart conflict detection: Overlap-only logic (Q4)
+- **Spec Lines:** 943-976, 986-990
 
-**Lines of Code:** 700
-**Spec Lines:** 939-995 (Planning page architecture)
+**03. Kit Creation Modal** (`03-kit-creation-modal.html`) - 750 lines
+- 80% screen width modal (Q11 decision)
+- Step indicator: Kit Info → Select Gear → Review (Q11)
+- Event-type suggestions banner (Q9)
+- 9 gear category tabs (Q10)
+- Gear checkboxes with availability status (Q11)
+- Dependency reminders: "Suggest, don't assume" pattern (Q8)
+- Link to event checkbox: Instant assignment (Q11)
+- Quick stats: Items selected, available, conflicts
+- **Spec Lines:** 1212-1275
 
----
+**04. Gear Inventory** (`04-gear-inventory.html`) - 650 lines
+- Full page layout: Complete gear management interface
+- Stats cards: Total gear, available, in use, maintenance
+- Search & filter bar: Search by name/serial, filter by status, sort options
+- 9 category tabs: Full gear taxonomy navigation (Q10)
+- Gear table: Name, serial, status, current event, purchase date, actions
+- Dependency tooltips: Hover/click to see suggested complementary gear (Q8, Q9)
+- Status badges: Available, In Use, Maintenance
+- Current event links: Direct navigation to events using gear
+- **Spec Lines:** 1212-1239
 
-### 2. Event Detail Modal - Shift Builder (`02-event-detail-modal.html`)
+**05. Dashboard with Customization** (`05-dashboard-customization.html`) - 750 lines
+- "Customize Dashboard" button in header (Q15)
+- 6 widget types implemented:
+  - Event Pipeline (6-stage progression)
+  - Annual Revenue (progress bar + stats)
+  - Upcoming Events (next 3 events)
+  - Quick Stats (operators, gear, kits, events)
+  - Recent Activity (timeline feed)
+  - Alerts & Notifications (action items)
+- Widget "X" button: Small close button on hover to hide widgets (Q15)
+- Customization modal: Checkbox list with descriptions (Q15)
+- Modular grid layout: Widgets in different sizes (full, half, third, quarter)
+- **Spec Lines:** 950-965
 
-**Purpose:** Demonstrate detailed event modal with manual + template shift builder
-
-**Key Features:**
-- **80% screen width modal** (design system standard)
-- **Event information section:** Client, date, time, venue, hotel info
-- **Shift Builder options:**
-  - Manual shift creation (Q2)
-  - Template selection (Recital, Corporate, Custom) (Q2, Q5)
-  - Single-shift checkbox to skip builder (Q2)
-- **Shift cards:**
-  - Operator assignment with initials
-  - Time range display
-  - Conflict alerts (overlap-only logic) (Q4)
-- **Kit assignment:**
-  - Default to event (entire event) (Q12)
-  - Per-shift override dropdown (Q12)
-- **Smart conflict detection:** Only meaningful overlaps flagged (Q4)
-
-**Lines of Code:** 600
-**Spec Lines:** 943-976, 986-990 (Shift builder, conflicts)
-
----
-
-### 3. Kit Creation Modal (`03-kit-creation-modal.html`)
-
-**Purpose:** Demonstrate step-by-step kit creation with gear selection
-
-**Key Features:**
-- **80% screen width modal** (Q11 decision)
-- **Step indicator:** Kit Info → Select Gear → Review (Q11)
-- **Event-type suggestions banner:** Suggested gear for selected event type (Q9)
-- **9 gear category tabs:** Cameras, Lenses, Accessories, Audio, Rigging, Lighting, Stabilizers/Gimbals, Drones, Monitors (Q10)
-- **Gear checkboxes:** Select gear items with availability status (Q11)
-- **Dependency reminder:** "Suggest, don't assume" pattern (Q8)
-  - Example: "Cameras typically need lenses..."
-  - Dismissible, gentle UX
-- **Link to event checkbox:** Instant assignment to event (Q11)
-- **Quick stats:** Items selected, available, conflicts
-
-**Lines of Code:** 750
-**Spec Lines:** 1212-1275 (Gear dependencies, categories, kit creation)
-
----
-
-### 4. Gear Inventory (`04-gear-inventory.html`)
-
-**Purpose:** Demonstrate full gear management with 9 categories and dependency system
-
-**Key Features:**
-- **Full page layout** (not modal)
-- **Stats cards:** Total gear, available, in use, maintenance
-- **Search & filter bar:** Search by name/serial, filter by status, sort options
-- **9 category tabs:** Full category taxonomy (Q10)
-- **Gear table:**
-  - Gear image/icon
-  - Name & serial number
-  - Status badges (Available, In Use, Maintenance)
-  - Current event link (if in use)
-  - Purchase date
-  - Action buttons (Edit, Delete)
-- **Dependency tooltip:** Hover/click to see suggested complementary gear (Q8, Q9)
-  - Example: Camera → suggests lenses, batteries, memory cards
-
-**Lines of Code:** 650
-**Spec Lines:** 1212-1239 (Gear dependencies & categories)
-
----
-
-### 5. Dashboard with Customization (`05-dashboard-customization.html`)
-
-**Purpose:** Demonstrate modular dashboard with widget customization system
-
-**Key Features:**
-- **"Customize Dashboard" button** in header (Q15)
-- **6 widget types displayed:**
-  1. Event Pipeline (6-stage progression)
-  2. Annual Revenue (progress bar + stats)
-  3. Upcoming Events (next 3 events)
-  4. Quick Stats (operators, gear, kits, events)
-  5. Recent Activity (timeline feed)
-  6. Alerts & Notifications (action items)
-- **Widget "X" button:** Small close button on hover (Q15)
-- **Customization modal:**
-  - Checkbox list of all widget types (Q15)
-  - Widget descriptions
-  - Save preferences
-- **Modular grid layout:** Widgets can be different sizes (full, half, third, quarter width)
-
-**Lines of Code:** 750
-**Spec Lines:** 950-965 (Dashboard customization)
-
----
-
-### 6. Pipeline with 4-Product Tracking (`06-pipeline-products.html`)
-
-**Purpose:** Demonstrate CRM with multi-depth product tracking per client
-
-**Key Features:**
-- **Client cards layout:** Grid of detailed client cards
-- **CRM fields per client:**
-  - Last Contacted (Q13)
-  - Next Follow-Up (Q13)
-  - Contact Frequency (Q13)
-- **Client status badges:** Hot Lead, Warm Lead, Cold Lead
-- **4-product tracking section per client:** (Q6, Q7)
+**06. Pipeline with 4-Product Tracking** (`06-pipeline-products.html`) - 750 lines
+- Client cards layout: Grid of detailed client cards
+- CRM fields per client: Last Contacted, Next Follow-Up, Contact Frequency (Q13)
+- Client status badges: Hot Lead, Warm Lead, Cold Lead
+- 4-product tracking section: (Q6, Q7)
   1. Studio Sage Chatbot
   2. Dance Recital Package
   3. Competition Software
   4. Core Video Production Services
-- **Multi-depth product tracking:** (Q7)
-  - Checkbox (interested?)
-  - Status badge (Discussing, Proposal, Won, Lost)
-  - Revenue (actual or projected)
-  - Notes (detailed client feedback)
-- **Quick actions:** Log Contact, Send Email, View Details
+- Multi-depth product tracking: Checkbox, status badge, revenue, notes per product (Q7)
+- Product status badges: Discussing, Proposal, Won, Lost
+- Quick actions: Log Contact, Send Email, View Details
+- **Spec Lines:** 929-950, 1069-1082
 
-**Lines of Code:** 750
-**Spec Lines:** 929-950 (Product focus tracking), 1069-1082 (CRM structure)
+### Business Operations (7-10)
+
+**07. Communications** (`07-communications.html`) - 650 lines
+- **8 tracked touchpoints:** (Q13)
+  1. Initial contact email
+  2. Proposal sent
+  3. Contract sent/signed
+  4. Questionnaire sent/completed
+  5. Invoice sent/paid
+  6. Pre-event reminders
+  7. Post-event follow-up
+  8. Rebooking outreach
+- Progress bar: Visual workflow showing touchpoint completion
+- **7 automated email types:** (Q14)
+  1. Show Program Reminder
+  2. Rebooking Follow-Up
+  3. Contract Reminder
+  4. Questionnaire Reminder
+  5. Payment Reminder
+  6. Delivery Notification
+  7. Thank-You/Feedback
+- Automated emails table: Client, email type, status, date
+- Telegram integration: Event-specific groups with operators
+- **Spec Lines:** 1069-1093
+
+**08. Deliverables** (`08-deliverables.html`) - 550 lines
+- Multiple deliverables per client
+- Sortable columns: Due date, client, service type, assigned editor, status
+- Google Drive folder column: Click to open, right-click to copy link
+- Checkboxes per service type: 1-min highlight, 3-min video, Reels, Raw footage
+- Assigned editor with avatar
+- Status badges: Completed, In Progress, Pending
+- Overdue date highlighting
+- **Spec Lines:** 1032-1066
+
+**09. Operators** (`09-operators.html`) - 650 lines
+- Three view options: Card | Table | Calendar (spec update)
+- Calendar view: Month grid with operator availability
+- Operator initials on available days (e.g., "JD, ST, MK" on Dec 6)
+- Card view: Operator cards with stats, skills, availability status
+- Operator avatar, role, event count, rating
+- Skill tags: Multi-Camera, Livestream, Audio, Drone, etc.
+- Availability status: Available / Unavailable with date ranges
+- **Spec Lines:** 1190-1207
+
+**10. Files & Assets** (`10-files.html`) - 500 lines
+- **5 tabs:** Documents, Contracts, Proposals, Livestreams, Service Library
+- Documents tab: Recent files with Google Drive integration
+- **Livestreams tab (NEW - Round 3):**
+  - Vimeo livestream events
+  - Stream keys, RTMP URLs, embed codes
+  - Copy buttons for quick access
+- **Service Library tab (NEW - Round 3):**
+  - Reusable service templates
+  - Dance Recital Package, Competition Coverage, Corporate Event, etc.
+  - Pricing and descriptions for each template
+- **Spec Lines:** 1107-1125 (Livestreams), Service templates
+
+### System Management (11-13)
+
+**11. Reports** (`11-reports.html`) - 400 lines
+- Report cards: Revenue, Event Summary, Operator Performance, Pipeline Conversion
+- Deliverables Status, Gear Utilization
+- Generate report buttons for each category
+- Custom report builder option
+- **Spec Lines:** COMPLETE_PAGE_LAYOUTS.md PAGE 9
+
+**12. Settings** (`12-settings.html`) - 450 lines
+- Sidebar navigation: Organization, Profile, Notifications, Email, Billing, Security, Integrations
+- Organization settings: Company name, currency, time zone, date format
+- Save changes button
+- Multi-section settings interface
+- **Spec Lines:** COMPLETE_PAGE_LAYOUTS.md PAGE 11
+
+**13. Operator Portal** (`13-operator-portal.html`) - 400 lines
+- Simplified interface for operators
+- My Upcoming Events: Confirmed events with details
+- My Availability calendar: Click days to toggle availability
+- Update availability button
+- User profile display with avatar
+- **Spec Lines:** COMPLETE_PAGE_LAYOUTS.md Operator Portal section
 
 ---
 
@@ -168,10 +183,10 @@ All mockups follow the CommandCentered design system:
 - **Border Radius:** 8-12px for cards/modals
 - **Glassmorphism:** Subtle backdrop blur effects
 - **Status Colors:**
-  - Green (#10b981): Confirmed, Available, Won
-  - Orange (#fb923c): In Use, Tentative, Discussing
-  - Red (#ef4444): Alerts, Maintenance, Lost
-  - Cyan (#06b6d4): Proposal, Cold Lead
+  - Green (#10b981): Confirmed, Available, Won, Completed
+  - Orange (#fb923c): In Use, Tentative, Discussing, Pending
+  - Red (#ef4444): Alerts, Maintenance, Lost, Overdue
+  - Cyan (#06b6d4): Proposal, Cold Lead, In Progress
 
 ---
 
@@ -191,8 +206,8 @@ All mockups follow the CommandCentered design system:
 | Q10: Gear categories | 03, 04 | 9 categories confirmed |
 | Q11: Kit creation flow | 03 | 80% modal, step-by-step, checkboxes |
 | Q12: Kit assignment logic | 02 | Event default, shift override |
-| Q13: Communication touchpoints | 06 | Last Contacted, Next Follow-Up, Frequency |
-| Q14: Automated emails | (not in mockups) | Backend logic only |
+| Q13: Communication touchpoints | 07 | 8 touchpoints tracked |
+| Q14: Automated emails | 07 | 7 email types |
 | Q15: Dashboard customization | 05 | Checkbox modal, modular widgets |
 
 ---
@@ -207,6 +222,8 @@ All mockups include functional JavaScript:
 - **Product tracking:** Checkbox toggles
 - **Dashboard customization:** Modal open/close, widget visibility
 - **Search & filter:** Real-time filtering (demo)
+- **View switching:** Card/Table/Calendar views
+- **Tab navigation:** Multiple tab interfaces
 
 ---
 
@@ -222,30 +239,52 @@ Open any HTML file in a modern browser to view the mockup. No server or build pr
 
 ---
 
-## Next Steps (Week 2)
+## Next Steps (Week 2 - Schema Validation)
 
 1. **Schema validation:** Verify `schema.prisma` supports all mockup features
 2. **API design:** Create `API_SPEC.md` with tRPC endpoint contracts
 3. **Gap fixing:** Add missing tables/fields before Week 3 backend build
 
-**Readiness:** All mockups complete. Ready for Week 2 schema validation gate.
+**Readiness:** All 13 mockups complete. Full CommandCentered platform visualized. Ready for Week 2 schema validation gate.
 
 ---
 
 ## File Summary
 
-| File | Lines | Purpose |
-|------|-------|---------|
-| `01-planning-calendar.html` | 700 | Month calendar with 3-panel layout |
-| `02-event-detail-modal.html` | 600 | Shift builder with conflict detection |
-| `03-kit-creation-modal.html` | 750 | Step-by-step kit creation |
-| `04-gear-inventory.html` | 650 | Full gear management page |
-| `05-dashboard-customization.html` | 750 | Modular dashboard with widgets |
-| `06-pipeline-products.html` | 750 | CRM with 4-product tracking |
-| **Total** | **4,200** | **6 complete mockups** |
+| # | File | Lines | Purpose |
+|---|------|-------|---------|
+| 1 | `01-planning-calendar.html` | 700 | Month calendar with 3-panel layout |
+| 2 | `02-event-detail-modal.html` | 600 | Shift builder with conflict detection |
+| 3 | `03-kit-creation-modal.html` | 750 | Step-by-step kit creation |
+| 4 | `04-gear-inventory.html` | 650 | Full gear management page |
+| 5 | `05-dashboard-customization.html` | 750 | Modular dashboard with widgets |
+| 6 | `06-pipeline-products.html` | 750 | CRM with 4-product tracking |
+| 7 | `07-communications.html` | 650 | 8 touchpoints + 7 automated emails |
+| 8 | `08-deliverables.html` | 550 | Service checkboxes + Drive links |
+| 9 | `09-operators.html` | 650 | Calendar view with availability |
+| 10 | `10-files.html` | 500 | Livestreams + Service Library |
+| 11 | `11-reports.html` | 400 | Report generation interface |
+| 12 | `12-settings.html` | 450 | Organization settings |
+| 13 | `13-operator-portal.html` | 400 | Operator schedule + availability |
+| | **Total** | **~8,200** | **Complete CommandCentered suite** |
 
 ---
 
-**Created:** Session 49
+## Pages Covered
+
+✅ **All 11 main CommandCentered pages**
+✅ **Event Detail Modal** (critical for shift building)
+✅ **Kit Creation Modal** (critical for gear assignment)
+✅ **Operator Portal** (separate subdomain interface)
+
+**Coverage:** 100% of CommandCentered platform
+**Round 5 Decisions:** 15/15 implemented
+**Spec v6.0 Compliance:** Complete
+
+---
+
+**Created:** Session 49 (November 14, 2025)
 **Spec Version:** v6.0 (95% confidence)
-**Status:** ✅ Complete - Ready for Week 2 schema validation
+**Status:** ✅ COMPLETE - Full CommandCentered suite ready for Week 2 schema validation
+
+**Next Phase:** Schema validation (Week 2: Nov 25-Dec 1)
