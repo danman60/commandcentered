@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CommandCentered - Kit Creation Modal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        /* Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        /* Modal Container - 80% Width */
+        .modal {
+            width: 80%;
+            max-width: 1400px;
+            max-height: 90vh;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            border-radius: 16px;
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Modal Header */
+        .modal-header {
+            padding: 24px 32px;
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
+            border-bottom: 1px solid rgba(6, 182, 212, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #06b6d4 0%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .close-btn {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .close-btn:hover {
+            background: rgba(239, 68, 68, 0.3);
+            transform: scale(1.1);
+        }
+
+        /* Modal Body - Scrollable */
+        .modal-body {
+            padding: 32px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        /* Step Indicator */
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 32px;
+            gap: 16px;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(71, 85, 105, 0.5);
+            border: 2px solid rgba(71, 85, 105, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 16px;
+            color: #94a3b8;
+            transition: all 0.3s;
+        }
+
+        .step-circle.active {
+            background: linear-gradient(135deg, #06b6d4 0%, #0284c7 100%);
+            border-color: #06b6d4;
+            color: #ffffff;
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.5);
+        }
+
+        .step-circle.completed {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-color: #10b981;
+            color: #ffffff;
+        }
+
+        .step-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #94a3b8;
+        }
+
+        .step.active .step-label {
+            color: #06b6d4;
+        }
+
+        .step.completed .step-label {
+            color: #10b981;
+        }
+
+        .step-arrow {
+            font-size: 20px;
+            color: #475569;
+        }
+
+        /* Kit Info Section */
+        .kit-info-section {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #e2e8f0;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-icon {
+            font-size: 20px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #cbd5e1;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            padding: 12px 16px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 8px;
+            color: #e2e8f0;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: #06b6d4;
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        /* Event-Type Suggestions Banner */
+        .suggestions-banner {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 32px;
+        }
+
+        .suggestions-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .suggestions-icon {
+            font-size: 24px;
+        }
+
+        .suggestions-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #06b6d4;
+        }
+
+        .suggestions-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .suggestion-tag {
+            padding: 8px 16px;
+            background: rgba(6, 182, 212, 0.2);
+            border: 1px solid rgba(6, 182, 212, 0.4);
+            border-radius: 20px;
+            font-size: 13px;
+            color: #06b6d4;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .suggestion-tag:hover {
+            background: rgba(6, 182, 212, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .suggestion-tag.selected {
+            background: linear-gradient(135deg, #06b6d4 0%, #0284c7 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+        }
+
+        /* Gear Selection Section */
+        .gear-selection-section {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        /* Category Tabs */
+        .category-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+        }
+
+        .category-tab {
+            padding: 12px 20px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .category-tab:hover {
+            background: rgba(30, 41, 59, 0.8);
+            border-color: rgba(100, 116, 139, 0.6);
+        }
+
+        .category-tab.active {
+            background: linear-gradient(135deg, #06b6d4 0%, #0284c7 100%);
+            border-color: #06b6d4;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+        }
+
+        .category-count {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* Gear Items Grid */
+        .gear-items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 16px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 4px;
+        }
+
+        .gear-item {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 8px;
+            padding: 16px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .gear-item:hover {
+            background: rgba(30, 41, 59, 0.8);
+            border-color: rgba(100, 116, 139, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .gear-item.selected {
+            background: rgba(6, 182, 212, 0.15);
+            border-color: #06b6d4;
+            box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.2);
+        }
+
+        .gear-item-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .gear-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(71, 85, 105, 0.8);
+            border-radius: 4px;
+            background: rgba(15, 23, 42, 0.6);
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gear-item.selected .gear-checkbox {
+            background: linear-gradient(135deg, #06b6d4 0%, #0284c7 100%);
+            border-color: #06b6d4;
+        }
+
+        .gear-checkbox::after {
+            content: '✓';
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .gear-item.selected .gear-checkbox::after {
+            display: block;
+        }
+
+        .gear-item-info {
+            flex: 1;
+        }
+
+        .gear-item-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #e2e8f0;
+            margin-bottom: 4px;
+        }
+
+        .gear-item-details {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .gear-item-status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        .gear-item-status.available {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .gear-item-status.in-use {
+            background: rgba(251, 146, 60, 0.2);
+            color: #fb923c;
+        }
+
+        /* Dependency Reminder */
+        .dependency-reminder {
+            background: rgba(251, 146, 60, 0.15);
+            border: 1px solid rgba(251, 146, 60, 0.3);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-top: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .reminder-icon {
+            font-size: 20px;
+            color: #fb923c;
+        }
+
+        .reminder-text {
+            font-size: 13px;
+            color: #fdba74;
+            flex: 1;
+        }
+
+        .reminder-dismiss {
+            background: none;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 4px;
+            transition: color 0.2s;
+        }
+
+        .reminder-dismiss:hover {
+            color: #e2e8f0;
+        }
+
+        /* Quick Stats */
+        .quick-stats {
+            display: flex;
+            gap: 16px;
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(71, 85, 105, 0.3);
+        }
+
+        .stat-card {
+            flex: 1;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 8px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .stat-icon {
+            font-size: 28px;
+        }
+
+        .stat-info {
+            flex: 1;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #06b6d4;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        /* Modal Footer */
+        .modal-footer {
+            padding: 20px 32px;
+            background: rgba(15, 23, 42, 0.6);
+            border-top: 1px solid rgba(71, 85, 105, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .link-to-event-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .link-to-event-checkbox input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .link-to-event-checkbox label {
+            font-size: 14px;
+            color: #cbd5e1;
+            cursor: pointer;
+        }
+
+        .event-select {
+            padding: 8px 12px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 6px;
+            color: #e2e8f0;
+            font-size: 14px;
+            min-width: 200px;
+        }
+
+        .footer-right {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-secondary {
+            background: rgba(71, 85, 105, 0.3);
+            color: #cbd5e1;
+            border: 1px solid rgba(71, 85, 105, 0.5);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(71, 85, 105, 0.5);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #06b6d4 0%, #0284c7 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(6, 182, 212, 0.4);
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(71, 85, 105, 0.6);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(71, 85, 105, 0.8);
+        }
+    </style>
+</head>
+<body>
+
+<div class="modal-overlay">
+    <div class="modal">
+        <!-- Header -->
+        <div class="modal-header">
+            <div class="modal-title">Create New Kit</div>
+            <button class="close-btn" onclick="closeModal()">×</button>
+        </div>
+
+        <!-- Body -->
+        <div class="modal-body">
+            <!-- Step Indicator -->
+            <div class="step-indicator">
+                <div class="step completed">
+                    <div class="step-circle completed">1</div>
+                    <div class="step-label">Kit Info</div>
+                </div>
+                <div class="step-arrow">→</div>
+                <div class="step active">
+                    <div class="step-circle active">2</div>
+                    <div class="step-label">Select Gear</div>
+                </div>
+                <div class="step-arrow">→</div>
+                <div class="step">
+                    <div class="step-circle">3</div>
+                    <div class="step-label">Review</div>
+                </div>
+            </div>
+
+            <!-- Kit Info Section -->
+            <div class="kit-info-section">
+                <div class="section-title">
+                    <span class="section-icon">📦</span>
+                    Kit Information
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Kit Name *</label>
+                        <input type="text" class="form-input" placeholder="e.g., Recital Kit A" value="Recital Kit A">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Event Type</label>
+                        <select class="form-select">
+                            <option>Dance Recital</option>
+                            <option>Corporate Event</option>
+                            <option>Wedding</option>
+                            <option>Conference</option>
+                            <option>Custom</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group full-width">
+                    <label class="form-label">Description (Optional)</label>
+                    <textarea class="form-textarea" placeholder="Add notes about this kit...">Standard recital package with 3 cameras, wireless audio, and lighting setup.</textarea>
+                </div>
+            </div>
+
+            <!-- Event-Type Suggestions Banner -->
+            <div class="suggestions-banner">
+                <div class="suggestions-header">
+                    <span class="suggestions-icon">💡</span>
+                    <div class="suggestions-title">Suggested Gear for Dance Recital</div>
+                </div>
+                <div class="suggestions-list">
+                    <div class="suggestion-tag selected" onclick="toggleSuggestion(this)">
+                        <span>✓</span> Sony A7S III
+                    </div>
+                    <div class="suggestion-tag selected" onclick="toggleSuggestion(this)">
+                        <span>✓</span> 24-70mm f/2.8
+                    </div>
+                    <div class="suggestion-tag" onclick="toggleSuggestion(this)">
+                        Wireless Lav Mic
+                    </div>
+                    <div class="suggestion-tag selected" onclick="toggleSuggestion(this)">
+                        <span>✓</span> LED Panel 600W
+                    </div>
+                    <div class="suggestion-tag" onclick="toggleSuggestion(this)">
+                        Gimbal (Ronin RS3)
+                    </div>
+                    <div class="suggestion-tag" onclick="toggleSuggestion(this)">
+                        Shotgun Mic
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gear Selection Section -->
+            <div class="gear-selection-section">
+                <div class="section-title">
+                    <span class="section-icon">🎥</span>
+                    Select Gear
+                </div>
+
+                <!-- Category Tabs -->
+                <div class="category-tabs">
+                    <div class="category-tab active" onclick="switchCategory(this, 'cameras')">
+                        📷 Cameras
+                        <span class="category-count">2</span>
+                    </div>
+                    <div class="category-tab" onclick="switchCategory(this, 'lenses')">
+                        🔍 Lenses
+                        <span class="category-count">1</span>
+                    </div>
+                    <div class="category-tab" onclick="switchCategory(this, 'accessories')">
+                        🔧 Accessories
+                        <span class="category-count">0</span>
+                    </div>
+                    <div class="category-tab" onclick="switchCategory(this, 'audio')">
+                        🎤 Audio
+                        <span class="category-count">0</span>
+                    </div>
+                    <div class="category-tab" onclick="switchCategory(this, 'rigging')">
+                        🏗️ Rigging
+                        <span class="category-count">0</span>
+                    </div>
+                    <div class="category-tab" onclick="switchCategory(this, 'lighting')">
+                        💡 Lighting
+                        <span class="category-count">1</span>
+                    </div>
+                    <div class="category-tab" onclick="switchCategory(this, 'stabilizers')">
+                        🎬 Stabilizers
+                        <span class="category-count">0</span>
+                    </div>
+                    <div class="category-tab" onclick="switchCategory(this, 'drones')">
+                        🚁 Drones
+                        <span class="category-count">0</span>
+                    </div>
+                    <div class="category-tab" onclick="switchCategory(this, 'monitors')">
+                        🖥️ Monitors
+                        <span class="category-count">0</span>
+                    </div>
+                </div>
+
+                <!-- Gear Items Grid (Cameras - Active) -->
+                <div class="gear-items-grid" id="camerasGrid">
+                    <div class="gear-item selected" onclick="toggleGearItem(this)">
+                        <div class="gear-item-header">
+                            <div class="gear-checkbox"></div>
+                            <div class="gear-item-info">
+                                <div class="gear-item-name">Sony A7S III</div>
+                                <div class="gear-item-details">Body Only • Serial: SN12345</div>
+                                <div class="gear-item-status available">Available</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="gear-item selected" onclick="toggleGearItem(this)">
+                        <div class="gear-item-header">
+                            <div class="gear-checkbox"></div>
+                            <div class="gear-item-info">
+                                <div class="gear-item-name">Sony A7 IV</div>
+                                <div class="gear-item-details">Body Only • Serial: SN12346</div>
+                                <div class="gear-item-status available">Available</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="gear-item" onclick="toggleGearItem(this)">
+                        <div class="gear-item-header">
+                            <div class="gear-checkbox"></div>
+                            <div class="gear-item-info">
+                                <div class="gear-item-name">Canon R5</div>
+                                <div class="gear-item-details">Body Only • Serial: SN12347</div>
+                                <div class="gear-item-status in-use">In Use (XYZ Event)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="gear-item" onclick="toggleGearItem(this)">
+                        <div class="gear-item-header">
+                            <div class="gear-checkbox"></div>
+                            <div class="gear-item-info">
+                                <div class="gear-item-name">Sony A7R V</div>
+                                <div class="gear-item-details">Body Only • Serial: SN12348</div>
+                                <div class="gear-item-status available">Available</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dependency Reminder -->
+                <div class="dependency-reminder">
+                    <span class="reminder-icon">ℹ️</span>
+                    <div class="reminder-text">
+                        <strong>Reminder:</strong> Cameras typically need lenses. Would you like to add lenses to this kit?
+                    </div>
+                    <button class="reminder-dismiss" onclick="dismissReminder(this)">×</button>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="quick-stats">
+                    <div class="stat-card">
+                        <span class="stat-icon">📦</span>
+                        <div class="stat-info">
+                            <div class="stat-value">4</div>
+                            <div class="stat-label">Items Selected</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-icon">✅</span>
+                        <div class="stat-info">
+                            <div class="stat-value">4</div>
+                            <div class="stat-label">Available</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-icon">⚠️</span>
+                        <div class="stat-info">
+                            <div class="stat-value">0</div>
+                            <div class="stat-label">Conflicts</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="modal-footer">
+            <div class="footer-left">
+                <div class="link-to-event-checkbox">
+                    <input type="checkbox" id="linkToEvent" checked>
+                    <label for="linkToEvent">Link to Event</label>
+                </div>
+                <select class="event-select">
+                    <option>EMPWR Dance Experience - Dec 6</option>
+                    <option>Glow Dance Competition - Dec 10</option>
+                    <option>XYZ Corporate - Dec 15</option>
+                </select>
+            </div>
+            <div class="footer-right">
+                <button class="btn btn-secondary" onclick="goBack()">
+                    ← Back
+                </button>
+                <button class="btn btn-primary" onclick="createKit()">
+                    Create Kit →
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Toggle Suggestion Tag
+    function toggleSuggestion(element) {
+        element.classList.toggle('selected');
+        if (element.classList.contains('selected')) {
+            if (!element.querySelector('span')) {
+                const checkmark = document.createElement('span');
+                checkmark.textContent = '✓';
+                element.insertBefore(checkmark, element.firstChild);
+            }
+        } else {
+            const checkmark = element.querySelector('span');
+            if (checkmark) checkmark.remove();
+        }
+    }
+
+    // Switch Category Tab
+    function switchCategory(element, category) {
+        // Remove active from all tabs
+        document.querySelectorAll('.category-tab').forEach(tab => {
+            tab.classList.remove('active');
+        });
+        // Add active to clicked tab
+        element.classList.add('active');
+
+        // In real app, would load different gear items
+        console.log('Switched to category:', category);
+    }
+
+    // Toggle Gear Item Selection
+    function toggleGearItem(element) {
+        // Don't select if in-use
+        if (element.querySelector('.gear-item-status.in-use')) {
+            alert('This item is currently in use and cannot be added to a new kit.');
+            return;
+        }
+
+        element.classList.toggle('selected');
+        updateStats();
+    }
+
+    // Update Quick Stats
+    function updateStats() {
+        const selectedCount = document.querySelectorAll('.gear-item.selected').length;
+        const availableCount = document.querySelectorAll('.gear-item.selected').length;
+
+        document.querySelector('.stat-value').textContent = selectedCount;
+    }
+
+    // Dismiss Reminder
+    function dismissReminder(button) {
+        button.closest('.dependency-reminder').style.display = 'none';
+    }
+
+    // Go Back
+    function goBack() {
+        console.log('Go back to Step 1');
+    }
+
+    // Create Kit
+    function createKit() {
+        const kitName = document.querySelector('.form-input').value;
+        const selectedItems = document.querySelectorAll('.gear-item.selected').length;
+
+        if (!kitName) {
+            alert('Please enter a kit name');
+            return;
+        }
+
+        if (selectedItems === 0) {
+            alert('Please select at least one item for this kit');
+            return;
+        }
+
+        console.log('Creating kit:', kitName, 'with', selectedItems, 'items');
+        alert(`Kit "${kitName}" created successfully with ${selectedItems} items!`);
+    }
+
+    // Close Modal
+    function closeModal() {
+        console.log('Close modal');
+    }
+</script>
+
+</body>
+</html>
