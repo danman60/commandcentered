@@ -1,10 +1,10 @@
-# CommandCentered - MASTER SPECIFICATION v4.0
+# CommandCentered - MASTER SPECIFICATION v5.0
 ## Complete System Requirements After All Interviews
 
-**Date:** 2025-11-12
-**Status:** UPDATED - Round 3 Vision Interview Complete
-**Rounds Completed:** Initial + Round 1 + Round 2 + Round 3 (Vision & Priorities)
-**Total Decisions:** 65+ captured
+**Date:** 2025-11-13
+**Status:** UPDATED - Round 5 Mockup Feedback Applied
+**Rounds Completed:** Initial + Round 1 + Round 2 + Round 3 (Vision) + Round 5 (UX/UI)
+**Total Decisions:** 85+ captured
 **Phase Priority:** SCHEDULING FIRST (changed from Registration first)
 
 ---
@@ -36,6 +36,162 @@ CommandCentered is a **command-and-control system** for StreamStage videography 
 - ❌ An operator performance system
 - ❌ A bulk operations tool
 - ❌ An enforcement system
+
+---
+
+## 🎨 UI/UX CUSTOMIZATION ARCHITECTURE (NEW - Round 5)
+
+### Core Philosophy: Maximum User Customization
+**Principle:** "Every commander should be able to customize their interface exactly how they want."
+
+### Customization Features
+
+#### 1. **Dashboard Cards - Drag/Drop/Resize**
+**Technology:** React Grid Layout library
+
+```typescript
+interface DashboardWidget {
+  id: string;
+  type: 'event_pipeline' | 'annual_revenue' | 'upcoming_events' | 'critical_alerts';
+  position: { x: number; y: number };
+  size: { w: number; h: number };
+  visible: boolean;
+}
+
+// User preferences stored in database
+interface UserPreferences {
+  user_id: string;
+  dashboard_layout: DashboardWidget[];
+  // ... other preferences
+}
+```
+
+**Features:**
+- Click and drag cards to reposition
+- Click and resize cards (corners/edges)
+- Save layout preferences to database
+- Restore layout on login
+- "Reset to Default" option
+
+#### 2. **View Toggle Icons**
+**Change:** Remove full text labels like "Card View" / "Table View"
+**New:** Icon-only toggles
+
+```typescript
+// Before: <button>Card View</button> <button>Table View</button>
+// After: <button><GridIcon /></button> <button><TableIcon /></button>
+
+// Icons for all view types
+interface ViewIcons {
+  card: <GridIcon />;      // Grid of cards
+  table: <TableIcon />;    // Table rows
+  calendar: <CalendarIcon />; // Month view
+}
+```
+
+**Applies to:** All pages with multiple view options (Operators, Planning, etc.)
+
+#### 3. **Left Navigation Customization**
+
+**Features:**
+- **Collapsible:** Click button to hide/show sidebar → full screen mode
+- **Drag/Drop Reorder:** Drag nav items to change order
+- **Double-Click Rename:** Customize nav item labels (e.g., "Communications" → "Comms")
+
+```typescript
+interface NavigationItem {
+  id: string;
+  label: string;              // User-customizable
+  default_label: string;      // Original label
+  icon: ReactNode;
+  order: number;              // User-defined order
+  visible: boolean;
+}
+
+// Save to user preferences
+interface NavigationPreferences {
+  collapsed: boolean;
+  items: NavigationItem[];
+}
+```
+
+**Navigation Items:**
+- Dashboard
+- Pipeline
+- Planning
+- Deliverables
+- Comms (renamed from "Communications")
+- Proposals
+- Contracts
+- Invoices
+- Questionnaires
+- Files
+- Integrations
+- Settings
+
+#### 4. **Resizable Panels**
+**Applies to:** Contracts page, Planning page (3-panel layout), any multi-panel view
+
+**Technology:** React Resizable library
+
+```typescript
+interface PanelLayout {
+  panel_id: string;
+  width_percent: number;  // % of screen width
+  min_width: number;      // Minimum pixels
+  max_width: number;      // Maximum pixels
+}
+```
+
+**Examples:**
+- Contracts page: Templates panel (left) | Existing contracts panel (right) with draggable divider
+- Planning page: Operators panel | Kits panel | Calendar panel (all resizable)
+
+#### 5. **Settings > Customization Tab**
+**Purpose:** Centralize all customization options
+
+**Sections:**
+- Dashboard widget selection (checkboxes to show/hide widgets)
+- Template customization (proposal/contract/invoice templates)
+- Navigation preferences (order, labels, visibility)
+- View defaults (card vs table vs calendar)
+- Panel layouts (reset to defaults)
+
+#### 6. **Modal Sizing Standard**
+**Rule:** All modals should be 80% screen size (not 20%)
+
+**Applies to:**
+- Proposal builder
+- Contract editor
+- Kit creation
+- Event detail view
+- Operator assignment
+- All data-heavy modals
+
+**Exception:** Simple confirmations ("Delete this item?") can stay small.
+
+#### 7. **Sortable Columns (All Tables)**
+**Rule:** Every table in the app has sortable columns
+
+**Implementation:**
+```typescript
+interface TableColumn {
+  key: string;
+  label: string;
+  sortable: boolean;  // Always true
+  sort_direction?: 'asc' | 'desc' | null;
+}
+
+// Click column header → toggle sort direction
+// Visual indicator: ↑ ↓ arrows in header
+```
+
+**Applies to:**
+- Pipeline (all CRM fields)
+- Deliverables (due date, service type, client, status)
+- Operators (name, availability, skills)
+- Gear/Inventory (status, category, last used)
+- All other table views
 
 ---
 
@@ -139,6 +295,67 @@ CREATE TABLE audit_log (
 ### Core Capability: Full CRUD
 > "Having the AI voice assistant able to have full CRUD would be killer"
 
+### AI Agent Architecture (NEW - Round 5 Deep Dive)
+
+**Layered System:**
+
+**Layer 1: Voice-to-Text (Easy)**
+- OpenAI Whisper API
+- User speaks → app converts to text → sends to AI
+- Accuracy: ~95% for clear audio
+- Latency: ~1-2 seconds
+
+**Layer 2: AI Decision Engine (Medium)**
+- GPT-4 parses intent from transcription
+- Example: "When is Impact dance recital?" → AI understands: Query events table
+- AI generates SQL or API call based on intent
+- Returns structured command to execute
+
+```typescript
+interface VoiceIntent {
+  action: 'query' | 'create' | 'update' | 'delete';
+  entity: 'event' | 'operator' | 'kit' | 'client' | 'email';
+  parameters: Record<string, any>;
+  sql_query?: string;
+  confidence: number;  // 0-1 confidence score
+}
+```
+
+**Layer 3: Database Access (Medium)**
+- AI executes query on Supabase
+- Read operations: direct execution
+- Write operations: require confirmation (see Safety Protocols)
+- Returns answer in natural language
+
+**Layer 4: Gmail Integration (Hard)**
+- For queries like "When did I talk about pricing with Client X?"
+- AI searches Gmail via API for keyword in email threads
+- Scans subject lines + body text
+- Returns: "You discussed pricing on Oct 12 in email thread 'Re: Proposal'"
+
+**Layer 5: CRUD via Voice (Hard)**
+- "Add operator John to Impact recital"
+- AI parses → creates database record
+- Requires validation: "Did you mean Impact Dance Recital on March 15? Confirm."
+- On confirmation → executes mutation
+
+**N8N Option:**
+- User has n8n experience
+- Can orchestrate: OpenAI → Supabase → Gmail
+- BUT: Easier to build directly in Next.js with API routes
+- n8n useful for testing workflows before coding
+
+**Implementation Complexity:**
+- **Week 5-6 (Integrations Phase):** Voice-to-text + simple queries
+- **Week 7-8:** CRUD operations with confirmations
+- **Week 9-10:** Gmail search + advanced queries
+
+**UI Placement:**
+- Microphone button on main dashboard (always visible)
+- Click to talk, release to process
+- Show transcription in real-time
+- Display AI response as text + execute action
+
 ### Command Categories
 
 ```typescript
@@ -147,10 +364,12 @@ interface VoiceCommands {
   "Create event for [client] on [date] at [time]": CreateEvent;
   "Assign [operator] to [event]": AssignOperator;
   "Show me Saturday's schedule": QuerySchedule;
+  "When is [client]'s event?": QueryEvent;
 
   // Logistics
   "What equipment is available on [date]": QueryEquipment;
   "Add drone to [client]'s package": UpdatePackage;
+  "Which operators are available Saturday?": QueryOperatorAvailability;
 
   // Financial
   "How much has [client] paid": QueryPayment;
@@ -159,6 +378,11 @@ interface VoiceCommands {
   // Status
   "What's the status of [client]'s contract": QueryStatus;
   "Mark [operator] as unavailable on [date]": UpdateAvailability;
+
+  // Email Search (NEW - with Gmail integration)
+  "When did I talk about pricing with [client]?": SearchGmail;
+  "When did I last contact [client]?": QueryLastContacted;
+  "Who do I need to talk to today?": QueryFollowUps;
 }
 ```
 
@@ -171,9 +395,11 @@ interface VoiceConfirmation {
     "DELETE operations",
     "Financial changes > $500",
     "Contract modifications",
-    "Bulk updates"
+    "Bulk updates",
+    "CREATE operations (new events, operators, etc.)"
   ];
   format: "I heard [action]. Confirm?";
+  voice_response: "Say 'yes' to confirm or 'cancel' to abort";
 }
 ```
 
@@ -289,16 +515,300 @@ interface NotificationConfig {
 
 ---
 
+## 📄 PAGE-SPECIFIC REQUIREMENTS (Round 5 Updates)
+
+### Pipeline Page
+
+**Click-to-Edit Fields:**
+- ALL fields should be inline-editable
+- Click field → edit mode → blur or Enter to save → updates database
+- Applies to: Contact Name, Company, Status, Frequency, Product Focus, all custom fields
+
+```typescript
+interface InlineEditField {
+  field_name: string;
+  current_value: any;
+  onClick: () => setEditMode(true);
+  onBlur: () => saveToDatabase();
+  onEnter: () => saveToDatabase();
+}
+```
+
+**Product Focus Tracking:**
+- [PENDING INTERVIEW] Multi-product tracking per client
+- Filters per product focus
+- Status/progress per product
+- Details TBD after interview Q6-Q7
+
+**CRM Enhancements (Already in spec):**
+- Last Contacted, Next Follow-Up, Contact Frequency columns (from Round 3)
+
+---
+
+### Planning Page
+
+**Architecture:**
+- **3-Panel Layout:** Operators panel | Kits panel | Calendar panel
+  - [PENDING INTERVIEW] Calendar view type (month/week/day/all)
+  - All panels resizable (draggable dividers)
+  - Panels show drag targets when dragging operators/kits
+
+**Full Screen Mode:**
+- Button to collapse left navigation → Planning takes full screen
+- Essential for drag/drop workflows
+- Keyboard shortcut: F11 or custom hotkey
+
+**Event Detail View:**
+- Click event on calendar → opens event detail within Planning page (NOT popup tooltip)
+- Event detail shows:
+  - Event info (client, date, location, hotel)
+  - Shift builder [PENDING INTERVIEW Q2, Q5]
+  - Operator assignment per shift
+  - Kit assignment [PENDING INTERVIEW Q12 - event-level or shift-level]
+  - Conflicts highlighted in red [PENDING INTERVIEW Q4 - conflict rules]
+
+**Operator/Kit Icons on Event Bars:**
+- [PENDING INTERVIEW Q3] Display operator initials + kit icons inside event bars
+- Visual design TBD
+
+**Main Planning View - Panels:**
+- **Operators Panel:** List of all operators with availability indicators
+- **Kits Panel:** List of all kits with assignment status
+- **Calendar Panel:** Month view (or other view based on Q1) showing all events
+
+---
+
+### Deliverables Page
+
+**Multiple Deliverables Per Client:**
+- Schema already supports (deliverables table has client_id + event_id)
+- Table view shows all deliverables across all clients
+- Filter by client, event, service type, status
+
+**Sortable Columns:**
+- All columns sortable (due date, client, service type, assigned editor, status)
+- Click header to toggle sort direction
+
+**Google Drive Folder Column:**
+```typescript
+interface DeliverableRow {
+  // ... existing fields
+  folder_link: string;     // Google Drive folder URL
+  folder_actions: {
+    click: () => window.open(folder_link);           // Open folder
+    rightClick: () => navigator.clipboard.writeText(folder_link); // Copy link
+  };
+}
+```
+
+**Checkboxes Per Service Type:**
+```typescript
+interface ServiceDeliverable {
+  service_type: string;  // "1-min highlight", "3-min full event", "Reels"
+  completed: boolean;    // Checkbox per service
+}
+
+// Example row:
+// Client: EMPWR Dance | Event: Spring Recital
+// Services: [✓] 1-min highlight  [✓] 3-min video  [ ] 3x Reels  [✓] Raw footage
+```
+
+---
+
+### Communications Page (Renamed: "Comms")
+
+**Layout Changes:**
+1. **Top Section: "Automated Emails"** (primary card)
+   - Shows all automated email triggers
+   - Table view: Client | Email Type | Status (Sent/Pending/Failed) | Date Sent
+   - Progress bar per client showing communication workflow completion
+   - Click email to view template or edit
+
+2. **Bottom Section: "Telegram Integration"**
+   - Merge "Telegram Bot Setup" and "Telegram Integration" into one panel
+   - Show active Telegram groups per event
+   - Button to create new group
+   - Invite operators to group
+
+**Communication Touch Points:**
+- [PENDING INTERVIEW Q13] Full list of touch points to track
+- Progress bar shows: Initial Contact → Proposal → Contract → ... → Rebooking
+
+**Gmail Integration:**
+- Track "Last Contacted" by scanning Gmail for sent emails to client
+- Update communication log automatically when user emails client externally
+- Requires Gmail OAuth read access
+- (Already answered in Q&A section)
+
+---
+
+### Proposals Page
+
+**New Column: "Date Received"**
+```typescript
+interface ProposalRow {
+  // ... existing fields
+  date_received: Date;  // When client received the proposal
+  date_viewed: Date;    // When client opened magic link (optional tracking)
+  date_accepted: Date;  // When client accepted
+}
+```
+
+**Proposal Builder Modal:**
+- Opens at 80% screen size (not small modal)
+- Full proposal editor with all sections visible
+- Service template selector (from service library)
+- Live preview of proposal
+
+---
+
+### Contracts Page
+
+**Full Screen Layout:**
+```
+┌─────────────────┬──────────────────────────┐
+│  Templates      │  Existing Contracts      │
+│  (Left Panel)   │  (Right Panel)           │
+│                 │                          │
+│  - Standard     │  [Contract List]         │
+│  - Dance Recital│                          │
+│  - Multi-Date   │  Click to preview →      │
+│  - Custom       │                          │
+│                 │                          │
+│  [Resizable Divider]                       │
+└─────────────────┴──────────────────────────┘
+```
+
+**Features:**
+- Resizable panels (drag divider left/right)
+- Templates on left (always visible)
+- Existing contracts on right (click to open full editor)
+- Contract editor opens at 80% screen size
+
+---
+
+### Questionnaires Page
+
+**UI Changes:**
+- Remove huge white button (visual cleanup)
+- Incomplete questionnaires sorted to top automatically
+- Color coding:
+  - **Yellow:** Pending, event >7 days away
+  - **Red:** Incomplete, event <7 days away (alert state)
+  - **Green:** Completed
+
+**Data Flow:**
+- Questionnaire responses auto-populate event detail in Planning
+- Hotel info, special requests, show program → all visible in event hover/detail view
+
+---
+
+### Livestreams Page (Files Tab)
+
+**New Column: "Viewing Page"**
+```typescript
+interface LivestreamRow {
+  // ... existing fields
+  viewing_page_url: string;  // streamstage.live/[event-slug]
+  vimeo_event_id: string;
+  stream_key: string;
+  embed_code: string;
+  rtmp_url: string;
+}
+```
+
+**One-Button Vimeo Generation:**
+- Button: "Generate Vimeo Stream"
+- Click → API call to Vimeo → creates livestream event
+- Auto-populates stream_key, rtmp_url, embed_code
+- Shows success message with all credentials
+
+---
+
+### Operators Page
+
+**Remove Old Navigation:**
+- Clean up any old nav buttons at top of page (from legacy mockups)
+
+**Calendar View Option:**
+- Add third view toggle: Card | Table | Calendar
+- Calendar view shows month grid with all operator availability
+- Each operator gets color coding + initials on their available days
+- Visual: Month calendar with operator initials in each day cell
+
+**Example:**
+```
+Monday Oct 14:  JD, ST, MK (3 operators available)
+Tuesday Oct 15: JD, MK (2 operators available)
+Wednesday Oct 16: (no operators available - show as empty)
+```
+
+---
+
+### Gear/Inventory Page
+
+**Tabs for Categories:**
+- Tabs: All | Cameras | Audio | Rigging | Lighting | [Other categories TBD - Interview Q10]
+- Click tab → filters table to that category
+- Each category can have subcategories (e.g., Cameras > Lenses > Accessories)
+
+**Status Indicators:**
+```typescript
+enum GearStatus {
+  PERFECT = "PERFECT",        // Green
+  NEEDS_REPAIR = "NEEDS_REPAIR", // Yellow
+  UNUSABLE = "UNUSABLE"       // Red
+}
+
+interface GearItem {
+  // ... existing fields
+  status: GearStatus;
+  needs_repair: boolean;      // Flag for maintenance
+  last_maintenance: Date;
+}
+```
+
+**Visual:**
+- Red badge: "Cannot be used"
+- Yellow badge: "Can be used but needs repair"
+- Green badge: "Perfect condition"
+
+**Subcategory Structure:**
+- [PENDING INTERVIEW Q8-Q10] Gear dependency logic
+- Camera → requires Lens + Battery + SD Card
+- Event type → recommended gear checklist
+
+**Maintenance Log:**
+- Track repair history per item
+- Flag items needing attention
+- Filter by status (show only items needing repair)
+
+---
+
+### Kits Page
+
+**Modal Sizing:**
+- Kit creation modal: 80% screen size
+- Shows full gear inventory with checkboxes
+- Live preview of kit contents
+- Event assignment dropdown
+
+**Kit Workflow:**
+- [PENDING INTERVIEW Q11-Q12] Kit creation step-by-step + event vs shift assignment
+
+---
+
 ## 📁 INTEGRATIONS
 
 ### Required Integrations
 1. **Stripe** - Credit card payments (manual)
 2. **SignWell** - Basic e-signatures ($8/mo)
 3. **Mailgun** - Email sending (existing)
-4. **Google Drive** - Auto folder creation + operator upload links
-5. **Telegram** - Auto event group creation with operators
-6. **Vimeo** - Livestream event creation (CRITICAL)
-7. **OpenAI** - Voice transcription (Whisper) + command parsing (GPT-4)
+4. **Gmail API** - Communication tracking + "Last Contacted" sync (NEW - Round 5)
+5. **Google Drive API** - Auto folder creation + operator upload links + one-click folder access
+6. **Telegram Bot API** - Auto event group creation with operators (RECOMMENDED over Discord)
+7. **Vimeo API** - Livestream event creation (CRITICAL)
+8. **OpenAI API** - Voice transcription (Whisper) + command parsing (GPT-4)
 
 ### Vimeo Integration (NEW - CRITICAL)
 **Purpose:** Eliminate manual livestream setup for every event
@@ -346,6 +856,102 @@ interface NotificationConfig {
 - Telegram Bot API token
 - Group creation permissions
 - Message posting capabilities
+
+### Gmail Integration (NEW - Round 5)
+**Purpose:** Auto-track client communication without manual data entry
+
+**Capabilities:**
+- OAuth Gmail access (read sent/received emails)
+- Watch for emails to/from client addresses
+- Update "Last Contacted" timestamp when Commander emails client
+- Search email threads for keywords ("pricing", "contract", "proposal")
+- Answer voice queries: "When did I talk about pricing with [Client]?"
+
+**Workflow:**
+1. Commander grants Gmail OAuth read access
+2. App registers webhook for sent/received emails
+3. When email sent to client → log timestamp + update Last Contacted
+4. Voice assistant can search email content for keywords
+5. Dashboard shows communication timeline
+
+**Privacy Note:**
+- Requires read access to Gmail (some users hesitate)
+- Only scans emails to/from known client addresses
+- Can be disabled per user preference
+
+**How HoneyBook Does It:**
+- HoneyBook tracks client emails even if sent outside their platform
+- Same pattern: Gmail API + webhooks
+
+**Implementation:** Medium complexity, high value for communication tracking
+
+---
+
+### Google Drive Integration (EXPANDED - Round 5)
+**Purpose:** Auto folder creation + operator upload links + one-click folder access
+
+**Enhanced Workflow:**
+1. When event created → auto-create folder structure:
+   - `/Clients/[Client Name]/[Event Name]/Raw Footage/`
+   - `/Clients/[Client Name]/[Event Name]/Deliverables/`
+2. When operators assigned → generate unique upload links per operator
+3. Upload links **DO NOT expire** (operators upload days later)
+4. Track upload status: who uploaded, when, file count
+5. Notify Commander when footage uploaded
+6. **NEW:** Deliverables table has "Folder" column
+7. **NEW:** Click folder icon → opens folder in new tab
+8. **NEW:** Right-click folder icon → copies shareable link to clipboard
+
+**API Capabilities:**
+- Create folders programmatically
+- Generate shareable upload links (non-expiring)
+- Set folder permissions (private, client-accessible, public)
+- Track file uploads via webhooks
+- Get folder ID + shareable URL
+
+**UI Integration:**
+- Deliverables page: Folder column with click/right-click actions
+- Planning page: Event detail shows folder link
+- Files page: Direct access to all client folders
+
+**Requirements:**
+- Google Drive API with service account
+- Webhook notifications for file uploads
+- Upload link generation per operator
+
+---
+
+### Telegram vs Discord Decision (NEW - Round 5)
+**Question:** Should we use Telegram or Discord for operator group chats?
+
+**Recommendation: TELEGRAM (Primary), Discord (Optional Future)**
+
+**Why Telegram Wins:**
+- ✅ **Simpler API** - Easier phone-based invites, group creation
+- ✅ **Mobile-First** - Better for operators on-the-go
+- ✅ **Event-Specific Groups** - Perfect for temporary event coordination
+- ✅ **No Server Overhead** - Groups are simple, no complex server setup
+- ✅ **International** - Works globally (operators traveling)
+
+**Discord Use Case:**
+- Company-wide community (persistent)
+- Voice channels for team meetings
+- More complex permissions
+
+**Implementation Plan:**
+1. **Phase 1:** Telegram only (auto-create event groups)
+2. **Phase 2 (Optional):** Add Discord bot for company community
+3. **No Bridge:** Telegram bots can't join Discord (separate platforms)
+
+**Telegram Bot Cannot:**
+- ❌ Join Discord servers
+- ❌ Bridge messages between Telegram/Discord
+
+**Can Do Both:**
+- Telegram for event-specific operator groups
+- Discord for company-wide community (separate integration)
+
+---
 
 ### Integration Boundaries
 - **Calendar**: Business only, two-way sync
@@ -651,18 +1257,20 @@ Based on Round 2 discoveries:
 
 ---
 
-## ✅ SPECIFICATION UPDATED (v4.0)
+## ✅ SPECIFICATION UPDATED (v5.0)
 
-This document represents the complete system specification after all interviews and refinements, including Round 3 Vision & Priorities interview.
+This document represents the complete system specification after all interviews and refinements, including Round 5 UX/UI feedback.
 
-**Total decisions captured:** 65+
+**Total decisions captured:** 85+
 **Edge cases resolved:** 40+
 **Features excluded:** 10+
 **New features added (Round 3):** 15
-**Architecture locked:** Yes
+**UX/UI enhancements (Round 5):** 20+
+**Architecture locked:** Yes (with customization layer added)
 **Phase priority:** SCHEDULING FIRST
+**Pending interview questions:** 15 (clarifications needed before mockup Round 6)
 
-**Ready for implementation.**
+**Ready for implementation after interview Round 5 clarifications.**
 
 ---
 
@@ -673,7 +1281,9 @@ This document represents the complete system specification after all interviews 
 - `ROUND_2_DECISIONS_FINAL.md` - Edge case resolutions
 - `INTERVIEW_ANSWERS_COMPLETE.md` - Round 3 vision interview (Nov 12, 2025)
 - `NEW_FEATURES_FROM_INTERVIEW.md` - 15 new features from Round 3
-- `schema.prisma` - Complete database schema (needs updates for Round 3 features)
+- `ROUND5_MOCKUP_FEEDBACK.md` - UX/UI feedback (Nov 13, 2025)
+- `ROUND5_INTERVIEW_QUESTIONS.md` - 15 clarification questions (pending answers)
+- `schema.prisma` - Complete database schema (needs updates for Round 3+5 features)
 
 ### Critical Enums
 ```typescript
@@ -697,9 +1307,55 @@ AvailabilityType: FULL_DAY | MORNING | AFTERNOON | EVENING | CUSTOM | UNAVAILABL
 ### New Integrations (Round 3)
 - **Vimeo API** - Livestream creation (CRITICAL)
 - **OpenAI API** - Whisper (transcription) + GPT-4 (command parsing)
-- **Google Drive API** - Upload links + folder creation (EXPANDED)
+- **Google Drive API** - Upload links + folder creation (EXPANDED Round 5)
 - **Telegram Bot API** - Auto-group creation (EXPANDED)
+
+### New Integrations (Round 5)
+- **Gmail API** - Communication tracking, "Last Contacted" sync
+- **React Grid Layout** - Dashboard drag/drop/resize
+- **React Resizable** - Panel resizing across app
+- **dnd-kit** - Modern drag/drop library
 
 ---
 
-**End of Specification v4.0**
+## SUMMARY OF ROUND 5 CHANGES (Nov 13, 2025)
+
+### UX/UI Customization (NEW)
+1. **Dashboard cards:** Drag/drop/resize with saved preferences
+2. **View toggles:** Icon-only (remove text labels)
+3. **Left navigation:** Collapsible, drag/drop reorder, double-click rename
+4. **Resizable panels:** All multi-panel views have draggable dividers
+5. **Modal sizing:** Standard 80% screen size for data-heavy modals
+6. **Sortable columns:** Every table in the app
+7. **Settings > Customization tab:** Centralize all customization options
+
+### Page-Specific Enhancements
+1. **Pipeline:** Click-to-edit all fields, product focus tracking [PENDING]
+2. **Planning:** 3-panel layout, full screen mode, event detail view [PENDING details]
+3. **Deliverables:** Google Drive folder column with click/copy, checkboxes per service
+4. **Comms:** Renamed from Communications, email automation at top, Telegram at bottom
+5. **Proposals:** Date Received column
+6. **Contracts:** Full screen with templates/existing split view
+7. **Questionnaires:** Color coding (yellow/red/green), incomplete sorted to top
+8. **Livestreams:** Viewing page column, one-button Vimeo generation
+9. **Operators:** Calendar view option, remove old nav
+10. **Gear/Inventory:** Tabs per category, status indicators (red/yellow/green)
+
+### Integration Enhancements
+1. **Gmail:** Auto-track communication, search emails via voice
+2. **Google Drive:** Click/right-click folder actions in Deliverables
+3. **Telegram vs Discord:** Telegram primary (simpler API, mobile-first)
+4. **AI Voice Agent:** 5-layer architecture detailed (Whisper → GPT-4 → Supabase → Gmail)
+
+### Pending Clarifications (15 Interview Questions)
+- Planning page architecture (calendar view, shift workflow, conflict rules)
+- Product focus tracking structure
+- Gear dependencies and categories
+- Kit assignment workflow
+- Communication touch points list
+- Automated email types
+- Dashboard customization UX
+
+---
+
+**End of Specification v5.0**
