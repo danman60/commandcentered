@@ -8,31 +8,165 @@
 
 ## Build Strategy: Parallel Development
 
-### Git Worktrees Setup
+### Git Worktrees Overview
 
-```bash
-# Create worktrees for 4 parallel agents
-cd CommandCentered
+**What it does:** Allows you to have multiple working directories from the same git repository, each on a different branch.
 
-# Main development
-git worktree add ../CommandCentered-main main
+**Why it's useful:** You can run 4 separate Claude Code sessions simultaneously, each building different features without conflicts.
 
-# Feature branches for parallel work
-git worktree add ../CommandCentered-agent1 -b feature/core-pages
-git worktree add ../CommandCentered-agent2 -b feature/business-ops
-git worktree add ../CommandCentered-agent3 -b feature/gear-system
-git worktree add ../CommandCentered-agent4 -b feature/system-pages
+**Benefits:**
+1. **Parallelization:** Build 13 pages in 2 days instead of 7+ days
+2. **No Conflicts:** Each agent works on separate files
+3. **Independent Testing:** Each agent tests their pages in isolation
+4. **Clear Ownership:** Each agent responsible for specific pages
+5. **Token Efficiency:** 4 sessions working simultaneously
 
-# Each Claude session works in its own directory
-# No file conflicts, independent builds, merge when ready
-```
+---
 
-### DevTeam Protocol Application
+### When to Use Git Worktrees
+
+**Timing:** AFTER foundation is ready (Day 6-7 in this plan)
+
+**Prerequisites before parallel work:**
+- ✅ Shared infrastructure ready (layout, components, tRPC routers)
+- ✅ Clear division of work (no file conflicts)
+- ✅ Each agent can build independently
+- ✅ All agents working from same codebase snapshot
 
 **Use Cases:**
-1. **Day 1-5:** Infrastructure + foundation (sequential, single Claude)
-2. **Day 6-10:** Parallel page building (4 agents via DevTeam protocol)
-3. **Day 11-14:** Integration + testing (sequential, single Claude)
+1. **Day 1-5:** Infrastructure + foundation (sequential, single Claude) - **NO worktrees**
+2. **Day 6-7:** Parallel page building (4 agents via DevTeam protocol) - **USE worktrees**
+3. **Day 8-14:** Integration + testing (sequential, single Claude) - **NO worktrees**
+
+---
+
+### Step-by-Step: Setting Up Git Worktrees
+
+#### Step 1: Create Worktrees (Before Day 6)
+
+From the CommandCentered directory:
+
+```bash
+cd D:\ClaudeCode\CommandCentered
+
+# Agent 1: Core Pages (Planning, Event Detail, Kit Creation)
+git worktree add ../CommandCentered-agent1 -b feature/core-pages
+
+# Agent 2: Business Ops (Pipeline, Communications, Deliverables)
+git worktree add ../CommandCentered-agent2 -b feature/business-ops
+
+# Agent 3: Gear System (Gear Inventory, Operators, Files)
+git worktree add ../CommandCentered-agent3 -b feature/gear-system
+
+# Agent 4: System (Dashboard, Reports, Settings, Operator Portal)
+git worktree add ../CommandCentered-agent4 -b feature/system-pages
+```
+
+**Result:**
+```
+D:\ClaudeCode\
+  CommandCentered/           # Original (main branch)
+  CommandCentered-agent1/    # feature/core-pages branch
+  CommandCentered-agent2/    # feature/business-ops branch
+  CommandCentered-agent3/    # feature/gear-system branch
+  CommandCentered-agent4/    # feature/system-pages branch
+```
+
+#### Step 2: Open 4 Claude Code Sessions
+
+1. **Session 1:** Open `D:\ClaudeCode\CommandCentered-agent1`
+2. **Session 2:** Open `D:\ClaudeCode\CommandCentered-agent2`
+3. **Session 3:** Open `D:\ClaudeCode\CommandCentered-agent3`
+4. **Session 4:** Open `D:\ClaudeCode\CommandCentered-agent4`
+
+#### Step 3: Assign Work to Each Agent
+
+**Agent 1 Tasks (Core Pages):**
+- Planning Page (make fully functional)
+- Event Detail Modal (shift builder, kit assignment)
+- Kit Creation Modal (step-by-step wizard)
+
+**Agent 2 Tasks (Business Ops):**
+- Pipeline Page (4-product tracking, CRM fields)
+- Communications Page (8 touchpoints, 7 automated emails)
+- Deliverables Page (service checkboxes, Google Drive links)
+
+**Agent 3 Tasks (Gear System):**
+- Gear Inventory Page (9 categories)
+- Operators Page (calendar view, availability)
+- Files & Assets Page (livestreams, service library)
+
+**Agent 4 Tasks (System Pages):**
+- Dashboard Page (6 widgets, customization)
+- Reports Page (report generation)
+- Settings Page (organization config)
+- Operator Portal Page (simplified UI)
+
+#### Step 4: Coordination Protocol
+
+**Each agent works independently:**
+- Makes commits to their feature branch
+- Runs `npm run build` before committing
+- Tests their pages before marking complete
+- Pushes to their feature branch
+
+**Communication:**
+- Agents communicate via commit messages
+- Main session monitors progress: `git log --all --graph`
+
+#### Step 5: Merge Back to Main (Day 8-9)
+
+After all agents complete:
+
+```bash
+# Switch to main branch
+cd D:\ClaudeCode\CommandCentered
+git checkout main
+
+# Merge each feature branch one by one
+git merge feature/core-pages
+git merge feature/business-ops
+git merge feature/gear-system
+git merge feature/system-pages
+
+# Resolve any conflicts
+# Run full build
+npm run build
+
+# Deploy
+git push origin main
+```
+
+#### Step 6: Cleanup Worktrees
+
+After merging:
+
+```bash
+# Remove worktrees
+git worktree remove ../CommandCentered-agent1
+git worktree remove ../CommandCentered-agent2
+git worktree remove ../CommandCentered-agent3
+git worktree remove ../CommandCentered-agent4
+
+# Delete feature branches (optional)
+git branch -d feature/core-pages
+git branch -d feature/business-ops
+git branch -d feature/gear-system
+git branch -d feature/system-pages
+```
+
+---
+
+### DevTeam Protocol Integration
+
+The DevTeam protocol (from CLAUDE.md) provides:
+- Clear task division
+- Verification requirements
+- Evidence capture
+- Quality gates
+- Merge strategy
+
+**Combined approach:** Git worktrees provide the infrastructure, DevTeam protocol provides the workflow
 
 ---
 
