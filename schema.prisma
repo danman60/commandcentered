@@ -84,6 +84,8 @@ model Tenant {
   gearDependencies             GearDependency[] // Round 6 - GAP-07
   eventTypeGearRecommendations EventTypeGearRecommendation[] // Round 6 - GAP-06
   automatedEmailConfigs        AutomatedEmailConfig[] // Round 6 - GAP-12
+  leadSources                  LeadSource[] // Phase 0: Lead Generation
+  campaigns                    Campaign[] // Phase 0: Lead Generation
 
   @@map("tenants")
 }
@@ -1180,6 +1182,7 @@ model Lead {
   clients                  Client[]
   leadProducts             LeadProduct[] // Round 6 - GAP-10
   communicationTouchpoints CommunicationTouchpoint[] // Round 6 - GAP-11
+  campaignLeads            CampaignLead[] // Phase 0: Lead from campaign
 
   @@index([tenantId])
   @@index([status])
@@ -2246,4 +2249,275 @@ enum AutomatedEmailType {
   THANK_YOU_FEEDBACK     @map("thank_you_feedback")
 
   @@map("automated_email_type")
+}
+
+// ============================================
+// PHASE 0: LEAD GENERATION (5 tables)
+// Cold outreach: Lead Finder + Email Campaigns
+// ============================================
+
+// Lead source data from external APIs (Apollo.io, ZoomInfo, etc.)
+// These are prospects BEFORE they become Leads in CRM
+model LeadSource {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  tenantId String @map("tenant_id") @db.Uuid
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Restrict)
+
+  // Company Info
+  companyName String  @map("company_name") @db.VarChar(255)
+  website     String? @db.VarChar(255)
+  phone       String? @db.VarChar(50)
+
+  // Primary Contact
+  contactEmail String  @map("contact_email") @db.VarChar(255)
+  contactName  String? @map("contact_name") @db.VarChar(255)
+  contactTitle String? @map("contact_title") @db.VarChar(100)
+
+  // Business Details
+  businessType String @map("business_type") @db.VarChar(100) // "Dance Studio", "School", etc.
+  industry     String @db.VarChar(100) // "Performing Arts", "Education"
+  locationCity String @map("location_city") @db.VarChar(100)
+  locationState String @map("location_state") @db.VarChar(100)
+  locationZip   String? @map("location_zip") @db.VarChar(20)
+  locationCountry String @default("Canada") @map("location_country") @db.VarChar(100)
+
+  // Firmographics
+  employeeCount Int?    @map("employee_count")
+  revenueRange  String? @map("revenue_range") @db.VarChar(50) // "$100K-500K"
+
+  // Enrichment
+  technologies    String[] // ["WordPress", "Stripe"]
+  keywords        String[] // ["recital", "performance"]
+  socialLinkedin  String?  @map("social_linkedin") @db.VarChar(255)
+  socialFacebook  String?  @map("social_facebook") @db.VarChar(255)
+  socialInstagram String?  @map("social_instagram") @db.VarChar(255)
+
+  // Tracking
+  alreadyContacted Boolean @default(false) @map("already_contacted")
+  addedToCrm       Boolean @default(false) @map("added_to_crm")
+  crmLeadId        String? @map("crm_lead_id") @db.Uuid // Links to Lead when added to CRM
+
+  // Relations
+  campaignLeads CampaignLead[]
+
+  @@index([tenantId, alreadyContacted])
+  @@index([tenantId, businessType])
+  @@index([tenantId, locationState])
+  @@index([contactEmail])
+  @@map("lead_sources")
+}
+
+// Multi-step email outreach campaigns
+model Campaign {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  tenantId String @map("tenant_id") @db.Uuid
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Restrict)
+
+  // Campaign Info
+  name        String  @db.VarChar(255)
+  description String? @db.Text
+  status      CampaignStatus @default(DRAFT)
+
+  // Metrics
+  totalLeads          Int     @default(0) @map("total_leads")
+  sequenceStarted     Int     @default(0) @map("sequence_started")
+  emailsSent          Int     @default(0) @map("emails_sent")
+  openedCount         Int     @default(0) @map("opened_count")
+  clickedCount        Int     @default(0) @map("clicked_count")
+  repliedCount        Int     @default(0) @map("replied_count")
+  opportunitiesCount  Int     @default(0) @map("opportunities_count")
+  opportunityRevenue  Decimal @default(0) @map("opportunity_revenue") @db.Decimal(10, 2)
+
+  // Settings
+  fromEmail   String @map("from_email") @db.VarChar(255) // "daniel@streamstageproductions.com"
+  fromName    String @map("from_name") @db.VarChar(255) // "Daniel from StreamStage"
+  dailyLimit  Int    @default(50) @map("daily_limit") // Max emails per day
+
+  // Schedule
+  sendDays       String[] @map("send_days") // ["Monday", "Tuesday", "Wednesday"]
+  sendStartHour  Int      @default(9) @map("send_start_hour") // 9 AM
+  sendEndHour    Int      @default(17) @map("send_end_hour") // 5 PM
+  timezone       String   @default("America/Toronto") @db.VarChar(50)
+
+  launchedAt   DateTime? @map("launched_at")
+  pausedAt     DateTime? @map("paused_at")
+  completedAt  DateTime? @map("completed_at")
+
+  // Relations
+  steps CampaignStep[]
+  leads CampaignLead[]
+
+  @@index([tenantId, status])
+  @@index([status])
+  @@map("campaigns")
+}
+
+enum CampaignStatus {
+  DRAFT     @map("draft")
+  ACTIVE    @map("active")
+  PAUSED    @map("paused")
+  COMPLETED @map("completed")
+
+  @@map("campaign_status")
+}
+
+// Individual steps in campaign sequence (Step 1, Step 2, etc.)
+model CampaignStep {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+
+  campaignId String   @map("campaign_id") @db.Uuid
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  stepNumber Int    @map("step_number") // 1, 2, 3, 4
+  stepName   String @map("step_name") @db.VarChar(255) // "Initial Outreach", "Follow-Up"
+
+  // Timing
+  delayDays  Int @default(0) @map("delay_days") // Days after previous step
+  delayHours Int @default(0) @map("delay_hours") // Additional hours
+
+  // Conditions
+  sendCondition StepCondition @default(ALWAYS) @map("send_condition")
+
+  // Email Content
+  subjectLine String @map("subject_line") @db.VarChar(500)
+  bodyHtml    String @map("body_html") @db.Text
+  bodyText    String @map("body_text") @db.Text
+
+  // Tracking
+  sentCount    Int @default(0) @map("sent_count")
+  openedCount  Int @default(0) @map("opened_count")
+  clickedCount Int @default(0) @map("clicked_count")
+  repliedCount Int @default(0) @map("replied_count")
+
+  // Relations
+  activities EmailActivity[]
+
+  @@unique([campaignId, stepNumber])
+  @@index([campaignId])
+  @@map("campaign_steps")
+}
+
+enum StepCondition {
+  ALWAYS        @map("always") // Send to everyone
+  NO_REPLY      @map("no_reply") // Only if no reply to previous steps
+  NO_OPEN       @map("no_open") // Only if didn't open previous steps
+  CLICKED_LINK  @map("clicked_link") // Only if clicked link in previous step
+
+  @@map("step_condition")
+}
+
+// Leads assigned to a campaign (prospect in the sequence)
+model CampaignLead {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  campaignId String   @map("campaign_id") @db.Uuid
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  leadSourceId String?     @map("lead_source_id") @db.Uuid
+  leadSource   LeadSource? @relation(fields: [leadSourceId], references: [id], onDelete: SetNull)
+
+  crmLeadId String? @map("crm_lead_id") @db.Uuid // Links to Lead when moved to CRM
+  crmLead   Lead?   @relation(fields: [crmLeadId], references: [id], onDelete: SetNull)
+
+  // Contact Info (cached from LeadSource)
+  contactEmail String  @map("contact_email") @db.VarChar(255)
+  contactName  String? @map("contact_name") @db.VarChar(255)
+  companyName  String  @map("company_name") @db.VarChar(255)
+
+  // Campaign Progress
+  status      CampaignLeadStatus @default(SCHEDULED)
+  currentStep Int                @default(0) @map("current_step")
+
+  // Metrics
+  emailsSent   Int     @default(0) @map("emails_sent")
+  openedCount  Int     @default(0) @map("opened_count")
+  clickedCount Int     @default(0) @map("clicked_count")
+  repliedCount Int     @default(0) @map("replied_count")
+  bounced      Boolean @default(false)
+  unsubscribed Boolean @default(false)
+
+  // Important Dates
+  startedAt        DateTime? @map("started_at")
+  lastEmailSentAt  DateTime? @map("last_email_sent_at")
+  lastOpenedAt     DateTime? @map("last_opened_at")
+  lastClickedAt    DateTime? @map("last_clicked_at")
+  repliedAt        DateTime? @map("replied_at")
+  completedAt      DateTime? @map("completed_at")
+
+  // Relations
+  activities EmailActivity[]
+
+  @@index([campaignId, status])
+  @@index([contactEmail])
+  @@index([crmLeadId])
+  @@map("campaign_leads")
+}
+
+enum CampaignLeadStatus {
+  SCHEDULED     @map("scheduled") // Waiting to start
+  SENDING       @map("sending") // In progress
+  SENT          @map("sent") // All steps sent
+  OPENED        @map("opened") // Opened at least one email
+  CLICKED       @map("clicked") // Clicked link
+  REPLIED       @map("replied") // Replied to email
+  OPPORTUNITY   @map("opportunity") // Marked as opportunity (moved to CRM)
+  BOUNCED       @map("bounced") // Email bounced
+  UNSUBSCRIBED  @map("unsubscribed") // Opted out
+
+  @@map("campaign_lead_status")
+}
+
+// Individual email events (sent, opened, clicked, etc.)
+model EmailActivity {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+
+  campaignLeadId String       @map("campaign_lead_id") @db.Uuid
+  campaignLead   CampaignLead @relation(fields: [campaignLeadId], references: [id], onDelete: Cascade)
+
+  campaignStepId String       @map("campaign_step_id") @db.Uuid
+  campaignStep   CampaignStep @relation(fields: [campaignStepId], references: [id], onDelete: Cascade)
+
+  activityType EmailActivityType @map("activity_type")
+  stepNumber   Int               @map("step_number")
+
+  // Email Details
+  subjectLine String  @map("subject_line") @db.VarChar(500)
+  fromEmail   String  @map("from_email") @db.VarChar(255)
+  toEmail     String  @map("to_email") @db.VarChar(255)
+  messageId   String? @map("message_id") @db.VarChar(255) // Email Message-ID header
+
+  // Tracking
+  ipAddress String? @map("ip_address") @db.VarChar(50)
+  userAgent String? @map("user_agent") @db.VarChar(500)
+  linkUrl   String? @map("link_url") @db.VarChar(1000) // For click events
+
+  occurredAt DateTime @default(now()) @map("occurred_at")
+
+  @@index([campaignLeadId, activityType])
+  @@index([messageId])
+  @@index([occurredAt])
+  @@map("email_activities")
+}
+
+enum EmailActivityType {
+  SENT            @map("sent")
+  DELIVERED       @map("delivered")
+  OPENED          @map("opened")
+  CLICKED         @map("clicked")
+  REPLIED         @map("replied")
+  BOUNCED         @map("bounced")
+  MARKED_AS_SPAM  @map("marked_as_spam")
+  UNSUBSCRIBED    @map("unsubscribed")
+
+  @@map("email_activity_type")
 }

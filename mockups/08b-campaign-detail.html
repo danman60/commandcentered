@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Recital 2025 - Campaign Detail - CommandCentered</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: #0a0a0a;
+            color: #e5e7eb;
+            padding: 24px;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 24px;
+            font-size: 14px;
+            color: #9ca3af;
+        }
+
+        .breadcrumb a {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .header-left h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .header-meta {
+            font-size: 13px;
+            color: #9ca3af;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #1a1a1a;
+            color: #9ca3af;
+            border: 1px solid #333;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 24px;
+            border-bottom: 1px solid #222;
+            margin-bottom: 24px;
+        }
+
+        .tab {
+            padding: 12px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #9ca3af;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .tab:hover {
+            color: #e5e7eb;
+        }
+
+        .tab.active {
+            color: #3b82f6;
+            border-bottom-color: #3b82f6;
+        }
+
+        /* Sequence Builder */
+        .sequence-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .sequence-header h2 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        /* Step Card */
+        .step-card {
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 16px;
+            transition: all 0.2s;
+        }
+
+        .step-card:hover {
+            border-color: #3b82f6;
+        }
+
+        .step-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .step-title {
+            flex: 1;
+        }
+
+        .step-number {
+            font-size: 12px;
+            font-weight: 600;
+            color: #3b82f6;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .step-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .step-delay {
+            font-size: 13px;
+            color: #9ca3af;
+        }
+
+        .step-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .icon-btn {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #1a1a1a;
+            border: 1px solid #222;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+
+        .icon-btn:hover {
+            background: #222;
+            border-color: #3b82f6;
+        }
+
+        .email-subject {
+            background: #1a1a1a;
+            border: 1px solid #222;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 12px;
+        }
+
+        .email-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .email-text {
+            color: #e5e7eb;
+            font-size: 14px;
+        }
+
+        .email-body {
+            background: #0a0a0a;
+            border: 1px solid #1a1a1a;
+            border-radius: 8px;
+            padding: 16px;
+            line-height: 1.6;
+            font-size: 14px;
+            color: #9ca3af;
+        }
+
+        .email-body p {
+            margin-bottom: 12px;
+        }
+
+        .email-variable {
+            background: #1a1a1a;
+            color: #3b82f6;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+        }
+
+        .email-link {
+            color: #3b82f6;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .step-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #222;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 2px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-percent {
+            font-size: 12px;
+            color: #3b82f6;
+            font-weight: 600;
+        }
+
+        /* Add Step Button */
+        .add-step-btn {
+            width: 100%;
+            padding: 16px;
+            background: #111;
+            border: 1px dashed #333;
+            border-radius: 12px;
+            color: #3b82f6;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .add-step-btn:hover {
+            background: #151515;
+            border-color: #3b82f6;
+        }
+
+        /* Condition Badge */
+        .condition-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: rgba(251, 191, 36, 0.1);
+            color: #fbbf24;
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-left: 8px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <a href="#">← Campaigns</a>
+        <span>/</span>
+        <span>Spring Recital 2025 Outreach</span>
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+        <div class="header-left">
+            <h1>Spring Recital 2025 Outreach</h1>
+            <div class="header-meta">Active • Created Nov 10 • 127 of 180 sent (70%)</div>
+        </div>
+        <div class="header-actions">
+            <button class="btn btn-secondary">⏸️ Pause</button>
+            <button class="btn btn-secondary">⚙️ Settings</button>
+            <button class="btn btn-danger">🗑️ Delete</button>
+        </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+        <div class="tab">Analytics</div>
+        <div class="tab active">Sequence</div>
+        <div class="tab">Leads (180)</div>
+        <div class="tab">Schedule</div>
+        <div class="tab">Settings</div>
+    </div>
+
+    <!-- Sequence Builder -->
+    <div class="sequence-header">
+        <h2>📧 Email Sequence</h2>
+        <button class="btn btn-primary">+ Add Step</button>
+    </div>
+
+    <!-- Step 1 -->
+    <div class="step-card">
+        <div class="step-header">
+            <div class="step-title">
+                <div class="step-number">Step 1</div>
+                <div class="step-name">Initial Outreach</div>
+                <div class="step-delay">Send immediately</div>
+            </div>
+            <div class="step-actions">
+                <div class="icon-btn" title="Edit">✏️</div>
+                <div class="icon-btn" title="Delete">🗑️</div>
+                <div class="icon-btn" title="Test Email">✉️</div>
+            </div>
+        </div>
+
+        <div class="email-subject">
+            <div class="email-label">Subject</div>
+            <div class="email-text">Capture every moment of your spring recital</div>
+        </div>
+
+        <div class="email-body">
+            <p>Hi <span class="email-variable">{{contact_name}}</span>,</p>
+
+            <p>I noticed <span class="email-variable">{{company_name}}</span> is coming up on its spring recital season. As a fellow dance community member, I know how special these performances are for your dancers and their families.</p>
+
+            <p>StreamStage Productions specializes in multi-camera recital filming with same-day delivery. Our packages start at $2,500 for a 2-camera shoot.</p>
+
+            <p>Would you like to see samples from similar studios?</p>
+
+            <p>Best,<br>
+            Daniel<br>
+            StreamStage Productions<br>
+            <span class="email-link">[Book a Call]</span></p>
+        </div>
+
+        <div class="step-stats">
+            <div class="stat-item">
+                <div class="stat-value">127</div>
+                <div class="stat-label">Sent</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">89</div>
+                <div class="stat-label">Opened</div>
+                <div class="stat-percent">70%</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">12</div>
+                <div class="stat-label">Clicked</div>
+                <div class="stat-percent">9.4%</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">4</div>
+                <div class="stat-label">Replied</div>
+                <div class="stat-percent">3.1%</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step-card">
+        <div class="step-header">
+            <div class="step-title">
+                <div class="step-number">Step 2</div>
+                <div class="step-name">
+                    Follow-Up (No Reply)
+                    <span class="condition-badge">Conditional</span>
+                </div>
+                <div class="step-delay">3 days after Step 1 • Only if no reply</div>
+            </div>
+            <div class="step-actions">
+                <div class="icon-btn" title="Edit">✏️</div>
+                <div class="icon-btn" title="Delete">🗑️</div>
+                <div class="icon-btn" title="Test Email">✉️</div>
+            </div>
+        </div>
+
+        <div class="email-subject">
+            <div class="email-label">Subject</div>
+            <div class="email-text">Quick question about <span class="email-variable">{{company_name}}</span>'s recital</div>
+        </div>
+
+        <div class="email-body">
+            <p>Hi <span class="email-variable">{{contact_name}}</span>,</p>
+
+            <p>Following up on my previous email. I wanted to share a quick sample reel from a recent studio we worked with that had a similar setup to yours.</p>
+
+            <p><span class="email-link">[Watch 2-Min Sample Reel]</span></p>
+
+            <p>If you're not interested, just let me know and I'll remove you from my list.</p>
+
+            <p>Best,<br>
+            Daniel</p>
+        </div>
+
+        <div class="step-stats">
+            <div class="stat-item">
+                <div class="stat-value">89</div>
+                <div class="stat-label">Sent</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">64</div>
+                <div class="stat-label">Opened</div>
+                <div class="stat-percent">72%</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">8</div>
+                <div class="stat-label">Clicked</div>
+                <div class="stat-percent">9%</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">3</div>
+                <div class="stat-label">Replied</div>
+                <div class="stat-percent">3.4%</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step-card">
+        <div class="step-header">
+            <div class="step-title">
+                <div class="step-number">Step 3</div>
+                <div class="step-name">
+                    Value Add
+                    <span class="condition-badge">Conditional</span>
+                </div>
+                <div class="step-delay">5 days after Step 2 • Only if no reply</div>
+            </div>
+            <div class="step-actions">
+                <div class="icon-btn" title="Edit">✏️</div>
+                <div class="icon-btn" title="Delete">🗑️</div>
+                <div class="icon-btn" title="Test Email">✉️</div>
+            </div>
+        </div>
+
+        <div class="email-subject">
+            <div class="email-label">Subject</div>
+            <div class="email-text">Free checklist: Recital day preparation</div>
+        </div>
+
+        <div class="email-body">
+            <p>Hi <span class="email-variable">{{contact_name}}</span>,</p>
+
+            <p>Whether or not you're interested in video services, I wanted to share this free resource we created for dance studio directors...</p>
+
+            <p><span class="email-link">[Download Free Checklist]</span></p>
+
+            <p>If this was helpful, I'd love to chat about your recital.</p>
+
+            <p>Best,<br>
+            Daniel</p>
+        </div>
+
+        <div class="step-stats">
+            <div class="stat-item">
+                <div class="stat-value">64</div>
+                <div class="stat-label">Sent</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">41</div>
+                <div class="stat-label">Opened</div>
+                <div class="stat-percent">64%</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">5</div>
+                <div class="stat-label">Clicked</div>
+                <div class="stat-percent">7.8%</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">5</div>
+                <div class="stat-label">Replied</div>
+                <div class="stat-percent">7.8%</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="step-card">
+        <div class="step-header">
+            <div class="step-title">
+                <div class="step-number">Step 4</div>
+                <div class="step-name">
+                    Final Follow-Up
+                    <span class="condition-badge">Conditional</span>
+                </div>
+                <div class="step-delay">7 days after Step 3 • Only if no reply</div>
+            </div>
+            <div class="step-actions">
+                <div class="icon-btn" title="Edit">✏️</div>
+                <div class="icon-btn" title="Delete">🗑️</div>
+                <div class="icon-btn" title="Test Email">✉️</div>
+            </div>
+        </div>
+
+        <div class="email-subject">
+            <div class="email-label">Subject</div>
+            <div class="email-text">Last follow-up for <span class="email-variable">{{company_name}}</span></div>
+        </div>
+
+        <div class="email-body">
+            <p>Hi <span class="email-variable">{{contact_name}}</span>,</p>
+
+            <p>I won't bother you again after this. Just wanted to make one last offer: If you book by end of month, I can offer 15% off our standard package.</p>
+
+            <p>If you're all set for video, no problem at all. Best of luck with your spring recital!</p>
+
+            <p>Daniel</p>
+        </div>
+
+        <div class="step-stats">
+            <div class="stat-item">
+                <div class="stat-value">41</div>
+                <div class="stat-label">Sent</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">22</div>
+                <div class="stat-label">Opened</div>
+                <div class="stat-percent">54%</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">2</div>
+                <div class="stat-label">Clicked</div>
+                <div class="stat-percent">4.9%</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">0</div>
+                <div class="stat-label">Replied</div>
+                <div class="stat-percent">0%</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Step Button -->
+    <button class="add-step-btn">
+        <span style="font-size: 18px;">+</span>
+        <span>Add Another Step</span>
+    </button>
+</body>
+</html>

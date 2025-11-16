@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campaigns - CommandCentered</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: #0a0a0a;
+            color: #e5e7eb;
+            padding: 24px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #1a1a1a;
+            color: #9ca3af;
+            border: 1px solid #333;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        /* Filters Bar */
+        .filters-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .search-input {
+            flex: 1;
+            background: #111;
+            border: 1px solid #222;
+            color: #e5e7eb;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+
+        select {
+            background: #111;
+            border: 1px solid #222;
+            color: #e5e7eb;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+
+        /* Table */
+        .table-container {
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #0a0a0a;
+            border-bottom: 1px solid #222;
+        }
+
+        th {
+            padding: 16px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 20px 16px;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        tr:hover td {
+            background: #151515;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .campaign-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .campaign-meta {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            display: inline-block;
+        }
+
+        .status-active {
+            background: rgba(34, 197, 94, 0.1);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .status-paused {
+            background: rgba(251, 191, 36, 0.1);
+            color: #fbbf24;
+            border: 1px solid rgba(251, 191, 36, 0.3);
+        }
+
+        .status-draft {
+            background: rgba(107, 114, 128, 0.1);
+            color: #9ca3af;
+            border: 1px solid rgba(107, 114, 128, 0.3);
+        }
+
+        .status-completed {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #1a1a1a;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 4px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #2563eb);
+            transition: width 0.3s;
+        }
+
+        .progress-text {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        .metrics {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .metric-row {
+            font-size: 13px;
+        }
+
+        .metric-value {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .metric-label {
+            color: #6b7280;
+            margin-left: 4px;
+        }
+
+        .metric-percent {
+            color: #3b82f6;
+            font-size: 12px;
+            margin-left: 4px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .icon-btn {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #1a1a1a;
+            border: 1px solid #222;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 16px;
+        }
+
+        .icon-btn:hover {
+            background: #222;
+            border-color: #3b82f6;
+        }
+
+        .opportunities {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .opp-count {
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .opp-revenue {
+            font-size: 12px;
+            color: #22c55e;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📧 Campaigns</h1>
+        <div class="header-actions">
+            <button class="btn btn-primary">+ Create Campaign</button>
+        </div>
+    </div>
+
+    <div class="filters-bar">
+        <input type="text" class="search-input" placeholder="Search campaigns...">
+        <select>
+            <option>All Statuses</option>
+            <option>Active</option>
+            <option>Paused</option>
+            <option>Draft</option>
+            <option>Completed</option>
+        </select>
+        <select>
+            <option>Newest First</option>
+            <option>Oldest First</option>
+            <option>Most Sent</option>
+            <option>Highest Reply Rate</option>
+        </select>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 30px;">
+                        <input type="checkbox">
+                    </th>
+                    <th>NAME</th>
+                    <th>STATUS</th>
+                    <th>PROGRESS</th>
+                    <th>SENT</th>
+                    <th>OPENED</th>
+                    <th>REPLIED</th>
+                    <th>OPPORTUNITIES</th>
+                    <th style="width: 120px;">ACTIONS</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>
+                        <div class="campaign-name">Spring Recital 2025 Outreach</div>
+                        <div class="campaign-meta">Created Nov 10 • Last sent 2 hours ago</div>
+                    </td>
+                    <td>
+                        <span class="status-badge status-active">Active</span>
+                    </td>
+                    <td>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 45%;"></div>
+                        </div>
+                        <div class="progress-text">45% complete</div>
+                    </td>
+                    <td>
+                        <div class="metrics">
+                            <div class="metric-row">
+                                <span class="metric-value">127</span>
+                            </div>
+                            <div class="metric-row">
+                                <span style="color: #6b7280; font-size: 12px;">of 180</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="metrics">
+                            <div class="metric-row">
+                                <span class="metric-value">89</span>
+                                <span class="metric-percent">70%</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="metrics">
+                            <div class="metric-row">
+                                <span class="metric-value">12</span>
+                                <span class="metric-percent">9.4%</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="opportunities">
+                            <div class="opp-count">3</div>
+                            <div class="opp-revenue">$8,400</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="actions">
+                            <div class="icon-btn" title="View Analytics">📊</div>
+                            <div class="icon-btn" title="Pause Campaign">⏸️</div>
+                            <div class="icon-btn" title="More">⋯</div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>
+                        <div class="campaign-name">Summer Camp Services</div>
+                        <div class="campaign-meta">Created Nov 5 • Paused 3 days ago</div>
+                    </td>
+                    <td>
+                        <span class="status-badge status-paused">Paused</span>
+                    </td>
+                    <td>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 18%;"></div>
+                        </div>
+                        <div class="progress-text">18% complete</div>
+                    </td>
+                    <td>
+                        <div class="metrics">
+                            <div class="metric-row">
+                                <span class="metric-value">43</span>
+                            </div>
+                            <div class="metric-row">
+                                <span style="color: #6b7280; font-size: 12px;">of 240</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="metrics">
+                            <div class="metric-row">
+                                <span class="metric-value">31</span>
+                                <span class="metric-percent">72%</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="metrics">
+                            <div class="metric-row">
+                                <span class="metric-value">2</span>
+                                <span class="metric-percent">4.7%</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="opportunities">
+                            <div class="opp-count">0</div>
+                            <div class="opp-revenue">$0</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="actions">
+                            <div class="icon-btn" title="View Analytics">📊</div>
+                            <div class="icon-btn" title="Resume Campaign">▶️</div>
+                            <div class="icon-btn" title="More">⋯</div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>
+                        <div class="campaign-name">Corporate Events 2025</div>
+                        <div class="campaign-meta">Created Oct 28 • Not launched</div>
+                    </td>
+                    <td>
+                        <span class="status-badge status-draft">Draft</span>
+                    </td>
+                    <td>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%;"></div>
+                        </div>
+                        <div class="progress-text">0% complete</div>
+                    </td>
+                    <td>
+                        <div class="metrics">
+                            <div class="metric-row">
+                                <span class="metric-value">0</span>
+                            </div>
+                            <div class="metric-row">
+                                <span style="color: #6b7280; font-size: 12px;">of 75</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="metrics">
+                            <div class="metric-row">
+                                <span class="metric-value">0</span>
+                                <span class="metric-percent">-</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="metrics">
+                            <div class="metric-row">
+                                <span class="metric-value">0</span>
+                                <span class="metric-percent">-</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="opportunities">
+                            <div class="opp-count">0</div>
+                            <div class="opp-revenue">$0</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="actions">
+                            <div class="icon-btn" title="Edit Campaign">✏️</div>
+                            <div class="icon-btn" title="Launch">🚀</div>
+                            <div class="icon-btn" title="More">⋯</div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>
+                        <div class="campaign-name">Fall Festival Q4 2024</div>
+                        <div class="campaign-meta">Created Sep 15 • Completed Oct 25</div>
+                    </td>
+                    <td>
+                        <span class="status-badge status-completed">Completed</span>
+                    </td>
+                    <td>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 100%;"></div>
+                        </div>
+                        <div class="progress-text">100% complete</div>
+                    </td>
+                    <td>
+                        <div class="metrics">
+                            <div class="metric-row">
+                                <span class="metric-value">156</span>
+                            </div>
+                            <div class="metric-row">
+                                <span style="color: #6b7280; font-size: 12px;">of 156</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="metrics">
+                            <div class="metric-row">
+                                <span class="metric-value">98</span>
+                                <span class="metric-percent">63%</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="metrics">
+                            <div class="metric-row">
+                                <span class="metric-value">8</span>
+                                <span class="metric-percent">5.1%</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="opportunities">
+                            <div class="opp-count">2</div>
+                            <div class="opp-revenue">$5,200</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="actions">
+                            <div class="icon-btn" title="View Analytics">📊</div>
+                            <div class="icon-btn" title="Duplicate">📋</div>
+                            <div class="icon-btn" title="More">⋯</div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
