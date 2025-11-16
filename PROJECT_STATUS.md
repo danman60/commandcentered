@@ -1,13 +1,52 @@
 # CommandCentered - Project Status
-**Date:** November 14, 2025
-**Phase:** Design & Planning (Week 1 of 10-week plan)
-**Target Launch:** January 1, 2026 (48 days)
+**Date:** November 16, 2025
+**Phase:** Design & Planning (Week 1-2 of 10-week plan)
+**Target Launch:** January 1, 2026 (46 days)
 
 ---
 
-## 📊 CURRENT STATUS: Round 6 Mockups Complete ✅
+## 📊 CURRENT STATUS: Phase 0 Lead Generation Added ✅
 
-### **Current Sessions (Nov 14 - Round 5 Complete + Round 6 Complete):**
+### **Latest Session (Nov 16 - Phase 0 Lead Generation Integration):**
+
+**Session Goal:** Integrate Instantly.ai Lead Finder + Campaigns features into CommandCentered
+
+1. ✅ **Instantly.ai Complete Audit** (INSTANTLY_AI_AUDIT.md - 850+ lines)
+   - Explored all 10 main navigation sections
+   - 11 screenshots captured
+   - Complete feature breakdown + data model
+   - CommandCentered feature mapping
+
+2. ✅ **Lead Acquisition Spec** (LEAD_ACQUISITION_SPEC.md - 700+ lines)
+   - Lead Finder: Apollo.io integration, AI search, manual filters
+   - Campaigns: Multi-step email sequences, tracking, analytics
+   - Pipeline integration: Auto-move replied leads to CRM
+   - Full tRPC API specs + background job architecture
+
+3. ✅ **Schema Integration** (schema.prisma +273 lines)
+   - 5 new models: LeadSource, Campaign, CampaignStep, CampaignLead, EmailActivity
+   - 4 new enums: CampaignStatus, StepCondition, CampaignLeadStatus, EmailActivityType
+   - Relations added to Tenant and Lead models
+
+4. ✅ **UI Mockups Created** (3 new mockups)
+   - 07-lead-finder.html: Lead search UI with filters + AI search
+   - 08-campaigns.html: Campaign list with metrics table
+   - 08b-campaign-detail.html: Sequence builder with 4-step email flow
+
+5. ✅ **Integration Summary** (PHASE0_INTEGRATION_SUMMARY.md)
+   - Flow diagrams: Phase 0 → Phase 1 integration
+   - Navigation recommendations
+   - Implementation timeline (Weeks 3-6)
+   - Costs & ROI ($134/month, $12K-25K additional revenue)
+
+**Commits:**
+- 8795712: feat: Add Phase 0 Lead Generation (4,629 insertions, Nov 16)
+
+**Status:** Phase 0 design complete. Ready for Week 2 schema validation.
+
+---
+
+### **Previous Sessions (Nov 14 - Round 5 Complete + Round 6 Complete):**
 
 **Part 1: Round 5 Interview Complete ✅** (Session 48)
 1. ✅ **User completed Round 5 interview** (15 questions answered)
@@ -47,9 +86,9 @@
      - Status, revenue, notes, checkbox per product
 
 **Spec Confidence: 95%** - Ready for Week 2 schema validation
-**Mockup Progress: 6/6 (100%)** ✅ COMPLETE
+**Mockup Progress: 9/9 (100%)** ✅ COMPLETE (6 original + 3 Phase 0)
 
-**Status:** Round 5 complete. Round 6 mockups complete (6/6). Ready for Week 2 schema validation.
+**Status:** Core spec complete (Phases 1-4). Phase 0 Lead Generation added. Ready for Week 2 schema validation.
 
 ### **Previous Session (Nov 12 - Crash Recovery & Completion):**
 1. ✅ **MASTER_SPECIFICATION_FINAL.md** updated to v4.0
@@ -102,22 +141,30 @@
 
 ## 🎯 IMMEDIATE NEXT STEPS
 
-### **Week 1 In Progress - Spec + Mockup Iteration:**
-Round 5 iteration phase:
-- ✅ User created Round 5 mockup designs
-- ✅ User shared comprehensive feedback
-- ✅ Spec updated to v5.0 with all clear items
-- ✅ Multi-tenant architecture gap discovered and fixed
-- ✅ Comprehensive gap analysis completed (9 gaps found, 6 fixed)
-- ✅ All critical and high-priority gaps closed
-- 📋 **Next:** User doing interview (15 questions, voice prompt ready)
-- ⚙️ **Then:** Complete spec, iterate mockups for Round 6
+### **Week 1-2 Complete - Spec + Phase 0 Addition:**
+- ✅ Round 5 interview complete (15 Q&A)
+- ✅ Spec updated to v6.0 (Round 5 answers applied)
+- ✅ Round 6 mockups complete (6/6)
+- ✅ Phase 0 Lead Generation added (Instantly.ai integration)
+- ✅ Schema updated (+5 models, +4 enums)
+- ✅ 3 new mockups created (Lead Finder, Campaigns, Campaign Detail)
+- 📋 **Next:** Week 2 schema validation (validate ALL mockup elements)
+- ⚙️ **Then:** Create API_SPEC.md (tRPC endpoint contract)
 
-**Status:** Ready for interview. Spec confidence: 90%
+**Status:** Design phase complete. Spec confidence: 95%. Ready for schema validation.
 
 ---
 
-## 📋 10-WEEK PLAN STATUS (Updated: Scheduling First Priority)
+## 📋 10-WEEK PLAN STATUS (Updated: Phase 0 Added)
+
+### **Phase Priority:**
+**NEW:** Phase 0 (Lead Generation) → Phase 1 (Registration) → Phase 2 (Scheduling) → Phase 3 (Execution) → Phase 4 (Delivery)
+
+- **Phase 0 (NEW):** Lead Finder + Campaigns (cold outreach → auto-pipeline entry)
+- **Phase 1:** Pipeline, Proposals, Contracts (existing registration flow)
+- **Phase 2:** Scheduling (operator availability, shift assignment)
+- **Phase 3:** Execution (event day operations)
+- **Phase 4:** Delivery (footage upload, editing, final delivery)
 
 ### **Week 0 (Nov 11-17): Round 3 Integration + Mockup Iteration** ✅ COMPLETE
 - [x] Round 3 interview complete (36 Q&A, 15 new features identified)
@@ -126,11 +173,14 @@ Round 5 iteration phase:
 - [x] Repository organized and committed
 - [ ] **Next:** Get mockup feedback from user (Week 1)
 
-### **Week 1 (Nov 13-17): Final Spec + Mockup Iteration** ✅ COMPLETE
+### **Week 1-2 (Nov 13-16): Final Spec + Phase 0 Addition** ✅ COMPLETE
 - [x] User created Round 5 mockups
 - [x] User shared comprehensive Round 5 interview answers (15 questions)
 - [x] Iterated MASTER_SPECIFICATION_FINAL.md to v6.0 based on answers (~184 lines added)
 - [x] Created ROUND5_INTERVIEW_ANSWERS.md reference document
+- [x] **Phase 0 Lead Generation added** (Instantly.ai audit + integration)
+- [x] Schema updated (+5 models, +4 enums, 273 lines)
+- [x] 3 new mockups created (Lead Finder, Campaigns, Campaign Detail)
 - [x] Final spec approved (95% confidence)
 - [x] Ready for Week 2 schema validation
 
@@ -140,25 +190,25 @@ Round 5 iteration phase:
 - [ ] Create API_SPEC.md (endpoint contract)
 - [ ] Fix any schema gaps NOW (before backend build)
 
-### **Week 3-5 (Dec 2-22): Backend Build** (SCHEDULING FIRST)
-- **Week 3:** Database + Scheduling services (operator availability, shift assignment, conflicts)
-- **Week 4:** Planning & Execution services (events, equipment, logistics)
-- **Week 5:** Integrations (Vimeo, Telegram, Google Drive, OpenAI)
+### **Week 3-6 (Dec 2-22): Backend Build**
+- **Week 3:** Phase 0 - Lead Finder (Apollo.io integration, search UI)
+- **Week 4:** Phase 0 - Campaign Builder (sequence editor, campaign management)
+- **Week 5:** Phase 0 - Campaign Engine (background jobs, email sending, tracking)
+- **Week 6:** Phase 0 - Pipeline Integration + Phase 1/2 - Database + Core Services
 
-### **Week 6-8 (Dec 23-Jan 12): Frontend Build** (SCHEDULING FIRST)
-- **Week 6:** Foundation + Planning page (operator availability, shift assignment)
-- **Week 7:** Dashboard + Pipeline + Deliverables (core workflows)
-- **Week 8:** Files + Communications + Operator Portal
+### **Week 7-9 (Dec 23-Jan 12): Frontend Build**
+- **Week 7:** Phase 1 - Registration (Pipeline, Proposals, Contracts)
+- **Week 8:** Phase 2 - Scheduling (Planning page, operator availability, shift assignment)
+- **Week 9:** Phase 3/4 - Execution & Delivery (Dashboard, Deliverables, Files, Communications)
 
-### **Week 9-10 (Jan 13-26): Integration + Launch**
-- **Week 9:** Integration + testing (end-to-end flows, voice testing, multi-tenant)
-- **Week 10:** Production deployment + StreamStage tenant setup
+### **Week 10 (Jan 13-19): Integration + Launch**
+- **Week 10:** Integration + testing (end-to-end flows, voice testing, multi-tenant) + Production deployment
 
 **Go-Live:** January 1, 2026
 
 ---
 
-## 🗂️ ACTIVE DOCUMENTATION (19 Files)
+## 🗂️ ACTIVE DOCUMENTATION (23 Files)
 
 ### **Core Specifications (Locked + Updated Round 3):**
 1. **MASTER_SPECIFICATION_FINAL.md** (v4.0, 705 lines, Nov 12) - All 15 Round 3 features ✅
@@ -180,21 +230,64 @@ Round 5 iteration phase:
 13. **PROJECT_STATUS.md** (THIS FILE) - Current progress tracker
 
 ### **Mockups:**
-14. **Round 5 Mockups** (Created by user, external design tool)
-    - User-created Round 5 iteration complete
-    - Feedback/notes ready for next iteration
-    - **Status:** Awaiting feedback to apply updates
+14. **Round 6 Mockups** (6 mockups - Dashboard, Pipeline, Planning, etc.)
+    - User-created Round 6 iteration complete
+    - All feedback applied to MASTER_SPECIFICATION_FINAL.md v6.0
+15. **Phase 0 Mockups** (3 mockups - Nov 16)
+    - 07-lead-finder.html: Lead search with Apollo.io filters
+    - 08-campaigns.html: Campaign list with metrics
+    - 08b-campaign-detail.html: Sequence builder with 4-step flow
+
+### **Phase 0 Documentation (NEW - Nov 16):**
+16. **INSTANTLY_AI_AUDIT.md** (Nov 16) - Complete Instantly.ai feature audit (850+ lines)
+17. **LEAD_ACQUISITION_SPEC.md** (Nov 16) - Full implementation spec (700+ lines)
+18. **PHASE0_INTEGRATION_SUMMARY.md** (Nov 16) - Integration guide + flow diagrams
 
 ### **Other Active Docs:**
-15. **MOCKUP_FEEDBACK_CHECKLIST.md** (Nov 11) - Structured feedback guide
-16. **LOST_IDEAS_CHECK.md** (Nov 11) - Verified all ideas captured
-17. **DOCUMENTATION_REVIEW_NOV11.md** (Nov 11) - Full documentation audit
-18. **docs/archive/INDEX.md** (Nov 11) - Catalog of 35 archived documents
-19. **PROJECT.md** / **README.md** - Project metadata
+19. **MOCKUP_FEEDBACK_CHECKLIST.md** (Nov 11) - Structured feedback guide
+20. **LOST_IDEAS_CHECK.md** (Nov 11) - Verified all ideas captured
+21. **DOCUMENTATION_REVIEW_NOV11.md** (Nov 11) - Full documentation audit
+22. **docs/archive/INDEX.md** (Nov 11) - Catalog of 35 archived documents
+23. **PROJECT.md** / **README.md** - Project metadata
 
 ---
 
-## 🔄 ROUND 3 CHANGES SUMMARY
+## 🆕 PHASE 0 LEAD GENERATION (Nov 16)
+
+### **Why Phase 0?**
+**Problem:** Manual prospecting (10-20 leads/month) limits growth
+**Solution:** Automated lead generation + email campaigns (100-200 leads/month)
+
+### **Features Added:**
+1. **Lead Finder** - AI-powered prospect search
+   - Apollo.io API integration (200M+ contacts)
+   - Manual filters: Business type, location, size, revenue
+   - AI search: "Dance studios in Ontario with 100+ students"
+   - Export to Campaign or add directly to CRM
+
+2. **Campaigns** - Multi-step email sequences
+   - 4-step sequence builder (Initial → Follow-up → Value add → Final)
+   - Email tracking (opens, clicks, replies)
+   - Per-step analytics (sent, opened, replied %)
+   - Conditional logic (NO_REPLY, NO_OPEN, CLICKED_LINK)
+
+3. **Pipeline Integration** - Auto-move replied leads
+   - Replied leads → Automatically added to Pipeline as "New Lead"
+   - Source tracking: "Email Campaign - Spring Recital 2025"
+   - Email activity timeline in Lead detail
+
+### **Database Changes:**
+- **5 new models:** LeadSource, Campaign, CampaignStep, CampaignLead, EmailActivity
+- **4 new enums:** CampaignStatus, StepCondition, CampaignLeadStatus, EmailActivityType
+- **273 lines added** to schema.prisma
+
+### **Costs & ROI:**
+- **Monthly:** $134 (Apollo.io $99 + Mailgun $35)
+- **ROI:** 10x leads/month → 5-10 new clients/month → $12K-25K additional revenue
+
+---
+
+## 🔄 ROUND 3 CHANGES SUMMARY (Nov 12)
 
 ### **Priority Shift: SCHEDULING FIRST**
 **Old Priority:** Registration → Scheduling → Execution → Delivery
@@ -244,11 +337,13 @@ Round 5 iteration phase:
 
 ### **Ready for Backend Build (End of Week 2):**
 - [x] All 15 Round 3 features spec'd ✅
-- [x] Schema updated with new tables/fields ✅
-- [x] All mockups complete (7/7 updated) ✅
+- [x] Schema updated with new tables/fields (Round 3) ✅
+- [x] All core mockups complete (6/6 Round 6) ✅
+- [x] Phase 0 mockups complete (3/3 Lead Gen) ✅
 - [x] Multi-tenant architecture added ✅
 - [x] Comprehensive gap analysis complete (9 gaps found, 6 fixed) ✅
 - [x] User interview answers applied (15 questions, Round 5 complete) ✅
+- [x] Phase 0 Lead Generation added (schema + mockups + specs) ✅
 - [ ] Schema validated against every mockup element (Week 2)
 - [ ] API_SPEC.md created with endpoint contract (Week 2)
 
@@ -338,6 +433,6 @@ Round 5 iteration phase:
 
 ---
 
-**Last Updated:** November 13, 2025, 2:30 AM EST
-**Next Update:** After user interview completion
-**Status:** 🟢 On Track - Week 1, ready for interview (90% spec confidence)
+**Last Updated:** November 16, 2025
+**Next Update:** After Week 2 schema validation
+**Status:** 🟢 On Track - Design phase complete (95% spec confidence), ready for schema validation
