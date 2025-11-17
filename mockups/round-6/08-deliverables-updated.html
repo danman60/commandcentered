@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CommandCentered - Deliverables Enhanced</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
+            border-bottom: 1px solid rgba(6, 182, 212, 0.3);
+            padding: 24px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .page-icon {
+            font-size: 32px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #06b6d4 0%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 4px;
+            background: rgba(30, 41, 59, 0.6);
+            padding: 4px;
+            border-radius: 8px;
+        }
+
+        .view-btn {
+            padding: 8px 12px;
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+            font-size: 20px;
+        }
+
+        .view-btn.active {
+            background: rgba(6, 182, 212, 0.2);
+            color: #06b6d4;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-secondary {
+            background: rgba(71, 85, 105, 0.3);
+            color: #cbd5e1;
+            border: 1px solid rgba(71, 85, 105, 0.5);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(71, 85, 105, 0.5);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #06b6d4 0%, #0284c7 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(6, 182, 212, 0.4);
+        }
+
+        .main-content {
+            padding: 32px;
+        }
+
+        /* Alerts Banner */
+        .alerts-banner {
+            background: rgba(251, 146, 60, 0.1);
+            border: 1px solid rgba(251, 146, 60, 0.3);
+            border-radius: 12px;
+            padding: 16px 24px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            color: #fb923c;
+        }
+
+        .alerts-banner .icon {
+            font-size: 24px;
+        }
+
+        .alerts-banner .text {
+            flex: 1;
+        }
+
+        .alerts-banner .badge {
+            background: rgba(251, 146, 60, 0.2);
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .search-filter-bar {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 32px;
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .search-input-wrapper {
+            flex: 1;
+            position: relative;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            color: #64748b;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px 12px 48px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 8px;
+            color: #e2e8f0;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #06b6d4;
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+        }
+
+        .filter-select {
+            padding: 12px 16px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 8px;
+            color: #e2e8f0;
+            font-size: 14px;
+            min-width: 180px;
+        }
+
+        .deliverables-table-container {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .deliverables-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .deliverables-table thead {
+            background: rgba(15, 23, 42, 0.8);
+        }
+
+        .deliverables-table th {
+            padding: 16px 20px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 600;
+            color: #06b6d4;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid rgba(71, 85, 105, 0.3);
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .deliverables-table th:hover {
+            color: #0284c7;
+        }
+
+        .sort-arrow {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 12px;
+            opacity: 0.5;
+        }
+
+        .deliverables-table tbody tr {
+            border-bottom: 1px solid rgba(71, 85, 105, 0.2);
+            transition: all 0.2s;
+        }
+
+        .deliverables-table tbody tr:hover {
+            background: rgba(6, 182, 212, 0.05);
+        }
+
+        .deliverables-table td {
+            padding: 16px 20px;
+            font-size: 14px;
+            color: #cbd5e1;
+        }
+
+        .editable {
+            cursor: pointer;
+            padding: 2px 4px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .editable:hover {
+            background: rgba(6, 182, 212, 0.1);
+        }
+
+        .editable-input {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid #06b6d4;
+            border-radius: 4px;
+            padding: 4px 8px;
+            color: #e2e8f0;
+            font-size: inherit;
+            font-weight: inherit;
+            width: 100%;
+        }
+
+        .client-name {
+            font-weight: 600;
+            color: #e2e8f0;
+        }
+
+        .event-name {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        .service-checkboxes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .service-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+        }
+
+        .service-checkbox input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        /* Enhanced Drive Integration */
+        .drive-section {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .drive-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: rgba(6, 182, 212, 0.1);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 6px;
+            color: #06b6d4;
+            text-decoration: none;
+            font-size: 13px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .drive-link:hover {
+            background: rgba(6, 182, 212, 0.2);
+            border-color: #06b6d4;
+        }
+
+        .upload-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+        }
+
+        .upload-progress {
+            width: 100px;
+            height: 6px;
+            background: rgba(71, 85, 105, 0.3);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .upload-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #06b6d4, #0284c7);
+            border-radius: 3px;
+            transition: width 0.3s;
+        }
+
+        .upload-status.complete {
+            color: #10b981;
+        }
+
+        .upload-status.uploading {
+            color: #06b6d4;
+        }
+
+        /* Progress Indicator */
+        .progress-section {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(71, 85, 105, 0.3);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #06b6d4, #a855f7);
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+
+        .progress-text {
+            font-size: 11px;
+            color: #64748b;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .status-badge:hover {
+            transform: scale(1.05);
+        }
+
+        .status-completed {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .status-in-progress {
+            background: rgba(6, 182, 212, 0.2);
+            color: #06b6d4;
+        }
+
+        .status-pending {
+            background: rgba(251, 146, 60, 0.2);
+            color: #fb923c;
+        }
+
+        .status-review {
+            background: rgba(168, 85, 247, 0.2);
+            color: #a855f7;
+        }
+
+        .due-date {
+            font-size: 13px;
+            color: #cbd5e1;
+        }
+
+        .due-date.overdue {
+            color: #ef4444;
+            font-weight: 600;
+        }
+
+        .due-date.upcoming {
+            color: #fb923c;
+        }
+
+        .assigned-editor {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .editor-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #06b6d4 0%, #a855f7 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            padding: 6px 10px;
+            background: rgba(71, 85, 105, 0.3);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 6px;
+            color: #cbd5e1;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .action-btn:hover {
+            background: rgba(71, 85, 105, 0.5);
+            color: #e2e8f0;
+        }
+
+        /* Microphone FAB */
+        .microphone-fab {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #06b6d4 0%, #a855f7 100%);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(6, 182, 212, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .microphone-fab:hover {
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 12px 32px rgba(168, 85, 247, 0.5);
+        }
+
+        .microphone-fab.listening {
+            animation: pulse 1.5s infinite;
+            background: linear-gradient(135deg, #ef4444 0%, #f97316 100%);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(71, 85, 105, 0.6);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(71, 85, 105, 0.8);
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div class="header-left">
+        <div class="page-icon">🎬</div>
+        <div class="page-title">Deliverables</div>
+    </div>
+    <div class="header-right">
+        <div class="view-toggle">
+            <button class="view-btn active" title="Table View">☰</button>
+            <button class="view-btn" title="Card View">▦</button>
+            <button class="view-btn" title="Kanban View">◫</button>
+        </div>
+        <button class="btn btn-secondary" onclick="exportDeliverables()">
+            📊 Export
+        </button>
+        <button class="btn btn-primary" onclick="addDeliverable()">
+            ➕ Add Deliverable
+        </button>
+    </div>
+</div>
+
+<div class="main-content">
+
+    <!-- Alerts Banner -->
+    <div class="alerts-banner">
+        <span class="icon">⚠️</span>
+        <span class="text">3 deliverables overdue • 2 awaiting client review • 5 in editing queue</span>
+        <span class="badge">10 Alerts</span>
+    </div>
+
+    <div class="search-filter-bar">
+        <div class="search-input-wrapper">
+            <span class="search-icon">🔍</span>
+            <input type="text" class="search-input" placeholder="Search by client, event, or service type...">
+        </div>
+        <select class="filter-select">
+            <option>All Statuses</option>
+            <option>Completed</option>
+            <option>In Progress</option>
+            <option>Review</option>
+            <option>Pending</option>
+        </select>
+        <select class="filter-select">
+            <option>All Editors</option>
+            <option>Sarah Thompson</option>
+            <option>John Davis</option>
+            <option>Mike K.</option>
+        </select>
+        <select class="filter-select">
+            <option>Sort by: Due Date ↕</option>
+            <option>Sort by: Client Name ↕</option>
+            <option>Sort by: Status ↕</option>
+            <option>Sort by: Progress ↕</option>
+        </select>
+    </div>
+
+    <div class="deliverables-table-container">
+        <table class="deliverables-table">
+            <thead>
+                <tr>
+                    <th onclick="sortTable(0)">
+                        Client / Event
+                        <span class="sort-arrow">↕</span>
+                    </th>
+                    <th onclick="sortTable(1)">
+                        Services
+                        <span class="sort-arrow">↕</span>
+                    </th>
+                    <th onclick="sortTable(2)">
+                        Google Drive
+                        <span class="sort-arrow">↕</span>
+                    </th>
+                    <th onclick="sortTable(3)">
+                        Progress
+                        <span class="sort-arrow">↕</span>
+                    </th>
+                    <th onclick="sortTable(4)">
+                        Assigned Editor
+                        <span class="sort-arrow">↕</span>
+                    </th>
+                    <th onclick="sortTable(5)">
+                        Due Date
+                        <span class="sort-arrow">↕</span>
+                    </th>
+                    <th onclick="sortTable(6)">
+                        Status
+                        <span class="sort-arrow">↕</span>
+                    </th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="client-name editable" onclick="makeEditable(this)">EMPWR Dance Experience</div>
+                        <div class="event-name editable" onclick="makeEditable(this)">Spring Recital 2025</div>
+                    </td>
+                    <td>
+                        <div class="service-checkboxes">
+                            <label class="service-checkbox">
+                                <input type="checkbox" checked onchange="updateProgress()">
+                                <span>1-min highlight</span>
+                            </label>
+                            <label class="service-checkbox">
+                                <input type="checkbox" checked onchange="updateProgress()">
+                                <span>3-min full event</span>
+                            </label>
+                            <label class="service-checkbox">
+                                <input type="checkbox" onchange="updateProgress()">
+                                <span>3x Reels</span>
+                            </label>
+                            <label class="service-checkbox">
+                                <input type="checkbox" checked onchange="updateProgress()">
+                                <span>Raw footage</span>
+                            </label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="drive-section">
+                            <a href="#" class="drive-link" onclick="openDrive(event)">
+                                📁 Open Folder
+                            </a>
+                            <div class="upload-status uploading">
+                                <span>📤 Uploading...</span>
+                                <div class="upload-progress">
+                                    <div class="upload-progress-bar" style="width: 75%"></div>
+                                </div>
+                                <span>75%</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="progress-section">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 75%"></div>
+                            </div>
+                            <div class="progress-text">3 of 4 completed</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="assigned-editor" onclick="changeEditor(this)">
+                            <div class="editor-avatar">ST</div>
+                            <span>Sarah Thompson</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="due-date editable" onclick="makeEditable(this)">Dec 20, 2025</div>
+                    </td>
+                    <td>
+                        <span class="status-badge status-in-progress" onclick="cycleStatus(this)">In Progress</span>
+                    </td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="action-btn" onclick="viewDetails()">👁️ View</button>
+                            <button class="action-btn" onclick="sendToClient()">📧 Send</button>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="client-name editable" onclick="makeEditable(this)">Glow Dance Competition</div>
+                        <div class="event-name editable" onclick="makeEditable(this)">Winter Showcase 2025</div>
+                    </td>
+                    <td>
+                        <div class="service-checkboxes">
+                            <label class="service-checkbox">
+                                <input type="checkbox" checked onchange="updateProgress()">
+                                <span>Competition recap</span>
+                            </label>
+                            <label class="service-checkbox">
+                                <input type="checkbox" checked onchange="updateProgress()">
+                                <span>Awards ceremony</span>
+                            </label>
+                            <label class="service-checkbox">
+                                <input type="checkbox" checked onchange="updateProgress()">
+                                <span>Livestream archive</span>
+                            </label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="drive-section">
+                            <a href="#" class="drive-link" onclick="openDrive(event)">
+                                📁 Open Folder
+                            </a>
+                            <div class="upload-status complete">
+                                <span>✅ All files uploaded</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="progress-section">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 100%"></div>
+                            </div>
+                            <div class="progress-text">3 of 3 completed</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="assigned-editor" onclick="changeEditor(this)">
+                            <div class="editor-avatar">JD</div>
+                            <span>John Davis</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="due-date editable" onclick="makeEditable(this)">Dec 25, 2025</div>
+                    </td>
+                    <td>
+                        <span class="status-badge status-review" onclick="cycleStatus(this)">Client Review</span>
+                    </td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="action-btn" onclick="viewDetails()">👁️ View</button>
+                            <button class="action-btn" onclick="sendToClient()">📧 Send</button>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="client-name editable" onclick="makeEditable(this)">ABC Dance Studio</div>
+                        <div class="event-name editable" onclick="makeEditable(this)">Fall Recital 2025</div>
+                    </td>
+                    <td>
+                        <div class="service-checkboxes">
+                            <label class="service-checkbox">
+                                <input type="checkbox" checked onchange="updateProgress()">
+                                <span>2-min highlight</span>
+                            </label>
+                            <label class="service-checkbox">
+                                <input type="checkbox" checked onchange="updateProgress()">
+                                <span>Full event video</span>
+                            </label>
+                            <label class="service-checkbox">
+                                <input type="checkbox" checked onchange="updateProgress()">
+                                <span>5x Reels</span>
+                            </label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="drive-section">
+                            <a href="#" class="drive-link" onclick="openDrive(event)">
+                                📁 Open Folder
+                            </a>
+                            <div class="upload-status complete">
+                                <span>✅ Delivered to client</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="progress-section">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 100%"></div>
+                            </div>
+                            <div class="progress-text">3 of 3 completed</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="assigned-editor" onclick="changeEditor(this)">
+                            <div class="editor-avatar">MK</div>
+                            <span>Mike K.</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="due-date editable" onclick="makeEditable(this)">Nov 30, 2025</div>
+                    </td>
+                    <td>
+                        <span class="status-badge status-completed" onclick="cycleStatus(this)">Completed</span>
+                    </td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="action-btn" onclick="viewDetails()">👁️ View</button>
+                            <button class="action-btn" onclick="downloadArchive()">💾 Archive</button>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="client-name editable" onclick="makeEditable(this)">XYZ Corporate</div>
+                        <div class="event-name editable" onclick="makeEditable(this)">Annual Gala 2025</div>
+                    </td>
+                    <td>
+                        <div class="service-checkboxes">
+                            <label class="service-checkbox">
+                                <input type="checkbox" onchange="updateProgress()">
+                                <span>Event highlights</span>
+                            </label>
+                            <label class="service-checkbox">
+                                <input type="checkbox" onchange="updateProgress()">
+                                <span>Interviews</span>
+                            </label>
+                            <label class="service-checkbox">
+                                <input type="checkbox" onchange="updateProgress()">
+                                <span>B-roll package</span>
+                            </label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="drive-section">
+                            <a href="#" class="drive-link" onclick="createDriveFolder(event)">
+                                ➕ Create Folder
+                            </a>
+                            <div class="upload-status">
+                                <span style="color: #64748b;">No files uploaded</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="progress-section">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 0%"></div>
+                            </div>
+                            <div class="progress-text">0 of 3 completed</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="assigned-editor" onclick="changeEditor(this)">
+                            <div class="editor-avatar">ST</div>
+                            <span>Sarah Thompson</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="due-date overdue editable" onclick="makeEditable(this)">Nov 10, 2025 (OVERDUE)</div>
+                    </td>
+                    <td>
+                        <span class="status-badge status-pending" onclick="cycleStatus(this)">Pending</span>
+                    </td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="action-btn" onclick="viewDetails()">👁️ View</button>
+                            <button class="action-btn" onclick="sendReminder()">⏰ Remind</button>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="client-name editable" onclick="makeEditable(this)">Metro Dance Academy</div>
+                        <div class="event-name editable" onclick="makeEditable(this)">Competition Prep Workshop</div>
+                    </td>
+                    <td>
+                        <div class="service-checkboxes">
+                            <label class="service-checkbox">
+                                <input type="checkbox" checked onchange="updateProgress()">
+                                <span>Workshop recap</span>
+                            </label>
+                            <label class="service-checkbox">
+                                <input type="checkbox" onchange="updateProgress()">
+                                <span>Technique montage</span>
+                            </label>
+                            <label class="service-checkbox">
+                                <input type="checkbox" onchange="updateProgress()">
+                                <span>Social media clips</span>
+                            </label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="drive-section">
+                            <a href="#" class="drive-link" onclick="openDrive(event)">
+                                📁 Open Folder
+                            </a>
+                            <div class="upload-status uploading">
+                                <span>📤 Uploading...</span>
+                                <div class="upload-progress">
+                                    <div class="upload-progress-bar" style="width: 33%"></div>
+                                </div>
+                                <span>33%</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="progress-section">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 33%"></div>
+                            </div>
+                            <div class="progress-text">1 of 3 completed</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="assigned-editor" onclick="changeEditor(this)">
+                            <div class="editor-avatar">JD</div>
+                            <span>John Davis</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="due-date upcoming editable" onclick="makeEditable(this)">Dec 30, 2025</div>
+                    </td>
+                    <td>
+                        <span class="status-badge status-in-progress" onclick="cycleStatus(this)">In Progress</span>
+                    </td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="action-btn" onclick="viewDetails()">👁️ View</button>
+                            <button class="action-btn" onclick="sendUpdate()">📨 Update</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<!-- Microphone FAB -->
+<button class="microphone-fab" onclick="toggleVoiceControl(this)">🎤</button>
+
+<script>
+    // Inline editing
+    function makeEditable(element) {
+        if (element.querySelector('input')) return;
+
+        const currentValue = element.innerText;
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'editable-input';
+        input.value = currentValue;
+
+        element.innerHTML = '';
+        element.appendChild(input);
+        input.focus();
+        input.select();
+
+        const save = () => {
+            element.innerText = input.value || currentValue;
+            console.log('Field updated:', input.value);
+        };
+
+        input.addEventListener('blur', save);
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                save();
+            }
+        });
+    }
+
+    // Cycle status
+    function cycleStatus(element) {
+        const statuses = ['pending', 'in-progress', 'review', 'completed'];
+        const labels = ['Pending', 'In Progress', 'Client Review', 'Completed'];
+        const classes = ['status-pending', 'status-in-progress', 'status-review', 'status-completed'];
+
+        let currentIndex = classes.findIndex(c => element.classList.contains(c));
+        if (currentIndex === -1) currentIndex = 0;
+
+        element.classList.remove(classes[currentIndex]);
+        currentIndex = (currentIndex + 1) % statuses.length;
+        element.classList.add(classes[currentIndex]);
+        element.innerText = labels[currentIndex];
+
+        console.log('Status updated to:', labels[currentIndex]);
+    }
+
+    // Update progress
+    function updateProgress() {
+        console.log('Progress updated based on checkbox changes');
+    }
+
+    // Change editor
+    function changeEditor(element) {
+        console.log('Editor selection modal would open');
+    }
+
+    // Drive functions
+    function openDrive(event) {
+        event.preventDefault();
+        console.log('Opening Google Drive folder');
+    }
+
+    function createDriveFolder(event) {
+        event.preventDefault();
+        console.log('Creating new Google Drive folder');
+    }
+
+    // Action functions
+    function viewDetails() {
+        console.log('Opening deliverable details modal');
+    }
+
+    function sendToClient() {
+        console.log('Opening send to client modal');
+    }
+
+    function sendReminder() {
+        console.log('Sending reminder email');
+    }
+
+    function sendUpdate() {
+        console.log('Sending progress update');
+    }
+
+    function downloadArchive() {
+        console.log('Downloading deliverable archive');
+    }
+
+    function exportDeliverables() {
+        console.log('Exporting deliverables list');
+    }
+
+    function addDeliverable() {
+        console.log('Opening add deliverable modal');
+    }
+
+    // Voice control
+    function toggleVoiceControl(button) {
+        button.classList.toggle('listening');
+        if (button.classList.contains('listening')) {
+            console.log('Voice control activated');
+        } else {
+            console.log('Voice control deactivated');
+        }
+    }
+
+    // Sort table
+    function sortTable(columnIndex) {
+        console.log('Sorting table by column:', columnIndex);
+    }
+</script>
+
+</body>
+</html>

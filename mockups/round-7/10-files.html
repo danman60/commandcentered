@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CommandCentered - Files</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+        .header {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
+            border-bottom: 1px solid rgba(6, 182, 212, 0.3);
+            padding: 24px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header-left { display: flex; align-items: center; gap: 16px; }
+        .page-icon { font-size: 32px; }
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #06b6d4 0%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .header-right { display: flex; gap: 12px; }
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-secondary {
+            background: rgba(71, 85, 105, 0.3);
+            color: #cbd5e1;
+            border: 1px solid rgba(71, 85, 105, 0.5);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #06b6d4 0%, #0284c7 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+        }
+        .main-content { padding: 32px; }
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid rgba(71, 85, 105, 0.3);
+        }
+        .tab {
+            padding: 12px 24px;
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        .tab.active {
+            color: #06b6d4;
+            border-bottom-color: #06b6d4;
+        }
+        .section-card {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #06b6d4;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .file-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+        }
+        .file-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 8px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .file-card:hover {
+            border-color: rgba(6, 182, 212, 0.6);
+            transform: translateY(-2px);
+        }
+        .file-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+        .file-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #e2e8f0;
+            margin-bottom: 4px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .file-meta {
+            font-size: 12px;
+            color: #64748b;
+        }
+        .livestream-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .livestream-item {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .livestream-thumb {
+            width: 200px;
+            height: 112px;
+            background: linear-gradient(135deg, #06b6d4 0%, #a855f7 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+        }
+        .livestream-info { flex: 1; }
+        .livestream-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #e2e8f0;
+            margin-bottom: 8px;
+        }
+        .livestream-details {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-bottom: 12px;
+        }
+        .livestream-actions {
+            display: flex;
+            gap: 8px;
+        }
+        .action-btn {
+            padding: 8px 16px;
+            background: rgba(6, 182, 212, 0.15);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 6px;
+            color: #06b6d4;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .action-btn:hover {
+            background: rgba(6, 182, 212, 0.25);
+        }
+        .service-library {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .service-template {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 8px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .service-template:hover {
+            border-color: rgba(6, 182, 212, 0.6);
+            transform: translateY(-2px);
+        }
+        .service-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: #e2e8f0;
+            margin-bottom: 12px;
+        }
+        .service-description {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-bottom: 12px;
+        }
+        .service-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: #10b981;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div class="header-left">
+        <div class="page-icon">📄</div>
+        <div class="page-title">Files & Assets</div>
+    </div>
+    <div class="header-right">
+        <button class="btn btn-secondary" onclick="openDrive()">
+            📁 Open Google Drive
+        </button>
+        <button class="btn btn-primary" onclick="uploadFile()">
+            ⬆️ Upload File
+        </button>
+    </div>
+</div>
+
+<div class="main-content">
+
+    <div class="tabs">
+        <button class="tab active" onclick="switchTab('documents')">📄 Documents</button>
+        <button class="tab" onclick="switchTab('contracts')">📝 Contracts</button>
+        <button class="tab" onclick="switchTab('proposals')">💼 Proposals</button>
+        <button class="tab" onclick="switchTab('livestreams')">📡 Livestreams</button>
+        <button class="tab" onclick="switchTab('service-library')">📚 Service Library</button>
+    </div>
+
+    <!-- Documents Tab -->
+    <div id="documentsTab">
+        <div class="section-card">
+            <div class="section-title">📁 Recent Documents</div>
+            <div class="file-grid">
+                <div class="file-card">
+                    <div class="file-icon">📄</div>
+                    <div class="file-name">EMPWR_Contract_2025.pdf</div>
+                    <div class="file-meta">2.3 MB • Nov 10, 2025</div>
+                </div>
+                <div class="file-card">
+                    <div class="file-icon">📊</div>
+                    <div class="file-name">Glow_Proposal.pdf</div>
+                    <div class="file-meta">1.8 MB • Nov 8, 2025</div>
+                </div>
+                <div class="file-card">
+                    <div class="file-icon">📄</div>
+                    <div class="file-name">ABC_Questionnaire.pdf</div>
+                    <div class="file-meta">512 KB • Nov 5, 2025</div>
+                </div>
+                <div class="file-card">
+                    <div class="file-icon">📄</div>
+                    <div class="file-name">Event_Schedule.xlsx</div>
+                    <div class="file-meta">1.2 MB • Nov 3, 2025</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Livestreams Tab (Hidden by default) -->
+    <div id="livestreamsTab" style="display: none;">
+        <div class="section-card">
+            <div class="section-title">📡 Vimeo Livestreams</div>
+            <div class="livestream-list">
+                <div class="livestream-item">
+                    <div class="livestream-thumb">🎥</div>
+                    <div class="livestream-info">
+                        <div class="livestream-title">EMPWR Dance Experience - Dec 6</div>
+                        <div class="livestream-details">
+                            Stream Key: live-abc123 • RTMP URL: rtmp://vimeo.com/live<br>
+                            Embed Code: &lt;iframe src="..."&gt;
+                        </div>
+                        <div class="livestream-actions">
+                            <button class="action-btn">📋 Copy Stream Key</button>
+                            <button class="action-btn">🔗 Copy RTMP URL</button>
+                            <button class="action-btn">📺 View on Vimeo</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="livestream-item">
+                    <div class="livestream-thumb">🎥</div>
+                    <div class="livestream-info">
+                        <div class="livestream-title">Glow Dance Competition - Dec 10</div>
+                        <div class="livestream-details">
+                            Stream Key: live-xyz789 • RTMP URL: rtmp://vimeo.com/live<br>
+                            Embed Code: &lt;iframe src="..."&gt;
+                        </div>
+                        <div class="livestream-actions">
+                            <button class="action-btn">📋 Copy Stream Key</button>
+                            <button class="action-btn">🔗 Copy RTMP URL</button>
+                            <button class="action-btn">📺 View on Vimeo</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Service Library Tab (Hidden by default) -->
+    <div id="serviceLibraryTab" style="display: none;">
+        <div class="section-card">
+            <div class="section-title">📚 Service Templates Library</div>
+            <div class="service-library">
+                <div class="service-template">
+                    <div class="service-name">Dance Recital Package</div>
+                    <div class="service-description">
+                        Multi-camera setup, livestream, 3-min highlight reel, full event video
+                    </div>
+                    <div class="service-price">$8,500</div>
+                </div>
+
+                <div class="service-template">
+                    <div class="service-name">Competition Coverage</div>
+                    <div class="service-description">
+                        Full competition recording, awards ceremony, livestream archive
+                    </div>
+                    <div class="service-price">$6,200</div>
+                </div>
+
+                <div class="service-template">
+                    <div class="service-name">Corporate Event</div>
+                    <div class="service-description">
+                        Professional coverage, interviews, B-roll, highlight package
+                    </div>
+                    <div class="service-price">$4,500</div>
+                </div>
+
+                <div class="service-template">
+                    <div class="service-name">Content Capture Day</div>
+                    <div class="service-description">
+                        8-hour shoot, multiple setups, raw footage + 3-5 reels
+                    </div>
+                    <div class="service-price">$3,800</div>
+                </div>
+
+                <div class="service-template">
+                    <div class="service-name">Wedding Video</div>
+                    <div class="service-description">
+                        Full day coverage, ceremony + reception, 10-min highlight film
+                    </div>
+                    <div class="service-price">$5,500</div>
+                </div>
+
+                <div class="service-template">
+                    <div class="service-name">Livestream Only</div>
+                    <div class="service-description">
+                        Single-camera livestream setup, no editing or deliverables
+                    </div>
+                    <div class="service-price">$1,800</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function switchTab(tab) {
+        const tabs = document.querySelectorAll('.tab');
+        tabs.forEach(t => t.classList.remove('active'));
+        event.target.classList.add('active');
+
+        document.getElementById('documentsTab').style.display = tab === 'documents' ? 'block' : 'none';
+        document.getElementById('livestreamsTab').style.display = tab === 'livestreams' ? 'block' : 'none';
+        document.getElementById('serviceLibraryTab').style.display = tab === 'service-library' ? 'block' : 'none';
+
+        console.log('Switched to', tab, 'tab');
+    }
+
+    function openDrive() {
+        console.log('Open Google Drive');
+    }
+
+    function uploadFile() {
+        console.log('Upload file');
+    }
+</script>
+
+</body>
+</html>

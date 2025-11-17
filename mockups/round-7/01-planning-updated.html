@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planning - Enhanced Calendar View | CommandCentered Round 6</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+            color: #e0e6ed;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Main Layout */
+        .app-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Left Navigation */
+        .left-nav {
+            width: 220px;
+            background: rgba(10, 14, 39, 0.95);
+            border-right: 1px solid rgba(56, 189, 248, 0.2);
+            padding: 24px 16px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 32px;
+        }
+
+        .nav-item {
+            padding: 12px 16px;
+            margin-bottom: 4px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #94a3b8;
+        }
+
+        .nav-item.active {
+            background: rgba(56, 189, 248, 0.15);
+            color: #38bdf8;
+            border-left: 3px solid #38bdf8;
+        }
+
+        .nav-item:hover {
+            background: rgba(56, 189, 248, 0.08);
+            color: #38bdf8;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            padding: 20px 32px;
+            background: rgba(10, 14, 39, 0.6);
+            border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left h1 {
+            font-size: 24px;
+            margin-bottom: 4px;
+            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-left p {
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(56, 189, 248, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(56, 189, 248, 0.1);
+            color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(56, 189, 248, 0.2);
+        }
+
+        /* View Toggle - Icon Only */
+        .view-toggle {
+            display: flex;
+            gap: 4px;
+            background: rgba(30, 41, 59, 0.6);
+            padding: 4px;
+            border-radius: 8px;
+        }
+
+        .view-toggle button {
+            padding: 8px 10px;
+            background: transparent;
+            border: none;
+            color: #64748b;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .view-toggle button:hover {
+            color: #94a3b8;
+        }
+
+        .view-toggle button.active {
+            background: rgba(56, 189, 248, 0.2);
+            color: #38bdf8;
+        }
+
+        /* Alerts Banner */
+        .alerts-banner {
+            padding: 12px 32px;
+            background: rgba(251, 146, 60, 0.1);
+            border-bottom: 1px solid rgba(251, 146, 60, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #fb923c;
+        }
+
+        .alerts-banner .icon {
+            font-size: 20px;
+        }
+
+        .alerts-banner .text {
+            flex: 1;
+            font-size: 14px;
+        }
+
+        .alerts-banner .count {
+            background: rgba(251, 146, 60, 0.2);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        /* 3-Panel Layout */
+        .planning-panels {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .panel {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(56, 189, 248, 0.2);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 16px 20px;
+            background: rgba(10, 14, 39, 0.8);
+            border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .panel-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #38bdf8;
+        }
+
+        .panel-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .icon-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            color: #38bdf8;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .icon-btn:hover {
+            background: rgba(56, 189, 248, 0.2);
+        }
+
+        .panel-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+        }
+
+        /* Operators Panel */
+        .operators-panel {
+            width: 20%;
+            min-width: 200px;
+        }
+
+        .operator-card {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+            cursor: move;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .operator-card:hover {
+            border-color: #38bdf8;
+            transform: translateX(4px);
+        }
+
+        .operator-card.dragging {
+            opacity: 0.5;
+            transform: rotate(2deg);
+        }
+
+        .drag-handle {
+            position: absolute;
+            left: 4px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #475569;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .operator-card:hover .drag-handle {
+            opacity: 1;
+        }
+
+        .operator-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .operator-availability {
+            font-size: 12px;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .status-available { background: #22c55e; }
+        .status-partial { background: #fb923c; }
+        .status-unavailable { background: #ef4444; }
+
+        /* Kits Panel */
+        .kits-panel {
+            width: 20%;
+            min-width: 200px;
+        }
+
+        .kit-card {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(129, 140, 248, 0.2);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+            cursor: move;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .kit-card:hover {
+            border-color: #818cf8;
+            transform: translateX(4px);
+        }
+
+        .kit-card.dragging {
+            opacity: 0.5;
+            transform: rotate(2deg);
+        }
+
+        .kit-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .kit-items {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .kit-status {
+            font-size: 11px;
+            color: #22c55e;
+            margin-top: 4px;
+        }
+
+        /* Calendar Panel */
+        .calendar-panel {
+            flex: 1;
+            min-width: 600px;
+        }
+
+        .calendar-controls {
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        .month-nav {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .month-nav button {
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            color: #38bdf8;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .month-nav button:hover {
+            background: rgba(56, 189, 248, 0.2);
+        }
+
+        .current-month {
+            font-size: 18px;
+            font-weight: 600;
+            color: #38bdf8;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        .calendar-header {
+            background: rgba(10, 14, 39, 0.8);
+            padding: 12px;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+        }
+
+        .calendar-day {
+            background: rgba(15, 23, 42, 0.8);
+            min-height: 100px;
+            padding: 8px;
+            position: relative;
+        }
+
+        .calendar-day.drop-zone {
+            background: rgba(56, 189, 248, 0.1);
+            border: 2px dashed rgba(56, 189, 248, 0.5);
+        }
+
+        .calendar-day.other-month {
+            opacity: 0.4;
+        }
+
+        .day-number {
+            font-size: 14px;
+            font-weight: 600;
+            color: #64748b;
+            margin-bottom: 6px;
+        }
+
+        .calendar-day.today .day-number {
+            color: #38bdf8;
+            background: rgba(56, 189, 248, 0.2);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Enhanced Event Bars */
+        .event-bar {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            border-radius: 4px;
+            padding: 6px 8px;
+            margin-bottom: 4px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-left: 3px solid #60a5fa;
+            position: relative;
+        }
+
+        .event-bar:hover {
+            transform: translateX(2px);
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
+        }
+
+        .event-bar.status-booked {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            border-left-color: #60a5fa;
+        }
+
+        .event-bar.status-pending {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            border-left-color: #fbbf24;
+        }
+
+        .event-bar.status-completed {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            border-left-color: #4ade80;
+        }
+
+        .event-client {
+            font-weight: 600;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .event-details {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        /* Enhanced Operator Initials */
+        .operator-initials {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.2s;
+        }
+
+        .operator-initials:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .kit-icon {
+            font-size: 12px;
+        }
+
+        /* Event Tooltip */
+        .event-tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 0;
+            background: rgba(10, 14, 39, 0.98);
+            border: 1px solid rgba(56, 189, 248, 0.5);
+            border-radius: 8px;
+            padding: 12px;
+            min-width: 250px;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .event-bar:hover .event-tooltip {
+            display: block;
+        }
+
+        .event-tooltip h4 {
+            color: #38bdf8;
+            margin: 0 0 8px 0;
+            font-size: 14px;
+        }
+
+        .event-tooltip .detail {
+            font-size: 12px;
+            color: #cbd5e1;
+            margin: 4px 0;
+        }
+
+        /* Legend */
+        .legend {
+            padding: 16px 20px;
+            background: rgba(10, 14, 39, 0.6);
+            border-top: 1px solid rgba(56, 189, 248, 0.2);
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+        }
+
+        .legend-color.booked { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); }
+        .legend-color.pending { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
+        .legend-color.completed { background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); }
+
+        /* Microphone FAB */
+        .microphone-fab {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(56, 189, 248, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .microphone-fab:hover {
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 12px 32px rgba(129, 140, 248, 0.5);
+        }
+
+        .microphone-fab.listening {
+            animation: pulse 1.5s infinite;
+            background: linear-gradient(135deg, #ef4444 0%, #f97316 100%);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.5);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(56, 189, 248, 0.3);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(56, 189, 248, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Left Navigation -->
+        <nav class="left-nav">
+            <div class="logo">⚡ CommandCentered</div>
+            <div class="nav-item" onclick="window.location.href='00-dashboard.html'">📊 Dashboard</div>
+            <div class="nav-item" onclick="window.location.href='06-pipeline-updated.html'">🎯 Pipeline</div>
+            <div class="nav-item active">📅 Planning</div>
+            <div class="nav-item" onclick="window.location.href='08-deliverables-updated.html'">📦 Deliverables</div>
+            <div class="nav-item" onclick="window.location.href='07-communications-updated.html'">💬 Communications</div>
+            <div class="nav-item" onclick="window.location.href='09-operators-updated.html'">👥 Operators</div>
+            <div class="nav-item" onclick="window.location.href='04-gear-updated.html'">🎥 Gear</div>
+            <div class="nav-item" onclick="window.location.href='10-files-updated.html'">📁 Files</div>
+            <div class="nav-item" onclick="window.location.href='12-settings-updated.html'">⚙️ Settings</div>
+            <div class="nav-item" onclick="window.location.href='index.html'">🏠 Home</div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <h1>Planning - December 2025</h1>
+                    <p>Month view • Drag operators & kits to events</p>
+                </div>
+                <div class="header-right">
+                    <div class="view-toggle">
+                        <button title="Table View">☰</button>
+                        <button title="Card View">▦</button>
+                        <button class="active" title="Calendar View">◫</button>
+                    </div>
+                    <button class="btn btn-secondary">⛶ Full Screen</button>
+                    <button class="btn btn-primary">+ New Event</button>
+                </div>
+            </header>
+
+            <!-- Alerts Banner -->
+            <div class="alerts-banner">
+                <span class="icon">⚠️</span>
+                <span class="text">3 events missing operators • 2 events missing kits • 1 conflict detected</span>
+                <span class="count">6 Alerts</span>
+                <button class="btn btn-secondary" style="margin-left: auto; padding: 6px 12px;">View All</button>
+            </div>
+
+            <!-- 3-Panel Layout -->
+            <div class="planning-panels">
+                <!-- Operators Panel -->
+                <div class="panel operators-panel">
+                    <div class="panel-header">
+                        <span class="panel-title">Operators (Drag to Assign)</span>
+                        <div class="panel-actions">
+                            <button class="icon-btn" title="Sort">↕</button>
+                            <button class="icon-btn">+</button>
+                        </div>
+                    </div>
+                    <div class="panel-content">
+                        <div class="operator-card" draggable="true">
+                            <span class="drag-handle">⋮⋮</span>
+                            <div class="operator-name">John Davis (JD)</div>
+                            <div class="operator-availability">
+                                <span class="status-dot status-available"></span>
+                                Available Full Day
+                            </div>
+                        </div>
+                        <div class="operator-card" draggable="true">
+                            <span class="drag-handle">⋮⋮</span>
+                            <div class="operator-name">Sarah Thompson (ST)</div>
+                            <div class="operator-availability">
+                                <span class="status-dot status-available"></span>
+                                Available Full Day
+                            </div>
+                        </div>
+                        <div class="operator-card" draggable="true">
+                            <span class="drag-handle">⋮⋮</span>
+                            <div class="operator-name">Mike Kelly (MK)</div>
+                            <div class="operator-availability">
+                                <span class="status-dot status-partial"></span>
+                                Available 2-6 PM
+                            </div>
+                        </div>
+                        <div class="operator-card" draggable="true">
+                            <span class="drag-handle">⋮⋮</span>
+                            <div class="operator-name">Emma Rodriguez (ER)</div>
+                            <div class="operator-availability">
+                                <span class="status-dot status-unavailable"></span>
+                                Unavailable (Vacation)
+                            </div>
+                        </div>
+                        <div class="operator-card" draggable="true">
+                            <span class="drag-handle">⋮⋮</span>
+                            <div class="operator-name">Tom Wilson (TW)</div>
+                            <div class="operator-availability">
+                                <span class="status-dot status-available"></span>
+                                Available Full Day
+                            </div>
+                        </div>
+                        <div class="operator-card" draggable="true">
+                            <span class="drag-handle">⋮⋮</span>
+                            <div class="operator-name">Alex Lee (AL)</div>
+                            <div class="operator-availability">
+                                <span class="status-dot status-available"></span>
+                                Available Full Day
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kits Panel -->
+                <div class="panel kits-panel">
+                    <div class="panel-header">
+                        <span class="panel-title">Kits (Drag to Assign)</span>
+                        <div class="panel-actions">
+                            <button class="icon-btn" title="Sort">↕</button>
+                            <button class="icon-btn">+</button>
+                        </div>
+                    </div>
+                    <div class="panel-content">
+                        <div class="kit-card" draggable="true">
+                            <span class="drag-handle">⋮⋮</span>
+                            <div class="kit-name">Recital Kit A</div>
+                            <div class="kit-items">2 Cameras, 1 Audio, Lighting</div>
+                            <div class="kit-status">✓ Available</div>
+                        </div>
+                        <div class="kit-card" draggable="true">
+                            <span class="drag-handle">⋮⋮</span>
+                            <div class="kit-name">Recital Kit B</div>
+                            <div class="kit-items">2 Cameras, 1 Audio, Lighting</div>
+                            <div class="kit-status">✓ Available</div>
+                        </div>
+                        <div class="kit-card" draggable="true">
+                            <span class="drag-handle">⋮⋮</span>
+                            <div class="kit-name">Corporate Package</div>
+                            <div class="kit-items">1 Camera, 1 Audio, Gimbal</div>
+                            <div class="kit-status">✓ Available</div>
+                        </div>
+                        <div class="kit-card" draggable="true">
+                            <span class="drag-handle">⋮⋮</span>
+                            <div class="kit-name">Content Kit</div>
+                            <div class="kit-items">1 Camera, Drone, Gimbal</div>
+                            <div class="kit-status">✓ Available</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Calendar Panel -->
+                <div class="panel calendar-panel">
+                    <div class="panel-header">
+                        <span class="panel-title">December 2025</span>
+                        <div class="calendar-controls" style="border: none; padding: 0;">
+                            <div class="month-nav">
+                                <button>‹</button>
+                                <button>›</button>
+                                <button class="btn btn-secondary" style="padding: 8px 16px; margin-left: 12px;">Today</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-content" style="padding: 0;">
+                        <div class="calendar-grid">
+                            <!-- Headers -->
+                            <div class="calendar-header">Sun</div>
+                            <div class="calendar-header">Mon</div>
+                            <div class="calendar-header">Tue</div>
+                            <div class="calendar-header">Wed</div>
+                            <div class="calendar-header">Thu</div>
+                            <div class="calendar-header">Fri</div>
+                            <div class="calendar-header">Sat</div>
+
+                            <!-- Week 1 -->
+                            <div class="calendar-day">
+                                <div class="day-number">1</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">2</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">3</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">4</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">5</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">6</div>
+                                <div class="event-bar status-booked">
+                                    <div class="event-client">EMPWR Dance</div>
+                                    <div class="event-details">
+                                        <span class="operator-initials" title="John Davis">JD</span>
+                                        <span class="operator-initials" title="Sarah Thompson">ST</span>
+                                        <span class="kit-icon" title="Recital Kit A">📷</span>
+                                        <span class="kit-icon" title="Recital Kit B">📷</span>
+                                    </div>
+                                    <div class="event-tooltip">
+                                        <h4>EMPWR Dance Recital</h4>
+                                        <div class="detail">📍 Blue Mountain Resort</div>
+                                        <div class="detail">⏰ 2:00 PM - 10:00 PM</div>
+                                        <div class="detail">👥 John Davis, Sarah Thompson</div>
+                                        <div class="detail">📷 Recital Kit A & B</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">7</div>
+                                <div class="event-bar status-booked">
+                                    <div class="event-client">EMPWR Dance (Day 2)</div>
+                                    <div class="event-details">
+                                        <span class="operator-initials" title="John Davis">JD</span>
+                                        <span class="operator-initials" title="Sarah Thompson">ST</span>
+                                        <span class="kit-icon" title="Recital Kits">📷</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Week 2 -->
+                            <div class="calendar-day">
+                                <div class="day-number">8</div>
+                                <div class="event-bar status-booked">
+                                    <div class="event-client">Glow Competition</div>
+                                    <div class="event-details">
+                                        <span class="operator-initials" title="Mike Kelly">MK</span>
+                                        <span class="operator-initials" title="Alex Lee">AL</span>
+                                        <span class="kit-icon">📷</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">9</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">10</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">11</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">12</div>
+                                <div class="event-bar status-pending">
+                                    <div class="event-client">Holiday Party</div>
+                                    <div class="event-details">
+                                        <span style="color: #fbbf24; font-size: 10px;">⚠️ No operators</span>
+                                        <span class="kit-icon">📷</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">13</div>
+                                <div class="event-bar status-pending">
+                                    <div class="event-client">Corporate Event</div>
+                                    <div class="event-details">
+                                        <span style="color: #fbbf24; font-size: 10px;">⚠️ No operators</span>
+                                        <span class="kit-icon">🎥</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">14</div>
+                            </div>
+
+                            <!-- Week 3 -->
+                            <div class="calendar-day">
+                                <div class="day-number">15</div>
+                                <div class="event-bar status-completed">
+                                    <div class="event-client">Impact Studios</div>
+                                    <div class="event-details">
+                                        <span class="operator-initials">MK</span>
+                                        <span class="kit-icon">📷</span>
+                                        <span style="color: #4ade80; font-size: 10px;">✓ Delivered</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">16</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">17</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">18</div>
+                                <div class="event-bar status-booked">
+                                    <div class="event-client">Dance Fest</div>
+                                    <div class="event-details">
+                                        <span class="operator-initials">JD</span>
+                                        <span class="operator-initials">ST</span>
+                                        <span class="operator-initials">TW</span>
+                                        <span class="kit-icon">📷</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="calendar-day today">
+                                <div class="day-number">19</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">20</div>
+                                <div class="event-bar status-booked">
+                                    <div class="event-client">XYZ Corporate</div>
+                                    <div class="event-details">
+                                        <span class="operator-initials">TW</span>
+                                        <span class="kit-icon">🎥</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">21</div>
+                            </div>
+
+                            <!-- Week 4 -->
+                            <div class="calendar-day">
+                                <div class="day-number">22</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">23</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">24</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">25</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">26</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">27</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">28</div>
+                                <div class="event-bar status-booked">
+                                    <div class="event-client">New Year Concert</div>
+                                    <div class="event-details">
+                                        <span class="operator-initials">JD</span>
+                                        <span class="operator-initials">ST</span>
+                                        <span class="operator-initials">MK</span>
+                                        <span class="operator-initials">AL</span>
+                                        <span class="kit-icon">📷</span>
+                                        <span class="kit-icon">🎥</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Week 5 -->
+                            <div class="calendar-day">
+                                <div class="day-number">29</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">30</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">31</div>
+                            </div>
+                            <div class="calendar-day other-month">
+                                <div class="day-number">1</div>
+                            </div>
+                            <div class="calendar-day other-month">
+                                <div class="day-number">2</div>
+                            </div>
+                            <div class="calendar-day other-month">
+                                <div class="day-number">3</div>
+                            </div>
+                            <div class="calendar-day other-month">
+                                <div class="day-number">4</div>
+                            </div>
+                        </div>
+
+                        <!-- Legend -->
+                        <div class="legend">
+                            <span style="font-weight: 600; margin-right: 8px;">Status:</span>
+                            <div class="legend-item">
+                                <span class="legend-color booked"></span>
+                                <span>Booked</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color pending"></span>
+                                <span>Pending (Missing Resources)</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color completed"></span>
+                                <span>Completed</span>
+                            </div>
+                            <span style="margin-left: auto; font-size: 11px; color: #64748b;">
+                                📷 = Kit • Initials = Operators • Drag cards to assign • Click events for details
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Microphone FAB -->
+    <button class="microphone-fab" onclick="toggleVoiceControl(this)">🎤</button>
+
+    <script>
+        // Event bar click handler
+        document.querySelectorAll('.event-bar').forEach(bar => {
+            bar.addEventListener('click', function() {
+                console.log('Event Detail Modal would open here');
+            });
+        });
+
+        // Month navigation
+        document.querySelectorAll('.month-nav button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (this.textContent.includes('Today')) {
+                    console.log('Jump to today');
+                } else {
+                    console.log('Navigate month:', this.textContent);
+                }
+            });
+        });
+
+        // Drag and Drop functionality
+        let draggedElement = null;
+
+        // Operator cards drag
+        document.querySelectorAll('.operator-card, .kit-card').forEach(card => {
+            card.addEventListener('dragstart', function(e) {
+                draggedElement = this;
+                this.classList.add('dragging');
+                e.dataTransfer.effectAllowed = 'copy';
+            });
+
+            card.addEventListener('dragend', function() {
+                this.classList.remove('dragging');
+            });
+        });
+
+        // Calendar days drop zones
+        document.querySelectorAll('.calendar-day').forEach(day => {
+            day.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.classList.add('drop-zone');
+            });
+
+            day.addEventListener('dragleave', function() {
+                this.classList.remove('drop-zone');
+            });
+
+            day.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.classList.remove('drop-zone');
+
+                if (draggedElement) {
+                    const isOperator = draggedElement.classList.contains('operator-card');
+                    const isKit = draggedElement.classList.contains('kit-card');
+
+                    if (isOperator) {
+                        const name = draggedElement.querySelector('.operator-name').textContent;
+                        const initials = name.match(/\(([^)]+)\)/)[1];
+                        console.log(`Assigned operator ${name} to this date`);
+                    } else if (isKit) {
+                        const kitName = draggedElement.querySelector('.kit-name').textContent;
+                        console.log(`Assigned kit ${kitName} to this date`);
+                    }
+
+                    draggedElement = null;
+                }
+            });
+        });
+
+        // Voice control
+        function toggleVoiceControl(button) {
+            button.classList.toggle('listening');
+            if (button.classList.contains('listening')) {
+                console.log('Voice control activated');
+                // Start voice recognition
+            } else {
+                console.log('Voice control deactivated');
+                // Stop voice recognition
+            }
+        }
+
+        // View toggle
+        document.querySelectorAll('.view-toggle button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.view-toggle button').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                console.log('Switched to view:', this.title);
+            });
+        });
+    </script>
+</body>
+</html>

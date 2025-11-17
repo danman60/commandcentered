@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CommandCentered - Settings</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
+            border-bottom: 1px solid rgba(6, 182, 212, 0.3);
+            padding: 24px 32px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .page-icon {
+            font-size: 32px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #06b6d4 0%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Main Layout */
+        .main-content {
+            padding: 32px;
+        }
+
+        /* Tabs Navigation */
+        .tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 32px;
+            background: rgba(30, 41, 59, 0.3);
+            padding: 4px;
+            border-radius: 12px;
+            border: 1px solid rgba(71, 85, 105, 0.3);
+        }
+
+        .tab {
+            padding: 12px 32px;
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .tab:hover {
+            background: rgba(6, 182, 212, 0.1);
+            color: #cbd5e1;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #06b6d4 0%, #0284c7 100%);
+            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(6, 182, 212, 0.3);
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Section Cards */
+        .section-card {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #06b6d4;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .subsection-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #cbd5e1;
+            margin: 24px 0 16px 0;
+            padding-top: 24px;
+            border-top: 1px solid rgba(71, 85, 105, 0.3);
+        }
+
+        /* Form Elements */
+        .setting-group {
+            margin-bottom: 24px;
+        }
+
+        .setting-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #cbd5e1;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .setting-description {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-bottom: 12px;
+        }
+
+        .setting-input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 8px;
+            color: #e2e8f0;
+            font-size: 14px;
+        }
+
+        .setting-input:focus {
+            outline: none;
+            border-color: rgba(6, 182, 212, 0.5);
+            background: rgba(15, 23, 42, 0.8);
+        }
+
+        select.setting-input {
+            cursor: pointer;
+        }
+
+        /* Checkboxes */
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .checkbox-item:hover {
+            background: rgba(15, 23, 42, 0.6);
+            border-color: rgba(6, 182, 212, 0.3);
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: #06b6d4;
+            cursor: pointer;
+        }
+
+        .checkbox-label {
+            flex: 1;
+            font-size: 14px;
+            color: #e2e8f0;
+        }
+
+        .checkbox-desc {
+            font-size: 12px;
+            color: #64748b;
+            margin-left: 32px;
+        }
+
+        /* Toggle Switches */
+        .toggle-group {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px;
+            background: rgba(15, 23, 42, 0.4);
+            border-radius: 8px;
+        }
+
+        .toggle {
+            position: relative;
+            width: 48px;
+            height: 24px;
+        }
+
+        .toggle input {
+            display: none;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(71, 85, 105, 0.5);
+            border-radius: 24px;
+            transition: 0.3s;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background: white;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+
+        .toggle input:checked + .toggle-slider {
+            background: linear-gradient(135deg, #06b6d4 0%, #0284c7 100%);
+        }
+
+        .toggle input:checked + .toggle-slider:before {
+            transform: translateX(24px);
+        }
+
+        /* Integration Cards */
+        .integration-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 16px;
+        }
+
+        .integration-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.2s;
+        }
+
+        .integration-card:hover {
+            border-color: rgba(6, 182, 212, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .integration-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .integration-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .integration-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #e2e8f0;
+        }
+
+        .integration-desc {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .integration-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .status-connected {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .status-disconnected {
+            background: rgba(107, 114, 128, 0.2);
+            color: #6b7280;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #06b6d4 0%, #0284c7 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(6, 182, 212, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(71, 85, 105, 0.3);
+            color: #cbd5e1;
+            border: 1px solid rgba(71, 85, 105, 0.5);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(71, 85, 105, 0.5);
+        }
+
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-danger:hover {
+            background: rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-success {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        /* Widget Preview */
+        .widget-preview {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            padding: 20px;
+            background: rgba(15, 23, 42, 0.4);
+            border-radius: 12px;
+            margin-top: 16px;
+        }
+
+        .widget-mini {
+            padding: 12px;
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 8px;
+            font-size: 12px;
+            text-align: center;
+            color: #94a3b8;
+        }
+
+        .widget-mini.active {
+            border-color: #06b6d4;
+            color: #06b6d4;
+        }
+
+        /* Billing Cards */
+        .billing-card {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .plan-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: #a855f7;
+            margin-bottom: 8px;
+        }
+
+        .plan-price {
+            font-size: 32px;
+            font-weight: 700;
+            color: #e2e8f0;
+        }
+
+        .plan-period {
+            font-size: 14px;
+            color: #94a3b8;
+        }
+
+        /* Microphone FAB */
+        .microphone-fab {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #06b6d4 0%, #a855f7 100%);
+            color: white;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.4);
+            transition: all 0.3s;
+            z-index: 9999;
+        }
+
+        .microphone-fab:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(6, 182, 212, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <span class="page-icon">⚙️</span>
+        <h1 class="page-title">Settings</h1>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Tabs Navigation -->
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('general')">General</button>
+            <button class="tab" onclick="switchTab('customization')">Customization</button>
+            <button class="tab" onclick="switchTab('integrations')">Integrations</button>
+            <button class="tab" onclick="switchTab('billing')">Billing</button>
+        </div>
+
+        <!-- General Tab -->
+        <div id="general-tab" class="tab-content active">
+            <div class="section-card">
+                <h2 class="section-title">General Settings</h2>
+
+                <div class="setting-group">
+                    <label class="setting-label">Company Name</label>
+                    <input type="text" class="setting-input" value="StreamStage Productions">
+                </div>
+
+                <div class="setting-group">
+                    <label class="setting-label">Time Zone</label>
+                    <select class="setting-input">
+                        <option selected>Eastern Time (EST/EDT)</option>
+                        <option>Central Time (CST/CDT)</option>
+                        <option>Mountain Time (MST/MDT)</option>
+                        <option>Pacific Time (PST/PDT)</option>
+                    </select>
+                </div>
+
+                <div class="setting-group">
+                    <label class="setting-label">Default Currency</label>
+                    <select class="setting-input">
+                        <option selected>CAD - Canadian Dollar</option>
+                        <option>USD - US Dollar</option>
+                    </select>
+                </div>
+
+                <div class="setting-group">
+                    <label class="setting-label">Tax Rate (HST)</label>
+                    <div class="setting-description">Ontario HST rate for invoice calculations</div>
+                    <input type="text" class="setting-input" value="13%" disabled>
+                </div>
+
+                <h3 class="subsection-title">Notification Preferences</h3>
+
+                <div class="toggle-group">
+                    <label class="toggle">
+                        <input type="checkbox" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <div>
+                        <div style="font-size: 14px; font-weight: 600;">Email Notifications</div>
+                        <div style="font-size: 12px; color: #64748b;">Receive email alerts for important events</div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 16px;"></div>
+
+                <div class="toggle-group">
+                    <label class="toggle">
+                        <input type="checkbox" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <div>
+                        <div style="font-size: 14px; font-weight: 600;">SMS Notifications</div>
+                        <div style="font-size: 12px; color: #64748b;">Get text messages for urgent updates</div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 32px;">
+                    <button class="btn btn-primary">Save Changes</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Customization Tab -->
+        <div id="customization-tab" class="tab-content">
+            <div class="section-card">
+                <h2 class="section-title">🎨 Dashboard Customization</h2>
+
+                <div class="setting-group">
+                    <label class="setting-label">Dashboard Widgets</label>
+                    <div class="setting-description">Choose which widgets to display on your dashboard</div>
+
+                    <div class="checkbox-group">
+                        <label class="checkbox-item">
+                            <input type="checkbox" checked>
+                            <span class="checkbox-label">Event Pipeline</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" checked>
+                            <span class="checkbox-label">Annual Revenue</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" checked>
+                            <span class="checkbox-label">Upcoming Events</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" checked>
+                            <span class="checkbox-label">Critical Alerts</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" checked>
+                            <span class="checkbox-label">Communications Timeline</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" checked>
+                            <span class="checkbox-label">Calendar Color Bars</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox">
+                            <span class="checkbox-label">Revenue by Product Focus</span>
+                        </label>
+                    </div>
+
+                    <div class="widget-preview">
+                        <div class="widget-mini active">Pipeline</div>
+                        <div class="widget-mini active">Revenue</div>
+                        <div class="widget-mini active">Alerts</div>
+                        <div class="widget-mini active">Events</div>
+                        <div class="widget-mini active">Comms</div>
+                        <div class="widget-mini active">Calendar</div>
+                    </div>
+                </div>
+
+                <h3 class="subsection-title">Navigation Preferences</h3>
+
+                <div class="checkbox-group">
+                    <label class="checkbox-item">
+                        <input type="checkbox">
+                        <span class="checkbox-label">Collapsible Sidebar</span>
+                    </label>
+                    <div class="checkbox-desc">Allow sidebar to collapse to save screen space</div>
+
+                    <label class="checkbox-item">
+                        <input type="checkbox">
+                        <span class="checkbox-label">Allow Drag & Drop Reorder</span>
+                    </label>
+                    <div class="checkbox-desc">Rearrange navigation items by dragging</div>
+
+                    <label class="checkbox-item">
+                        <input type="checkbox">
+                        <span class="checkbox-label">Enable Double-Click Rename</span>
+                    </label>
+                    <div class="checkbox-desc">Double-click navigation labels to customize names</div>
+                </div>
+
+                <h3 class="subsection-title">View Defaults</h3>
+
+                <div class="setting-group">
+                    <label class="setting-label">Planning Page Default View</label>
+                    <select class="setting-input">
+                        <option>Card View</option>
+                        <option>Table View</option>
+                        <option selected>Calendar View</option>
+                    </select>
+                </div>
+
+                <div class="setting-group">
+                    <label class="setting-label">Operators Page Default View</label>
+                    <select class="setting-input">
+                        <option selected>Card View</option>
+                        <option>Table View</option>
+                        <option>Calendar View</option>
+                    </select>
+                </div>
+
+                <div class="setting-group">
+                    <label class="setting-label">Pipeline Page Default View</label>
+                    <select class="setting-input">
+                        <option>Card View</option>
+                        <option selected>Table View</option>
+                        <option>Kanban View</option>
+                    </select>
+                </div>
+
+                <div style="margin-top: 32px;">
+                    <button class="btn btn-primary">Save Preferences</button>
+                    <button class="btn btn-secondary" style="margin-left: 12px;">Reset to Defaults</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Integrations Tab -->
+        <div id="integrations-tab" class="tab-content">
+            <div class="section-card">
+                <h2 class="section-title">🔌 Integrations</h2>
+
+                <div class="integration-grid">
+                    <!-- Gmail -->
+                    <div class="integration-card">
+                        <div class="integration-header">
+                            <div class="integration-icon" style="background: linear-gradient(135deg, #EA4335, #FBBC05);">📧</div>
+                            <div>
+                                <div class="integration-name">Gmail</div>
+                                <span class="integration-status status-disconnected">Not Connected</span>
+                            </div>
+                        </div>
+                        <p class="integration-desc">Track client communication automatically. Sync emails, update "Last Contacted" timestamps.</p>
+                        <button class="btn btn-primary" style="width: 100%;">Connect Gmail Account</button>
+                    </div>
+
+                    <!-- Google Drive -->
+                    <div class="integration-card">
+                        <div class="integration-header">
+                            <div class="integration-icon" style="background: linear-gradient(135deg, #4285F4, #34A853);">📁</div>
+                            <div>
+                                <div class="integration-name">Google Drive</div>
+                                <span class="integration-status status-connected">✓ Connected</span>
+                            </div>
+                        </div>
+                        <p class="integration-desc">Auto-create folders, generate upload links for operators, manage deliverables.</p>
+                        <button class="btn btn-success" style="width: 100%;">✓ Connected</button>
+                    </div>
+
+                    <!-- Telegram -->
+                    <div class="integration-card">
+                        <div class="integration-header">
+                            <div class="integration-icon" style="background: linear-gradient(135deg, #0088cc, #00a8e8);">💬</div>
+                            <div>
+                                <div class="integration-name">Telegram</div>
+                                <span class="integration-status status-disconnected">Not Connected</span>
+                            </div>
+                        </div>
+                        <p class="integration-desc">Auto-create event groups for operator coordination.</p>
+                        <input type="text" class="setting-input" placeholder="Bot Token" style="margin-bottom: 12px;">
+                        <button class="btn btn-primary" style="width: 100%;">Save Token</button>
+                    </div>
+
+                    <!-- Vimeo -->
+                    <div class="integration-card">
+                        <div class="integration-header">
+                            <div class="integration-icon" style="background: linear-gradient(135deg, #1ab7ea, #008fd4);">🎥</div>
+                            <div>
+                                <div class="integration-name">Vimeo</div>
+                                <span class="integration-status status-disconnected">Not Connected</span>
+                            </div>
+                        </div>
+                        <p class="integration-desc">Auto-create livestream events with stream keys and RTMP URLs.</p>
+                        <input type="text" class="setting-input" placeholder="API Key" style="margin-bottom: 12px;">
+                        <button class="btn btn-primary" style="width: 100%;">Connect Vimeo</button>
+                    </div>
+
+                    <!-- Stripe -->
+                    <div class="integration-card">
+                        <div class="integration-header">
+                            <div class="integration-icon" style="background: linear-gradient(135deg, #635BFF, #7C4DFF);">💳</div>
+                            <div>
+                                <div class="integration-name">Stripe</div>
+                                <span class="integration-status status-connected">✓ Connected</span>
+                            </div>
+                        </div>
+                        <p class="integration-desc">Process credit card payments securely. Manual payment processing only.</p>
+                        <button class="btn btn-success" style="width: 100%;">✓ Connected</button>
+                    </div>
+
+                    <!-- SignWell -->
+                    <div class="integration-card">
+                        <div class="integration-header">
+                            <div class="integration-icon" style="background: linear-gradient(135deg, #667eea, #764ba2);">✍️</div>
+                            <div>
+                                <div class="integration-name">SignWell</div>
+                                <span class="integration-status status-disconnected">Not Connected</span>
+                            </div>
+                        </div>
+                        <p class="integration-desc">E-signatures for contracts. $8/month for unlimited signatures.</p>
+                        <button class="btn btn-primary" style="width: 100%;">Connect SignWell</button>
+                    </div>
+
+                    <!-- Mailgun -->
+                    <div class="integration-card">
+                        <div class="integration-header">
+                            <div class="integration-icon" style="background: linear-gradient(135deg, #FF6900, #FCB900);">📨</div>
+                            <div>
+                                <div class="integration-name">Mailgun</div>
+                                <span class="integration-status status-connected">✓ Connected</span>
+                            </div>
+                        </div>
+                        <p class="integration-desc">Transactional email service for automated notifications.</p>
+                        <input type="text" class="setting-input" placeholder="API Key" value="••••••••••••" style="margin-bottom: 12px;">
+                        <button class="btn btn-secondary" style="width: 100%;">Update API Key</button>
+                    </div>
+
+                    <!-- OpenAI -->
+                    <div class="integration-card">
+                        <div class="integration-header">
+                            <div class="integration-icon" style="background: linear-gradient(135deg, #10A37F, #1BA399);">🤖</div>
+                            <div>
+                                <div class="integration-name">OpenAI</div>
+                                <span class="integration-status status-disconnected">Not Connected</span>
+                            </div>
+                        </div>
+                        <p class="integration-desc">Voice control with Whisper (transcription) + GPT-4 (command parsing).</p>
+                        <input type="text" class="setting-input" placeholder="API Key" style="margin-bottom: 12px;">
+                        <button class="btn btn-primary" style="width: 100%;">Save API Key</button>
+                    </div>
+
+                    <!-- Apollo.io (Phase 0) -->
+                    <div class="integration-card">
+                        <div class="integration-header">
+                            <div class="integration-icon" style="background: linear-gradient(135deg, #5E72E4, #9C27B0);">🔍</div>
+                            <div>
+                                <div class="integration-name">Apollo.io</div>
+                                <span class="integration-status status-disconnected">Not Connected</span>
+                            </div>
+                        </div>
+                        <p class="integration-desc">Lead enrichment and contact database for finding prospects.</p>
+                        <input type="text" class="setting-input" placeholder="API Key" style="margin-bottom: 12px;">
+                        <button class="btn btn-primary" style="width: 100%;">Connect Apollo</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Billing Tab -->
+        <div id="billing-tab" class="tab-content">
+            <div class="section-card">
+                <h2 class="section-title">💳 Billing & Subscription</h2>
+
+                <div class="billing-card">
+                    <div class="plan-name">Founder Plan</div>
+                    <div>
+                        <span class="plan-price">$0</span>
+                        <span class="plan-period">/month</span>
+                    </div>
+                    <p style="color: #94a3b8; margin-top: 12px;">Special lifetime plan for StreamStage Productions</p>
+                </div>
+
+                <h3 class="subsection-title">Plan Details</h3>
+
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+                    <div style="padding: 16px; background: rgba(15, 23, 42, 0.4); border-radius: 8px;">
+                        <div style="font-size: 12px; color: #94a3b8; margin-bottom: 4px;">Events per Month</div>
+                        <div style="font-size: 20px; font-weight: 700; color: #e2e8f0;">Unlimited</div>
+                    </div>
+                    <div style="padding: 16px; background: rgba(15, 23, 42, 0.4); border-radius: 8px;">
+                        <div style="font-size: 12px; color: #94a3b8; margin-bottom: 4px;">Operators</div>
+                        <div style="font-size: 20px; font-weight: 700; color: #e2e8f0;">Unlimited</div>
+                    </div>
+                    <div style="padding: 16px; background: rgba(15, 23, 42, 0.4); border-radius: 8px;">
+                        <div style="font-size: 12px; color: #94a3b8; margin-bottom: 4px;">Storage</div>
+                        <div style="font-size: 20px; font-weight: 700; color: #e2e8f0;">Unlimited</div>
+                    </div>
+                    <div style="padding: 16px; background: rgba(15, 23, 42, 0.4); border-radius: 8px;">
+                        <div style="font-size: 12px; color: #94a3b8; margin-bottom: 4px;">Support</div>
+                        <div style="font-size: 20px; font-weight: 700; color: #e2e8f0;">Priority</div>
+                    </div>
+                </div>
+
+                <h3 class="subsection-title">Payment Method</h3>
+
+                <div style="padding: 20px; background: rgba(15, 23, 42, 0.4); border-radius: 12px;">
+                    <div style="display: flex; align-items: center; gap: 16px;">
+                        <div style="font-size: 24px;">💳</div>
+                        <div>
+                            <div style="font-size: 14px; font-weight: 600; color: #e2e8f0;">Visa ending in 4242</div>
+                            <div style="font-size: 12px; color: #64748b;">Expires 12/2025</div>
+                        </div>
+                        <button class="btn btn-secondary" style="margin-left: auto;">Update</button>
+                    </div>
+                </div>
+
+                <h3 class="subsection-title">Billing History</h3>
+
+                <table style="width: 100%; border-collapse: separate; border-spacing: 0;">
+                    <thead>
+                        <tr>
+                            <th style="padding: 12px; background: rgba(15, 23, 42, 0.6); text-align: left; font-size: 12px; color: #94a3b8;">Date</th>
+                            <th style="padding: 12px; background: rgba(15, 23, 42, 0.6); text-align: left; font-size: 12px; color: #94a3b8;">Description</th>
+                            <th style="padding: 12px; background: rgba(15, 23, 42, 0.6); text-align: left; font-size: 12px; color: #94a3b8;">Amount</th>
+                            <th style="padding: 12px; background: rgba(15, 23, 42, 0.6); text-align: left; font-size: 12px; color: #94a3b8;">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 12px; border-bottom: 1px solid rgba(71, 85, 105, 0.2);">Nov 1, 2025</td>
+                            <td style="padding: 12px; border-bottom: 1px solid rgba(71, 85, 105, 0.2);">Monthly Subscription</td>
+                            <td style="padding: 12px; border-bottom: 1px solid rgba(71, 85, 105, 0.2);">$0.00</td>
+                            <td style="padding: 12px; border-bottom: 1px solid rgba(71, 85, 105, 0.2);"><span style="color: #10b981;">✓ Paid</span></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 12px; border-bottom: 1px solid rgba(71, 85, 105, 0.2);">Oct 1, 2025</td>
+                            <td style="padding: 12px; border-bottom: 1px solid rgba(71, 85, 105, 0.2);">Monthly Subscription</td>
+                            <td style="padding: 12px; border-bottom: 1px solid rgba(71, 85, 105, 0.2);">$0.00</td>
+                            <td style="padding: 12px; border-bottom: 1px solid rgba(71, 85, 105, 0.2);"><span style="color: #10b981;">✓ Paid</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div style="margin-top: 32px;">
+                    <button class="btn btn-secondary">Download All Invoices</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Microphone FAB -->
+    <button class="microphone-fab" title="Voice Command">
+        🎤
+    </button>
+
+    <script>
+        function switchTab(tabName) {
+            // Hide all tab contents
+            const allTabs = document.querySelectorAll('.tab-content');
+            allTabs.forEach(tab => tab.classList.remove('active'));
+
+            // Remove active class from all tab buttons
+            const allButtons = document.querySelectorAll('.tab');
+            allButtons.forEach(btn => btn.classList.remove('active'));
+
+            // Show selected tab
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+
+            // Mark button as active
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CommandCentered - Operator Portal</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+        .header {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(168, 85, 247, 0.15));
+            border-bottom: 1px solid rgba(6, 182, 212, 0.3);
+            padding: 24px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #06b6d4, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #06b6d4, #a855f7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: white;
+        }
+        .main-content { padding: 32px; }
+        .section-card {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #06b6d4;
+            margin-bottom: 20px;
+        }
+        .event-list { display: flex; flex-direction: column; gap: 16px; }
+        .event-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .event-info { flex: 1; }
+        .event-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: #e2e8f0;
+            margin-bottom: 8px;
+        }
+        .event-details {
+            font-size: 13px;
+            color: #94a3b8;
+        }
+        .event-status {
+            padding: 8px 16px;
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 6px;
+            color: #10b981;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .availability-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+        .day-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .day-card:hover {
+            border-color: rgba(6, 182, 212, 0.6);
+        }
+        .day-card.available {
+            background: rgba(16, 185, 129, 0.15);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+        .day-name {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+        .day-date {
+            font-size: 18px;
+            font-weight: 700;
+            color: #e2e8f0;
+        }
+        .day-status {
+            font-size: 11px;
+            margin-top: 8px;
+            color: #10b981;
+        }
+        .btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #06b6d4, #0284c7);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 16px;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <div><span style="font-size:32px;">👷</span> <span class="page-title">Operator Portal</span></div>
+    <div class="user-info">
+        <div class="user-avatar">JD</div>
+        <div>
+            <div style="font-size:14px; font-weight:600;">John Davis</div>
+            <div style="font-size:12px; color:#94a3b8;">Lead Videographer</div>
+        </div>
+    </div>
+</div>
+<div class="main-content">
+    <div class="section-card">
+        <div class="section-title">📅 My Upcoming Events</div>
+        <div class="event-list">
+            <div class="event-card">
+                <div class="event-info">
+                    <div class="event-name">EMPWR Dance Experience</div>
+                    <div class="event-details">
+                        📍 Toronto, ON • ⏰ Dec 6, 2025 at 4:00 PM<br>
+                        🎬 Lead Videographer (Setup + Event shifts)
+                    </div>
+                </div>
+                <div class="event-status">Confirmed</div>
+            </div>
+            <div class="event-card">
+                <div class="event-info">
+                    <div class="event-name">XYZ Corporate Event</div>
+                    <div class="event-details">
+                        📍 Mississauga, ON • ⏰ Dec 15, 2025 at 9:00 AM<br>
+                        🎬 Camera Operator (Full Day)
+                    </div>
+                </div>
+                <div class="event-status">Confirmed</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-card">
+        <div class="section-title">✅ My Availability - December 2025</div>
+        <div class="availability-grid">
+            <div class="day-card available">
+                <div class="day-name">Mon</div>
+                <div class="day-date">1</div>
+                <div class="day-status">Available</div>
+            </div>
+            <div class="day-card available">
+                <div class="day-name">Tue</div>
+                <div class="day-date">2</div>
+                <div class="day-status">Available</div>
+            </div>
+            <div class="day-card">
+                <div class="day-name">Wed</div>
+                <div class="day-date">3</div>
+                <div class="day-status" style="color:#94a3b8;">Unavailable</div>
+            </div>
+            <div class="day-card available">
+                <div class="day-name">Thu</div>
+                <div class="day-date">4</div>
+                <div class="day-status">Available</div>
+            </div>
+            <div class="day-card available">
+                <div class="day-name">Fri</div>
+                <div class="day-date">5</div>
+                <div class="day-status">Available</div>
+            </div>
+            <div class="day-card available">
+                <div class="day-name">Sat</div>
+                <div class="day-date">6</div>
+                <div class="day-status">Booked</div>
+            </div>
+            <div class="day-card">
+                <div class="day-name">Sun</div>
+                <div class="day-date">7</div>
+                <div class="day-status" style="color:#94a3b8;">Unavailable</div>
+            </div>
+        </div>
+        <button class="btn">💾 Update Availability</button>
+    </div>
+</div>
+</body>
+</html>

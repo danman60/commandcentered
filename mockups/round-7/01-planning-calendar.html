@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planning - Month Calendar View | CommandCentered Round 6</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+            color: #e0e6ed;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Main Layout */
+        .app-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Left Navigation */
+        .left-nav {
+            width: 220px;
+            background: rgba(10, 14, 39, 0.95);
+            border-right: 1px solid rgba(56, 189, 248, 0.2);
+            padding: 24px 16px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 32px;
+        }
+
+        .nav-item {
+            padding: 12px 16px;
+            margin-bottom: 4px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #94a3b8;
+        }
+
+        .nav-item.active {
+            background: rgba(56, 189, 248, 0.15);
+            color: #38bdf8;
+            border-left: 3px solid #38bdf8;
+        }
+
+        .nav-item:hover {
+            background: rgba(56, 189, 248, 0.08);
+            color: #38bdf8;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            padding: 20px 32px;
+            background: rgba(10, 14, 39, 0.6);
+            border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left h1 {
+            font-size: 24px;
+            margin-bottom: 4px;
+            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-left p {
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(56, 189, 248, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(56, 189, 248, 0.1);
+            color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(56, 189, 248, 0.2);
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 4px;
+            background: rgba(30, 41, 59, 0.6);
+            padding: 4px;
+            border-radius: 8px;
+        }
+
+        .view-toggle button {
+            padding: 8px 12px;
+            background: transparent;
+            border: none;
+            color: #64748b;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .view-toggle button.active {
+            background: rgba(56, 189, 248, 0.2);
+            color: #38bdf8;
+        }
+
+        /* Alerts Banner */
+        .alerts-banner {
+            padding: 12px 32px;
+            background: rgba(251, 146, 60, 0.1);
+            border-bottom: 1px solid rgba(251, 146, 60, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #fb923c;
+        }
+
+        .alerts-banner .icon {
+            font-size: 20px;
+        }
+
+        .alerts-banner .text {
+            flex: 1;
+            font-size: 14px;
+        }
+
+        .alerts-banner .count {
+            background: rgba(251, 146, 60, 0.2);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        /* 3-Panel Layout */
+        .planning-panels {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .panel {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(56, 189, 248, 0.2);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 16px 20px;
+            background: rgba(10, 14, 39, 0.8);
+            border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .panel-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #38bdf8;
+        }
+
+        .panel-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .icon-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            color: #38bdf8;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .icon-btn:hover {
+            background: rgba(56, 189, 248, 0.2);
+        }
+
+        .panel-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+        }
+
+        /* Operators Panel */
+        .operators-panel {
+            width: 20%;
+            min-width: 200px;
+        }
+
+        .operator-card {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+            cursor: move;
+            transition: all 0.2s;
+        }
+
+        .operator-card:hover {
+            border-color: #38bdf8;
+            transform: translateX(4px);
+        }
+
+        .operator-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .operator-availability {
+            font-size: 12px;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .status-available { background: #22c55e; }
+        .status-partial { background: #fb923c; }
+        .status-unavailable { background: #ef4444; }
+
+        /* Kits Panel */
+        .kits-panel {
+            width: 20%;
+            min-width: 200px;
+        }
+
+        .kit-card {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(129, 140, 248, 0.2);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+            cursor: move;
+            transition: all 0.2s;
+        }
+
+        .kit-card:hover {
+            border-color: #818cf8;
+            transform: translateX(4px);
+        }
+
+        .kit-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .kit-items {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .kit-status {
+            font-size: 11px;
+            color: #22c55e;
+            margin-top: 4px;
+        }
+
+        /* Calendar Panel */
+        .calendar-panel {
+            flex: 1;
+            min-width: 600px;
+        }
+
+        .calendar-controls {
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        .month-nav {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .month-nav button {
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            color: #38bdf8;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .month-nav button:hover {
+            background: rgba(56, 189, 248, 0.2);
+        }
+
+        .current-month {
+            font-size: 18px;
+            font-weight: 600;
+            color: #38bdf8;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        .calendar-header {
+            background: rgba(10, 14, 39, 0.8);
+            padding: 12px;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+        }
+
+        .calendar-day {
+            background: rgba(15, 23, 42, 0.8);
+            min-height: 100px;
+            padding: 8px;
+            position: relative;
+        }
+
+        .calendar-day.other-month {
+            opacity: 0.4;
+        }
+
+        .day-number {
+            font-size: 14px;
+            font-weight: 600;
+            color: #64748b;
+            margin-bottom: 6px;
+        }
+
+        .calendar-day.today .day-number {
+            color: #38bdf8;
+            background: rgba(56, 189, 248, 0.2);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Event Bars */
+        .event-bar {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            border-radius: 4px;
+            padding: 4px 8px;
+            margin-bottom: 4px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-left: 3px solid #60a5fa;
+        }
+
+        .event-bar:hover {
+            transform: translateX(2px);
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
+        }
+
+        .event-bar.status-booked {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            border-left-color: #60a5fa;
+        }
+
+        .event-bar.status-pending {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            border-left-color: #fbbf24;
+        }
+
+        .event-bar.status-completed {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            border-left-color: #4ade80;
+        }
+
+        .event-client {
+            font-weight: 600;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .event-details {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .operator-initials {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .kit-icon {
+            font-size: 12px;
+        }
+
+        /* Legend */
+        .legend {
+            padding: 16px 20px;
+            background: rgba(10, 14, 39, 0.6);
+            border-top: 1px solid rgba(56, 189, 248, 0.2);
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+        }
+
+        .legend-color.booked { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); }
+        .legend-color.pending { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
+        .legend-color.completed { background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.5);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(56, 189, 248, 0.3);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(56, 189, 248, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Left Navigation -->
+        <nav class="left-nav">
+            <div class="logo">⚡ CommandCentered</div>
+            <div class="nav-item">📊 Dashboard</div>
+            <div class="nav-item">🎯 Pipeline</div>
+            <div class="nav-item active">📅 Planning</div>
+            <div class="nav-item">📦 Deliverables</div>
+            <div class="nav-item">💬 Comms</div>
+            <div class="nav-item">📄 Proposals</div>
+            <div class="nav-item">📝 Contracts</div>
+            <div class="nav-item">💰 Invoices</div>
+            <div class="nav-item">📋 Questionnaires</div>
+            <div class="nav-item">📁 Files</div>
+            <div class="nav-item">👥 Operators</div>
+            <div class="nav-item">🎥 Gear</div>
+            <div class="nav-item">🎒 Kits</div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <h1>Planning - December 2025</h1>
+                    <p>Month view • Manage events, operators, and kits</p>
+                </div>
+                <div class="header-right">
+                    <div class="view-toggle">
+                        <button>📊</button>
+                        <button>📋</button>
+                        <button class="active">📅</button>
+                    </div>
+                    <button class="btn btn-secondary">⛶ Full Screen</button>
+                    <button class="btn btn-primary">+ New Event</button>
+                </div>
+            </header>
+
+            <!-- Alerts Banner -->
+            <div class="alerts-banner">
+                <span class="icon">⚠️</span>
+                <span class="text">3 events missing operators • 2 events missing kits</span>
+                <span class="count">5 Alerts</span>
+                <button class="btn btn-secondary" style="margin-left: auto; padding: 6px 12px;">View All</button>
+            </div>
+
+            <!-- 3-Panel Layout -->
+            <div class="planning-panels">
+                <!-- Operators Panel -->
+                <div class="panel operators-panel">
+                    <div class="panel-header">
+                        <span class="panel-title">Operators</span>
+                        <div class="panel-actions">
+                            <button class="icon-btn">⚙️</button>
+                            <button class="icon-btn">+</button>
+                        </div>
+                    </div>
+                    <div class="panel-content">
+                        <div class="operator-card">
+                            <div class="operator-name">John Davis (JD)</div>
+                            <div class="operator-availability">
+                                <span class="status-dot status-available"></span>
+                                Available Full Day
+                            </div>
+                        </div>
+                        <div class="operator-card">
+                            <div class="operator-name">Sarah Thompson (ST)</div>
+                            <div class="operator-availability">
+                                <span class="status-dot status-available"></span>
+                                Available Full Day
+                            </div>
+                        </div>
+                        <div class="operator-card">
+                            <div class="operator-name">Mike Kelly (MK)</div>
+                            <div class="operator-availability">
+                                <span class="status-dot status-partial"></span>
+                                Available 2-6 PM
+                            </div>
+                        </div>
+                        <div class="operator-card">
+                            <div class="operator-name">Emma Rodriguez (ER)</div>
+                            <div class="operator-availability">
+                                <span class="status-dot status-unavailable"></span>
+                                Unavailable
+                            </div>
+                        </div>
+                        <div class="operator-card">
+                            <div class="operator-name">Tom Wilson (TW)</div>
+                            <div class="operator-availability">
+                                <span class="status-dot status-available"></span>
+                                Available Full Day
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kits Panel -->
+                <div class="panel kits-panel">
+                    <div class="panel-header">
+                        <span class="panel-title">Kits</span>
+                        <div class="panel-actions">
+                            <button class="icon-btn">⚙️</button>
+                            <button class="icon-btn">+</button>
+                        </div>
+                    </div>
+                    <div class="panel-content">
+                        <div class="kit-card">
+                            <div class="kit-name">Recital Kit A</div>
+                            <div class="kit-items">2 Cameras, 1 Audio, Lighting</div>
+                            <div class="kit-status">✓ Available</div>
+                        </div>
+                        <div class="kit-card">
+                            <div class="kit-name">Recital Kit B</div>
+                            <div class="kit-items">2 Cameras, 1 Audio, Lighting</div>
+                            <div class="kit-status">✓ Available</div>
+                        </div>
+                        <div class="kit-card">
+                            <div class="kit-name">Corporate Package</div>
+                            <div class="kit-items">1 Camera, 1 Audio, Gimbal</div>
+                            <div class="kit-status">✓ Available</div>
+                        </div>
+                        <div class="kit-card">
+                            <div class="kit-name">Content Capture Kit</div>
+                            <div class="kit-items">1 Camera, Drone, Gimbal</div>
+                            <div class="kit-status">✓ Available</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Calendar Panel -->
+                <div class="panel calendar-panel">
+                    <div class="panel-header">
+                        <span class="panel-title">December 2025</span>
+                        <div class="calendar-controls" style="border: none; padding: 0;">
+                            <div class="month-nav">
+                                <button>‹</button>
+                                <button>›</button>
+                                <button class="btn btn-secondary" style="padding: 8px 16px; margin-left: 12px;">Today</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-content" style="padding: 0;">
+                        <div class="calendar-grid">
+                            <!-- Headers -->
+                            <div class="calendar-header">Sun</div>
+                            <div class="calendar-header">Mon</div>
+                            <div class="calendar-header">Tue</div>
+                            <div class="calendar-header">Wed</div>
+                            <div class="calendar-header">Thu</div>
+                            <div class="calendar-header">Fri</div>
+                            <div class="calendar-header">Sat</div>
+
+                            <!-- Week 1 -->
+                            <div class="calendar-day">
+                                <div class="day-number">1</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">2</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">3</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">4</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">5</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">6</div>
+                                <div class="event-bar status-booked">
+                                    <div class="event-client">EMPWR Dance</div>
+                                    <div class="event-details">
+                                        <span class="operator-initials">JD</span>
+                                        <span class="operator-initials">ST</span>
+                                        <span class="kit-icon">📷</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">7</div>
+                                <div class="event-bar status-booked">
+                                    <div class="event-client">EMPWR Dance (Day 2)</div>
+                                    <div class="event-details">
+                                        <span class="operator-initials">JD</span>
+                                        <span class="operator-initials">ST</span>
+                                        <span class="kit-icon">📷</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Week 2 -->
+                            <div class="calendar-day">
+                                <div class="day-number">8</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">9</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">10</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">11</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">12</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">13</div>
+                                <div class="event-bar status-pending">
+                                    <div class="event-client">Glow Dance</div>
+                                    <div class="event-details">
+                                        <span class="kit-icon">📷</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">14</div>
+                                <div class="event-bar status-pending">
+                                    <div class="event-client">Glow Dance (Day 2)</div>
+                                    <div class="event-details">
+                                        <span class="kit-icon">📷</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Week 3 -->
+                            <div class="calendar-day">
+                                <div class="day-number">15</div>
+                                <div class="event-bar status-completed">
+                                    <div class="event-client">Impact Studios</div>
+                                    <div class="event-details">
+                                        <span class="operator-initials">MK</span>
+                                        <span class="kit-icon">📷</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">16</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">17</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">18</div>
+                            </div>
+                            <div class="calendar-day today">
+                                <div class="day-number">19</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">20</div>
+                                <div class="event-bar status-booked">
+                                    <div class="event-client">XYZ Corporate</div>
+                                    <div class="event-details">
+                                        <span class="operator-initials">TW</span>
+                                        <span class="kit-icon">🎥</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">21</div>
+                            </div>
+
+                            <!-- Week 4 -->
+                            <div class="calendar-day">
+                                <div class="day-number">22</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">23</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">24</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">25</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">26</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">27</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">28</div>
+                                <div class="event-bar status-booked">
+                                    <div class="event-client">New Year Concert</div>
+                                    <div class="event-details">
+                                        <span class="operator-initials">JD</span>
+                                        <span class="operator-initials">ST</span>
+                                        <span class="operator-initials">MK</span>
+                                        <span class="kit-icon">📷</span>
+                                        <span class="kit-icon">🎥</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Week 5 -->
+                            <div class="calendar-day">
+                                <div class="day-number">29</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">30</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">31</div>
+                            </div>
+                            <div class="calendar-day other-month">
+                                <div class="day-number">1</div>
+                            </div>
+                            <div class="calendar-day other-month">
+                                <div class="day-number">2</div>
+                            </div>
+                            <div class="calendar-day other-month">
+                                <div class="day-number">3</div>
+                            </div>
+                            <div class="calendar-day other-month">
+                                <div class="day-number">4</div>
+                            </div>
+                        </div>
+
+                        <!-- Legend -->
+                        <div class="legend">
+                            <span style="font-weight: 600; margin-right: 8px;">Status:</span>
+                            <div class="legend-item">
+                                <span class="legend-color booked"></span>
+                                <span>Booked</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color pending"></span>
+                                <span>Pending (Missing Operators)</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color completed"></span>
+                                <span>Completed</span>
+                            </div>
+                            <span style="margin-left: auto; font-size: 11px; color: #64748b;">
+                                📷 = Kit Assigned • Initials = Operators Assigned • Click event for details
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Event bar click handler
+        document.querySelectorAll('.event-bar').forEach(bar => {
+            bar.addEventListener('click', function() {
+                alert('Event Detail Modal would open here\n\nShowing:\n- Event info (client, date, location)\n- Shift Builder (manual + template options)\n- Operator assignment per shift\n- Kit assignment (defaults to event, can override per shift)\n- Conflicts highlighted in red');
+            });
+        });
+
+        // Month navigation
+        document.querySelectorAll('.month-nav button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (this.textContent.includes('Today')) {
+                    console.log('Jump to today');
+                } else {
+                    console.log('Navigate month:', this.textContent);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

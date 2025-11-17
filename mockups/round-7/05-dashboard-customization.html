@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CommandCentered - Dashboard with Customization</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
+            border-bottom: 1px solid rgba(6, 182, 212, 0.3);
+            padding: 24px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .page-icon {
+            font-size: 32px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #06b6d4 0%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-subtitle {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-left: 16px;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-secondary {
+            background: rgba(71, 85, 105, 0.3);
+            color: #cbd5e1;
+            border: 1px solid rgba(71, 85, 105, 0.5);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(71, 85, 105, 0.5);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #06b6d4 0%, #0284c7 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(6, 182, 212, 0.4);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 32px;
+        }
+
+        /* Widget Grid */
+        .widget-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 20px;
+        }
+
+        /* Widget Base */
+        .widget {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            position: relative;
+            transition: all 0.2s;
+        }
+
+        .widget:hover {
+            border-color: rgba(6, 182, 212, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .widget:hover .widget-close {
+            opacity: 1;
+        }
+
+        /* Widget Sizes */
+        .widget-full {
+            grid-column: span 12;
+        }
+
+        .widget-half {
+            grid-column: span 6;
+        }
+
+        .widget-third {
+            grid-column: span 4;
+        }
+
+        .widget-quarter {
+            grid-column: span 3;
+        }
+
+        /* Widget Header */
+        .widget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .widget-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .widget-icon {
+            font-size: 20px;
+        }
+
+        .widget-close {
+            width: 24px;
+            height: 24px;
+            border: none;
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: all 0.2s;
+        }
+
+        .widget-close:hover {
+            background: rgba(239, 68, 68, 0.3);
+            transform: scale(1.1);
+        }
+
+        /* Event Pipeline Widget */
+        .pipeline-stages {
+            display: flex;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .pipeline-stage {
+            flex: 1;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .pipeline-stage:hover {
+            border-color: rgba(6, 182, 212, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .stage-count {
+            font-size: 28px;
+            font-weight: 700;
+            color: #06b6d4;
+            margin-bottom: 8px;
+        }
+
+        .stage-label {
+            font-size: 11px;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Annual Revenue Widget */
+        .revenue-display {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .revenue-amount {
+            font-size: 40px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #06b6d4 0%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .revenue-period {
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .revenue-progress {
+            width: 100%;
+            height: 12px;
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .revenue-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #06b6d4 0%, #a855f7 100%);
+            border-radius: 6px;
+            transition: width 1s ease;
+        }
+
+        .revenue-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .revenue-stat {
+            text-align: center;
+        }
+
+        .revenue-stat-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #06b6d4;
+        }
+
+        .revenue-stat-label {
+            font-size: 11px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+
+        /* Upcoming Events Widget */
+        .event-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .event-item {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 8px;
+            padding: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .event-item:hover {
+            border-color: rgba(6, 182, 212, 0.6);
+            background: rgba(15, 23, 42, 0.8);
+        }
+
+        .event-info {
+            flex: 1;
+        }
+
+        .event-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #e2e8f0;
+            margin-bottom: 4px;
+        }
+
+        .event-date {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .event-status {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .event-status.confirmed {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .event-status.tentative {
+            background: rgba(251, 146, 60, 0.2);
+            color: #fb923c;
+        }
+
+        /* Quick Stats Widget */
+        .quick-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .quick-stat {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .quick-stat:hover {
+            border-color: rgba(6, 182, 212, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .quick-stat-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .quick-stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #06b6d4;
+        }
+
+        .quick-stat-label {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+
+        /* Recent Activity Widget */
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .activity-item {
+            display: flex;
+            gap: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(71, 85, 105, 0.2);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .activity-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: rgba(6, 182, 212, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-text {
+            font-size: 13px;
+            color: #cbd5e1;
+            line-height: 1.5;
+        }
+
+        .activity-time {
+            font-size: 11px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        /* Alerts Widget */
+        .alert-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .alert-item {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .alert-icon {
+            font-size: 20px;
+            color: #ef4444;
+        }
+
+        .alert-text {
+            flex: 1;
+            font-size: 13px;
+            color: #fecaca;
+        }
+
+        .alert-action {
+            padding: 6px 12px;
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            border-radius: 6px;
+            font-size: 12px;
+            color: #ef4444;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .alert-action:hover {
+            background: rgba(239, 68, 68, 0.3);
+        }
+
+        /* Customization Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            width: 600px;
+            max-height: 80vh;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            border-radius: 16px;
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-header {
+            padding: 24px 32px;
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
+            border-bottom: 1px solid rgba(6, 182, 212, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #06b6d4 0%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .close-btn {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .close-btn:hover {
+            background: rgba(239, 68, 68, 0.3);
+        }
+
+        .modal-body {
+            padding: 24px 32px;
+            overflow-y: auto;
+        }
+
+        .modal-description {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-bottom: 24px;
+        }
+
+        .widget-checkbox-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .widget-checkbox-item {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 8px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .widget-checkbox-item:hover {
+            background: rgba(30, 41, 59, 0.8);
+            border-color: rgba(100, 116, 139, 0.6);
+        }
+
+        .widget-checkbox-item.checked {
+            background: rgba(6, 182, 212, 0.1);
+            border-color: #06b6d4;
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(71, 85, 105, 0.8);
+            border-radius: 4px;
+            background: rgba(15, 23, 42, 0.6);
+            cursor: pointer;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .widget-checkbox-item.checked .checkbox {
+            background: linear-gradient(135deg, #06b6d4 0%, #0284c7 100%);
+            border-color: #06b6d4;
+        }
+
+        .checkbox::after {
+            content: '✓';
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .widget-checkbox-item.checked .checkbox::after {
+            display: block;
+        }
+
+        .widget-checkbox-info {
+            flex: 1;
+        }
+
+        .widget-checkbox-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #e2e8f0;
+            margin-bottom: 4px;
+        }
+
+        .widget-checkbox-desc {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .modal-footer {
+            padding: 20px 32px;
+            background: rgba(15, 23, 42, 0.6);
+            border-top: 1px solid rgba(71, 85, 105, 0.3);
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(71, 85, 105, 0.6);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(71, 85, 105, 0.8);
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+    <div class="header-left">
+        <div class="page-icon">📊</div>
+        <div class="page-title">Dashboard</div>
+        <div class="page-subtitle">Good afternoon, Commander</div>
+    </div>
+    <div class="header-right">
+        <button class="btn btn-secondary" onclick="openCustomizationModal()">
+            ⚙️ Customize Dashboard
+        </button>
+        <button class="btn btn-primary" onclick="createNewEvent()">
+            ➕ New Event
+        </button>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+    <div class="widget-grid">
+
+        <!-- Event Pipeline Widget (Full Width) -->
+        <div class="widget widget-full">
+            <div class="widget-header">
+                <div class="widget-title">
+                    <span class="widget-icon">🎯</span>
+                    Event Pipeline
+                </div>
+                <button class="widget-close" onclick="hideWidget(this)">×</button>
+            </div>
+            <div class="pipeline-stages">
+                <div class="pipeline-stage">
+                    <div class="stage-count">12</div>
+                    <div class="stage-label">Proposal</div>
+                </div>
+                <div class="pipeline-stage">
+                    <div class="stage-count">8</div>
+                    <div class="stage-label">Contract</div>
+                </div>
+                <div class="pipeline-stage">
+                    <div class="stage-count">5</div>
+                    <div class="stage-label">Confirmed</div>
+                </div>
+                <div class="pipeline-stage">
+                    <div class="stage-count">3</div>
+                    <div class="stage-label">In Progress</div>
+                </div>
+                <div class="pipeline-stage">
+                    <div class="stage-count">7</div>
+                    <div class="stage-label">Post-Production</div>
+                </div>
+                <div class="pipeline-stage">
+                    <div class="stage-count">18</div>
+                    <div class="stage-label">Delivered</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Annual Revenue Widget (Half Width) -->
+        <div class="widget widget-half">
+            <div class="widget-header">
+                <div class="widget-title">
+                    <span class="widget-icon">💰</span>
+                    Annual Revenue
+                </div>
+                <button class="widget-close" onclick="hideWidget(this)">×</button>
+            </div>
+            <div class="revenue-display">
+                <div class="revenue-amount">$287,450</div>
+                <div class="revenue-period">2025 YTD</div>
+            </div>
+            <div class="revenue-progress">
+                <div class="revenue-progress-bar" style="width: 67%;"></div>
+            </div>
+            <div class="revenue-stats">
+                <div class="revenue-stat">
+                    <div class="revenue-stat-value">$430K</div>
+                    <div class="revenue-stat-label">Goal</div>
+                </div>
+                <div class="revenue-stat">
+                    <div class="revenue-stat-value">67%</div>
+                    <div class="revenue-stat-label">Progress</div>
+                </div>
+                <div class="revenue-stat">
+                    <div class="revenue-stat-value">$142K</div>
+                    <div class="revenue-stat-label">Remaining</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upcoming Events Widget (Half Width) -->
+        <div class="widget widget-half">
+            <div class="widget-header">
+                <div class="widget-title">
+                    <span class="widget-icon">📅</span>
+                    Upcoming Events
+                </div>
+                <button class="widget-close" onclick="hideWidget(this)">×</button>
+            </div>
+            <div class="event-list">
+                <div class="event-item">
+                    <div class="event-info">
+                        <div class="event-name">EMPWR Dance Experience</div>
+                        <div class="event-date">Dec 6, 2025 • 4:00 PM</div>
+                    </div>
+                    <div class="event-status confirmed">Confirmed</div>
+                </div>
+                <div class="event-item">
+                    <div class="event-info">
+                        <div class="event-name">Glow Dance Competition</div>
+                        <div class="event-date">Dec 10, 2025 • 2:00 PM</div>
+                    </div>
+                    <div class="event-status confirmed">Confirmed</div>
+                </div>
+                <div class="event-item">
+                    <div class="event-info">
+                        <div class="event-name">XYZ Corporate Event</div>
+                        <div class="event-date">Dec 15, 2025 • 9:00 AM</div>
+                    </div>
+                    <div class="event-status tentative">Tentative</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Stats Widget (Third Width) -->
+        <div class="widget widget-third">
+            <div class="widget-header">
+                <div class="widget-title">
+                    <span class="widget-icon">📈</span>
+                    Quick Stats
+                </div>
+                <button class="widget-close" onclick="hideWidget(this)">×</button>
+            </div>
+            <div class="quick-stats-grid">
+                <div class="quick-stat">
+                    <div class="quick-stat-icon">👥</div>
+                    <div class="quick-stat-value">24</div>
+                    <div class="quick-stat-label">Operators</div>
+                </div>
+                <div class="quick-stat">
+                    <div class="quick-stat-icon">🎥</div>
+                    <div class="quick-stat-value">127</div>
+                    <div class="quick-stat-label">Gear Items</div>
+                </div>
+                <div class="quick-stat">
+                    <div class="quick-stat-icon">📦</div>
+                    <div class="quick-stat-value">18</div>
+                    <div class="quick-stat-label">Kits</div>
+                </div>
+                <div class="quick-stat">
+                    <div class="quick-stat-icon">🎬</div>
+                    <div class="quick-stat-value">53</div>
+                    <div class="quick-stat-label">Events YTD</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity Widget (Two-Thirds Width) -->
+        <div class="widget widget-two-thirds" style="grid-column: span 8;">
+            <div class="widget-header">
+                <div class="widget-title">
+                    <span class="widget-icon">🔔</span>
+                    Recent Activity
+                </div>
+                <button class="widget-close" onclick="hideWidget(this)">×</button>
+            </div>
+            <div class="activity-list">
+                <div class="activity-item">
+                    <div class="activity-icon">✅</div>
+                    <div class="activity-content">
+                        <div class="activity-text">
+                            <strong>EMPWR Dance Experience</strong> event confirmed. Contract signed by Emily Parker.
+                        </div>
+                        <div class="activity-time">2 hours ago</div>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon">👤</div>
+                    <div class="activity-content">
+                        <div class="activity-text">
+                            <strong>John Davis</strong> assigned to Glow Dance Competition (Setup Shift).
+                        </div>
+                        <div class="activity-time">5 hours ago</div>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon">📦</div>
+                    <div class="activity-content">
+                        <div class="activity-text">
+                            <strong>Recital Kit A</strong> created with 12 gear items.
+                        </div>
+                        <div class="activity-time">Yesterday at 3:45 PM</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alerts Widget (Full Width) -->
+        <div class="widget widget-full">
+            <div class="widget-header">
+                <div class="widget-title">
+                    <span class="widget-icon">⚠️</span>
+                    Alerts & Notifications
+                </div>
+                <button class="widget-close" onclick="hideWidget(this)">×</button>
+            </div>
+            <div class="alert-list">
+                <div class="alert-item">
+                    <span class="alert-icon">⚠️</span>
+                    <div class="alert-text">
+                        <strong>3 events</strong> are missing operator assignments. Please review Planning page.
+                    </div>
+                    <button class="alert-action" onclick="goToPlanning()">Review</button>
+                </div>
+                <div class="alert-item">
+                    <span class="alert-icon">⚠️</span>
+                    <div class="alert-text">
+                        <strong>2 events</strong> are missing kit assignments for Dec 6-10.
+                    </div>
+                    <button class="alert-action" onclick="goToPlanning()">Assign Kits</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Customization Modal -->
+<div class="modal-overlay" id="customizationModal">
+    <div class="modal">
+        <div class="modal-header">
+            <div class="modal-title">Customize Dashboard</div>
+            <button class="close-btn" onclick="closeCustomizationModal()">×</button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-description">
+                Select which widgets you'd like to see on your dashboard. You can also drag widgets to reorder them.
+            </div>
+            <div class="widget-checkbox-list">
+                <div class="widget-checkbox-item checked" onclick="toggleWidgetCheckbox(this)">
+                    <div class="checkbox"></div>
+                    <div class="widget-checkbox-info">
+                        <div class="widget-checkbox-name">Event Pipeline</div>
+                        <div class="widget-checkbox-desc">6-stage event progression overview</div>
+                    </div>
+                </div>
+                <div class="widget-checkbox-item checked" onclick="toggleWidgetCheckbox(this)">
+                    <div class="checkbox"></div>
+                    <div class="widget-checkbox-info">
+                        <div class="widget-checkbox-name">Annual Revenue</div>
+                        <div class="widget-checkbox-desc">Year-to-date revenue tracking with goal progress</div>
+                    </div>
+                </div>
+                <div class="widget-checkbox-item checked" onclick="toggleWidgetCheckbox(this)">
+                    <div class="checkbox"></div>
+                    <div class="widget-checkbox-info">
+                        <div class="widget-checkbox-name">Upcoming Events</div>
+                        <div class="widget-checkbox-desc">Next 3 scheduled events</div>
+                    </div>
+                </div>
+                <div class="widget-checkbox-item checked" onclick="toggleWidgetCheckbox(this)">
+                    <div class="checkbox"></div>
+                    <div class="widget-checkbox-info">
+                        <div class="widget-checkbox-name">Quick Stats</div>
+                        <div class="widget-checkbox-desc">Operators, gear, kits, and event counts</div>
+                    </div>
+                </div>
+                <div class="widget-checkbox-item checked" onclick="toggleWidgetCheckbox(this)">
+                    <div class="checkbox"></div>
+                    <div class="widget-checkbox-info">
+                        <div class="widget-checkbox-name">Recent Activity</div>
+                        <div class="widget-checkbox-desc">Latest system activity and updates</div>
+                    </div>
+                </div>
+                <div class="widget-checkbox-item checked" onclick="toggleWidgetCheckbox(this)">
+                    <div class="checkbox"></div>
+                    <div class="widget-checkbox-info">
+                        <div class="widget-checkbox-name">Alerts & Notifications</div>
+                        <div class="widget-checkbox-desc">Important warnings and action items</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeCustomizationModal()">Cancel</button>
+            <button class="btn btn-primary" onclick="saveCustomization()">Save Changes</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Open Customization Modal
+    function openCustomizationModal() {
+        document.getElementById('customizationModal').classList.add('active');
+    }
+
+    // Close Customization Modal
+    function closeCustomizationModal() {
+        document.getElementById('customizationModal').classList.remove('active');
+    }
+
+    // Toggle Widget Checkbox
+    function toggleWidgetCheckbox(element) {
+        element.classList.toggle('checked');
+    }
+
+    // Save Customization
+    function saveCustomization() {
+        const checkedWidgets = document.querySelectorAll('.widget-checkbox-item.checked').length;
+        console.log('Saving customization with', checkedWidgets, 'widgets enabled');
+        closeCustomizationModal();
+        alert('Dashboard customization saved!');
+    }
+
+    // Hide Widget
+    function hideWidget(button) {
+        const widget = button.closest('.widget');
+        if (confirm('Hide this widget? You can restore it from Dashboard Settings.')) {
+            widget.style.display = 'none';
+        }
+    }
+
+    // Navigation
+    function createNewEvent() {
+        console.log('Create new event');
+    }
+
+    function goToPlanning() {
+        console.log('Navigate to Planning page');
+    }
+</script>
+
+</body>
+</html>

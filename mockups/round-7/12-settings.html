@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CommandCentered - Settings</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+        .header {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(168, 85, 247, 0.15));
+            border-bottom: 1px solid rgba(6, 182, 212, 0.3);
+            padding: 24px 32px;
+        }
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #06b6d4, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .main-content { padding: 32px; display: flex; gap: 32px; }
+        .sidebar {
+            width: 250px;
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+            border-radius: 12px;
+            padding: 16px;
+        }
+        .sidebar-item {
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 4px;
+        }
+        .sidebar-item:hover { background: rgba(6, 182, 212, 0.1); }
+        .sidebar-item.active {
+            background: rgba(6, 182, 212, 0.2);
+            border-left: 3px solid #06b6d4;
+        }
+        .content-area {
+            flex: 1;
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+            border-radius: 12px;
+            padding: 32px;
+        }
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #06b6d4;
+            margin-bottom: 24px;
+        }
+        .setting-group {
+            margin-bottom: 32px;
+            padding-bottom: 32px;
+            border-bottom: 1px solid rgba(71, 85, 105, 0.3);
+        }
+        .setting-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #cbd5e1;
+            margin-bottom: 8px;
+        }
+        .setting-description {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-bottom: 12px;
+        }
+        .setting-input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 8px;
+            color: #e2e8f0;
+        }
+        .btn-save {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #06b6d4, #0284c7);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 24px;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <span style="font-size:32px;">⚙️</span> <span class="page-title">Settings</span>
+</div>
+<div class="main-content">
+    <div class="sidebar">
+        <div class="sidebar-item active">🏢 Organization</div>
+        <div class="sidebar-item">👤 Profile</div>
+        <div class="sidebar-item">🔔 Notifications</div>
+        <div class="sidebar-item">📧 Email Settings</div>
+        <div class="sidebar-item">💳 Billing</div>
+        <div class="sidebar-item">🔐 Security</div>
+        <div class="sidebar-item">🔌 Integrations</div>
+    </div>
+    <div class="content-area">
+        <div class="section-title">Organization Settings</div>
+        
+        <div class="setting-group">
+            <div class="setting-label">Company Name</div>
+            <div class="setting-description">This name appears on invoices and contracts</div>
+            <input type="text" class="setting-input" value="StreamStage Productions" />
+        </div>
+
+        <div class="setting-group">
+            <div class="setting-label">Default Currency</div>
+            <div class="setting-description">Currency used for all financial calculations</div>
+            <select class="setting-input">
+                <option>USD - United States Dollar</option>
+                <option>CAD - Canadian Dollar</option>
+                <option>EUR - Euro</option>
+            </select>
+        </div>
+
+        <div class="setting-group">
+            <div class="setting-label">Time Zone</div>
+            <div class="setting-description">Used for event scheduling and timestamps</div>
+            <select class="setting-input">
+                <option>America/Toronto (EST/EDT)</option>
+                <option>America/New_York (EST/EDT)</option>
+                <option>America/Los_Angeles (PST/PDT)</option>
+            </select>
+        </div>
+
+        <div class="setting-group">
+            <div class="setting-label">Date Format</div>
+            <div class="setting-description">How dates appear throughout the system</div>
+            <select class="setting-input">
+                <option>MM/DD/YYYY (US)</option>
+                <option>DD/MM/YYYY (UK)</option>
+                <option>YYYY-MM-DD (ISO)</option>
+            </select>
+        </div>
+
+        <button class="btn-save">💾 Save Changes</button>
+    </div>
+</div>
+</body>
+</html>

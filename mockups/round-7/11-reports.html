@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CommandCentered - Reports</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+        .header {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(168, 85, 247, 0.15));
+            border-bottom: 1px solid rgba(6, 182, 212, 0.3);
+            padding: 24px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #06b6d4, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #06b6d4, #0284c7);
+            color: white;
+            cursor: pointer;
+        }
+        .main-content { padding: 32px; }
+        .report-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .report-card {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+            border-radius: 12px;
+            padding: 24px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .report-card:hover {
+            border-color: rgba(6, 182, 212, 0.5);
+            transform: translateY(-2px);
+        }
+        .report-icon { font-size: 48px; margin-bottom: 16px; }
+        .report-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #e2e8f0;
+            margin-bottom: 8px;
+        }
+        .report-description {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-bottom: 16px;
+        }
+        .report-action {
+            padding: 8px 16px;
+            background: rgba(6, 182, 212, 0.15);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 6px;
+            color: #06b6d4;
+            font-size: 12px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <div><span style="font-size:32px;">📊</span> <span class="page-title">Reports</span></div>
+    <button class="btn">➕ Custom Report</button>
+</div>
+<div class="main-content">
+    <div class="report-grid">
+        <div class="report-card">
+            <div class="report-icon">💰</div>
+            <div class="report-title">Revenue Report</div>
+            <div class="report-description">Annual revenue breakdown by month, service type, and client</div>
+            <button class="report-action">Generate Report</button>
+        </div>
+        <div class="report-card">
+            <div class="report-icon">📅</div>
+            <div class="report-title">Event Summary</div>
+            <div class="report-description">Total events by type, status, and operator assignment</div>
+            <button class="report-action">Generate Report</button>
+        </div>
+        <div class="report-card">
+            <div class="report-icon">👷</div>
+            <div class="report-title">Operator Performance</div>
+            <div class="report-description">Events per operator, ratings, and availability trends</div>
+            <button class="report-action">Generate Report</button>
+        </div>
+        <div class="report-card">
+            <div class="report-icon">🎯</div>
+            <div class="report-title">Pipeline Conversion</div>
+            <div class="report-description">Lead-to-client conversion rates and revenue pipeline</div>
+            <button class="report-action">Generate Report</button>
+        </div>
+        <div class="report-card">
+            <div class="report-icon">🎬</div>
+            <div class="report-title">Deliverables Status</div>
+            <div class="report-description">Completion rates, overdue items, and editor workload</div>
+            <button class="report-action">Generate Report</button>
+        </div>
+        <div class="report-card">
+            <div class="report-icon">📦</div>
+            <div class="report-title">Gear Utilization</div>
+            <div class="report-description">Most-used gear, maintenance schedule, and availability</div>
+            <button class="report-action">Generate Report</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>

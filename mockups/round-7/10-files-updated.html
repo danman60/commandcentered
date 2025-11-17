@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CommandCentered - Files</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
+            border-bottom: 1px solid rgba(6, 182, 212, 0.3);
+            padding: 24px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .page-icon {
+            font-size: 32px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #06b6d4 0%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 32px;
+        }
+
+        /* Tabs Navigation */
+        .tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 32px;
+            background: rgba(30, 41, 59, 0.3);
+            padding: 4px;
+            border-radius: 12px;
+            border: 1px solid rgba(71, 85, 105, 0.3);
+        }
+
+        .tab {
+            padding: 12px 24px;
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .tab:hover {
+            background: rgba(6, 182, 212, 0.1);
+            color: #cbd5e1;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #06b6d4 0%, #0284c7 100%);
+            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(6, 182, 212, 0.3);
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Section Cards */
+        .section-card {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        /* Table Styles */
+        .data-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .data-table th {
+            background: rgba(15, 23, 42, 0.8);
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid rgba(71, 85, 105, 0.5);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .data-table th:hover {
+            color: #06b6d4;
+        }
+
+        .data-table th::after {
+            content: ' ↕';
+            opacity: 0.5;
+            font-size: 10px;
+        }
+
+        .data-table tr {
+            transition: all 0.2s;
+        }
+
+        .data-table tbody tr:hover {
+            background: rgba(6, 182, 212, 0.05);
+        }
+
+        .data-table td {
+            padding: 16px;
+            border-bottom: 1px solid rgba(71, 85, 105, 0.2);
+            font-size: 14px;
+        }
+
+        /* Status Badges */
+        .status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status.submitted {
+            background: rgba(168, 85, 247, 0.2);
+            color: #a855f7;
+        }
+
+        .status.reviewing {
+            background: rgba(251, 191, 36, 0.2);
+            color: #fbbf24;
+        }
+
+        .status.accepted {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .status.rejected {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .status.draft {
+            background: rgba(107, 114, 128, 0.2);
+            color: #6b7280;
+        }
+
+        .status.sent {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+        }
+
+        .status.signed {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .status.paid {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .status.incomplete {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .status.pending {
+            background: rgba(251, 191, 36, 0.2);
+            color: #fbbf24;
+        }
+
+        .status.complete {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .status.live {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Action Buttons */
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin: 0 4px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #06b6d4 0%, #0284c7 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: rgba(71, 85, 105, 0.3);
+            color: #cbd5e1;
+            border: 1px solid rgba(71, 85, 105, 0.5);
+        }
+
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        /* File Grid (for Files tab) */
+        .file-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 16px;
+        }
+
+        .file-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 8px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .file-card:hover {
+            background: rgba(15, 23, 42, 0.8);
+            border-color: rgba(6, 182, 212, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .file-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .file-name {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #e2e8f0;
+        }
+
+        .file-meta {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        /* Contract Layout (for Contracts tab) */
+        .contracts-layout {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 24px;
+            height: 600px;
+        }
+
+        .templates-panel {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 12px;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .panel-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #06b6d4;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(71, 85, 105, 0.3);
+        }
+
+        .template-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .template-item {
+            padding: 12px;
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .template-item:hover {
+            background: rgba(6, 182, 212, 0.1);
+            border-color: rgba(6, 182, 212, 0.3);
+        }
+
+        .template-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #e2e8f0;
+            margin-bottom: 4px;
+        }
+
+        .template-desc {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        /* Questionnaire Rows */
+        .row-urgent {
+            background: rgba(239, 68, 68, 0.05);
+            border-left: 3px solid #ef4444;
+        }
+
+        .row-warning {
+            background: rgba(251, 191, 36, 0.05);
+            border-left: 3px solid #fbbf24;
+        }
+
+        .row-complete {
+            background: rgba(16, 185, 129, 0.05);
+            border-left: 3px solid #10b981;
+        }
+
+        /* Vimeo Button */
+        .vimeo-button {
+            background: linear-gradient(135deg, #1ab7ea 0%, #008fd4 100%);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 16px;
+            transition: all 0.2s;
+        }
+
+        .vimeo-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(26, 183, 234, 0.4);
+        }
+
+        /* FAB */
+        .fab {
+            position: fixed;
+            bottom: 80px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #06b6d4 0%, #a855f7 100%);
+            color: white;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.4);
+            transition: all 0.3s;
+            z-index: 100;
+        }
+
+        .fab:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(6, 182, 212, 0.5);
+        }
+
+        /* Microphone FAB */
+        .microphone-fab {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #06b6d4 0%, #a855f7 100%);
+            color: white;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.4);
+            transition: all 0.3s;
+            z-index: 9999;
+        }
+
+        .microphone-fab:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(6, 182, 212, 0.5);
+        }
+
+        /* Google Drive Actions */
+        .folder-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            background: rgba(66, 153, 225, 0.2);
+            border: 1px solid rgba(66, 153, 225, 0.3);
+            border-radius: 6px;
+            color: #4299e1;
+            font-size: 13px;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .folder-link:hover {
+            background: rgba(66, 153, 225, 0.3);
+            transform: translateY(-1px);
+        }
+
+        /* Service Checkboxes */
+        .service-checks {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .service-check {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .service-check input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #06b6d4;
+        }
+
+        .service-check.completed {
+            color: #10b981;
+        }
+
+        /* Copy Button */
+        .copy-btn {
+            background: rgba(168, 85, 247, 0.2);
+            color: #a855f7;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: rgba(168, 85, 247, 0.3);
+        }
+
+        /* Count Badge */
+        .count-badge {
+            background: rgba(6, 182, 212, 0.2);
+            color: #06b6d4;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        /* App Container & Sidebar */
+        .app-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .left-nav {
+            width: 220px;
+            background: rgba(10, 14, 39, 0.95);
+            border-right: 1px solid rgba(6, 182, 212, 0.3);
+            padding: 24px 16px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #06b6d4 0%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 32px;
+        }
+
+        .nav-item {
+            padding: 12px 16px;
+            margin-bottom: 4px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #94a3b8;
+        }
+
+        .nav-item.active {
+            background: rgba(6, 182, 212, 0.15);
+            color: #06b6d4;
+            border-left: 3px solid #06b6d4;
+        }
+
+        .nav-item:hover {
+            background: rgba(6, 182, 212, 0.08);
+            color: #06b6d4;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <!-- Left Navigation -->
+    <nav class="left-nav">
+        <div class="logo">⚡ CommandCentered</div>
+        <div class="nav-item" onclick="window.location.href='00-dashboard.html'">📊 Dashboard</div>
+        <div class="nav-item" onclick="window.location.href='06-pipeline-updated.html'">🎯 Pipeline</div>
+        <div class="nav-item" onclick="window.location.href='01-planning-updated.html'">📅 Planning</div>
+        <div class="nav-item" onclick="window.location.href='08-deliverables-updated.html'">📦 Deliverables</div>
+        <div class="nav-item" onclick="window.location.href='07-communications-updated.html'">💬 Communications</div>
+        <div class="nav-item" onclick="window.location.href='09-operators-updated.html'">👥 Operators</div>
+        <div class="nav-item" onclick="window.location.href='04-gear-updated.html'">🎥 Gear</div>
+        <div class="nav-item active">📁 Files</div>
+        <div class="nav-item" onclick="window.location.href='12-settings-updated.html'">⚙️ Settings</div>
+        <div class="nav-item" onclick="window.location.href='index.html'">🏠 Home</div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <a href="index.html" style="text-decoration: none; color: #06b6d4; font-size: 24px; margin-right: 12px; cursor: pointer;" title="Home">🏠</a>
+            <span class="page-icon">📁</span>
+            <h1 class="page-title">Files</h1>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Tabs Navigation -->
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('files')">Files</button>
+            <button class="tab" onclick="switchTab('proposals')">Proposals <span class="count-badge">3</span></button>
+            <button class="tab" onclick="switchTab('contracts')">Contracts <span class="count-badge">5</span></button>
+            <button class="tab" onclick="switchTab('questionnaires')">Questionnaires <span class="count-badge">2</span></button>
+            <button class="tab" onclick="switchTab('invoices')">Invoices <span class="count-badge">4</span></button>
+            <button class="tab" onclick="switchTab('livestreams')">Livestreams <span class="count-badge">1</span></button>
+        </div>
+
+        <!-- Files Tab Content -->
+        <div id="files-tab" class="tab-content active">
+            <div class="section-card">
+                <div class="file-grid">
+                    <div class="file-card">
+                        <div class="file-icon">📹</div>
+                        <div class="file-name">EMPWR_Recital_2025.mp4</div>
+                        <div class="file-meta">2.4 GB • Dec 6, 2025</div>
+                    </div>
+                    <div class="file-card">
+                        <div class="file-icon">🎬</div>
+                        <div class="file-name">Glow_Competition_Highlight.mp4</div>
+                        <div class="file-meta">856 MB • Dec 8, 2025</div>
+                    </div>
+                    <div class="file-card">
+                        <div class="file-icon">📄</div>
+                        <div class="file-name">Show_Program_EMPWR.pdf</div>
+                        <div class="file-meta">2.3 MB • Dec 5, 2025</div>
+                    </div>
+                    <div class="file-card">
+                        <div class="file-icon">🖼️</div>
+                        <div class="file-name">Event_Photos_Dec2025.zip</div>
+                        <div class="file-meta">456 MB • Dec 10, 2025</div>
+                    </div>
+                    <div class="file-card">
+                        <div class="file-icon">🎵</div>
+                        <div class="file-name">Dance_Music_Compilation.mp3</div>
+                        <div class="file-meta">124 MB • Dec 3, 2025</div>
+                    </div>
+                    <div class="file-card">
+                        <div class="file-icon">📊</div>
+                        <div class="file-name">Event_Schedule.xlsx</div>
+                        <div class="file-meta">45 KB • Dec 1, 2025</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Proposals Tab Content -->
+        <div id="proposals-tab" class="tab-content">
+            <div class="section-card">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Client</th>
+                            <th>Event</th>
+                            <th>Date Received</th>
+                            <th>Value</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>EMPWR Dance</td>
+                            <td>Spring Recital 2026</td>
+                            <td>Nov 15, 2025</td>
+                            <td>$3,500</td>
+                            <td><span class="status reviewing">Reviewing</span></td>
+                            <td>
+                                <button class="btn btn-primary">View</button>
+                                <button class="btn btn-secondary">Edit</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Studio X</td>
+                            <td>Summer Showcase</td>
+                            <td>Nov 10, 2025</td>
+                            <td>$4,200</td>
+                            <td><span class="status accepted">Accepted</span></td>
+                            <td>
+                                <button class="btn btn-primary">View</button>
+                                <button class="btn btn-secondary">Convert to Contract</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Dance Unlimited</td>
+                            <td>Competition Package</td>
+                            <td>Nov 8, 2025</td>
+                            <td>$5,800</td>
+                            <td><span class="status submitted">Submitted</span></td>
+                            <td>
+                                <button class="btn btn-primary">View</button>
+                                <button class="btn btn-secondary">Follow Up</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Contracts Tab Content -->
+        <div id="contracts-tab" class="tab-content">
+            <div class="section-card">
+                <div class="contracts-layout">
+                    <!-- Templates Panel -->
+                    <div class="templates-panel">
+                        <h3 class="panel-title">Contract Templates</h3>
+                        <div class="template-list">
+                            <div class="template-item">
+                                <div class="template-name">Standard Event</div>
+                                <div class="template-desc">Single-day video production</div>
+                            </div>
+                            <div class="template-item">
+                                <div class="template-name">Dance Recital Package</div>
+                                <div class="template-desc">Multi-camera recital coverage</div>
+                            </div>
+                            <div class="template-item">
+                                <div class="template-name">Multi-Date Series</div>
+                                <div class="template-desc">Multiple events, single contract</div>
+                            </div>
+                            <div class="template-item">
+                                <div class="template-name">Corporate Event</div>
+                                <div class="template-desc">Business event coverage</div>
+                            </div>
+                            <div class="template-item">
+                                <div class="template-name">Competition Package</div>
+                                <div class="template-desc">Full competition coverage</div>
+                            </div>
+                            <div class="template-item">
+                                <div class="template-name">Livestream Package</div>
+                                <div class="template-desc">Live streaming services</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Existing Contracts -->
+                    <div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Contract #</th>
+                                    <th>Client</th>
+                                    <th>Event(s)</th>
+                                    <th>Value</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>#2025-041</td>
+                                    <td>EMPWR Dance</td>
+                                    <td>Winter Recital</td>
+                                    <td>$3,500</td>
+                                    <td><span class="status signed">Signed</span></td>
+                                    <td>
+                                        <button class="btn btn-primary">View</button>
+                                        <button class="btn btn-secondary">Download</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#2025-042</td>
+                                    <td>Glow Competition</td>
+                                    <td>Annual Championship</td>
+                                    <td>$7,500</td>
+                                    <td><span class="status sent">Sent</span></td>
+                                    <td>
+                                        <button class="btn btn-primary">View</button>
+                                        <button class="btn btn-danger">Remind</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#2025-043</td>
+                                    <td>Studio X</td>
+                                    <td>3-Event Series</td>
+                                    <td>$12,000</td>
+                                    <td><span class="status draft">Draft</span></td>
+                                    <td>
+                                        <button class="btn btn-primary">Edit</button>
+                                        <button class="btn btn-secondary">Send</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#2025-044</td>
+                                    <td>Corporate Client</td>
+                                    <td>Holiday Party</td>
+                                    <td>$2,200</td>
+                                    <td><span class="status signed">Signed</span></td>
+                                    <td>
+                                        <button class="btn btn-primary">View</button>
+                                        <button class="btn btn-secondary">Invoice</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#2025-045</td>
+                                    <td>Dance Fest</td>
+                                    <td>Summer Festival</td>
+                                    <td>$5,000</td>
+                                    <td><span class="status sent">Sent</span></td>
+                                    <td>
+                                        <button class="btn btn-primary">View</button>
+                                        <button class="btn btn-danger">Remind</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Questionnaires Tab Content -->
+        <div id="questionnaires-tab" class="tab-content">
+            <div class="section-card">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Client</th>
+                            <th>Event</th>
+                            <th>Event Date</th>
+                            <th>Days Until Event</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="row-urgent">
+                            <td>EMPWR Dance</td>
+                            <td>Winter Recital</td>
+                            <td>Dec 6, 2025</td>
+                            <td><strong style="color: #ef4444;">3 days ⚠️</strong></td>
+                            <td><span class="status incomplete">Incomplete</span></td>
+                            <td>
+                                <button class="btn btn-danger">Send Reminder</button>
+                                <button class="btn btn-primary">View</button>
+                            </td>
+                        </tr>
+                        <tr class="row-warning">
+                            <td>Glow Competition</td>
+                            <td>Championship</td>
+                            <td>Dec 15, 2025</td>
+                            <td><strong style="color: #fbbf24;">12 days</strong></td>
+                            <td><span class="status pending">Pending</span></td>
+                            <td>
+                                <button class="btn btn-secondary">Follow Up</button>
+                                <button class="btn btn-primary">View</button>
+                            </td>
+                        </tr>
+                        <tr class="row-complete">
+                            <td>Studio X</td>
+                            <td>Holiday Showcase</td>
+                            <td>Dec 20, 2025</td>
+                            <td>17 days</td>
+                            <td><span class="status complete">Complete</span></td>
+                            <td>
+                                <button class="btn btn-primary">View</button>
+                                <button class="btn btn-secondary">Download</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Invoices Tab Content -->
+        <div id="invoices-tab" class="tab-content">
+            <div class="section-card">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Invoice #</th>
+                            <th>Client</th>
+                            <th>Amount</th>
+                            <th>HST (13%)</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Due Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#INV-2025-001</td>
+                            <td>EMPWR Dance</td>
+                            <td>$3,500.00</td>
+                            <td>$455.00</td>
+                            <td><strong>$3,955.00</strong></td>
+                            <td><span class="status paid">Paid</span></td>
+                            <td>Nov 30, 2025</td>
+                            <td>
+                                <button class="btn btn-primary">View</button>
+                                <button class="btn btn-secondary">Receipt</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#INV-2025-002</td>
+                            <td>Glow Competition</td>
+                            <td>$7,500.00</td>
+                            <td>$975.00</td>
+                            <td><strong>$8,475.00</strong></td>
+                            <td><span class="status sent">Sent</span></td>
+                            <td>Dec 15, 2025</td>
+                            <td>
+                                <button class="btn btn-primary">View</button>
+                                <button class="btn btn-danger">Send Reminder</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#INV-2025-003</td>
+                            <td>Studio X</td>
+                            <td>$2,200.00</td>
+                            <td>$286.00</td>
+                            <td><strong>$2,486.00</strong></td>
+                            <td><span class="status draft">Draft</span></td>
+                            <td>Dec 20, 2025</td>
+                            <td>
+                                <button class="btn btn-primary">Edit</button>
+                                <button class="btn btn-secondary">Send</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#INV-2025-004</td>
+                            <td>Dance Unlimited</td>
+                            <td>$4,000.00</td>
+                            <td>$520.00</td>
+                            <td><strong>$4,520.00</strong></td>
+                            <td><span class="status paid">Paid</span></td>
+                            <td>Nov 25, 2025</td>
+                            <td>
+                                <button class="btn btn-primary">View</button>
+                                <button class="btn btn-secondary">Receipt</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Livestreams Tab Content -->
+        <div id="livestreams-tab" class="tab-content">
+            <div class="section-card">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Event</th>
+                            <th>Client</th>
+                            <th>Date</th>
+                            <th>Viewing Page</th>
+                            <th>Stream Key</th>
+                            <th>RTMP URL</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Winter Recital 2025</td>
+                            <td>EMPWR Dance</td>
+                            <td>Dec 6, 2025</td>
+                            <td>
+                                <a href="#" class="folder-link">
+                                    streamstage.live/empwr-winter-2025
+                                </a>
+                            </td>
+                            <td>
+                                <code style="font-size: 11px;">live_abc123xyz...</code>
+                                <button class="copy-btn" onclick="copyToClipboard('live_abc123xyz789')">Copy</button>
+                            </td>
+                            <td>
+                                <code style="font-size: 11px;">rtmp://a.rtmp.youtube...</code>
+                                <button class="copy-btn" onclick="copyToClipboard('rtmp://a.rtmp.youtube.com/live2')">Copy</button>
+                            </td>
+                            <td><span class="status live">LIVE</span></td>
+                            <td>
+                                <button class="btn btn-primary">View Stream</button>
+                                <button class="btn btn-secondary">Embed Code</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Glow Championship</td>
+                            <td>Glow Competition</td>
+                            <td>Dec 15, 2025</td>
+                            <td>Not Created</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td><span class="status pending">Pending</span></td>
+                            <td>
+                                <button class="vimeo-button">🎬 Generate Vimeo Stream</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div style="margin-top: 24px; padding: 16px; background: rgba(26, 183, 234, 0.1); border: 1px solid rgba(26, 183, 234, 0.3); border-radius: 8px;">
+                    <h4 style="color: #1ab7ea; margin-bottom: 8px;">Vimeo Integration</h4>
+                    <p style="font-size: 14px; color: #94a3b8; line-height: 1.6;">
+                        Click "Generate Vimeo Stream" to automatically create a livestream event. This will generate:
+                        • Stream Key for OBS/streaming software
+                        • RTMP URL for direct streaming
+                        • Embed code for website integration
+                        • Viewing page URL for clients
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAB for adding new items -->
+    <button class="fab" title="Add New">
+        +
+    </button>
+
+    <!-- Microphone FAB -->
+    <button class="microphone-fab" title="Voice Command">
+        🎤
+    </button>
+
+    <script>
+        function switchTab(tabName) {
+            // Hide all tab contents
+            const allTabs = document.querySelectorAll('.tab-content');
+            allTabs.forEach(tab => tab.classList.remove('active'));
+
+            // Remove active class from all tab buttons
+            const allButtons = document.querySelectorAll('.tab');
+            allButtons.forEach(btn => btn.classList.remove('active'));
+
+            // Show selected tab
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+
+            // Mark button as active
+            event.target.classList.add('active');
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                // Change button text temporarily
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = '✓ Copied';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                }, 2000);
+            });
+        }
+    </script>
+    </div> <!-- /main-content -->
+</div> <!-- /app-container -->
+
+</body>
+</html>

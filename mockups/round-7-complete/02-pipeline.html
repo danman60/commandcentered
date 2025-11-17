@@ -1,0 +1,1594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CommandCentered - Pipeline with Product Tracking</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: linear-gradient(180deg, #0c1220 0%, #030712 100%);
+            border-right: 2px solid rgba(6, 182, 212, 0.3);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 32px rgba(6, 182, 212, 0.15);
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .logo {
+            padding: 32px 24px;
+            border-bottom: 1px solid rgba(6, 182, 212, 0.2);
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #06b6d4 0%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+        }
+
+        .nav {
+            flex: 1;
+            padding: 24px 0;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 24px;
+            color: #94a3b8;
+            text-decoration: none;
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .nav-item:hover {
+            background: rgba(6, 182, 212, 0.1);
+            color: #22d3ee;
+            border-left-color: rgba(6, 182, 212, 0.8);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(90deg, rgba(6, 182, 212, 0.2) 0%, transparent 100%);
+            color: #22d3ee;
+            border-left-color: #06b6d4;
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.5);
+        }
+
+        /* Main Container */
+        .main-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
+            border-bottom: 1px solid rgba(6, 182, 212, 0.3);
+            padding: 24px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .page-icon {
+            font-size: 32px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #06b6d4 0%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-secondary {
+            background: rgba(71, 85, 105, 0.3);
+            color: #cbd5e1;
+            border: 1px solid rgba(71, 85, 105, 0.5);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(71, 85, 105, 0.5);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #06b6d4 0%, #0284c7 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(6, 182, 212, 0.4);
+        }
+
+        /* View Toggles */
+        .view-toggles {
+            display: flex;
+            gap: 8px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 8px;
+            padding: 4px;
+        }
+
+        .view-toggle-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: transparent;
+            color: #94a3b8;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .view-toggle-btn:hover {
+            color: #cbd5e1;
+        }
+
+        .view-toggle-btn.active {
+            background: linear-gradient(135deg, #06b6d4 0%, #0284c7 100%);
+            color: #ffffff;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 32px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        /* Search & Filter Bar */
+        .search-filter-bar {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 32px;
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .search-input-wrapper {
+            flex: 1;
+            position: relative;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            color: #64748b;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px 12px 48px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 8px;
+            color: #e2e8f0;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #06b6d4;
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+        }
+
+        .filter-select {
+            padding: 12px 16px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 8px;
+            color: #e2e8f0;
+            font-size: 14px;
+            min-width: 180px;
+        }
+
+        /* Client Cards Grid */
+        .client-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(600px, 1fr));
+            gap: 24px;
+        }
+
+        /* Table View */
+        .table-view {
+            display: none;
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .table-view.active {
+            display: block;
+        }
+
+        .pipeline-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .pipeline-table thead {
+            background: rgba(15, 23, 42, 0.8);
+            border-bottom: 2px solid rgba(6, 182, 212, 0.3);
+        }
+
+        .pipeline-table th {
+            padding: 16px 20px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 700;
+            color: #06b6d4;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .pipeline-table td {
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(71, 85, 105, 0.2);
+            color: #cbd5e1;
+            font-size: 14px;
+        }
+
+        .pipeline-table tbody tr {
+            transition: all 0.2s;
+        }
+
+        .pipeline-table tbody tr:hover {
+            background: rgba(6, 182, 212, 0.05);
+        }
+
+        .table-client-name {
+            font-weight: 700;
+            color: #e2e8f0;
+        }
+
+        .table-status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .table-status.hot {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .table-status.warm {
+            background: rgba(251, 146, 60, 0.2);
+            color: #fb923c;
+        }
+
+        .table-status.cold {
+            background: rgba(6, 182, 212, 0.2);
+            color: #06b6d4;
+        }
+
+        .table-products {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            font-size: 12px;
+        }
+
+        .table-product-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .table-product-status {
+            padding: 2px 8px;
+            border-radius: 8px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .table-product-status.won {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .table-product-status.proposal {
+            background: rgba(6, 182, 212, 0.2);
+            color: #06b6d4;
+        }
+
+        .table-product-status.discussing {
+            background: rgba(251, 146, 60, 0.2);
+            color: #fb923c;
+        }
+
+        .table-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .table-action-btn {
+            padding: 6px 12px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 6px;
+            font-size: 12px;
+            color: #cbd5e1;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .table-action-btn:hover {
+            background: rgba(30, 41, 59, 0.8);
+            border-color: rgba(6, 182, 212, 0.6);
+            color: #06b6d4;
+        }
+
+        /* Kanban View */
+        .kanban-view {
+            display: none;
+            gap: 24px;
+        }
+
+        .kanban-view.active {
+            display: flex;
+        }
+
+        .kanban-column {
+            flex: 1;
+            background: rgba(30, 41, 59, 0.3);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            min-height: 500px;
+        }
+
+        .kanban-column-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid rgba(71, 85, 105, 0.3);
+        }
+
+        .kanban-column-title {
+            font-size: 16px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .kanban-column-title.hot {
+            color: #ef4444;
+        }
+
+        .kanban-column-title.warm {
+            color: #fb923c;
+        }
+
+        .kanban-column-title.cold {
+            color: #06b6d4;
+        }
+
+        .kanban-column-count {
+            background: rgba(15, 23, 42, 0.6);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #94a3b8;
+        }
+
+        .kanban-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .kanban-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 8px;
+            padding: 16px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .kanban-card:hover {
+            border-color: rgba(6, 182, 212, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .kanban-card-header {
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(71, 85, 105, 0.3);
+        }
+
+        .kanban-card-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: #e2e8f0;
+            margin-bottom: 6px;
+        }
+
+        .kanban-card-contact {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .kanban-card-info {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .kanban-info-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+        }
+
+        .kanban-info-label {
+            color: #64748b;
+        }
+
+        .kanban-info-value {
+            color: #cbd5e1;
+            font-weight: 600;
+        }
+
+        .kanban-products {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .kanban-product-badge {
+            padding: 4px 8px;
+            border-radius: 8px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .kanban-product-badge.won {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .kanban-product-badge.proposal {
+            background: rgba(6, 182, 212, 0.2);
+            color: #06b6d4;
+        }
+
+        .kanban-product-badge.discussing {
+            background: rgba(251, 146, 60, 0.2);
+            color: #fb923c;
+        }
+
+        .kanban-revenue {
+            font-size: 14px;
+            font-weight: 700;
+            color: #10b981;
+            text-align: right;
+        }
+
+        /* Client Card */
+        .client-card {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .client-card:hover {
+            border-color: rgba(6, 182, 212, 0.5);
+            transform: translateY(-2px);
+        }
+
+        /* Client Header */
+        .client-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(71, 85, 105, 0.3);
+        }
+
+        .client-info {
+            flex: 1;
+        }
+
+        .client-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #e2e8f0;
+            margin-bottom: 8px;
+        }
+
+        .client-contact {
+            font-size: 13px;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .client-status {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .client-status.hot {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .client-status.warm {
+            background: rgba(251, 146, 60, 0.2);
+            color: #fb923c;
+        }
+
+        .client-status.cold {
+            background: rgba(6, 182, 212, 0.2);
+            color: #06b6d4;
+        }
+
+        /* CRM Fields */
+        .crm-fields {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .crm-field {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .crm-field-label {
+            font-size: 11px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .crm-field-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: #e2e8f0;
+        }
+
+        /* Product Tracking Section */
+        .product-tracking {
+            margin-top: 20px;
+        }
+
+        .product-section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #06b6d4;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .product-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .product-item {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 8px;
+            padding: 16px;
+            transition: all 0.2s;
+        }
+
+        .product-item:hover {
+            border-color: rgba(6, 182, 212, 0.6);
+        }
+
+        .product-item.interested {
+            background: rgba(6, 182, 212, 0.1);
+            border-color: rgba(6, 182, 212, 0.4);
+        }
+
+        .product-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .product-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .product-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(71, 85, 105, 0.8);
+            border-radius: 4px;
+            background: rgba(15, 23, 42, 0.6);
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-item.interested .product-checkbox {
+            background: linear-gradient(135deg, #06b6d4 0%, #0284c7 100%);
+            border-color: #06b6d4;
+        }
+
+        .product-checkbox::after {
+            content: '✓';
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .product-item.interested .product-checkbox::after {
+            display: block;
+        }
+
+        .product-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #e2e8f0;
+        }
+
+        .product-status-badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .product-status-badge.discussing {
+            background: rgba(251, 146, 60, 0.2);
+            color: #fb923c;
+        }
+
+        .product-status-badge.proposal {
+            background: rgba(6, 182, 212, 0.2);
+            color: #06b6d4;
+        }
+
+        .product-status-badge.won {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .product-status-badge.lost {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .product-details {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 12px;
+        }
+
+        .product-detail-label {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .product-detail-value {
+            font-size: 12px;
+            color: #cbd5e1;
+        }
+
+        .product-revenue {
+            font-weight: 700;
+            color: #10b981;
+        }
+
+        .product-notes {
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(71, 85, 105, 0.3);
+            font-size: 12px;
+            color: #94a3b8;
+            font-style: italic;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(71, 85, 105, 0.3);
+        }
+
+        .quick-action-btn {
+            flex: 1;
+            padding: 10px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 6px;
+            font-size: 13px;
+            color: #cbd5e1;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .quick-action-btn:hover {
+            background: rgba(30, 41, 59, 0.8);
+            border-color: rgba(6, 182, 212, 0.6);
+            color: #06b6d4;
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(71, 85, 105, 0.6);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(71, 85, 105, 0.8);
+        }
+    </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <div class="logo">
+        <div class="logo-text">CommandCentered</div>
+    </div>
+    <nav class="nav">
+        <a href="01-dashboard.html" class="nav-item">
+            <span>📊</span>
+            <span>Dashboard</span>
+        </a>
+        <a href="02-pipeline.html" class="nav-item active">
+            <span>⚡</span>
+            <span>Pipeline</span>
+        </a>
+        <a href="03-planning.html" class="nav-item">
+            <span>📅</span>
+            <span>Planning</span>
+        </a>
+        <a href="04-deliverables.html" class="nav-item">
+            <span>📦</span>
+            <span>Deliverables</span>
+        </a>
+        <a href="05-communications.html" class="nav-item">
+            <span>💬</span>
+            <span>Communications</span>
+        </a>
+        <a href="06-files.html" class="nav-item">
+            <span>📁</span>
+            <span>Files</span>
+        </a>
+        <a href="07-operators.html" class="nav-item">
+            <span>👥</span>
+            <span>Operators</span>
+        </a>
+        <a href="08-gear.html" class="nav-item">
+            <span>🎥</span>
+            <span>Gear</span>
+        </a>
+        <a href="09-reports.html" class="nav-item">
+            <span>📈</span>
+            <span>Reports</span>
+        </a>
+        <a href="10-customize.html" class="nav-item">
+            <span>⚙️</span>
+            <span>Customize</span>
+        </a>
+        <a href="11-settings.html" class="nav-item">
+            <span>🔧</span>
+            <span>Settings</span>
+        </a>
+    </nav>
+</div>
+
+<!-- Main Container -->
+<div class="main-container">
+
+<!-- Header -->
+<div class="header">
+    <div class="header-left">
+        <div class="page-icon">🎯</div>
+        <div class="page-title">Pipeline</div>
+    </div>
+    <div class="header-right">
+        <div class="view-toggles">
+            <button class="view-toggle-btn active" onclick="switchView('card')" title="Card View">
+                <span>📇</span>
+            </button>
+            <button class="view-toggle-btn" onclick="switchView('table')" title="Table View">
+                <span>📊</span>
+            </button>
+            <button class="view-toggle-btn" onclick="switchView('kanban')" title="Kanban View">
+                <span>📋</span>
+            </button>
+        </div>
+        <button class="btn btn-secondary" onclick="exportPipeline()">
+            📊 Export
+        </button>
+        <button class="btn btn-primary" onclick="addNewLead()">
+            ➕ New Lead
+        </button>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+
+    <!-- Search & Filter Bar -->
+    <div class="search-filter-bar">
+        <div class="search-input-wrapper">
+            <span class="search-icon">🔍</span>
+            <input type="text" class="search-input" placeholder="Search clients by name, company, or contact...">
+        </div>
+        <select class="filter-select">
+            <option>All Statuses</option>
+            <option>Hot Leads</option>
+            <option>Warm Leads</option>
+            <option>Cold Leads</option>
+        </select>
+        <select class="filter-select">
+            <option>Sort by: Last Contacted</option>
+            <option>Sort by: Next Follow-Up</option>
+            <option>Sort by: Revenue Potential</option>
+            <option>Sort by: Client Name</option>
+        </select>
+    </div>
+
+    <!-- Table View -->
+    <div class="table-view" id="tableView">
+        <table class="pipeline-table">
+            <thead>
+                <tr>
+                    <th>Client</th>
+                    <th>Status</th>
+                    <th>Last Contacted</th>
+                    <th>Next Follow-Up</th>
+                    <th>Active Products</th>
+                    <th>Revenue</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="table-client-name">EMPWR Dance Experience</div>
+                        <div style="font-size: 12px; color: #64748b; margin-top: 4px;">empwrdance@gmail.com</div>
+                    </td>
+                    <td><span class="table-status hot">Hot Lead</span></td>
+                    <td>Nov 10, 2025</td>
+                    <td>Nov 17, 2025</td>
+                    <td>
+                        <div class="table-products">
+                            <div class="table-product-item">
+                                <span>Dance Recital</span>
+                                <span class="table-product-status won">Won</span>
+                            </div>
+                            <div class="table-product-item">
+                                <span>Core Video</span>
+                                <span class="table-product-status proposal">Proposal</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td><span style="font-weight: 700; color: #10b981;">$20,500</span></td>
+                    <td>
+                        <div class="table-actions">
+                            <button class="table-action-btn" onclick="viewDetails()">View</button>
+                            <button class="table-action-btn" onclick="logContact()">Log</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="table-client-name">Glow Dance Competition</div>
+                        <div style="font-size: 12px; color: #64748b; margin-top: 4px;">glowdance@gmail.com</div>
+                    </td>
+                    <td><span class="table-status warm">Warm Lead</span></td>
+                    <td>Nov 5, 2025</td>
+                    <td>Nov 19, 2025</td>
+                    <td>
+                        <div class="table-products">
+                            <div class="table-product-item">
+                                <span>Studio Sage</span>
+                                <span class="table-product-status discussing">Discussing</span>
+                            </div>
+                            <div class="table-product-item">
+                                <span>Competition SW</span>
+                                <span class="table-product-status proposal">Proposal</span>
+                            </div>
+                            <div class="table-product-item">
+                                <span>Core Video</span>
+                                <span class="table-product-status won">Won</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td><span style="font-weight: 700; color: #10b981;">$26,600</span></td>
+                    <td>
+                        <div class="table-actions">
+                            <button class="table-action-btn" onclick="viewDetails()">View</button>
+                            <button class="table-action-btn" onclick="logContact()">Log</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="table-client-name">ABC Dance Studio</div>
+                        <div style="font-size: 12px; color: #64748b; margin-top: 4px;">info@abcdance.com</div>
+                    </td>
+                    <td><span class="table-status cold">Cold Lead</span></td>
+                    <td>Oct 20, 2025</td>
+                    <td>Nov 25, 2025</td>
+                    <td>
+                        <div class="table-products">
+                            <div class="table-product-item">
+                                <span>Studio Sage</span>
+                                <span class="table-product-status discussing">Discussing</span>
+                            </div>
+                            <div class="table-product-item">
+                                <span>Dance Recital</span>
+                                <span class="table-product-status discussing">Discussing</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td><span style="font-weight: 700; color: #10b981;">$7,300</span></td>
+                    <td>
+                        <div class="table-actions">
+                            <button class="table-action-btn" onclick="viewDetails()">View</button>
+                            <button class="table-action-btn" onclick="logContact()">Log</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Kanban View -->
+    <div class="kanban-view" id="kanbanView">
+        <div class="kanban-column">
+            <div class="kanban-column-header">
+                <div class="kanban-column-title hot">
+                    <span>🔥</span>
+                    <span>Hot Leads</span>
+                </div>
+                <div class="kanban-column-count">1</div>
+            </div>
+            <div class="kanban-cards">
+                <div class="kanban-card">
+                    <div class="kanban-card-header">
+                        <div class="kanban-card-name">EMPWR Dance Experience</div>
+                        <div class="kanban-card-contact">📧 empwrdance@gmail.com</div>
+                    </div>
+                    <div class="kanban-card-info">
+                        <div class="kanban-info-row">
+                            <span class="kanban-info-label">Last Contacted:</span>
+                            <span class="kanban-info-value">Nov 10, 2025</span>
+                        </div>
+                        <div class="kanban-info-row">
+                            <span class="kanban-info-label">Next Follow-Up:</span>
+                            <span class="kanban-info-value">Nov 17, 2025</span>
+                        </div>
+                    </div>
+                    <div class="kanban-products">
+                        <span class="kanban-product-badge won">Dance Recital - Won</span>
+                        <span class="kanban-product-badge proposal">Core Video - Proposal</span>
+                    </div>
+                    <div class="kanban-revenue">$20,500</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="kanban-column">
+            <div class="kanban-column-header">
+                <div class="kanban-column-title warm">
+                    <span>🌤️</span>
+                    <span>Warm Leads</span>
+                </div>
+                <div class="kanban-column-count">1</div>
+            </div>
+            <div class="kanban-cards">
+                <div class="kanban-card">
+                    <div class="kanban-card-header">
+                        <div class="kanban-card-name">Glow Dance Competition</div>
+                        <div class="kanban-card-contact">📧 glowdance@gmail.com</div>
+                    </div>
+                    <div class="kanban-card-info">
+                        <div class="kanban-info-row">
+                            <span class="kanban-info-label">Last Contacted:</span>
+                            <span class="kanban-info-value">Nov 5, 2025</span>
+                        </div>
+                        <div class="kanban-info-row">
+                            <span class="kanban-info-label">Next Follow-Up:</span>
+                            <span class="kanban-info-value">Nov 19, 2025</span>
+                        </div>
+                    </div>
+                    <div class="kanban-products">
+                        <span class="kanban-product-badge discussing">Studio Sage - Discussing</span>
+                        <span class="kanban-product-badge proposal">Competition SW - Proposal</span>
+                        <span class="kanban-product-badge won">Core Video - Won</span>
+                    </div>
+                    <div class="kanban-revenue">$26,600</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="kanban-column">
+            <div class="kanban-column-header">
+                <div class="kanban-column-title cold">
+                    <span>❄️</span>
+                    <span>Cold Leads</span>
+                </div>
+                <div class="kanban-column-count">1</div>
+            </div>
+            <div class="kanban-cards">
+                <div class="kanban-card">
+                    <div class="kanban-card-header">
+                        <div class="kanban-card-name">ABC Dance Studio</div>
+                        <div class="kanban-card-contact">📧 info@abcdance.com</div>
+                    </div>
+                    <div class="kanban-card-info">
+                        <div class="kanban-info-row">
+                            <span class="kanban-info-label">Last Contacted:</span>
+                            <span class="kanban-info-value">Oct 20, 2025</span>
+                        </div>
+                        <div class="kanban-info-row">
+                            <span class="kanban-info-label">Next Follow-Up:</span>
+                            <span class="kanban-info-value">Nov 25, 2025</span>
+                        </div>
+                    </div>
+                    <div class="kanban-products">
+                        <span class="kanban-product-badge discussing">Studio Sage - Discussing</span>
+                        <span class="kanban-product-badge discussing">Dance Recital - Discussing</span>
+                    </div>
+                    <div class="kanban-revenue">$7,300</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Client Cards Grid -->
+    <div class="client-cards-grid" id="cardView">
+
+        <!-- Client Card 1 -->
+        <div class="client-card">
+            <div class="client-header">
+                <div class="client-info">
+                    <div class="client-name">EMPWR Dance Experience</div>
+                    <div class="client-contact">📧 empwrdance@gmail.com • 📱 (555) 123-4567</div>
+                </div>
+                <div class="client-status hot">Hot Lead</div>
+            </div>
+
+            <div class="crm-fields">
+                <div class="crm-field">
+                    <div class="crm-field-label">Last Contacted</div>
+                    <div class="crm-field-value">Nov 10, 2025</div>
+                </div>
+                <div class="crm-field">
+                    <div class="crm-field-label">Next Follow-Up</div>
+                    <div class="crm-field-value">Nov 17, 2025</div>
+                </div>
+                <div class="crm-field">
+                    <div class="crm-field-label">Contact Frequency</div>
+                    <div class="crm-field-value">Weekly</div>
+                </div>
+            </div>
+
+            <div class="product-tracking">
+                <div class="product-section-title">
+                    <span>📦</span>
+                    Product Focus
+                </div>
+                <div class="product-list">
+
+                    <div class="product-item">
+                        <div class="product-header">
+                            <div class="product-header-left">
+                                <div class="product-checkbox"></div>
+                                <div class="product-name">Studio Sage Chatbot</div>
+                            </div>
+                            <div class="product-status-badge lost">Not Interested</div>
+                        </div>
+                        <div class="product-details">
+                            <div class="product-detail-label">Status:</div>
+                            <div class="product-detail-value">Lost - already has chatbot</div>
+                            <div class="product-detail-label">Revenue:</div>
+                            <div class="product-detail-value product-revenue">$0</div>
+                        </div>
+                        <div class="product-notes">
+                            "We're using Zapier with ChatGPT already. Not interested."
+                        </div>
+                    </div>
+
+                    <div class="product-item interested">
+                        <div class="product-header">
+                            <div class="product-header-left">
+                                <div class="product-checkbox"></div>
+                                <div class="product-name">Dance Recital Package</div>
+                            </div>
+                            <div class="product-status-badge won">Won</div>
+                        </div>
+                        <div class="product-details">
+                            <div class="product-detail-label">Status:</div>
+                            <div class="product-detail-value">Contract signed, Dec 6 event</div>
+                            <div class="product-detail-label">Revenue:</div>
+                            <div class="product-detail-value product-revenue">$8,500</div>
+                        </div>
+                        <div class="product-notes">
+                            Multi-camera recital package with livestream and edited highlight reel.
+                        </div>
+                    </div>
+
+                    <div class="product-item">
+                        <div class="product-header">
+                            <div class="product-header-left">
+                                <div class="product-checkbox"></div>
+                                <div class="product-name">Competition Software</div>
+                            </div>
+                            <div class="product-status-badge lost">Not Interested</div>
+                        </div>
+                        <div class="product-details">
+                            <div class="product-detail-label">Status:</div>
+                            <div class="product-detail-value">Using DanceBug</div>
+                            <div class="product-detail-label">Revenue:</div>
+                            <div class="product-detail-value product-revenue">$0</div>
+                        </div>
+                        <div class="product-notes">
+                            "We're locked into DanceBug for next 2 years."
+                        </div>
+                    </div>
+
+                    <div class="product-item interested">
+                        <div class="product-header">
+                            <div class="product-header-left">
+                                <div class="product-checkbox"></div>
+                                <div class="product-name">Core Video Production</div>
+                            </div>
+                            <div class="product-status-badge proposal">Proposal Sent</div>
+                        </div>
+                        <div class="product-details">
+                            <div class="product-detail-label">Status:</div>
+                            <div class="product-detail-value">Awaiting response on Spring 2026</div>
+                            <div class="product-detail-label">Revenue:</div>
+                            <div class="product-detail-value product-revenue">$12,000 (projected)</div>
+                        </div>
+                        <div class="product-notes">
+                            Interested in March + June recitals (2 events). Quote sent Nov 10.
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="quick-actions">
+                <button class="quick-action-btn" onclick="logContact()">
+                    📝 Log Contact
+                </button>
+                <button class="quick-action-btn" onclick="sendEmail()">
+                    📧 Send Email
+                </button>
+                <button class="quick-action-btn" onclick="viewDetails()">
+                    👁️ View Details
+                </button>
+            </div>
+        </div>
+
+        <!-- Client Card 2 -->
+        <div class="client-card">
+            <div class="client-header">
+                <div class="client-info">
+                    <div class="client-name">Glow Dance Competition</div>
+                    <div class="client-contact">📧 glowdance@gmail.com • 📱 (555) 987-6543</div>
+                </div>
+                <div class="client-status warm">Warm Lead</div>
+            </div>
+
+            <div class="crm-fields">
+                <div class="crm-field">
+                    <div class="crm-field-label">Last Contacted</div>
+                    <div class="crm-field-value">Nov 5, 2025</div>
+                </div>
+                <div class="crm-field">
+                    <div class="crm-field-label">Next Follow-Up</div>
+                    <div class="crm-field-value">Nov 19, 2025</div>
+                </div>
+                <div class="crm-field">
+                    <div class="crm-field-label">Contact Frequency</div>
+                    <div class="crm-field-value">Bi-weekly</div>
+                </div>
+            </div>
+
+            <div class="product-tracking">
+                <div class="product-section-title">
+                    <span>📦</span>
+                    Product Focus
+                </div>
+                <div class="product-list">
+
+                    <div class="product-item interested">
+                        <div class="product-header">
+                            <div class="product-header-left">
+                                <div class="product-checkbox"></div>
+                                <div class="product-name">Studio Sage Chatbot</div>
+                            </div>
+                            <div class="product-status-badge discussing">Discussing</div>
+                        </div>
+                        <div class="product-details">
+                            <div class="product-detail-label">Status:</div>
+                            <div class="product-detail-value">Demo scheduled for Nov 20</div>
+                            <div class="product-detail-label">Revenue:</div>
+                            <div class="product-detail-value product-revenue">$2,400 (projected)</div>
+                        </div>
+                        <div class="product-notes">
+                            Very interested in AI chatbot for dancer FAQ automation.
+                        </div>
+                    </div>
+
+                    <div class="product-item">
+                        <div class="product-header">
+                            <div class="product-header-left">
+                                <div class="product-checkbox"></div>
+                                <div class="product-name">Dance Recital Package</div>
+                            </div>
+                            <div class="product-status-badge lost">Not Applicable</div>
+                        </div>
+                        <div class="product-details">
+                            <div class="product-detail-label">Status:</div>
+                            <div class="product-detail-value">Competition-focused, not recitals</div>
+                            <div class="product-detail-label">Revenue:</div>
+                            <div class="product-detail-value product-revenue">$0</div>
+                        </div>
+                        <div class="product-notes">
+                            This client runs competitions, not recitals.
+                        </div>
+                    </div>
+
+                    <div class="product-item interested">
+                        <div class="product-header">
+                            <div class="product-header-left">
+                                <div class="product-checkbox"></div>
+                                <div class="product-name">Competition Software</div>
+                            </div>
+                            <div class="product-status-badge proposal">Proposal Sent</div>
+                        </div>
+                        <div class="product-details">
+                            <div class="product-detail-label">Status:</div>
+                            <div class="product-detail-value">Proposal sent, waiting on budget approval</div>
+                            <div class="product-detail-label">Revenue:</div>
+                            <div class="product-detail-value product-revenue">$18,000 (projected)</div>
+                        </div>
+                        <div class="product-notes">
+                            Need custom software for 3 competitions in 2026. Decision by Dec 1.
+                        </div>
+                    </div>
+
+                    <div class="product-item interested">
+                        <div class="product-header">
+                            <div class="product-header-left">
+                                <div class="product-checkbox"></div>
+                                <div class="product-name">Core Video Production</div>
+                            </div>
+                            <div class="product-status-badge won">Won</div>
+                        </div>
+                        <div class="product-details">
+                            <div class="product-detail-label">Status:</div>
+                            <div class="product-detail-value">Dec 10 competition booked</div>
+                            <div class="product-detail-label">Revenue:</div>
+                            <div class="product-detail-value product-revenue">$6,200</div>
+                        </div>
+                        <div class="product-notes">
+                            Competition video coverage + awards ceremony. Contract signed.
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="quick-actions">
+                <button class="quick-action-btn" onclick="logContact()">
+                    📝 Log Contact
+                </button>
+                <button class="quick-action-btn" onclick="sendEmail()">
+                    📧 Send Email
+                </button>
+                <button class="quick-action-btn" onclick="viewDetails()">
+                    👁️ View Details
+                </button>
+            </div>
+        </div>
+
+        <!-- Client Card 3 -->
+        <div class="client-card">
+            <div class="client-header">
+                <div class="client-info">
+                    <div class="client-name">ABC Dance Studio</div>
+                    <div class="client-contact">📧 info@abcdance.com • 📱 (555) 456-7890</div>
+                </div>
+                <div class="client-status cold">Cold Lead</div>
+            </div>
+
+            <div class="crm-fields">
+                <div class="crm-field">
+                    <div class="crm-field-label">Last Contacted</div>
+                    <div class="crm-field-value">Oct 20, 2025</div>
+                </div>
+                <div class="crm-field">
+                    <div class="crm-field-label">Next Follow-Up</div>
+                    <div class="crm-field-value">Nov 25, 2025</div>
+                </div>
+                <div class="crm-field">
+                    <div class="crm-field-label">Contact Frequency</div>
+                    <div class="crm-field-value">Monthly</div>
+                </div>
+            </div>
+
+            <div class="product-tracking">
+                <div class="product-section-title">
+                    <span>📦</span>
+                    Product Focus
+                </div>
+                <div class="product-list">
+
+                    <div class="product-item interested">
+                        <div class="product-header">
+                            <div class="product-header-left">
+                                <div class="product-checkbox"></div>
+                                <div class="product-name">Studio Sage Chatbot</div>
+                            </div>
+                            <div class="product-status-badge discussing">Discussing</div>
+                        </div>
+                        <div class="product-details">
+                            <div class="product-detail-label">Status:</div>
+                            <div class="product-detail-value">Interested, but budget-conscious</div>
+                            <div class="product-detail-label">Revenue:</div>
+                            <div class="product-detail-value product-revenue">$1,800 (projected)</div>
+                        </div>
+                        <div class="product-notes">
+                            Wants to see ROI examples before committing.
+                        </div>
+                    </div>
+
+                    <div class="product-item interested">
+                        <div class="product-header">
+                            <div class="product-header-left">
+                                <div class="product-checkbox"></div>
+                                <div class="product-name">Dance Recital Package</div>
+                            </div>
+                            <div class="product-status-badge discussing">Discussing</div>
+                        </div>
+                        <div class="product-details">
+                            <div class="product-detail-label">Status:</div>
+                            <div class="product-detail-value">May 2026 recital (tentative)</div>
+                            <div class="product-detail-label">Revenue:</div>
+                            <div class="product-detail-value product-revenue">$5,500 (projected)</div>
+                        </div>
+                        <div class="product-notes">
+                            Interested in recital package for Spring 2026. Follow up in January.
+                        </div>
+                    </div>
+
+                    <div class="product-item">
+                        <div class="product-header">
+                            <div class="product-header-left">
+                                <div class="product-checkbox"></div>
+                                <div class="product-name">Competition Software</div>
+                            </div>
+                            <div class="product-status-badge lost">Not Applicable</div>
+                        </div>
+                        <div class="product-details">
+                            <div class="product-detail-label">Status:</div>
+                            <div class="product-detail-value">Studio only, no competitions</div>
+                            <div class="product-detail-label">Revenue:</div>
+                            <div class="product-detail-value product-revenue">$0</div>
+                        </div>
+                    </div>
+
+                    <div class="product-item">
+                        <div class="product-header">
+                            <div class="product-header-left">
+                                <div class="product-checkbox"></div>
+                                <div class="product-name">Core Video Production</div>
+                            </div>
+                            <div class="product-status-badge lost">Lost</div>
+                        </div>
+                        <div class="product-details">
+                            <div class="product-detail-label">Status:</div>
+                            <div class="product-detail-value">Went with cheaper competitor</div>
+                            <div class="product-detail-label">Revenue:</div>
+                            <div class="product-detail-value product-revenue">$0</div>
+                        </div>
+                        <div class="product-notes">
+                            "Your quote was too high. We went with XYZ Video for $2,000."
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="quick-actions">
+                <button class="quick-action-btn" onclick="logContact()">
+                    📝 Log Contact
+                </button>
+                <button class="quick-action-btn" onclick="sendEmail()">
+                    📧 Send Email
+                </button>
+                <button class="quick-action-btn" onclick="viewDetails()">
+                    👁️ View Details
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    // View Switching
+    function switchView(view) {
+        // Remove active class from all toggle buttons
+        document.querySelectorAll('.view-toggle-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+
+        // Add active class to clicked button
+        event.target.closest('.view-toggle-btn').classList.add('active');
+
+        // Hide all views
+        document.getElementById('cardView').style.display = 'none';
+        document.getElementById('tableView').classList.remove('active');
+        document.getElementById('kanbanView').classList.remove('active');
+
+        // Show selected view
+        if (view === 'card') {
+            document.getElementById('cardView').style.display = 'grid';
+        } else if (view === 'table') {
+            document.getElementById('tableView').classList.add('active');
+        } else if (view === 'kanban') {
+            document.getElementById('kanbanView').classList.add('active');
+        }
+    }
+
+    // Quick Actions
+    function logContact() {
+        console.log('Log contact interaction');
+    }
+
+    function sendEmail() {
+        console.log('Send email to client');
+    }
+
+    function viewDetails() {
+        console.log('View full client details');
+    }
+
+    // Header Actions
+    function addNewLead() {
+        console.log('Add new lead');
+    }
+
+    function exportPipeline() {
+        console.log('Export pipeline data');
+    }
+
+    // Toggle product checkbox (for demo purposes)
+    document.querySelectorAll('.product-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const productItem = checkbox.closest('.product-item');
+            productItem.classList.toggle('interested');
+        });
+    });
+</script>
+
+</div><!-- End Main Container -->
+
+</body>
+</html>

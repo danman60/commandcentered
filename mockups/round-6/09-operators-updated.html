@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CommandCentered - Operators Enhanced</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
+            border-bottom: 1px solid rgba(6, 182, 212, 0.3);
+            padding: 24px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .page-icon {
+            font-size: 32px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #06b6d4 0%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        /* Icon-only View Toggle */
+        .view-toggle {
+            display: flex;
+            gap: 4px;
+            background: rgba(30, 41, 59, 0.6);
+            padding: 4px;
+            border-radius: 8px;
+        }
+
+        .view-btn {
+            padding: 8px 12px;
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+            font-size: 20px;
+        }
+
+        .view-btn.active {
+            background: rgba(6, 182, 212, 0.2);
+            color: #06b6d4;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-secondary {
+            background: rgba(71, 85, 105, 0.3);
+            color: #cbd5e1;
+            border: 1px solid rgba(71, 85, 105, 0.5);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(71, 85, 105, 0.5);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #06b6d4 0%, #0284c7 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(6, 182, 212, 0.4);
+        }
+
+        .main-content {
+            padding: 32px;
+        }
+
+        /* View containers */
+        .view-container {
+            display: none;
+        }
+
+        .view-container.active {
+            display: block;
+        }
+
+        /* Calendar View */
+        .calendar-container {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .calendar-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #e2e8f0;
+        }
+
+        .calendar-controls {
+            display: flex;
+            gap: 12px;
+        }
+
+        .calendar-nav-btn {
+            padding: 8px 16px;
+            background: rgba(71, 85, 105, 0.3);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 6px;
+            color: #cbd5e1;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .calendar-nav-btn:hover {
+            background: rgba(71, 85, 105, 0.5);
+            border-color: rgba(6, 182, 212, 0.5);
+        }
+
+        .week-view {
+            display: grid;
+            grid-template-columns: 150px repeat(7, 1fr);
+            gap: 1px;
+            background: rgba(71, 85, 105, 0.2);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .day-header {
+            background: rgba(15, 23, 42, 0.8);
+            padding: 12px;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+        }
+
+        .operator-header {
+            background: rgba(15, 23, 42, 0.8);
+            padding: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #06b6d4;
+        }
+
+        .schedule-grid {
+            display: contents;
+        }
+
+        .operator-row {
+            display: contents;
+        }
+
+        .operator-label {
+            background: rgba(30, 41, 59, 0.6);
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .operator-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #06b6d4 0%, #a855f7 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .operator-info {
+            flex: 1;
+        }
+
+        .operator-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #e2e8f0;
+        }
+
+        .operator-role {
+            font-size: 11px;
+            color: #64748b;
+        }
+
+        .day-cell {
+            background: rgba(15, 23, 42, 0.6);
+            padding: 8px;
+            min-height: 80px;
+            position: relative;
+        }
+
+        .day-cell.today {
+            background: rgba(6, 182, 212, 0.1);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+        }
+
+        .shift-block {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            border-radius: 4px;
+            padding: 6px;
+            margin-bottom: 4px;
+            font-size: 11px;
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .shift-block:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
+        }
+
+        .shift-block.available {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px dashed rgba(16, 185, 129, 0.5);
+            color: #10b981;
+        }
+
+        .shift-block.unavailable {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+        }
+
+        .shift-block.partial {
+            background: rgba(251, 146, 60, 0.2);
+            border: 1px solid rgba(251, 146, 60, 0.3);
+            color: #fb923c;
+        }
+
+        .event-name {
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .event-time {
+            font-size: 10px;
+            opacity: 0.8;
+        }
+
+        /* Grid View */
+        .operators-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .operator-card {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .operator-card:hover {
+            border-color: rgba(6, 182, 212, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .operator-card-header {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .operator-card-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #06b6d4 0%, #a855f7 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .operator-card-info {
+            flex: 1;
+        }
+
+        .operator-card-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #e2e8f0;
+            margin-bottom: 4px;
+        }
+
+        .operator-card-role {
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+
+        .availability-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .availability-badge.available {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .availability-badge.busy {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .availability-badge.partial {
+            background: rgba(251, 146, 60, 0.2);
+            color: #fb923c;
+        }
+
+        .operator-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #06b6d4;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #64748b;
+            text-transform: uppercase;
+        }
+
+        .operator-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .skill-tag {
+            padding: 4px 8px;
+            background: rgba(71, 85, 105, 0.3);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 4px;
+            font-size: 11px;
+            color: #94a3b8;
+        }
+
+        .operator-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .operator-action-btn {
+            flex: 1;
+            padding: 8px;
+            background: rgba(71, 85, 105, 0.3);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 6px;
+            color: #cbd5e1;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .operator-action-btn:hover {
+            background: rgba(71, 85, 105, 0.5);
+            border-color: rgba(6, 182, 212, 0.5);
+        }
+
+        /* List View */
+        .operators-list {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .operators-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .operators-table th {
+            background: rgba(15, 23, 42, 0.8);
+            padding: 16px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            color: #06b6d4;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+        }
+
+        .operators-table th:hover {
+            color: #0284c7;
+        }
+
+        .sort-arrow {
+            margin-left: 8px;
+            opacity: 0.5;
+        }
+
+        .operators-table td {
+            padding: 16px;
+            border-bottom: 1px solid rgba(71, 85, 105, 0.2);
+            font-size: 14px;
+            color: #cbd5e1;
+        }
+
+        .operators-table tbody tr:hover {
+            background: rgba(6, 182, 212, 0.05);
+        }
+
+        /* Microphone FAB */
+        .microphone-fab {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #06b6d4 0%, #a855f7 100%);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(6, 182, 212, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .microphone-fab:hover {
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 12px 32px rgba(168, 85, 247, 0.5);
+        }
+
+        .microphone-fab.listening {
+            animation: pulse 1.5s infinite;
+            background: linear-gradient(135deg, #ef4444 0%, #f97316 100%);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(71, 85, 105, 0.6);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(71, 85, 105, 0.8);
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div class="header-left">
+        <div class="page-icon">👥</div>
+        <div class="page-title">Operators</div>
+    </div>
+    <div class="header-right">
+        <div class="view-toggle">
+            <button class="view-btn active" onclick="setView('calendar')" title="Calendar View">◫</button>
+            <button class="view-btn" onclick="setView('grid')" title="Grid View">▦</button>
+            <button class="view-btn" onclick="setView('list')" title="List View">☰</button>
+        </div>
+        <button class="btn btn-secondary" onclick="exportOperators()">
+            📊 Export
+        </button>
+        <button class="btn btn-primary" onclick="addOperator()">
+            ➕ Add Operator
+        </button>
+    </div>
+</div>
+
+<div class="main-content">
+
+    <!-- Calendar View -->
+    <div id="calendar-view" class="view-container active">
+        <div class="calendar-container">
+            <div class="calendar-header">
+                <div class="calendar-title">Week of December 15-21, 2025</div>
+                <div class="calendar-controls">
+                    <button class="calendar-nav-btn" onclick="previousWeek()">← Previous</button>
+                    <button class="calendar-nav-btn" onclick="currentWeek()">Today</button>
+                    <button class="calendar-nav-btn" onclick="nextWeek()">Next →</button>
+                </div>
+            </div>
+
+            <div class="week-view">
+                <!-- Headers -->
+                <div class="operator-header">Operators</div>
+                <div class="day-header">Sun<br>15</div>
+                <div class="day-header">Mon<br>16</div>
+                <div class="day-header">Tue<br>17</div>
+                <div class="day-header">Wed<br>18</div>
+                <div class="day-header">Thu<br>19</div>
+                <div class="day-header today">Fri<br>20</div>
+                <div class="day-header">Sat<br>21</div>
+
+                <!-- Operator 1 -->
+                <div class="operator-row">
+                    <div class="operator-label">
+                        <div class="operator-avatar">JD</div>
+                        <div class="operator-info">
+                            <div class="operator-name">John Davis</div>
+                            <div class="operator-role">Lead Videographer</div>
+                        </div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="shift-block">
+                            <div class="event-name">EMPWR Dance</div>
+                            <div class="event-time">2:00 PM - 10:00 PM</div>
+                        </div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="shift-block available">Available</div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="shift-block available">Available</div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="shift-block">
+                            <div class="event-name">Dance Fest</div>
+                            <div class="event-time">6:00 PM - 11:00 PM</div>
+                        </div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="shift-block available">Available</div>
+                    </div>
+                    <div class="day-cell today">
+                        <div class="shift-block">
+                            <div class="event-name">XYZ Corporate</div>
+                            <div class="event-time">9:00 AM - 5:00 PM</div>
+                        </div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="shift-block">
+                            <div class="event-name">Holiday Party</div>
+                            <div class="event-time">7:00 PM - 12:00 AM</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Operator 2 -->
+                <div class="operator-row">
+                    <div class="operator-label">
+                        <div class="operator-avatar">ST</div>
+                        <div class="operator-info">
+                            <div class="operator-name">Sarah Thompson</div>
+                            <div class="operator-role">Editor / Videographer</div>
+                        </div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="shift-block">
+                            <div class="event-name">EMPWR Dance</div>
+                            <div class="event-time">2:00 PM - 10:00 PM</div>
+                        </div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="shift-block available">Available</div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="shift-block partial">
+                            <div class="event-name">Editing</div>
+                            <div class="event-time">2:00 PM - 6:00 PM</div>
+                        </div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="shift-block">
+                            <div class="event-name">Dance Fest</div>
+                            <div class="event-time">6:00 PM - 11:00 PM</div>
+                        </div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="shift-block available">Available</div>
+                    </div>
+                    <div class="day-cell today">
+                        <div class="shift-block available">Available</div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="shift-block">
+                            <div class="event-name">Holiday Party</div>
+                            <div class="event-time">7:00 PM - 12:00 AM</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Operator 3 -->
+                <div class="operator-row">
+                    <div class="operator-label">
+                        <div class="operator-avatar">MK</div>
+                        <div class="operator-info">
+                            <div class="operator-name">Mike Kelly</div>
+                            <div class="operator-role">Videographer</div>
+                        </div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="shift-block available">Available</div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="shift-block">
+                            <div class="event-name">Corporate Event</div>
+                            <div class="event-time">10:00 AM - 2:00 PM</div>
+                        </div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="shift-block available">Available</div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="shift-block partial">
+                            <div class="event-name">Available PM</div>
+                            <div class="event-time">2:00 PM - 10:00 PM</div>
+                        </div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="shift-block unavailable">
+                            <div class="event-name">Day Off</div>
+                        </div>
+                    </div>
+                    <div class="day-cell today">
+                        <div class="shift-block available">Available</div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="shift-block available">Available</div>
+                    </div>
+                </div>
+
+                <!-- Operator 4 -->
+                <div class="operator-row">
+                    <div class="operator-label">
+                        <div class="operator-avatar">ER</div>
+                        <div class="operator-info">
+                            <div class="operator-name">Emma Rodriguez</div>
+                            <div class="operator-role">Photographer</div>
+                        </div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="shift-block unavailable">
+                            <div class="event-name">Vacation</div>
+                        </div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="shift-block unavailable">
+                            <div class="event-name">Vacation</div>
+                        </div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="shift-block unavailable">
+                            <div class="event-name">Vacation</div>
+                        </div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="shift-block unavailable">
+                            <div class="event-name">Vacation</div>
+                        </div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="shift-block unavailable">
+                            <div class="event-name">Vacation</div>
+                        </div>
+                    </div>
+                    <div class="day-cell today">
+                        <div class="shift-block available">Available</div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="shift-block available">Available</div>
+                    </div>
+                </div>
+
+                <!-- Operator 5 -->
+                <div class="operator-row">
+                    <div class="operator-label">
+                        <div class="operator-avatar">TW</div>
+                        <div class="operator-info">
+                            <div class="operator-name">Tom Wilson</div>
+                            <div class="operator-role">Audio Engineer</div>
+                        </div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="shift-block available">Available</div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="shift-block available">Available</div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="shift-block available">Available</div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="shift-block">
+                            <div class="event-name">Dance Fest</div>
+                            <div class="event-time">6:00 PM - 11:00 PM</div>
+                        </div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="shift-block available">Available</div>
+                    </div>
+                    <div class="day-cell today">
+                        <div class="shift-block">
+                            <div class="event-name">XYZ Corporate</div>
+                            <div class="event-time">9:00 AM - 5:00 PM</div>
+                        </div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="shift-block available">Available</div>
+                    </div>
+                </div>
+
+                <!-- Operator 6 -->
+                <div class="operator-row">
+                    <div class="operator-label">
+                        <div class="operator-avatar">AL</div>
+                        <div class="operator-info">
+                            <div class="operator-name">Alex Lee</div>
+                            <div class="operator-role">Drone Pilot</div>
+                        </div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="shift-block available">Available</div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="shift-block available">Available</div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="shift-block">
+                            <div class="event-name">Outdoor Shoot</div>
+                            <div class="event-time">10:00 AM - 2:00 PM</div>
+                        </div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="shift-block available">Available</div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="shift-block available">Available</div>
+                    </div>
+                    <div class="day-cell today">
+                        <div class="shift-block available">Available</div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="shift-block">
+                            <div class="event-name">Holiday Party</div>
+                            <div class="event-time">7:00 PM - 12:00 AM</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Grid View -->
+    <div id="grid-view" class="view-container">
+        <div class="operators-grid">
+            <!-- Operator Card 1 -->
+            <div class="operator-card">
+                <div class="operator-card-header">
+                    <div class="operator-card-avatar">JD</div>
+                    <div class="operator-card-info">
+                        <div class="operator-card-name">John Davis</div>
+                        <div class="operator-card-role">Lead Videographer</div>
+                        <span class="availability-badge available">Available Today</span>
+                    </div>
+                </div>
+                <div class="operator-stats">
+                    <div class="stat">
+                        <div class="stat-value">156</div>
+                        <div class="stat-label">Events</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">4.9</div>
+                        <div class="stat-label">Rating</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">98%</div>
+                        <div class="stat-label">On-Time</div>
+                    </div>
+                </div>
+                <div class="operator-skills">
+                    <span class="skill-tag">Multi-Camera</span>
+                    <span class="skill-tag">Live Streaming</span>
+                    <span class="skill-tag">Editing</span>
+                    <span class="skill-tag">Gimbal</span>
+                </div>
+                <div class="operator-actions">
+                    <button class="operator-action-btn">📅 Schedule</button>
+                    <button class="operator-action-btn">📧 Contact</button>
+                    <button class="operator-action-btn">👁️ View Profile</button>
+                </div>
+            </div>
+
+            <!-- Operator Card 2 -->
+            <div class="operator-card">
+                <div class="operator-card-header">
+                    <div class="operator-card-avatar">ST</div>
+                    <div class="operator-card-info">
+                        <div class="operator-card-name">Sarah Thompson</div>
+                        <div class="operator-card-role">Editor / Videographer</div>
+                        <span class="availability-badge available">Available Today</span>
+                    </div>
+                </div>
+                <div class="operator-stats">
+                    <div class="stat">
+                        <div class="stat-value">134</div>
+                        <div class="stat-label">Events</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">5.0</div>
+                        <div class="stat-label">Rating</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">100%</div>
+                        <div class="stat-label">On-Time</div>
+                    </div>
+                </div>
+                <div class="operator-skills">
+                    <span class="skill-tag">Premiere Pro</span>
+                    <span class="skill-tag">After Effects</span>
+                    <span class="skill-tag">Color Grading</span>
+                    <span class="skill-tag">Motion Graphics</span>
+                </div>
+                <div class="operator-actions">
+                    <button class="operator-action-btn">📅 Schedule</button>
+                    <button class="operator-action-btn">📧 Contact</button>
+                    <button class="operator-action-btn">👁️ View Profile</button>
+                </div>
+            </div>
+
+            <!-- Additional operator cards would go here -->
+        </div>
+    </div>
+
+    <!-- List View -->
+    <div id="list-view" class="view-container">
+        <div class="operators-list">
+            <table class="operators-table">
+                <thead>
+                    <tr>
+                        <th onclick="sortTable(0)">Name <span class="sort-arrow">↕</span></th>
+                        <th onclick="sortTable(1)">Role <span class="sort-arrow">↕</span></th>
+                        <th onclick="sortTable(2)">Availability <span class="sort-arrow">↕</span></th>
+                        <th onclick="sortTable(3)">Next Event <span class="sort-arrow">↕</span></th>
+                        <th onclick="sortTable(4)">Events <span class="sort-arrow">↕</span></th>
+                        <th onclick="sortTable(5)">Rating <span class="sort-arrow">↕</span></th>
+                        <th onclick="sortTable(6)">Contact <span class="sort-arrow">↕</span></th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <div class="operator-avatar" style="width: 32px; height: 32px; font-size: 12px;">JD</div>
+                                <span>John Davis</span>
+                            </div>
+                        </td>
+                        <td>Lead Videographer</td>
+                        <td><span class="availability-badge available">Available</span></td>
+                        <td>XYZ Corporate (Today)</td>
+                        <td>156</td>
+                        <td>⭐ 4.9</td>
+                        <td>john@example.com</td>
+                        <td>
+                            <button class="operator-action-btn" style="display: inline-block; width: auto;">Schedule</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <div class="operator-avatar" style="width: 32px; height: 32px; font-size: 12px;">ST</div>
+                                <span>Sarah Thompson</span>
+                            </div>
+                        </td>
+                        <td>Editor / Videographer</td>
+                        <td><span class="availability-badge available">Available</span></td>
+                        <td>Holiday Party (Sat)</td>
+                        <td>134</td>
+                        <td>⭐ 5.0</td>
+                        <td>sarah@example.com</td>
+                        <td>
+                            <button class="operator-action-btn" style="display: inline-block; width: auto;">Schedule</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <div class="operator-avatar" style="width: 32px; height: 32px; font-size: 12px;">MK</div>
+                                <span>Mike Kelly</span>
+                            </div>
+                        </td>
+                        <td>Videographer</td>
+                        <td><span class="availability-badge available">Available</span></td>
+                        <td>No events scheduled</td>
+                        <td>98</td>
+                        <td>⭐ 4.7</td>
+                        <td>mike@example.com</td>
+                        <td>
+                            <button class="operator-action-btn" style="display: inline-block; width: auto;">Schedule</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <div class="operator-avatar" style="width: 32px; height: 32px; font-size: 12px;">ER</div>
+                                <span>Emma Rodriguez</span>
+                            </div>
+                        </td>
+                        <td>Photographer</td>
+                        <td><span class="availability-badge partial">Back Today</span></td>
+                        <td>No events scheduled</td>
+                        <td>112</td>
+                        <td>⭐ 4.8</td>
+                        <td>emma@example.com</td>
+                        <td>
+                            <button class="operator-action-btn" style="display: inline-block; width: auto;">Schedule</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <div class="operator-avatar" style="width: 32px; height: 32px; font-size: 12px;">TW</div>
+                                <span>Tom Wilson</span>
+                            </div>
+                        </td>
+                        <td>Audio Engineer</td>
+                        <td><span class="availability-badge busy">Busy</span></td>
+                        <td>XYZ Corporate (Today)</td>
+                        <td>89</td>
+                        <td>⭐ 4.9</td>
+                        <td>tom@example.com</td>
+                        <td>
+                            <button class="operator-action-btn" style="display: inline-block; width: auto;">Schedule</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <div class="operator-avatar" style="width: 32px; height: 32px; font-size: 12px;">AL</div>
+                                <span>Alex Lee</span>
+                            </div>
+                        </td>
+                        <td>Drone Pilot</td>
+                        <td><span class="availability-badge available">Available</span></td>
+                        <td>Holiday Party (Sat)</td>
+                        <td>67</td>
+                        <td>⭐ 4.6</td>
+                        <td>alex@example.com</td>
+                        <td>
+                            <button class="operator-action-btn" style="display: inline-block; width: auto;">Schedule</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<!-- Microphone FAB -->
+<button class="microphone-fab" onclick="toggleVoiceControl(this)">🎤</button>
+
+<script>
+    // View switching
+    function setView(viewType) {
+        // Update buttons
+        document.querySelectorAll('.view-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        event.target.classList.add('active');
+
+        // Update views
+        document.querySelectorAll('.view-container').forEach(container => {
+            container.classList.remove('active');
+        });
+        document.getElementById(`${viewType}-view`).classList.add('active');
+
+        console.log('Switched to view:', viewType);
+    }
+
+    // Calendar navigation
+    function previousWeek() {
+        console.log('Navigate to previous week');
+    }
+
+    function currentWeek() {
+        console.log('Navigate to current week');
+    }
+
+    function nextWeek() {
+        console.log('Navigate to next week');
+    }
+
+    // Actions
+    function exportOperators() {
+        console.log('Exporting operators data');
+    }
+
+    function addOperator() {
+        console.log('Opening add operator modal');
+    }
+
+    function sortTable(columnIndex) {
+        console.log('Sorting table by column:', columnIndex);
+    }
+
+    // Voice control
+    function toggleVoiceControl(button) {
+        button.classList.toggle('listening');
+        if (button.classList.contains('listening')) {
+            console.log('Voice control activated');
+        } else {
+            console.log('Voice control deactivated');
+        }
+    }
+
+    // Shift block clicks
+    document.querySelectorAll('.shift-block').forEach(block => {
+        block.addEventListener('click', function() {
+            if (this.classList.contains('available')) {
+                console.log('Schedule new event for this time slot');
+            } else {
+                console.log('View/edit event details');
+            }
+        });
+    });
+
+    // Operator card clicks
+    document.querySelectorAll('.operator-card').forEach(card => {
+        card.addEventListener('click', function(e) {
+            if (!e.target.classList.contains('operator-action-btn')) {
+                console.log('View operator profile');
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CommandCentered - Pipeline with Enhanced Product Tracking</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
+            border-bottom: 1px solid rgba(6, 182, 212, 0.3);
+            padding: 24px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .page-icon {
+            font-size: 32px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #06b6d4 0%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-secondary {
+            background: rgba(71, 85, 105, 0.3);
+            color: #cbd5e1;
+            border: 1px solid rgba(71, 85, 105, 0.5);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(71, 85, 105, 0.5);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #06b6d4 0%, #0284c7 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(6, 182, 212, 0.4);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 32px;
+        }
+
+        /* Search & Filter Bar */
+        .search-filter-bar {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 32px;
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .search-input-wrapper {
+            flex: 1;
+            position: relative;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            color: #64748b;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px 12px 48px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 8px;
+            color: #e2e8f0;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #06b6d4;
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+        }
+
+        .filter-select {
+            padding: 12px 16px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 8px;
+            color: #e2e8f0;
+            font-size: 14px;
+            min-width: 180px;
+        }
+
+        /* View Toggle */
+        .view-toggle {
+            display: flex;
+            gap: 8px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 8px;
+            padding: 4px;
+        }
+
+        .view-btn {
+            padding: 8px 12px;
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+            font-size: 20px;
+        }
+
+        .view-btn.active {
+            background: rgba(6, 182, 212, 0.2);
+            color: #06b6d4;
+        }
+
+        /* Client Cards Grid */
+        .client-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(600px, 1fr));
+            gap: 24px;
+        }
+
+        /* Client Card */
+        .client-card {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.2s;
+        }
+
+        .client-card:hover {
+            border-color: rgba(6, 182, 212, 0.5);
+            transform: translateY(-2px);
+        }
+
+        /* Client Header */
+        .client-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(71, 85, 105, 0.3);
+        }
+
+        .client-info {
+            flex: 1;
+        }
+
+        /* Editable Fields */
+        .editable {
+            cursor: pointer;
+            padding: 2px 4px;
+            border-radius: 4px;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .editable:hover {
+            background: rgba(6, 182, 212, 0.1);
+        }
+
+        .editable:after {
+            content: '✏️';
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .editable:hover:after {
+            opacity: 0.7;
+        }
+
+        .editable-input {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid #06b6d4;
+            border-radius: 4px;
+            padding: 4px 8px;
+            color: #e2e8f0;
+            font-size: inherit;
+            font-weight: inherit;
+            width: 100%;
+        }
+
+        .client-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #e2e8f0;
+            margin-bottom: 8px;
+        }
+
+        .client-contact {
+            font-size: 13px;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .client-status {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .client-status:hover {
+            transform: scale(1.05);
+        }
+
+        .client-status.hot {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .client-status.warm {
+            background: rgba(251, 146, 60, 0.2);
+            color: #fb923c;
+        }
+
+        .client-status.cold {
+            background: rgba(6, 182, 212, 0.2);
+            color: #06b6d4;
+        }
+
+        /* CRM Fields */
+        .crm-fields {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .crm-field {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .crm-field-label {
+            font-size: 11px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .crm-field-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: #e2e8f0;
+        }
+
+        /* Product Tracking Section */
+        .product-tracking {
+            margin-top: 20px;
+        }
+
+        .product-section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #06b6d4;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .product-section-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .add-product-btn {
+            padding: 4px 8px;
+            background: rgba(6, 182, 212, 0.2);
+            border: 1px solid rgba(6, 182, 212, 0.4);
+            border-radius: 4px;
+            color: #06b6d4;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .add-product-btn:hover {
+            background: rgba(6, 182, 212, 0.3);
+        }
+
+        .product-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .product-item {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 8px;
+            padding: 16px;
+            transition: all 0.2s;
+        }
+
+        .product-item:hover {
+            border-color: rgba(6, 182, 212, 0.6);
+        }
+
+        .product-item.interested {
+            background: rgba(6, 182, 212, 0.1);
+            border-color: rgba(6, 182, 212, 0.4);
+        }
+
+        .product-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .product-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .product-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(71, 85, 105, 0.8);
+            border-radius: 4px;
+            background: rgba(15, 23, 42, 0.6);
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-item.interested .product-checkbox {
+            background: linear-gradient(135deg, #06b6d4 0%, #0284c7 100%);
+            border-color: #06b6d4;
+        }
+
+        .product-checkbox::after {
+            content: '✓';
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .product-item.interested .product-checkbox::after {
+            display: block;
+        }
+
+        .product-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #e2e8f0;
+        }
+
+        .product-status-badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .product-status-badge:hover {
+            transform: scale(1.05);
+        }
+
+        .product-status-badge.discussing {
+            background: rgba(251, 146, 60, 0.2);
+            color: #fb923c;
+        }
+
+        .product-status-badge.proposal {
+            background: rgba(6, 182, 212, 0.2);
+            color: #06b6d4;
+        }
+
+        .product-status-badge.won {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .product-status-badge.lost {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .product-details {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 12px;
+        }
+
+        .product-detail-label {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .product-detail-value {
+            font-size: 12px;
+            color: #cbd5e1;
+        }
+
+        .product-revenue {
+            font-weight: 700;
+            color: #10b981;
+        }
+
+        /* Multi-depth tracking */
+        .product-timeline {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(71, 85, 105, 0.3);
+        }
+
+        .timeline-title {
+            font-size: 11px;
+            color: #64748b;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .timeline-steps {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .timeline-step {
+            flex: 1;
+            padding: 6px;
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 4px;
+            font-size: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .timeline-step.completed {
+            background: rgba(16, 185, 129, 0.2);
+            border-color: rgba(16, 185, 129, 0.5);
+            color: #10b981;
+        }
+
+        .timeline-step.active {
+            background: rgba(6, 182, 212, 0.2);
+            border-color: rgba(6, 182, 212, 0.5);
+            color: #06b6d4;
+            font-weight: 600;
+        }
+
+        .timeline-step:hover {
+            transform: translateY(-2px);
+        }
+
+        .timeline-arrow {
+            color: #475569;
+        }
+
+        .product-notes {
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(71, 85, 105, 0.3);
+            font-size: 12px;
+            color: #94a3b8;
+            font-style: italic;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(71, 85, 105, 0.3);
+        }
+
+        .quick-action-btn {
+            flex: 1;
+            padding: 10px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 6px;
+            font-size: 13px;
+            color: #cbd5e1;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .quick-action-btn:hover {
+            background: rgba(30, 41, 59, 0.8);
+            border-color: rgba(6, 182, 212, 0.6);
+            color: #06b6d4;
+        }
+
+        /* Microphone FAB */
+        .microphone-fab {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #06b6d4 0%, #a855f7 100%);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(6, 182, 212, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .microphone-fab:hover {
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 12px 32px rgba(168, 85, 247, 0.5);
+        }
+
+        .microphone-fab.listening {
+            animation: pulse 1.5s infinite;
+            background: linear-gradient(135deg, #ef4444 0%, #f97316 100%);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(71, 85, 105, 0.6);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(71, 85, 105, 0.8);
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+    <div class="header-left">
+        <div class="page-icon">🎯</div>
+        <div class="page-title">Pipeline</div>
+    </div>
+    <div class="header-right">
+        <div class="view-toggle">
+            <button class="view-btn active" onclick="setView('card')" title="Card View">▦</button>
+            <button class="view-btn" onclick="setView('table')" title="Table View">☰</button>
+            <button class="view-btn" onclick="setView('kanban')" title="Kanban View">◫</button>
+        </div>
+        <button class="btn btn-secondary" onclick="exportPipeline()">
+            📊 Export
+        </button>
+        <button class="btn btn-primary" onclick="addNewLead()">
+            ➕ New Lead
+        </button>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+
+    <!-- Search & Filter Bar -->
+    <div class="search-filter-bar">
+        <div class="search-input-wrapper">
+            <span class="search-icon">🔍</span>
+            <input type="text" class="search-input" placeholder="Search clients by name, company, or contact...">
+        </div>
+        <select class="filter-select">
+            <option>All Statuses</option>
+            <option>Hot Leads</option>
+            <option>Warm Leads</option>
+            <option>Cold Leads</option>
+        </select>
+        <select class="filter-select">
+            <option>Sort by: Last Contacted ↕</option>
+            <option>Sort by: Next Follow-Up ↕</option>
+            <option>Sort by: Revenue Potential ↕</option>
+            <option>Sort by: Client Name ↕</option>
+        </select>
+    </div>
+
+    <!-- Client Cards Grid -->
+    <div class="client-cards-grid">
+
+        <!-- Client Card 1 -->
+        <div class="client-card">
+            <div class="client-header">
+                <div class="client-info">
+                    <div class="client-name editable" onclick="makeEditable(this)">EMPWR Dance Experience</div>
+                    <div class="client-contact">
+                        <span class="contact-item">
+                            📧 <span class="editable" onclick="makeEditable(this)">empwrdance@gmail.com</span>
+                        </span>
+                        <span class="contact-item">
+                            📱 <span class="editable" onclick="makeEditable(this)">(555) 123-4567</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="client-status hot" onclick="cycleStatus(this)">Hot Lead</div>
+            </div>
+
+            <div class="crm-fields">
+                <div class="crm-field">
+                    <div class="crm-field-label">Last Contacted</div>
+                    <div class="crm-field-value editable" onclick="makeEditable(this)">Nov 10, 2025</div>
+                </div>
+                <div class="crm-field">
+                    <div class="crm-field-label">Next Follow-Up</div>
+                    <div class="crm-field-value editable" onclick="makeEditable(this)">Nov 17, 2025</div>
+                </div>
+                <div class="crm-field">
+                    <div class="crm-field-label">Contact Frequency</div>
+                    <div class="crm-field-value editable" onclick="makeEditable(this)">Weekly</div>
+                </div>
+            </div>
+
+            <div class="product-tracking">
+                <div class="product-section-title">
+                    <div class="product-section-left">
+                        <span>📦</span>
+                        <span>Product Focus</span>
+                    </div>
+                    <button class="add-product-btn" onclick="addProduct(this)">+ Add Product</button>
+                </div>
+                <div class="product-list">
+
+                    <div class="product-item">
+                        <div class="product-header">
+                            <div class="product-header-left">
+                                <div class="product-checkbox" onclick="toggleProduct(this)"></div>
+                                <div class="product-name">Studio Sage Chatbot</div>
+                            </div>
+                            <div class="product-status-badge lost" onclick="cycleProductStatus(this)">Not Interested</div>
+                        </div>
+                        <div class="product-details">
+                            <div class="product-detail-label">Status:</div>
+                            <div class="product-detail-value editable" onclick="makeEditable(this)">Lost - already has chatbot</div>
+                            <div class="product-detail-label">Revenue:</div>
+                            <div class="product-detail-value product-revenue editable" onclick="makeEditable(this)">$0</div>
+                        </div>
+                        <div class="product-timeline">
+                            <div class="timeline-title">Sales Journey</div>
+                            <div class="timeline-steps">
+                                <div class="timeline-step completed">Initial Contact<br>Oct 15</div>
+                                <span class="timeline-arrow">→</span>
+                                <div class="timeline-step completed">Discovery<br>Oct 20</div>
+                                <span class="timeline-arrow">→</span>
+                                <div class="timeline-step active">Demo<br>Oct 25</div>
+                                <span class="timeline-arrow">→</span>
+                                <div class="timeline-step">Lost<br>Oct 26</div>
+                            </div>
+                        </div>
+                        <div class="product-notes editable" onclick="makeEditable(this)">
+                            "We're using Zapier with ChatGPT already. Not interested."
+                        </div>
+                    </div>
+
+                    <div class="product-item interested">
+                        <div class="product-header">
+                            <div class="product-header-left">
+                                <div class="product-checkbox" onclick="toggleProduct(this)"></div>
+                                <div class="product-name">Dance Recital Package</div>
+                            </div>
+                            <div class="product-status-badge won" onclick="cycleProductStatus(this)">Won</div>
+                        </div>
+                        <div class="product-details">
+                            <div class="product-detail-label">Status:</div>
+                            <div class="product-detail-value editable" onclick="makeEditable(this)">Contract signed, Dec 6 event</div>
+                            <div class="product-detail-label">Revenue:</div>
+                            <div class="product-detail-value product-revenue editable" onclick="makeEditable(this)">$8,500</div>
+                        </div>
+                        <div class="product-timeline">
+                            <div class="timeline-title">Sales Journey</div>
+                            <div class="timeline-steps">
+                                <div class="timeline-step completed">Initial Contact<br>Oct 1</div>
+                                <span class="timeline-arrow">→</span>
+                                <div class="timeline-step completed">Proposal<br>Oct 15</div>
+                                <span class="timeline-arrow">→</span>
+                                <div class="timeline-step completed">Negotiation<br>Oct 20</div>
+                                <span class="timeline-arrow">→</span>
+                                <div class="timeline-step completed active">Won<br>Nov 1</div>
+                            </div>
+                        </div>
+                        <div class="product-notes editable" onclick="makeEditable(this)">
+                            Multi-camera recital package with livestream and edited highlight reel.
+                        </div>
+                    </div>
+
+                    <div class="product-item">
+                        <div class="product-header">
+                            <div class="product-header-left">
+                                <div class="product-checkbox" onclick="toggleProduct(this)"></div>
+                                <div class="product-name">Competition Software</div>
+                            </div>
+                            <div class="product-status-badge lost" onclick="cycleProductStatus(this)">Not Interested</div>
+                        </div>
+                        <div class="product-details">
+                            <div class="product-detail-label">Status:</div>
+                            <div class="product-detail-value editable" onclick="makeEditable(this)">Using DanceBug</div>
+                            <div class="product-detail-label">Revenue:</div>
+                            <div class="product-detail-value product-revenue editable" onclick="makeEditable(this)">$0</div>
+                        </div>
+                        <div class="product-notes editable" onclick="makeEditable(this)">
+                            "We're locked into DanceBug for next 2 years."
+                        </div>
+                    </div>
+
+                    <div class="product-item interested">
+                        <div class="product-header">
+                            <div class="product-header-left">
+                                <div class="product-checkbox" onclick="toggleProduct(this)"></div>
+                                <div class="product-name">Core Video Production</div>
+                            </div>
+                            <div class="product-status-badge proposal" onclick="cycleProductStatus(this)">Proposal Sent</div>
+                        </div>
+                        <div class="product-details">
+                            <div class="product-detail-label">Status:</div>
+                            <div class="product-detail-value editable" onclick="makeEditable(this)">Awaiting response on Spring 2026</div>
+                            <div class="product-detail-label">Revenue:</div>
+                            <div class="product-detail-value product-revenue editable" onclick="makeEditable(this)">$12,000 (projected)</div>
+                        </div>
+                        <div class="product-timeline">
+                            <div class="timeline-title">Sales Journey</div>
+                            <div class="timeline-steps">
+                                <div class="timeline-step completed">Initial Contact<br>Nov 1</div>
+                                <span class="timeline-arrow">→</span>
+                                <div class="timeline-step completed">Discovery<br>Nov 5</div>
+                                <span class="timeline-arrow">→</span>
+                                <div class="timeline-step completed active">Proposal<br>Nov 10</div>
+                                <span class="timeline-arrow">→</span>
+                                <div class="timeline-step">Decision<br>Est. Nov 20</div>
+                            </div>
+                        </div>
+                        <div class="product-notes editable" onclick="makeEditable(this)">
+                            Interested in March + June recitals (2 events). Quote sent Nov 10.
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="quick-actions">
+                <button class="quick-action-btn" onclick="logContact()">
+                    📝 Log Contact
+                </button>
+                <button class="quick-action-btn" onclick="sendEmail()">
+                    📧 Send Email
+                </button>
+                <button class="quick-action-btn" onclick="viewDetails()">
+                    👁️ View Details
+                </button>
+            </div>
+        </div>
+
+        <!-- Client Card 2 -->
+        <div class="client-card">
+            <div class="client-header">
+                <div class="client-info">
+                    <div class="client-name editable" onclick="makeEditable(this)">Glow Dance Competition</div>
+                    <div class="client-contact">
+                        <span class="contact-item">
+                            📧 <span class="editable" onclick="makeEditable(this)">glowdance@gmail.com</span>
+                        </span>
+                        <span class="contact-item">
+                            📱 <span class="editable" onclick="makeEditable(this)">(555) 987-6543</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="client-status warm" onclick="cycleStatus(this)">Warm Lead</div>
+            </div>
+
+            <div class="crm-fields">
+                <div class="crm-field">
+                    <div class="crm-field-label">Last Contacted</div>
+                    <div class="crm-field-value editable" onclick="makeEditable(this)">Nov 5, 2025</div>
+                </div>
+                <div class="crm-field">
+                    <div class="crm-field-label">Next Follow-Up</div>
+                    <div class="crm-field-value editable" onclick="makeEditable(this)">Nov 19, 2025</div>
+                </div>
+                <div class="crm-field">
+                    <div class="crm-field-label">Contact Frequency</div>
+                    <div class="crm-field-value editable" onclick="makeEditable(this)">Bi-weekly</div>
+                </div>
+            </div>
+
+            <div class="product-tracking">
+                <div class="product-section-title">
+                    <div class="product-section-left">
+                        <span>📦</span>
+                        <span>Product Focus</span>
+                    </div>
+                    <button class="add-product-btn" onclick="addProduct(this)">+ Add Product</button>
+                </div>
+                <div class="product-list">
+
+                    <div class="product-item interested">
+                        <div class="product-header">
+                            <div class="product-header-left">
+                                <div class="product-checkbox" onclick="toggleProduct(this)"></div>
+                                <div class="product-name">Studio Sage Chatbot</div>
+                            </div>
+                            <div class="product-status-badge discussing" onclick="cycleProductStatus(this)">Discussing</div>
+                        </div>
+                        <div class="product-details">
+                            <div class="product-detail-label">Status:</div>
+                            <div class="product-detail-value editable" onclick="makeEditable(this)">Demo scheduled for Nov 20</div>
+                            <div class="product-detail-label">Revenue:</div>
+                            <div class="product-detail-value product-revenue editable" onclick="makeEditable(this)">$2,400 (projected)</div>
+                        </div>
+                        <div class="product-timeline">
+                            <div class="timeline-title">Sales Journey</div>
+                            <div class="timeline-steps">
+                                <div class="timeline-step completed">Initial Contact<br>Oct 20</div>
+                                <span class="timeline-arrow">→</span>
+                                <div class="timeline-step completed active">Discovery<br>Nov 5</div>
+                                <span class="timeline-arrow">→</span>
+                                <div class="timeline-step">Demo<br>Nov 20</div>
+                                <span class="timeline-arrow">→</span>
+                                <div class="timeline-step">Decision<br>TBD</div>
+                            </div>
+                        </div>
+                        <div class="product-notes editable" onclick="makeEditable(this)">
+                            Very interested in AI chatbot for dancer FAQ automation.
+                        </div>
+                    </div>
+
+                    <div class="product-item">
+                        <div class="product-header">
+                            <div class="product-header-left">
+                                <div class="product-checkbox" onclick="toggleProduct(this)"></div>
+                                <div class="product-name">Dance Recital Package</div>
+                            </div>
+                            <div class="product-status-badge lost" onclick="cycleProductStatus(this)">Not Applicable</div>
+                        </div>
+                        <div class="product-details">
+                            <div class="product-detail-label">Status:</div>
+                            <div class="product-detail-value editable" onclick="makeEditable(this)">Competition-focused, not recitals</div>
+                            <div class="product-detail-label">Revenue:</div>
+                            <div class="product-detail-value product-revenue editable" onclick="makeEditable(this)">$0</div>
+                        </div>
+                    </div>
+
+                    <div class="product-item interested">
+                        <div class="product-header">
+                            <div class="product-header-left">
+                                <div class="product-checkbox" onclick="toggleProduct(this)"></div>
+                                <div class="product-name">Competition Software</div>
+                            </div>
+                            <div class="product-status-badge proposal" onclick="cycleProductStatus(this)">Proposal Sent</div>
+                        </div>
+                        <div class="product-details">
+                            <div class="product-detail-label">Status:</div>
+                            <div class="product-detail-value editable" onclick="makeEditable(this)">Proposal sent, waiting on budget approval</div>
+                            <div class="product-detail-label">Revenue:</div>
+                            <div class="product-detail-value product-revenue editable" onclick="makeEditable(this)">$18,000 (projected)</div>
+                        </div>
+                        <div class="product-timeline">
+                            <div class="timeline-title">Sales Journey</div>
+                            <div class="timeline-steps">
+                                <div class="timeline-step completed">Initial Contact<br>Oct 1</div>
+                                <span class="timeline-arrow">→</span>
+                                <div class="timeline-step completed">Discovery<br>Oct 15</div>
+                                <span class="timeline-arrow">→</span>
+                                <div class="timeline-step completed active">Proposal<br>Nov 1</div>
+                                <span class="timeline-arrow">→</span>
+                                <div class="timeline-step">Decision<br>Dec 1</div>
+                            </div>
+                        </div>
+                        <div class="product-notes editable" onclick="makeEditable(this)">
+                            Need custom software for 3 competitions in 2026. Decision by Dec 1.
+                        </div>
+                    </div>
+
+                    <div class="product-item interested">
+                        <div class="product-header">
+                            <div class="product-header-left">
+                                <div class="product-checkbox" onclick="toggleProduct(this)"></div>
+                                <div class="product-name">Core Video Production</div>
+                            </div>
+                            <div class="product-status-badge won" onclick="cycleProductStatus(this)">Won</div>
+                        </div>
+                        <div class="product-details">
+                            <div class="product-detail-label">Status:</div>
+                            <div class="product-detail-value editable" onclick="makeEditable(this)">Dec 10 competition booked</div>
+                            <div class="product-detail-label">Revenue:</div>
+                            <div class="product-detail-value product-revenue editable" onclick="makeEditable(this)">$6,200</div>
+                        </div>
+                        <div class="product-timeline">
+                            <div class="timeline-title">Sales Journey</div>
+                            <div class="timeline-steps">
+                                <div class="timeline-step completed">Initial<br>Oct 10</div>
+                                <span class="timeline-arrow">→</span>
+                                <div class="timeline-step completed">Proposal<br>Oct 20</div>
+                                <span class="timeline-arrow">→</span>
+                                <div class="timeline-step completed">Negotiation<br>Oct 25</div>
+                                <span class="timeline-arrow">→</span>
+                                <div class="timeline-step completed active">Won<br>Nov 1</div>
+                            </div>
+                        </div>
+                        <div class="product-notes editable" onclick="makeEditable(this)">
+                            Competition video coverage + awards ceremony. Contract signed.
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="quick-actions">
+                <button class="quick-action-btn" onclick="logContact()">
+                    📝 Log Contact
+                </button>
+                <button class="quick-action-btn" onclick="sendEmail()">
+                    📧 Send Email
+                </button>
+                <button class="quick-action-btn" onclick="viewDetails()">
+                    👁️ View Details
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Microphone FAB -->
+<button class="microphone-fab" onclick="toggleVoiceControl(this)">🎤</button>
+
+<script>
+    // Inline editing functionality
+    function makeEditable(element) {
+        if (element.querySelector('input')) return; // Already editing
+
+        const currentValue = element.innerText;
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'editable-input';
+        input.value = currentValue;
+
+        element.innerHTML = '';
+        element.appendChild(input);
+        input.focus();
+        input.select();
+
+        // Save on blur or Enter
+        const save = () => {
+            element.innerText = input.value || currentValue;
+            console.log('Field updated:', input.value);
+        };
+
+        input.addEventListener('blur', save);
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                save();
+            }
+        });
+    }
+
+    // Cycle client status
+    function cycleStatus(element) {
+        const statuses = ['hot', 'warm', 'cold'];
+        const labels = ['Hot Lead', 'Warm Lead', 'Cold Lead'];
+
+        let currentIndex = statuses.findIndex(s => element.classList.contains(s));
+        element.classList.remove(statuses[currentIndex]);
+
+        currentIndex = (currentIndex + 1) % statuses.length;
+        element.classList.add(statuses[currentIndex]);
+        element.innerText = labels[currentIndex];
+
+        console.log('Status updated to:', labels[currentIndex]);
+    }
+
+    // Cycle product status
+    function cycleProductStatus(element) {
+        const statuses = ['discussing', 'proposal', 'won', 'lost'];
+        const labels = ['Discussing', 'Proposal Sent', 'Won', 'Lost'];
+
+        let currentIndex = statuses.findIndex(s => element.classList.contains(s));
+        if (currentIndex === -1) currentIndex = 3; // Default to lost if not found
+
+        element.classList.remove(statuses[currentIndex]);
+        currentIndex = (currentIndex + 1) % statuses.length;
+        element.classList.add(statuses[currentIndex]);
+        element.innerText = labels[currentIndex];
+
+        console.log('Product status updated to:', labels[currentIndex]);
+    }
+
+    // Toggle product interest
+    function toggleProduct(checkbox) {
+        const productItem = checkbox.closest('.product-item');
+        productItem.classList.toggle('interested');
+        console.log('Product interest toggled');
+    }
+
+    // Add new product to track
+    function addProduct(button) {
+        console.log('Add new product to track');
+        // In production, this would open a modal to select products
+        alert('Add Product Modal would open here');
+    }
+
+    // View toggle
+    function setView(viewType) {
+        document.querySelectorAll('.view-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        event.target.classList.add('active');
+        console.log('Switched to view:', viewType);
+        // In production, this would change the display layout
+    }
+
+    // Voice control
+    function toggleVoiceControl(button) {
+        button.classList.toggle('listening');
+        if (button.classList.contains('listening')) {
+            console.log('Voice control activated');
+            // Start voice recognition
+        } else {
+            console.log('Voice control deactivated');
+            // Stop voice recognition
+        }
+    }
+
+    // Quick Actions
+    function logContact() {
+        console.log('Log contact interaction modal');
+        alert('Contact Log Modal would open here');
+    }
+
+    function sendEmail() {
+        console.log('Send email to client');
+        alert('Email Composer Modal would open here');
+    }
+
+    function viewDetails() {
+        console.log('View full client details');
+        alert('Client Details Modal would open here');
+    }
+
+    // Header Actions
+    function addNewLead() {
+        console.log('Add new lead modal');
+        alert('New Lead Modal would open here');
+    }
+
+    function exportPipeline() {
+        console.log('Export pipeline data');
+        alert('Export Options Modal would open here');
+    }
+
+    // Initialize timeline step clicks
+    document.querySelectorAll('.timeline-step').forEach(step => {
+        step.addEventListener('click', function() {
+            const timeline = this.closest('.timeline-steps');
+            const steps = timeline.querySelectorAll('.timeline-step');
+            const clickedIndex = Array.from(steps).indexOf(this);
+
+            steps.forEach((s, index) => {
+                s.classList.remove('active', 'completed');
+                if (index < clickedIndex) {
+                    s.classList.add('completed');
+                } else if (index === clickedIndex) {
+                    s.classList.add('active');
+                    if (this.innerText.includes('Won') || this.innerText.includes('Lost')) {
+                        s.classList.add('completed');
+                    }
+                }
+            });
+
+            console.log('Timeline step clicked:', this.innerText);
+        });
+    });
+</script>
+
+</body>
+</html>

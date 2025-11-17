@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CommandCentered - Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
+            border-bottom: 1px solid rgba(6, 182, 212, 0.3);
+            padding: 24px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #06b6d4 0%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #06b6d4 0%, #0284c7 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(6, 182, 212, 0.4);
+        }
+
+        /* Widget Grid */
+        .dashboard-content {
+            padding: 24px;
+        }
+
+        .widget-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 20px;
+        }
+
+        /* Widget Base */
+        .widget {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            position: relative;
+            transition: all 0.2s;
+        }
+
+        .widget:hover {
+            border-color: rgba(6, 182, 212, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .widget-close {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 24px;
+            height: 24px;
+            border: none;
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: all 0.2s;
+        }
+
+        .widget:hover .widget-close {
+            opacity: 1;
+        }
+
+        .widget-close:hover {
+            background: rgba(239, 68, 68, 0.3);
+        }
+
+        .widget-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #cbd5e1;
+            margin-bottom: 16px;
+        }
+
+        /* Widget Sizes */
+        .widget-small { grid-column: span 4; }
+        .widget-medium { grid-column: span 6; }
+        .widget-large { grid-column: span 8; }
+        .widget-full { grid-column: span 12; }
+
+        /* Event Pipeline Widget */
+        .pipeline-stages {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .pipeline-stage {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 6px;
+        }
+
+        .pipeline-stage:hover {
+            background: rgba(15, 23, 42, 0.8);
+        }
+
+        .stage-name {
+            font-size: 14px;
+            color: #94a3b8;
+        }
+
+        .stage-count {
+            font-size: 18px;
+            font-weight: 600;
+            color: #06b6d4;
+        }
+
+        /* Annual Revenue Widget */
+        .revenue-content {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .revenue-amount {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .revenue-goal {
+            font-size: 14px;
+            color: #94a3b8;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(71, 85, 105, 0.3);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+            transition: width 0.3s;
+        }
+
+        .month-comparison {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #cbd5e1;
+        }
+
+        .trend-up {
+            color: #10b981;
+        }
+
+        /* Upcoming Events Widget */
+        .event-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .event-item {
+            padding: 12px;
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 8px;
+            border-left: 3px solid #06b6d4;
+        }
+
+        .event-item.warning {
+            border-left-color: #fbbf24;
+        }
+
+        .event-item.error {
+            border-left-color: #ef4444;
+        }
+
+        .event-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #e2e8f0;
+            margin-bottom: 8px;
+        }
+
+        .event-detail {
+            font-size: 12px;
+            color: #94a3b8;
+            margin: 4px 0;
+        }
+
+        .event-warning {
+            color: #fbbf24;
+        }
+
+        .event-error {
+            color: #ef4444;
+        }
+
+        /* Critical Alerts Widget */
+        .alert-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .alert-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 6px;
+        }
+
+        .alert-icon {
+            font-size: 20px;
+            color: #ef4444;
+        }
+
+        .alert-text {
+            flex: 1;
+            font-size: 13px;
+            color: #fecaca;
+        }
+
+        /* Communications Widget */
+        .comm-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .comm-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px;
+            font-size: 13px;
+            color: #94a3b8;
+        }
+
+        .comm-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: rgba(6, 182, 212, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .comm-time {
+            font-size: 11px;
+            color: #64748b;
+        }
+
+        /* Calendar Widget (Google Calendar Style) */
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .calendar-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #cbd5e1;
+        }
+
+        .calendar-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .calendar-controls button {
+            width: 28px;
+            height: 28px;
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            background: rgba(15, 23, 42, 0.6);
+            color: #94a3b8;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .calendar-controls button:hover {
+            background: rgba(6, 182, 212, 0.2);
+            border-color: rgba(6, 182, 212, 0.5);
+            color: #06b6d4;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+            background: rgba(71, 85, 105, 0.2);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .day-header {
+            padding: 8px;
+            text-align: center;
+            font-size: 11px;
+            font-weight: 600;
+            color: #94a3b8;
+            background: rgba(15, 23, 42, 0.8);
+        }
+
+        .day-cell {
+            min-height: 70px;
+            padding: 4px;
+            background: rgba(15, 23, 42, 0.4);
+            position: relative;
+            overflow: visible;
+        }
+
+        .day-cell.other-month {
+            background: rgba(15, 23, 42, 0.2);
+        }
+
+        .day-cell.today {
+            background: rgba(6, 182, 212, 0.1);
+        }
+
+        .day-number {
+            font-size: 11px;
+            color: #cbd5e1;
+            margin-bottom: 2px;
+        }
+
+        .day-cell.today .day-number {
+            background: #06b6d4;
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        /* Google Calendar Style Event Bars */
+        .event-bar {
+            position: absolute;
+            height: 18px;
+            padding: 2px 6px;
+            font-size: 10px;
+            font-weight: 500;
+            color: white;
+            border-radius: 3px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+            left: 4px;
+            right: 4px;
+        }
+
+        /* Multi-day event spans */
+        .event-bar.span-2 {
+            width: calc(200% - 3px);
+        }
+
+        .event-bar.span-3 {
+            width: calc(300% - 5px);
+        }
+
+        /* Stack multiple events */
+        .event-bar.stack-1 { top: 22px; }
+        .event-bar.stack-2 { top: 42px; }
+        .event-bar.stack-3 { top: 62px; }
+
+        /* Event colors */
+        .event-bar.confirmed {
+            background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
+        }
+
+        .event-bar.pending {
+            background: linear-gradient(90deg, #fbbf24 0%, #f59e0b 100%);
+        }
+
+        .event-bar.completed {
+            background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+        }
+
+        .event-bar:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+        }
+
+        .calendar-legend {
+            display: flex;
+            gap: 16px;
+            margin-top: 12px;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+        }
+
+        .legend-color.confirmed { background: #3b82f6; }
+        .legend-color.pending { background: #fbbf24; }
+        .legend-color.completed { background: #10b981; }
+
+        /* Microphone FAB */
+        .microphone-fab {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            border: none;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #06b6d4 0%, #a855f7 100%);
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.4);
+            transition: all 0.3s;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .microphone-fab:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(6, 182, 212, 0.5);
+        }
+
+        .microphone-fab:active {
+            transform: translateY(-1px);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .widget-grid {
+                grid-template-columns: repeat(6, 1fr);
+            }
+            .widget-small { grid-column: span 3; }
+            .widget-medium { grid-column: span 6; }
+            .widget-large { grid-column: span 6; }
+        }
+
+        @media (max-width: 768px) {
+            .widget-grid {
+                grid-template-columns: 1fr;
+            }
+            .widget-small,
+            .widget-medium,
+            .widget-large,
+            .widget-full { grid-column: span 1; }
+        }
+
+        /* App Container & Sidebar */
+        .app-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .left-nav {
+            width: 220px;
+            background: rgba(10, 14, 39, 0.95);
+            border-right: 1px solid rgba(6, 182, 212, 0.3);
+            padding: 24px 16px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .logo-nav {
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #06b6d4 0%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 32px;
+        }
+
+        .nav-item {
+            padding: 12px 16px;
+            margin-bottom: 4px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #94a3b8;
+        }
+
+        .nav-item.active {
+            background: rgba(6, 182, 212, 0.15);
+            color: #06b6d4;
+            border-left: 3px solid #06b6d4;
+        }
+
+        .nav-item:hover {
+            background: rgba(6, 182, 212, 0.08);
+            color: #06b6d4;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <!-- Left Navigation -->
+    <nav class="left-nav">
+        <div class="logo-nav">⚡ CommandCentered</div>
+        <div class="nav-item active">📊 Dashboard</div>
+        <div class="nav-item" onclick="window.location.href='06-pipeline-updated.html'">🎯 Pipeline</div>
+        <div class="nav-item" onclick="window.location.href='01-planning-updated.html'">📅 Planning</div>
+        <div class="nav-item" onclick="window.location.href='08-deliverables-updated.html'">📦 Deliverables</div>
+        <div class="nav-item" onclick="window.location.href='07-communications-updated.html'">💬 Communications</div>
+        <div class="nav-item" onclick="window.location.href='09-operators-updated.html'">👥 Operators</div>
+        <div class="nav-item" onclick="window.location.href='04-gear-updated.html'">🎥 Gear</div>
+        <div class="nav-item" onclick="window.location.href='10-files-updated.html'">📁 Files</div>
+        <div class="nav-item" onclick="window.location.href='12-settings-updated.html'">⚙️ Settings</div>
+        <div class="nav-item" onclick="window.location.href='index.html'">🏠 Home</div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <a href="index.html" style="text-decoration: none;"><h1 class="logo">CommandCentered</h1></a>
+        </div>
+        <div class="header-right">
+            <button class="btn btn-primary">
+                ⚙️ Customize Dashboard
+            </button>
+        </div>
+    </header>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard-content">
+        <div class="widget-grid">
+            <!-- Event Pipeline Widget -->
+            <div class="widget widget-small">
+                <button class="widget-close">×</button>
+                <h3 class="widget-title">Event Pipeline</h3>
+                <div class="pipeline-stages">
+                    <div class="pipeline-stage">
+                        <span class="stage-name">Proposal Sent</span>
+                        <span class="stage-count">3</span>
+                    </div>
+                    <div class="pipeline-stage">
+                        <span class="stage-name">Contract Signed</span>
+                        <span class="stage-count">2</span>
+                    </div>
+                    <div class="pipeline-stage">
+                        <span class="stage-name">Deposit Paid</span>
+                        <span class="stage-count">2</span>
+                    </div>
+                    <div class="pipeline-stage">
+                        <span class="stage-name">Event Confirmed</span>
+                        <span class="stage-count">5</span>
+                    </div>
+                    <div class="pipeline-stage">
+                        <span class="stage-name">Completed</span>
+                        <span class="stage-count">8</span>
+                    </div>
+                    <div class="pipeline-stage">
+                        <span class="stage-name">Delivered</span>
+                        <span class="stage-count">6</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Annual Revenue Widget -->
+            <div class="widget widget-small">
+                <button class="widget-close">×</button>
+                <h3 class="widget-title">Annual Revenue</h3>
+                <div class="revenue-content">
+                    <div class="revenue-amount">$125,430</div>
+                    <div class="revenue-goal">Goal: $200,000</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 63%;"></div>
+                    </div>
+                    <div class="month-comparison">
+                        <span>November:</span>
+                        <strong>$18,500</strong>
+                        <span class="trend-up">▲ +15%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Critical Alerts Widget -->
+            <div class="widget widget-small">
+                <button class="widget-close">×</button>
+                <h3 class="widget-title">Critical Alerts</h3>
+                <div class="alert-list">
+                    <div class="alert-item">
+                        <span class="alert-icon">⚠️</span>
+                        <span class="alert-text">3 events missing operators</span>
+                    </div>
+                    <div class="alert-item">
+                        <span class="alert-icon">⚠️</span>
+                        <span class="alert-text">2 events missing kits</span>
+                    </div>
+                    <div class="alert-item">
+                        <span class="alert-icon">🔴</span>
+                        <span class="alert-text">1 contract expiring soon</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upcoming Events Widget -->
+            <div class="widget widget-medium">
+                <button class="widget-close">×</button>
+                <h3 class="widget-title">Upcoming Events (Next 7 Days)</h3>
+                <div class="event-list">
+                    <div class="event-item">
+                        <div class="event-name">Dec 6-7: EMPWR Dance Recital</div>
+                        <div class="event-detail">📍 Blue Mountain Resort</div>
+                        <div class="event-detail">👥 JD, ST (operators) | 📷 Kit A, Kit B</div>
+                        <div class="event-detail event-warning">⚠️ Missing hotel info</div>
+                    </div>
+                    <div class="event-item">
+                        <div class="event-name">Dec 8: Glow Dance Competition</div>
+                        <div class="event-detail">📍 Toronto Convention Centre</div>
+                        <div class="event-detail">👥 MK, AL (operators) | 📷 Kit C</div>
+                        <div class="event-detail" style="color: #10b981;">✅ Fully scheduled</div>
+                    </div>
+                    <div class="event-item error">
+                        <div class="event-name">Dec 9: Corporate Holiday Party</div>
+                        <div class="event-detail">📍 Client Office</div>
+                        <div class="event-detail event-error">❌ No operators assigned</div>
+                        <div class="event-detail event-error">❌ No kit assigned</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Communications Timeline Widget -->
+            <div class="widget widget-medium">
+                <button class="widget-close">×</button>
+                <h3 class="widget-title">Recent Communications</h3>
+                <div class="comm-list">
+                    <div class="comm-item">
+                        <div class="comm-icon">📧</div>
+                        <div style="flex: 1;">
+                            <div>Proposal sent: EMPWR Dance</div>
+                            <div class="comm-time">2 hours ago</div>
+                        </div>
+                    </div>
+                    <div class="comm-item">
+                        <div class="comm-icon">📝</div>
+                        <div style="flex: 1;">
+                            <div>Contract signed: Glow Competition</div>
+                            <div class="comm-time">Yesterday</div>
+                        </div>
+                    </div>
+                    <div class="comm-item">
+                        <div class="comm-icon">💰</div>
+                        <div style="flex: 1;">
+                            <div>Invoice paid: Studio X</div>
+                            <div class="comm-time">3 days ago</div>
+                        </div>
+                    </div>
+                    <div class="comm-item">
+                        <div class="comm-icon">📋</div>
+                        <div style="flex: 1;">
+                            <div>Questionnaire completed: Dance Unlimited</div>
+                            <div class="comm-time">5 days ago</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calendar Color Bars Widget (Google Calendar Style) -->
+            <div class="widget widget-full">
+                <button class="widget-close">×</button>
+                <div class="calendar-header">
+                    <h3 class="calendar-title">December 2025</h3>
+                    <div class="calendar-controls">
+                        <button>⟳</button>
+                        <button>&lt;</button>
+                        <button>&gt;</button>
+                    </div>
+                </div>
+
+                <div class="calendar-grid">
+                    <!-- Day Headers -->
+                    <div class="day-header">Sun</div>
+                    <div class="day-header">Mon</div>
+                    <div class="day-header">Tue</div>
+                    <div class="day-header">Wed</div>
+                    <div class="day-header">Thu</div>
+                    <div class="day-header">Fri</div>
+                    <div class="day-header">Sat</div>
+
+                    <!-- Week 1 -->
+                    <div class="day-cell">
+                        <div class="day-number">1</div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="day-number">2</div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="day-number">3</div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="day-number">4</div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="day-number">5</div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="day-number">6</div>
+                        <div class="event-bar confirmed span-2">
+                            EMPWR Dance Recital
+                        </div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="day-number">7</div>
+                    </div>
+
+                    <!-- Week 2 -->
+                    <div class="day-cell">
+                        <div class="day-number">8</div>
+                        <div class="event-bar confirmed">
+                            Glow Competition
+                        </div>
+                        <div class="event-bar pending stack-1">
+                            Studio X
+                        </div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="day-number">9</div>
+                        <div class="event-bar pending">
+                            Corp Holiday
+                        </div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="day-number">10</div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="day-number">11</div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="day-number">12</div>
+                        <div class="event-bar pending span-3">
+                            Holiday Series
+                        </div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="day-number">13</div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="day-number">14</div>
+                    </div>
+
+                    <!-- Week 3 -->
+                    <div class="day-cell today">
+                        <div class="day-number">15</div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="day-number">16</div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="day-number">17</div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="day-number">18</div>
+                        <div class="event-bar pending">
+                            Corporate Event
+                        </div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="day-number">19</div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="day-number">20</div>
+                        <div class="event-bar confirmed span-2">
+                            Dance Fest 2025
+                        </div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="day-number">21</div>
+                    </div>
+
+                    <!-- Week 4 -->
+                    <div class="day-cell">
+                        <div class="day-number">22</div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="day-number">23</div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="day-number">24</div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="day-number">25</div>
+                        <div class="event-bar completed">
+                            Christmas Special
+                        </div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="day-number">26</div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="day-number">27</div>
+                        <div class="event-bar confirmed span-2">
+                            Year-End Gala
+                        </div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="day-number">28</div>
+                    </div>
+
+                    <!-- Week 5 -->
+                    <div class="day-cell">
+                        <div class="day-number">29</div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="day-number">30</div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="day-number">31</div>
+                    </div>
+                    <div class="day-cell other-month">
+                        <div class="day-number" style="opacity: 0.5;">1</div>
+                    </div>
+                    <div class="day-cell other-month">
+                        <div class="day-number" style="opacity: 0.5;">2</div>
+                    </div>
+                    <div class="day-cell other-month">
+                        <div class="day-number" style="opacity: 0.5;">3</div>
+                    </div>
+                    <div class="day-cell other-month">
+                        <div class="day-number" style="opacity: 0.5;">4</div>
+                    </div>
+                </div>
+
+                <div class="calendar-legend">
+                    <div class="legend-item">
+                        <div class="legend-color confirmed"></div>
+                        <span>Confirmed</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color pending"></div>
+                        <span>Pending</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color completed"></div>
+                        <span>Completed</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Microphone FAB -->
+    <button class="microphone-fab" title="Voice Command">
+        🎤
+    </button>
+
+    </div> <!-- /main-content -->
+</div> <!-- /app-container -->
+
+</body>
+</html>

@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - CommandCentered</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Rajdhani', monospace, sans-serif;
+            background: #030712;
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(6, 182, 212, 0.05) 2px, rgba(6, 182, 212, 0.05) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(6, 182, 212, 0.05) 2px, rgba(6, 182, 212, 0.05) 4px),
+                radial-gradient(ellipse at center, #0a1628 0%, #030712 100%);
+            background-size: 40px 40px, 40px 40px, 100% 100%;
+            color: #e2e8f0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            min-width: 1200px;
+        }
+
+        .sidebar {
+            width: 260px;
+            background: linear-gradient(180deg, #0c1220 0%, #030712 100%);
+            border-right: 2px solid rgba(6, 182, 212, 0.3);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 32px rgba(6, 182, 212, 0.15);
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .logo {
+            padding: 28px 24px;
+            border-bottom: 2px solid rgba(6, 182, 212, 0.3);
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1) 0%, transparent 100%);
+        }
+
+        .logo-text {
+            font-family: 'Orbitron', monospace;
+            font-size: 24px;
+            font-weight: 900;
+            color: #22d3ee;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.8);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-subtitle {
+            font-size: 10px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 6px;
+            font-weight: 600;
+        }
+
+        .nav {
+            flex: 1;
+            padding: 24px 0;
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 24px;
+            color: #94a3b8;
+            text-decoration: none;
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .nav-item:hover {
+            background: rgba(6, 182, 212, 0.1);
+            color: #22d3ee;
+            border-left-color: rgba(6, 182, 212, 0.8);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(90deg, rgba(6, 182, 212, 0.2) 0%, transparent 100%);
+            color: #22d3ee;
+            border-left-color: #06b6d4;
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.5);
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            min-width: 0;
+        }
+
+        .top-bar {
+            background: linear-gradient(90deg, #0c1220 0%, #1e293b 100%);
+            border-bottom: 2px solid rgba(6, 182, 212, 0.3);
+            padding: 18px 36px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+            flex-shrink: 0;
+        }
+
+        .top-bar-left h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: 26px;
+            font-weight: 900;
+            color: #22d3ee;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.8);
+        }
+
+        .top-bar-left p {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 4px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .top-bar-right {
+            display: flex;
+            gap: 18px;
+            align-items: center;
+        }
+
+        .status-indicator {
+            padding: 8px 16px;
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.5);
+            border-radius: 4px;
+            color: #10b981;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .user-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 6px;
+            background: linear-gradient(135deg, #0e7490 0%, #0c4a6e 100%);
+            border: 2px solid rgba(6, 182, 212, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #22d3ee;
+            font-weight: 900;
+            font-size: 18px;
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.8);
+        }
+
+        .dashboard-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 28px 36px;
+        }
+
+        .container { max-width: 1400px; width: 100%; }
+
+        .section {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.5) 0%, rgba(15, 23, 42, 0.7) 100%);
+            border: 2px solid rgba(6, 182, 212, 0.4);
+            border-radius: 8px;
+            padding: 28px;
+            margin-bottom: 28px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 28px;
+            border-bottom: 2px solid rgba(6, 182, 212, 0.3);
+        }
+
+        .tab {
+            padding: 14px 28px;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            color: #64748b;
+            font-weight: 900;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.2) 0%, transparent 100%);
+            border-bottom-color: #06b6d4;
+            color: #22d3ee;
+        }
+
+        /* Button Styles */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            background: #06b6d4;
+            color: #030712;
+            border: none;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+        }
+
+        .btn:hover {
+            background: #0891b2;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+        }
+
+        .btn-secondary {
+            background: #111827;
+            color: #f9fafb;
+            border: 1px solid #1f2937;
+        }
+
+        .btn-secondary:hover {
+            background: #1f2937;
+            border-color: #06b6d4;
+        }
+
+        .btn-small {
+            padding: 0.5rem 1rem;
+            font-size: 0.75rem;
+        }
+
+        /* Cards */
+        .card {
+            background: #111827;
+            border: 1px solid #1f2937;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-header {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #06b6d4;
+            margin-bottom: 1rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #9ca3af;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: #030712;
+            border: 1px solid #1f2937;
+            color: #f9fafb;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #06b6d4;
+            box-shadow: 0 0 8px rgba(6, 182, 212, 0.3);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Status Badge */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: #1f2937;
+            border: 1px solid #374151;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-badge.connected {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: #10b981;
+            color: #10b981;
+        }
+
+        .status-badge.connected::before {
+            content: '✓';
+            font-weight: bold;
+        }
+
+        .status-badge.disconnected {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+
+        .status-badge.disconnected::before {
+            content: '✕';
+            font-weight: bold;
+        }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+            background: #111827;
+            border: 1px solid #1f2937;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #030712;
+            color: #06b6d4;
+            padding: 1rem;
+            text-align: left;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+            border-bottom: 2px solid #06b6d4;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #1f2937;
+            color: #f9fafb;
+        }
+
+        tr:hover {
+            background: rgba(6, 182, 212, 0.05);
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Grid */
+        .grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .grid-2 { grid-template-columns: repeat(2, 1fr); }
+
+        /* Integration Card */
+        .integration-card {
+            background: #111827;
+            border: 1px solid #1f2937;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .integration-info h3 {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.1rem;
+            color: #06b6d4;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .integration-info p {
+            color: #9ca3af;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .integration-fields {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .integration-field {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .integration-status {
+            text-align: right;
+        }
+
+        /* Credential Input Wrapper */
+        .credential-input-wrapper {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .credential-input-wrapper input {
+            flex: 1;
+        }
+
+        .credential-toggle-btn {
+            padding: 0.75rem 1rem;
+            background: #1f2937;
+            border: 1px solid #374151;
+            color: #9ca3af;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.75rem;
+        }
+
+        .credential-toggle-btn:hover {
+            background: #374151;
+            color: #06b6d4;
+        }
+
+        /* Alert Level Badges */
+        .alert-critical {
+            color: #ef4444;
+        }
+
+        .alert-warning {
+            color: #f59e0b;
+        }
+
+        .alert-info {
+            color: #3b82f6;
+        }
+
+        /* Session Item */
+        .session-item {
+            background: #030712;
+            border: 1px solid #1f2937;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .session-info h4 {
+            color: #06b6d4;
+            margin-bottom: 0.25rem;
+            font-size: 0.95rem;
+        }
+
+        .session-info p {
+            color: #9ca3af;
+            font-size: 0.85rem;
+        }
+
+        .session-badge {
+            background: #10b981;
+            color: #030712;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .integration-card {
+                grid-template-columns: 1fr;
+            }
+
+            .integration-field {
+                grid-template-columns: 1fr;
+            }
+
+            .grid-2 { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <div class="logo-text">
+                <span>⚡</span>
+                <span>COMMAND</span>
+            </div>
+            <div class="logo-subtitle">StreamStage Operations</div>
+        </div>
+        <nav class="nav">
+            <a href="01-dashboard.html" class="nav-item">
+                <span>📊</span>
+                <span>Dashboard</span>
+            </a>
+            <a href="02-pipeline.html" class="nav-item">
+                <span>⚡</span>
+                <span>Pipeline</span>
+            </a>
+            <a href="03-planning.html" class="nav-item">
+                <span>📅</span>
+                <span>Planning</span>
+            </a>
+            <a href="04-deliverables.html" class="nav-item">
+                <span>📦</span>
+                <span>Deliverables</span>
+            </a>
+            <a href="05-communications.html" class="nav-item">
+                <span>💬</span>
+                <span>Communications</span>
+            </a>
+            <a href="06-files.html" class="nav-item">
+                <span>📁</span>
+                <span>Files</span>
+            </a>
+            <a href="07-operators.html" class="nav-item">
+                <span>👥</span>
+                <span>Operators</span>
+            </a>
+            <a href="08-gear.html" class="nav-item">
+                <span>🎥</span>
+                <span>Gear</span>
+            </a>
+            <a href="09-reports.html" class="nav-item">
+                <span>📈</span>
+                <span>Reports</span>
+            </a>
+            <a href="10-customize.html" class="nav-item">
+                <span>⚙️</span>
+                <span>Customize</span>
+            </a>
+            <a href="11-settings.html" class="nav-item active">
+                <span>🔧</span>
+                <span>Settings</span>
+            </a>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <div class="top-bar">
+            <div class="top-bar-left">
+                <h1>🔧 SETTINGS</h1>
+                <p>SYSTEM CONFIGURATION</p>
+            </div>
+            <div class="top-bar-right">
+                <div class="status-indicator">● SYSTEMS OPERATIONAL</div>
+                <div class="user-avatar">DA</div>
+            </div>
+        </div>
+        <div class="dashboard-content">
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('business-profile')">
+                Business Profile
+            </button>
+            <button class="tab" onclick="switchTab('integrations')">
+                Integrations
+            </button>
+            <button class="tab" onclick="switchTab('alert-center')">
+                Alert Center
+            </button>
+            <button class="tab" onclick="switchTab('account')">
+                Account
+            </button>
+        </div>
+
+        <!-- TAB 1: BUSINESS PROFILE -->
+        <div id="business-profile" class="tab-content active">
+            <div class="card">
+                <div class="card-header">Business Information</div>
+                <form>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Business Name</label>
+                            <input type="text" value="StreamStage Live" />
+                        </div>
+                        <div class="form-group">
+                            <label>Tax ID / Registration</label>
+                            <input type="text" value="123-456-7890" />
+                        </div>
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Address</label>
+                            <input type="text" value="1234 Production Lane" />
+                        </div>
+                        <div class="form-group">
+                            <label>City / Province</label>
+                            <input type="text" value="Toronto, ON" />
+                        </div>
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Postal Code</label>
+                            <input type="text" value="M5V 3A9" />
+                        </div>
+                        <div class="form-group">
+                            <label>Tax Rate</label>
+                            <select>
+                                <option selected>13% (Ontario HST)</option>
+                                <option>5% (GST)</option>
+                                <option>6% (Nova Scotia HST)</option>
+                                <option>15% (Other)</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Branding</div>
+                <form>
+                    <div class="form-group">
+                        <label>Company Logo</label>
+                        <div style="display: flex; gap: 1rem; align-items: center;">
+                            <button type="button" class="btn btn-secondary btn-small">UPLOAD LOGO</button>
+                            <button type="button" class="btn btn-secondary btn-small">PREVIEW</button>
+                            <span style="color: #9ca3af;">Current: logo-v2.png (256x256px)</span>
+                        </div>
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Primary Brand Color</label>
+                            <div style="display: flex; gap: 1rem; align-items: center;">
+                                <input type="color" value="#06b6d4" style="width: 100px; height: 50px; cursor: pointer;" />
+                                <span style="color: #9ca3af;">#06b6d4 (Cyan)</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Secondary Brand Color</label>
+                            <div style="display: flex; gap: 1rem; align-items: center;">
+                                <input type="color" value="#10b981" style="width: 100px; height: 50px; cursor: pointer;" />
+                                <span style="color: #9ca3af;">#10b981 (Green)</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div style="display: flex; gap: 1rem;">
+                <button class="btn">SAVE CHANGES</button>
+                <button class="btn btn-secondary">CANCEL</button>
+            </div>
+        </div>
+
+        <!-- TAB 2: INTEGRATIONS -->
+        <div id="integrations" class="tab-content">
+            <div class="card">
+                <div class="card-header">Integration Status</div>
+                <p style="color: #9ca3af; margin-bottom: 1.5rem;">Manage external service connections and API credentials</p>
+
+                <!-- Stripe Integration -->
+                <div class="integration-card">
+                    <div class="integration-info">
+                        <h3>💳 Stripe</h3>
+                        <p>Payment processing and invoicing</p>
+                        <div class="integration-fields">
+                            <div class="form-group" style="margin-bottom: 0.75rem;">
+                                <label>API Key (Live)</label>
+                                <div class="credential-input-wrapper">
+                                    <input type="password" value="••••••••••••••••••••••••" />
+                                    <button type="button" class="credential-toggle-btn">SHOW</button>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label>Webhook URL</label>
+                                <input type="text" value="https://api.compsync.net/webhooks/stripe" readonly />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="integration-status">
+                        <div class="status-badge connected">Connected</div>
+                        <p style="color: #9ca3af; margin-top: 0.75rem; font-size: 0.85rem;">Last verified<br>Nov 10, 2:30 PM</p>
+                        <div style="margin-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem;">
+                            <button class="btn btn-secondary btn-small">RECONNECT</button>
+                            <button class="btn btn-secondary btn-small">DISCONNECT</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mailgun Integration -->
+                <div class="integration-card">
+                    <div class="integration-info">
+                        <h3>📧 Mailgun</h3>
+                        <p>Email delivery and templates</p>
+                        <div class="integration-fields">
+                            <div class="form-group" style="margin-bottom: 0.75rem;">
+                                <label>API Key</label>
+                                <div class="credential-input-wrapper">
+                                    <input type="password" value="••••••••••••••••••••••••" />
+                                    <button type="button" class="credential-toggle-btn">SHOW</button>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0.75rem;">
+                                <label>Domain</label>
+                                <input type="text" value="sandbox.mailgun.org" />
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label>Sender Email</label>
+                                <input type="email" value="noreply@compsync.net" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="integration-status">
+                        <div class="status-badge connected">Connected</div>
+                        <p style="color: #9ca3af; margin-top: 0.75rem; font-size: 0.85rem;">Last verified<br>Nov 9, 4:15 PM</p>
+                        <div style="margin-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem;">
+                            <button class="btn btn-secondary btn-small">TEST EMAIL</button>
+                            <button class="btn btn-secondary btn-small">DISCONNECT</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Google Drive Integration -->
+                <div class="integration-card">
+                    <div class="integration-info">
+                        <h3>📁 Google Drive</h3>
+                        <p>File storage and folder mapping</p>
+                        <div class="integration-fields">
+                            <div class="form-group" style="margin-bottom: 0.75rem;">
+                                <label>OAuth Token</label>
+                                <input type="text" value="oauth2_token_active" readonly />
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label>Folder ID (Deliverables)</label>
+                                <input type="text" value="1a2b3c4d5e6f7g8h9i0j" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="integration-status">
+                        <div class="status-badge connected">Connected</div>
+                        <p style="color: #9ca3af; margin-top: 0.75rem; font-size: 0.85rem;">Last accessed<br>Nov 10, 10:45 AM</p>
+                        <div style="margin-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem;">
+                            <button class="btn btn-secondary btn-small">CONFIGURE FOLDERS</button>
+                            <button class="btn btn-secondary btn-small">DISCONNECT</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Telegram Bot Integration -->
+                <div class="integration-card">
+                    <div class="integration-info">
+                        <h3>💬 Telegram Bot</h3>
+                        <p>Event notifications and messaging</p>
+                        <div class="integration-fields">
+                            <div class="form-group" style="margin-bottom: 0.75rem;">
+                                <label>Bot Token</label>
+                                <div class="credential-input-wrapper">
+                                    <input type="password" value="••••••••••••••••••••••••" />
+                                    <button type="button" class="credential-toggle-btn">SHOW</button>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label>Webhook URL</label>
+                                <input type="text" value="https://api.compsync.net/webhooks/telegram" readonly />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="integration-status">
+                        <div class="status-badge disconnected">Not Connected</div>
+                        <p style="color: #9ca3af; margin-top: 0.75rem; font-size: 0.85rem;">Webhook status<br>Pending setup</p>
+                        <div style="margin-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem;">
+                            <button class="btn btn-secondary btn-small">CONNECT BOT</button>
+                            <button class="btn btn-secondary btn-small">VIEW DOCS</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: ALERT CENTER -->
+        <div id="alert-center" class="tab-content">
+            <div class="card">
+                <div class="card-header">System Warnings & Overrides</div>
+                <div style="margin-bottom: 1.5rem; display: flex; gap: 1rem;">
+                    <select style="padding: 0.75rem 1rem; background: #030712; border: 1px solid #1f2937; color: #f9fafb; width: 200px;">
+                        <option>Active Alerts</option>
+                        <option>Resolved</option>
+                        <option>All</option>
+                    </select>
+                    <input type="text" placeholder="Search alerts..." style="flex: 1; padding: 0.75rem 1rem; background: #030712; border: 1px solid #1f2937; color: #f9fafb;" />
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>LEVEL</th>
+                                <th>MESSAGE</th>
+                                <th>DATE</th>
+                                <th>OVERRIDE</th>
+                                <th>STATUS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="alert-critical">🔴 CRITICAL</span></td>
+                                <td>Equipment double-booked: Camera A</td>
+                                <td>Nov 10, 10:30 AM</td>
+                                <td>No</td>
+                                <td><span style="color: #f59e0b;">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="alert-warning">🟡 WARNING</span></td>
+                                <td>Incomplete questionnaire: ABC Dance</td>
+                                <td>Nov 9, 2:15 PM</td>
+                                <td>Yes (DA)</td>
+                                <td><span style="color: #10b981;">Overridden</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="alert-info">🔵 INFO</span></td>
+                                <td>No deposit received: XYZ Comp</td>
+                                <td>Nov 8, 4:00 PM</td>
+                                <td>Yes (DA)</td>
+                                <td><span style="color: #10b981;">Overridden</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="alert-warning">🟡 WARNING</span></td>
+                                <td>Missing operator assignment: Event #1024</td>
+                                <td>Nov 7, 8:45 AM</td>
+                                <td>No</td>
+                                <td><span style="color: #f59e0b;">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="alert-info">🔵 INFO</span></td>
+                                <td>Kit inventory below threshold</td>
+                                <td>Nov 6, 3:30 PM</td>
+                                <td>Yes (DA)</td>
+                                <td><span style="color: #10b981;">Overridden</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Override History (Last 30 Days)</div>
+                <p style="color: #9ca3af; margin-bottom: 1.5rem;">Total Overrides: 12</p>
+
+                <div class="grid-2">
+                    <div class="card" style="background: #030712;">
+                        <div style="color: #f59e0b; font-size: 1.5rem; font-weight: bold; margin-bottom: 0.5rem;">5</div>
+                        <div style="color: #9ca3af; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px;">Equipment Conflicts</div>
+                    </div>
+                    <div class="card" style="background: #030712;">
+                        <div style="color: #ef4444; font-size: 1.5rem; font-weight: bold; margin-bottom: 0.5rem;">4</div>
+                        <div style="color: #9ca3af; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px;">Missing Deposits</div>
+                    </div>
+                    <div class="card" style="background: #030712;">
+                        <div style="color: #3b82f6; font-size: 1.5rem; font-weight: bold; margin-bottom: 0.5rem;">3</div>
+                        <div style="color: #9ca3af; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px;">Other</div>
+                    </div>
+                    <div class="card" style="background: #030712;">
+                        <div style="color: #06b6d4; font-size: 1.5rem; font-weight: bold; margin-bottom: 0.5rem;">12</div>
+                        <div style="color: #9ca3af; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px;">Total</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Configure Alert Thresholds</div>
+                <form>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Critical: Equipment Conflict Warning</label>
+                            <select>
+                                <option selected>Immediate (< 1 min)</option>
+                                <option>15 minutes before</option>
+                                <option>1 hour before</option>
+                                <option>1 day before</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Warning: Missing Deposit</label>
+                            <select>
+                                <option selected>5 days before event</option>
+                                <option>3 days before</option>
+                                <option>1 day before</option>
+                                <option>At booking time</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Warning: Incomplete Questionnaire</label>
+                            <select>
+                                <option selected>7 days before event</option>
+                                <option>3 days before</option>
+                                <option>1 day before</option>
+                                <option>Disabled</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Info: Operator Availability</label>
+                            <select>
+                                <option selected>14 days before event</option>
+                                <option>7 days before</option>
+                                <option>3 days before</option>
+                                <option>Disabled</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+                <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+                    <button class="btn">SAVE THRESHOLDS</button>
+                    <button class="btn btn-secondary">RESET TO DEFAULT</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 4: ACCOUNT -->
+        <div id="account" class="tab-content">
+            <div class="card">
+                <div class="card-header">User Account</div>
+                <form>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" value="danieljohnabrahamson@gmail.com" readonly />
+                        </div>
+                        <div class="form-group">
+                            <label>Role</label>
+                            <input type="text" value="Commander (Full Access)" readonly />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Display Name</label>
+                        <input type="text" value="Daniel Abraham" />
+                    </div>
+                </form>
+                <div style="display: flex; gap: 1rem;">
+                    <button class="btn">SAVE PROFILE</button>
+                    <button class="btn btn-secondary">CANCEL</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Security Settings</div>
+                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                    <button class="btn btn-secondary" onclick="alert('Change password dialog would open')">
+                        🔑 CHANGE PASSWORD
+                    </button>
+                    <button class="btn btn-secondary" onclick="alert('2FA setup dialog would open')">
+                        🔐 ENABLE 2-FACTOR AUTHENTICATION
+                    </button>
+                    <button class="btn btn-secondary" onclick="alert('API keys management dialog would open')">
+                        ⚙ MANAGE API KEYS
+                    </button>
+                    <button class="btn btn-secondary" onclick="alert('Download would start')">
+                        📥 DOWNLOAD MY DATA (JSON)
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Session History</div>
+                <p style="color: #9ca3af; margin-bottom: 1.5rem;">Active sessions and recent login activity</p>
+
+                <div class="session-item">
+                    <div class="session-info">
+                        <h4>Chrome (Windows)</h4>
+                        <p>192.168.1.100 • Nov 10, 2025 10:30 AM</p>
+                    </div>
+                    <div style="text-align: right;">
+                        <div class="session-badge">CURRENT</div>
+                    </div>
+                </div>
+
+                <div class="session-item">
+                    <div class="session-info">
+                        <h4>Chrome (Windows)</h4>
+                        <p>192.168.1.100 • Nov 9, 2025 3:15 PM</p>
+                    </div>
+                    <div style="text-align: right;">
+                        <button class="btn btn-secondary btn-small">SIGN OUT</button>
+                    </div>
+                </div>
+
+                <div class="session-item">
+                    <div class="session-info">
+                        <h4>Safari (macOS)</h4>
+                        <p>192.168.1.105 • Nov 8, 2025 9:00 AM</p>
+                    </div>
+                    <div style="text-align: right;">
+                        <button class="btn btn-secondary btn-small">SIGN OUT</button>
+                    </div>
+                </div>
+
+                <div class="session-item">
+                    <div class="session-info">
+                        <h4>Chrome (Windows)</h4>
+                        <p>192.168.1.100 • Nov 5, 2025 5:30 PM</p>
+                    </div>
+                    <div style="text-align: right;">
+                        <button class="btn btn-secondary btn-small">SIGN OUT</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">API Keys</div>
+                <p style="color: #9ca3af; margin-bottom: 1.5rem;">Manage API keys for programmatic access</p>
+
+                <div class="session-item">
+                    <div class="session-info">
+                        <h4>Production API Key</h4>
+                        <p>Created: Oct 15, 2025 • Last used: Nov 10, 2025</p>
+                    </div>
+                    <div style="text-align: right;">
+                        <button class="btn btn-secondary btn-small">COPY</button>
+                        <button class="btn btn-secondary btn-small" onclick="alert('Regenerate dialog would open')">REGENERATE</button>
+                        <button class="btn btn-secondary btn-small" onclick="alert('Revoke dialog would open')">REVOKE</button>
+                    </div>
+                </div>
+
+                <button class="btn" style="margin-top: 1rem;">+ GENERATE NEW API KEY</button>
+            </div>
+
+            <div class="card" style="background: rgba(239, 68, 68, 0.05); border-color: rgba(239, 68, 68, 0.2);">
+                <div class="card-header" style="color: #ef4444;">Danger Zone</div>
+                <p style="color: #9ca3af; margin-bottom: 1.5rem;">Irreversible actions. Proceed with caution.</p>
+                <button class="btn btn-secondary" style="border-color: #ef4444; color: #ef4444;" onclick="alert('Account deletion would require confirmation')">
+                    ⚠ DELETE ACCOUNT
+                </button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabName) {
+            // Hide all tabs
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            // Remove active from all tab buttons
+            const tabButtons = document.querySelectorAll('.tab');
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+
+            // Mark tab button as active
+            event.target.classList.add('active');
+        }
+
+        // Credential visibility toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggles = document.querySelectorAll('.credential-toggle-btn');
+            toggles.forEach(toggle => {
+                toggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const input = this.previousElementSibling;
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        this.textContent = 'HIDE';
+                    } else {
+                        input.type = 'password';
+                        this.textContent = 'SHOW';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

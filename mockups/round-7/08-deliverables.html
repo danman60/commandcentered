@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CommandCentered - Deliverables</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
+            border-bottom: 1px solid rgba(6, 182, 212, 0.3);
+            padding: 24px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .page-icon {
+            font-size: 32px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #06b6d4 0%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-secondary {
+            background: rgba(71, 85, 105, 0.3);
+            color: #cbd5e1;
+            border: 1px solid rgba(71, 85, 105, 0.5);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(71, 85, 105, 0.5);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #06b6d4 0%, #0284c7 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(6, 182, 212, 0.4);
+        }
+
+        .main-content {
+            padding: 32px;
+        }
+
+        .search-filter-bar {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 32px;
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .search-input-wrapper {
+            flex: 1;
+            position: relative;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            color: #64748b;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px 12px 48px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 8px;
+            color: #e2e8f0;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #06b6d4;
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+        }
+
+        .filter-select {
+            padding: 12px 16px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 8px;
+            color: #e2e8f0;
+            font-size: 14px;
+            min-width: 180px;
+        }
+
+        .deliverables-table-container {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .deliverables-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .deliverables-table thead {
+            background: rgba(15, 23, 42, 0.8);
+        }
+
+        .deliverables-table th {
+            padding: 16px 20px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 600;
+            color: #06b6d4;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid rgba(71, 85, 105, 0.3);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .deliverables-table th:hover {
+            color: #0284c7;
+        }
+
+        .deliverables-table th::after {
+            content: ' ⇅';
+            opacity: 0.3;
+        }
+
+        .deliverables-table tbody tr {
+            border-bottom: 1px solid rgba(71, 85, 105, 0.2);
+            transition: all 0.2s;
+        }
+
+        .deliverables-table tbody tr:hover {
+            background: rgba(6, 182, 212, 0.05);
+        }
+
+        .deliverables-table td {
+            padding: 16px 20px;
+            font-size: 14px;
+            color: #cbd5e1;
+        }
+
+        .client-name {
+            font-weight: 600;
+            color: #e2e8f0;
+        }
+
+        .event-name {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        .service-checkboxes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .service-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+        }
+
+        .service-checkbox input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .drive-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: rgba(6, 182, 212, 0.1);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 6px;
+            color: #06b6d4;
+            text-decoration: none;
+            font-size: 13px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .drive-link:hover {
+            background: rgba(6, 182, 212, 0.2);
+            border-color: #06b6d4;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .status-completed {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .status-in-progress {
+            background: rgba(6, 182, 212, 0.2);
+            color: #06b6d4;
+        }
+
+        .status-pending {
+            background: rgba(251, 146, 60, 0.2);
+            color: #fb923c;
+        }
+
+        .due-date {
+            font-size: 13px;
+            color: #cbd5e1;
+        }
+
+        .due-date.overdue {
+            color: #ef4444;
+            font-weight: 600;
+        }
+
+        .assigned-editor {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .editor-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #06b6d4 0%, #a855f7 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(71, 85, 105, 0.6);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(71, 85, 105, 0.8);
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div class="header-left">
+        <div class="page-icon">🎬</div>
+        <div class="page-title">Deliverables</div>
+    </div>
+    <div class="header-right">
+        <button class="btn btn-secondary" onclick="exportDeliverables()">
+            📊 Export
+        </button>
+        <button class="btn btn-primary" onclick="addDeliverable()">
+            ➕ Add Deliverable
+        </button>
+    </div>
+</div>
+
+<div class="main-content">
+
+    <div class="search-filter-bar">
+        <div class="search-input-wrapper">
+            <span class="search-icon">🔍</span>
+            <input type="text" class="search-input" placeholder="Search by client, event, or service type...">
+        </div>
+        <select class="filter-select">
+            <option>All Statuses</option>
+            <option>Completed</option>
+            <option>In Progress</option>
+            <option>Pending</option>
+        </select>
+        <select class="filter-select">
+            <option>All Editors</option>
+            <option>Sarah Thompson</option>
+            <option>John Davis</option>
+            <option>Mike K.</option>
+        </select>
+        <select class="filter-select">
+            <option>Sort by: Due Date</option>
+            <option>Sort by: Client Name</option>
+            <option>Sort by: Status</option>
+            <option>Sort by: Service Type</option>
+        </select>
+    </div>
+
+    <div class="deliverables-table-container">
+        <table class="deliverables-table">
+            <thead>
+                <tr>
+                    <th onclick="sortTable(0)">Client / Event</th>
+                    <th onclick="sortTable(1)">Services</th>
+                    <th onclick="sortTable(2)">Google Drive</th>
+                    <th onclick="sortTable(3)">Assigned Editor</th>
+                    <th onclick="sortTable(4)">Due Date</th>
+                    <th onclick="sortTable(5)">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="client-name">EMPWR Dance Experience</div>
+                        <div class="event-name">Spring Recital 2025</div>
+                    </td>
+                    <td>
+                        <div class="service-checkboxes">
+                            <label class="service-checkbox">
+                                <input type="checkbox" checked>
+                                <span>1-min highlight</span>
+                            </label>
+                            <label class="service-checkbox">
+                                <input type="checkbox" checked>
+                                <span>3-min full event</span>
+                            </label>
+                            <label class="service-checkbox">
+                                <input type="checkbox">
+                                <span>3x Reels</span>
+                            </label>
+                            <label class="service-checkbox">
+                                <input type="checkbox" checked>
+                                <span>Raw footage</span>
+                            </label>
+                        </div>
+                    </td>
+                    <td>
+                        <a href="#" class="drive-link" onclick="openDrive(event)">
+                            📁 Open Folder
+                        </a>
+                    </td>
+                    <td>
+                        <div class="assigned-editor">
+                            <div class="editor-avatar">ST</div>
+                            <span>Sarah Thompson</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="due-date">Dec 20, 2025</div>
+                    </td>
+                    <td>
+                        <span class="status-badge status-in-progress">In Progress</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="client-name">Glow Dance Competition</div>
+                        <div class="event-name">Winter Showcase 2025</div>
+                    </td>
+                    <td>
+                        <div class="service-checkboxes">
+                            <label class="service-checkbox">
+                                <input type="checkbox" checked>
+                                <span>Competition recap</span>
+                            </label>
+                            <label class="service-checkbox">
+                                <input type="checkbox" checked>
+                                <span>Awards ceremony</span>
+                            </label>
+                            <label class="service-checkbox">
+                                <input type="checkbox" checked>
+                                <span>Livestream archive</span>
+                            </label>
+                        </div>
+                    </td>
+                    <td>
+                        <a href="#" class="drive-link" onclick="openDrive(event)">
+                            📁 Open Folder
+                        </a>
+                    </td>
+                    <td>
+                        <div class="assigned-editor">
+                            <div class="editor-avatar">JD</div>
+                            <span>John Davis</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="due-date">Dec 25, 2025</div>
+                    </td>
+                    <td>
+                        <span class="status-badge status-in-progress">In Progress</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="client-name">ABC Dance Studio</div>
+                        <div class="event-name">Fall Recital 2025</div>
+                    </td>
+                    <td>
+                        <div class="service-checkboxes">
+                            <label class="service-checkbox">
+                                <input type="checkbox" checked>
+                                <span>2-min highlight</span>
+                            </label>
+                            <label class="service-checkbox">
+                                <input type="checkbox" checked>
+                                <span>Full event video</span>
+                            </label>
+                            <label class="service-checkbox">
+                                <input type="checkbox" checked>
+                                <span>5x Reels</span>
+                            </label>
+                        </div>
+                    </td>
+                    <td>
+                        <a href="#" class="drive-link" onclick="openDrive(event)">
+                            📁 Open Folder
+                        </a>
+                    </td>
+                    <td>
+                        <div class="assigned-editor">
+                            <div class="editor-avatar">MK</div>
+                            <span>Mike K.</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="due-date">Nov 30, 2025</div>
+                    </td>
+                    <td>
+                        <span class="status-badge status-completed">Completed</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="client-name">XYZ Corporate</div>
+                        <div class="event-name">Annual Gala 2025</div>
+                    </td>
+                    <td>
+                        <div class="service-checkboxes">
+                            <label class="service-checkbox">
+                                <input type="checkbox">
+                                <span>Event highlights</span>
+                            </label>
+                            <label class="service-checkbox">
+                                <input type="checkbox">
+                                <span>Interviews</span>
+                            </label>
+                            <label class="service-checkbox">
+                                <input type="checkbox">
+                                <span>B-roll package</span>
+                            </label>
+                        </div>
+                    </td>
+                    <td>
+                        <a href="#" class="drive-link" onclick="openDrive(event)">
+                            📁 Open Folder
+                        </a>
+                    </td>
+                    <td>
+                        <div class="assigned-editor">
+                            <div class="editor-avatar">ST</div>
+                            <span>Sarah Thompson</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="due-date overdue">Nov 10, 2025 (OVERDUE)</div>
+                    </td>
+                    <td>
+                        <span class="status-badge status-pending">Pending</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="client-name">Metro Dance Academy</div>
+                        <div class="event-name">Competition Prep Workshop</div>
+                    </td>
+                    <td>
+                        <div class="service-checkboxes">
+                            <label class="service-checkbox">
+                                <input type="checkbox" checked>
+                                <span>Workshop recap</span>
+                            </label>
+                            <label class="service-checkbox">
+                                <input type="checkbox" checked>
+                                <span>Highlight reel</span>
+                            </label>
+                        </div>
+                    </td>
+                    <td>
+                        <a href="#" class="drive-link" onclick="openDrive(event)">
+                            📁 Open Folder
+                        </a>
+                    </td>
+                    <td>
+                        <div class="assigned-editor">
+                            <div class="editor-avatar">JD</div>
+                            <span>John Davis</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="due-date">Dec 5, 2025</div>
+                    </td>
+                    <td>
+                        <span class="status-badge status-in-progress">In Progress</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<script>
+    function sortTable(columnIndex) {
+        console.log('Sort by column:', columnIndex);
+    }
+
+    function openDrive(event) {
+        event.preventDefault();
+        console.log('Open Google Drive folder');
+    }
+
+    function exportDeliverables() {
+        console.log('Export deliverables data');
+    }
+
+    function addDeliverable() {
+        console.log('Add new deliverable');
+    }
+</script>
+
+</body>
+</html>

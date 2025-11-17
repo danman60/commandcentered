@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CommandCentered - Gear Inventory Enhanced</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
+            border-bottom: 1px solid rgba(6, 182, 212, 0.3);
+            padding: 24px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .page-icon {
+            font-size: 32px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #06b6d4 0%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        /* View Toggle */
+        .view-toggle {
+            display: flex;
+            gap: 4px;
+            background: rgba(30, 41, 59, 0.6);
+            padding: 4px;
+            border-radius: 8px;
+        }
+
+        .view-btn {
+            padding: 8px 12px;
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+            font-size: 20px;
+        }
+
+        .view-btn.active {
+            background: rgba(6, 182, 212, 0.2);
+            color: #06b6d4;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-secondary {
+            background: rgba(71, 85, 105, 0.3);
+            color: #cbd5e1;
+            border: 1px solid rgba(71, 85, 105, 0.5);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(71, 85, 105, 0.5);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #06b6d4 0%, #0284c7 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(6, 182, 212, 0.4);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 32px;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.2s;
+        }
+
+        .stat-card:hover {
+            border-color: rgba(6, 182, 212, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .stat-icon {
+            font-size: 28px;
+        }
+
+        .stat-info {
+            flex: 1;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #06b6d4;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 2px;
+        }
+
+        /* Category Tabs */
+        .category-tabs-container {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .category-tabs {
+            display: flex;
+            background: rgba(15, 23, 42, 0.8);
+            border-bottom: 1px solid rgba(71, 85, 105, 0.3);
+            overflow-x: auto;
+        }
+
+        .category-tab {
+            padding: 16px 24px;
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .category-tab:hover {
+            color: #cbd5e1;
+            background: rgba(71, 85, 105, 0.2);
+        }
+
+        .category-tab.active {
+            color: #06b6d4;
+            background: rgba(6, 182, 212, 0.1);
+        }
+
+        .category-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #06b6d4, #a855f7);
+        }
+
+        .tab-icon {
+            font-size: 18px;
+        }
+
+        .tab-badge {
+            padding: 2px 6px;
+            background: rgba(6, 182, 212, 0.2);
+            border-radius: 10px;
+            font-size: 11px;
+            color: #06b6d4;
+            margin-left: 4px;
+        }
+
+        /* Tab Content */
+        .tab-content {
+            padding: 24px;
+        }
+
+        .tab-pane {
+            display: none;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        /* Search & Filter Bar */
+        .search-filter-bar {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .search-input-wrapper {
+            flex: 1;
+            position: relative;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+            color: #64748b;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 16px 10px 40px;
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 6px;
+            color: #e2e8f0;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #06b6d4;
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+        }
+
+        .filter-select {
+            padding: 10px 16px;
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 6px;
+            color: #e2e8f0;
+            font-size: 14px;
+            min-width: 150px;
+        }
+
+        /* Gear Grid */
+        .gear-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .gear-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .gear-card:hover {
+            border-color: rgba(6, 182, 212, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .gear-image {
+            width: 100%;
+            height: 160px;
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            position: relative;
+        }
+
+        .gear-status {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .gear-status.available {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .gear-status.in-use {
+            background: rgba(251, 146, 60, 0.2);
+            color: #fb923c;
+        }
+
+        .gear-status.maintenance {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .gear-details {
+            padding: 16px;
+        }
+
+        .gear-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #e2e8f0;
+            margin-bottom: 8px;
+        }
+
+        .gear-specs {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .gear-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .gear-id {
+            font-size: 11px;
+            color: #64748b;
+        }
+
+        .gear-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .gear-action-btn {
+            padding: 6px 10px;
+            background: rgba(71, 85, 105, 0.3);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 4px;
+            color: #cbd5e1;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .gear-action-btn:hover {
+            background: rgba(71, 85, 105, 0.5);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #64748b;
+        }
+
+        .empty-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .empty-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+
+        .empty-message {
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        /* Microphone FAB */
+        .microphone-fab {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #06b6d4 0%, #a855f7 100%);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(6, 182, 212, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .microphone-fab:hover {
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 12px 32px rgba(168, 85, 247, 0.5);
+        }
+
+        .microphone-fab.listening {
+            animation: pulse 1.5s infinite;
+            background: linear-gradient(135deg, #ef4444 0%, #f97316 100%);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(71, 85, 105, 0.6);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(71, 85, 105, 0.8);
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+    <div class="header-left">
+        <div class="page-icon">🎥</div>
+        <div class="page-title">Gear Inventory</div>
+    </div>
+    <div class="header-right">
+        <div class="view-toggle">
+            <button class="view-btn active" title="Grid View">▦</button>
+            <button class="view-btn" title="List View">☰</button>
+            <button class="view-btn" title="Compact View">⋮⋮</button>
+        </div>
+        <button class="btn btn-secondary" onclick="exportInventory()">
+            📊 Export
+        </button>
+        <button class="btn btn-primary" onclick="addGear()">
+            ➕ Add Gear
+        </button>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon">📦</div>
+            <div class="stat-info">
+                <div class="stat-value">247</div>
+                <div class="stat-label">Total Items</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">✅</div>
+            <div class="stat-info">
+                <div class="stat-value">198</div>
+                <div class="stat-label">Available</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">📍</div>
+            <div class="stat-info">
+                <div class="stat-value">42</div>
+                <div class="stat-label">In Use</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">🔧</div>
+            <div class="stat-info">
+                <div class="stat-value">7</div>
+                <div class="stat-label">Maintenance</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">💰</div>
+            <div class="stat-info">
+                <div class="stat-value">$284K</div>
+                <div class="stat-label">Total Value</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category Tabs Container -->
+    <div class="category-tabs-container">
+        <!-- Category Tabs -->
+        <div class="category-tabs">
+            <button class="category-tab active" onclick="switchTab('all')">
+                <span class="tab-icon">📋</span>
+                All Equipment
+                <span class="tab-badge">247</span>
+            </button>
+            <button class="category-tab" onclick="switchTab('cameras')">
+                <span class="tab-icon">📷</span>
+                Cameras
+                <span class="tab-badge">42</span>
+            </button>
+            <button class="category-tab" onclick="switchTab('lenses')">
+                <span class="tab-icon">🔍</span>
+                Lenses
+                <span class="tab-badge">38</span>
+            </button>
+            <button class="category-tab" onclick="switchTab('audio')">
+                <span class="tab-icon">🎙️</span>
+                Audio
+                <span class="tab-badge">31</span>
+            </button>
+            <button class="category-tab" onclick="switchTab('lighting')">
+                <span class="tab-icon">💡</span>
+                Lighting
+                <span class="tab-badge">28</span>
+            </button>
+            <button class="category-tab" onclick="switchTab('stabilizers')">
+                <span class="tab-icon">🎬</span>
+                Stabilizers
+                <span class="tab-badge">15</span>
+            </button>
+            <button class="category-tab" onclick="switchTab('drones')">
+                <span class="tab-icon">🚁</span>
+                Drones
+                <span class="tab-badge">8</span>
+            </button>
+            <button class="category-tab" onclick="switchTab('storage')">
+                <span class="tab-icon">💾</span>
+                Storage
+                <span class="tab-badge">45</span>
+            </button>
+            <button class="category-tab" onclick="switchTab('accessories')">
+                <span class="tab-icon">🎒</span>
+                Accessories
+                <span class="tab-badge">40</span>
+            </button>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="tab-content">
+            <!-- All Equipment Tab -->
+            <div id="all-tab" class="tab-pane active">
+                <!-- Search & Filter -->
+                <div class="search-filter-bar">
+                    <div class="search-input-wrapper">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" class="search-input" placeholder="Search gear by name, model, or serial number...">
+                    </div>
+                    <select class="filter-select">
+                        <option>All Status</option>
+                        <option>Available</option>
+                        <option>In Use</option>
+                        <option>Maintenance</option>
+                    </select>
+                    <select class="filter-select">
+                        <option>Sort by: Name ↕</option>
+                        <option>Sort by: Category ↕</option>
+                        <option>Sort by: Value ↕</option>
+                        <option>Sort by: Last Used ↕</option>
+                    </select>
+                </div>
+
+                <!-- Gear Grid -->
+                <div class="gear-grid">
+                    <!-- Camera 1 -->
+                    <div class="gear-card">
+                        <div class="gear-image">
+                            📷
+                            <span class="gear-status available">Available</span>
+                        </div>
+                        <div class="gear-details">
+                            <div class="gear-name">Canon R5 C</div>
+                            <div class="gear-specs">8K Cinema Camera • Full Frame • 45MP</div>
+                            <div class="gear-meta">
+                                <span class="gear-id">ID: CAM-001</span>
+                                <div class="gear-actions">
+                                    <button class="gear-action-btn">Reserve</button>
+                                    <button class="gear-action-btn">Details</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Camera 2 -->
+                    <div class="gear-card">
+                        <div class="gear-image">
+                            📷
+                            <span class="gear-status in-use">In Use</span>
+                        </div>
+                        <div class="gear-details">
+                            <div class="gear-name">Sony FX6</div>
+                            <div class="gear-specs">4K Cinema Camera • Full Frame • 10.2MP</div>
+                            <div class="gear-meta">
+                                <span class="gear-id">ID: CAM-002</span>
+                                <div class="gear-actions">
+                                    <button class="gear-action-btn">View Event</button>
+                                    <button class="gear-action-btn">Details</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lens -->
+                    <div class="gear-card">
+                        <div class="gear-image">
+                            🔍
+                            <span class="gear-status available">Available</span>
+                        </div>
+                        <div class="gear-details">
+                            <div class="gear-name">Canon RF 24-70mm f/2.8</div>
+                            <div class="gear-specs">Professional Zoom Lens • RF Mount</div>
+                            <div class="gear-meta">
+                                <span class="gear-id">ID: LNS-005</span>
+                                <div class="gear-actions">
+                                    <button class="gear-action-btn">Reserve</button>
+                                    <button class="gear-action-btn">Details</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Audio -->
+                    <div class="gear-card">
+                        <div class="gear-image">
+                            🎙️
+                            <span class="gear-status available">Available</span>
+                        </div>
+                        <div class="gear-details">
+                            <div class="gear-name">Rode Wireless GO II</div>
+                            <div class="gear-specs">Dual Channel Wireless Mic System</div>
+                            <div class="gear-meta">
+                                <span class="gear-id">ID: AUD-012</span>
+                                <div class="gear-actions">
+                                    <button class="gear-action-btn">Reserve</button>
+                                    <button class="gear-action-btn">Details</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lighting -->
+                    <div class="gear-card">
+                        <div class="gear-image">
+                            💡
+                            <span class="gear-status available">Available</span>
+                        </div>
+                        <div class="gear-details">
+                            <div class="gear-name">Aputure 600D Pro</div>
+                            <div class="gear-specs">600W LED Light • Daylight Balanced</div>
+                            <div class="gear-meta">
+                                <span class="gear-id">ID: LGT-008</span>
+                                <div class="gear-actions">
+                                    <button class="gear-action-btn">Reserve</button>
+                                    <button class="gear-action-btn">Details</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stabilizer -->
+                    <div class="gear-card">
+                        <div class="gear-image">
+                            🎬
+                            <span class="gear-status in-use">In Use</span>
+                        </div>
+                        <div class="gear-details">
+                            <div class="gear-name">DJI RS 3 Pro</div>
+                            <div class="gear-specs">3-Axis Gimbal Stabilizer • 4.5kg Payload</div>
+                            <div class="gear-meta">
+                                <span class="gear-id">ID: STB-003</span>
+                                <div class="gear-actions">
+                                    <button class="gear-action-btn">View Event</button>
+                                    <button class="gear-action-btn">Details</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Drone -->
+                    <div class="gear-card">
+                        <div class="gear-image">
+                            🚁
+                            <span class="gear-status maintenance">Maintenance</span>
+                        </div>
+                        <div class="gear-details">
+                            <div class="gear-name">DJI Inspire 3</div>
+                            <div class="gear-specs">8K Cinema Drone • Dual Operator</div>
+                            <div class="gear-meta">
+                                <span class="gear-id">ID: DRN-001</span>
+                                <div class="gear-actions">
+                                    <button class="gear-action-btn">View Status</button>
+                                    <button class="gear-action-btn">Details</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Storage -->
+                    <div class="gear-card">
+                        <div class="gear-image">
+                            💾
+                            <span class="gear-status available">Available</span>
+                        </div>
+                        <div class="gear-details">
+                            <div class="gear-name">SanDisk 512GB CFexpress</div>
+                            <div class="gear-specs">Type B Card • 1700MB/s Read</div>
+                            <div class="gear-meta">
+                                <span class="gear-id">ID: STG-022</span>
+                                <div class="gear-actions">
+                                    <button class="gear-action-btn">Reserve</button>
+                                    <button class="gear-action-btn">Details</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cameras Tab -->
+            <div id="cameras-tab" class="tab-pane">
+                <div class="search-filter-bar">
+                    <div class="search-input-wrapper">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" class="search-input" placeholder="Search cameras...">
+                    </div>
+                    <select class="filter-select">
+                        <option>All Brands</option>
+                        <option>Canon</option>
+                        <option>Sony</option>
+                        <option>Blackmagic</option>
+                        <option>RED</option>
+                    </select>
+                    <select class="filter-select">
+                        <option>All Types</option>
+                        <option>Cinema</option>
+                        <option>DSLR/Mirrorless</option>
+                        <option>Action</option>
+                    </select>
+                </div>
+                <div class="gear-grid">
+                    <!-- Camera items would be populated here -->
+                </div>
+            </div>
+
+            <!-- Lenses Tab -->
+            <div id="lenses-tab" class="tab-pane">
+                <div class="search-filter-bar">
+                    <div class="search-input-wrapper">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" class="search-input" placeholder="Search lenses...">
+                    </div>
+                    <select class="filter-select">
+                        <option>All Mounts</option>
+                        <option>Canon RF</option>
+                        <option>Sony E</option>
+                        <option>Canon EF</option>
+                    </select>
+                    <select class="filter-select">
+                        <option>All Types</option>
+                        <option>Prime</option>
+                        <option>Zoom</option>
+                        <option>Cinema</option>
+                    </select>
+                </div>
+                <div class="gear-grid">
+                    <!-- Lens items would be populated here -->
+                </div>
+            </div>
+
+            <!-- Audio Tab -->
+            <div id="audio-tab" class="tab-pane">
+                <div class="search-filter-bar">
+                    <div class="search-input-wrapper">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" class="search-input" placeholder="Search audio equipment...">
+                    </div>
+                    <select class="filter-select">
+                        <option>All Types</option>
+                        <option>Wireless Mics</option>
+                        <option>Shotgun Mics</option>
+                        <option>Recorders</option>
+                        <option>Lavalier</option>
+                    </select>
+                </div>
+                <div class="gear-grid">
+                    <!-- Audio items would be populated here -->
+                </div>
+            </div>
+
+            <!-- Lighting Tab -->
+            <div id="lighting-tab" class="tab-pane">
+                <div class="search-filter-bar">
+                    <div class="search-input-wrapper">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" class="search-input" placeholder="Search lighting equipment...">
+                    </div>
+                    <select class="filter-select">
+                        <option>All Types</option>
+                        <option>LED Panels</option>
+                        <option>COB Lights</option>
+                        <option>Softboxes</option>
+                        <option>RGB Lights</option>
+                    </select>
+                </div>
+                <div class="gear-grid">
+                    <!-- Lighting items would be populated here -->
+                </div>
+            </div>
+
+            <!-- Stabilizers Tab -->
+            <div id="stabilizers-tab" class="tab-pane">
+                <div class="search-filter-bar">
+                    <div class="search-input-wrapper">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" class="search-input" placeholder="Search stabilizers...">
+                    </div>
+                    <select class="filter-select">
+                        <option>All Types</option>
+                        <option>Gimbals</option>
+                        <option>Steadicams</option>
+                        <option>Sliders</option>
+                        <option>Tripods</option>
+                    </select>
+                </div>
+                <div class="gear-grid">
+                    <!-- Stabilizer items would be populated here -->
+                </div>
+            </div>
+
+            <!-- Drones Tab -->
+            <div id="drones-tab" class="tab-pane">
+                <div class="search-filter-bar">
+                    <div class="search-input-wrapper">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" class="search-input" placeholder="Search drones...">
+                    </div>
+                    <select class="filter-select">
+                        <option>All Types</option>
+                        <option>Cinema Drones</option>
+                        <option>FPV Drones</option>
+                        <option>Consumer Drones</option>
+                    </select>
+                </div>
+                <div class="empty-state">
+                    <div class="empty-icon">🚁</div>
+                    <div class="empty-title">8 Drones in Inventory</div>
+                    <div class="empty-message">3 Available • 4 In Use • 1 Maintenance</div>
+                </div>
+            </div>
+
+            <!-- Storage Tab -->
+            <div id="storage-tab" class="tab-pane">
+                <div class="search-filter-bar">
+                    <div class="search-input-wrapper">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" class="search-input" placeholder="Search storage media...">
+                    </div>
+                    <select class="filter-select">
+                        <option>All Types</option>
+                        <option>CFexpress</option>
+                        <option>SD Cards</option>
+                        <option>SSDs</option>
+                        <option>Hard Drives</option>
+                    </select>
+                </div>
+                <div class="gear-grid">
+                    <!-- Storage items would be populated here -->
+                </div>
+            </div>
+
+            <!-- Accessories Tab -->
+            <div id="accessories-tab" class="tab-pane">
+                <div class="search-filter-bar">
+                    <div class="search-input-wrapper">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" class="search-input" placeholder="Search accessories...">
+                    </div>
+                    <select class="filter-select">
+                        <option>All Types</option>
+                        <option>Batteries</option>
+                        <option>Cables</option>
+                        <option>Cases</option>
+                        <option>Filters</option>
+                        <option>Monitors</option>
+                    </select>
+                </div>
+                <div class="gear-grid">
+                    <!-- Accessory items would be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Microphone FAB -->
+<button class="microphone-fab" onclick="toggleVoiceControl(this)">🎤</button>
+
+<script>
+    // Tab switching
+    function switchTab(tabName) {
+        // Update tab buttons
+        document.querySelectorAll('.category-tab').forEach(tab => {
+            tab.classList.remove('active');
+        });
+        event.target.closest('.category-tab').classList.add('active');
+
+        // Update tab content
+        document.querySelectorAll('.tab-pane').forEach(pane => {
+            pane.classList.remove('active');
+        });
+
+        // Handle the tab name mapping
+        let paneId = tabName;
+        if (tabName === 'all') {
+            paneId = 'all';
+        }
+
+        const targetPane = document.getElementById(`${paneId}-tab`);
+        if (targetPane) {
+            targetPane.classList.add('active');
+        }
+
+        console.log('Switched to tab:', tabName);
+    }
+
+    // View switching
+    document.querySelectorAll('.view-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            console.log('Switched to view:', this.title);
+        });
+    });
+
+    // Actions
+    function exportInventory() {
+        console.log('Exporting inventory data');
+    }
+
+    function addGear() {
+        console.log('Opening add gear modal');
+    }
+
+    // Voice control
+    function toggleVoiceControl(button) {
+        button.classList.toggle('listening');
+        if (button.classList.contains('listening')) {
+            console.log('Voice control activated');
+        } else {
+            console.log('Voice control deactivated');
+        }
+    }
+
+    // Gear card actions
+    document.querySelectorAll('.gear-action-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            console.log('Action clicked:', this.textContent);
+        });
+    });
+
+    // Gear card clicks
+    document.querySelectorAll('.gear-card').forEach(card => {
+        card.addEventListener('click', function(e) {
+            if (!e.target.classList.contains('gear-action-btn')) {
+                console.log('Opening gear details modal');
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

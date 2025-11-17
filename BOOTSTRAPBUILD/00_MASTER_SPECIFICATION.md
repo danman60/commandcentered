@@ -46,33 +46,91 @@ CommandCentered is a **command-and-control system** for StreamStage videography 
 
 ### Customization Features
 
-#### 1. **Dashboard Cards - Drag/Drop/Resize**
+#### 1. **Dashboard Cards - Moveable/Resizeable/Removable (REQUIRED)**
 **Technology:** React Grid Layout library
+
+**Critical Requirements:**
+1. **MOVEABLE** - Click and drag cards anywhere on dashboard to reposition
+2. **RESIZEABLE** - Click and drag corners/edges to resize width and height
+3. **REMOVABLE** - Click "X" button on any card to instantly hide/remove
 
 ```typescript
 interface DashboardWidget {
   id: string;
   type: 'event_pipeline' | 'annual_revenue' | 'upcoming_events' | 'critical_alerts';
-  position: { x: number; y: number };
-  size: { w: number; h: number };
-  visible: boolean;
+  position: { x: number; y: number };    // Grid position (moveable)
+  size: { w: number; h: number };        // Grid size (resizeable)
+  visible: boolean;                       // Can be hidden (removable)
 }
 
 // User preferences stored in database
 interface UserPreferences {
   user_id: string;
-  dashboard_layout: DashboardWidget[];
+  dashboard_layout: DashboardWidget[];   // Persists move/resize/remove state
   // ... other preferences
 }
 ```
 
-**Features:**
-- Click and drag cards to reposition
-- Click and resize cards (corners/edges)
-- Save layout preferences to database
-- Restore layout on login
-- "Reset to Default" option
-- **Small "X" button** on each widget to hide (saves preference, can re-enable in Settings)
+**Interaction Specifications:**
+
+**MOVE (Drag to Reposition):**
+- **Trigger:** Click and hold anywhere on card (except X button, except interactive elements)
+- **Visual Feedback:**
+  - Card becomes semi-transparent (opacity: 0.8)
+  - Cursor changes to grab/grabbing
+  - Other cards shift to show available drop position
+  - Drop target highlights with cyan border
+- **Behavior:**
+  - Cards snap to 12-column grid
+  - Other widgets automatically reflow around dragged card
+  - Save new position to database on drop
+- **Cancel:** Press Escape or drag outside dashboard area
+
+**RESIZE (Drag Corners/Edges):**
+- **Trigger:** Hover over card corner or edge → cursor changes to resize icon → click and drag
+- **Resize Handles:**
+  - 4 corners (diagonal resize)
+  - 4 edges (horizontal/vertical resize)
+  - Minimum size: 3 grid columns wide, 2 grid rows tall
+  - Maximum size: 12 grid columns wide (full width), 8 grid rows tall
+- **Visual Feedback:**
+  - Resize handles appear on hover (8px × 8px squares at corners)
+  - Live preview as user drags (outline shows final size)
+  - Cursor changes to resize arrows (↔️ ↕️ ↘️)
+- **Behavior:**
+  - Other widgets automatically reflow around resized card
+  - Save new size to database on release
+  - Maintains aspect ratio constraints for certain widgets (e.g., annual revenue progress bar)
+
+**REMOVE (Click X to Hide):**
+- **Trigger:** Click small "X" button in top-right corner of card
+- **Button Specs:**
+  - Size: 24px × 24px clickable area
+  - Icon: × (multiplication sign, NOT letter X)
+  - Color: Red (#ef4444) background with white × icon
+  - Opacity: 0 (hidden) by default, opacity: 1 on card hover
+  - Position: Absolute, top: 12px, right: 12px
+  - Border-radius: 6px
+  - Hover state: Brighter red (#dc2626), slight scale (1.1)
+- **Visual Feedback:**
+  - Confirmation toast: "Widget hidden. Restore in Settings or Customize Dashboard."
+  - Card fades out (0.2s opacity transition)
+  - Other cards immediately reflow to fill space
+- **Behavior:**
+  - Sets widget.visible = false in database
+  - Widget can be restored via "Customize Dashboard" modal (checkbox)
+  - Does NOT delete widget permanently
+  - Maintains position/size preferences for when re-enabled
+
+**Persistence:**
+- All moves, resizes, and removes save to database immediately (no "Save" button)
+- Layout restored on next login
+- "Reset to Default" button in Settings reverts to original 6-widget layout
+
+**Performance:**
+- Smooth 60fps animations during drag/resize
+- Debounce database saves (wait 500ms after drag stops before saving)
+- Optimistic UI updates (instant visual feedback, async save)
 
 **Widget Customization Modal:**
 - **"Customize Dashboard" button** in dashboard header
