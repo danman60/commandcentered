@@ -167,48 +167,8 @@ export default function PlanningPage() {
           </div>
         </div>
 
-        {/* Kits Panel */}
-        <div className="w-1/5 min-w-[240px] bg-slate-900/60 backdrop-blur-md border-r border-purple-500/20 flex flex-col">
-          <div className="flex-shrink-0 px-5 py-4 bg-slate-950/80 border-b border-purple-500/20 flex justify-between items-center">
-            <span className="text-base font-semibold text-slate-200">Kits</span>
-            <div className="flex gap-2">
-              <button className="w-8 h-8 rounded-md bg-purple-500/10 border border-purple-500/20 text-purple-400 hover:bg-purple-500/20 hover:border-purple-500 transition-all text-sm">
-                🔍
-              </button>
-              <button
-                onClick={() => setIsKitModalOpen(true)}
-                className="w-8 h-8 rounded-md bg-purple-500/10 border border-purple-500/20 text-purple-400 hover:bg-purple-500/20 hover:border-purple-500 transition-all text-lg font-bold"
-              >
-                +
-              </button>
-            </div>
-          </div>
-          <div className="flex-1 overflow-y-auto p-4 space-y-3">
-            {kits?.map((kit: any) => (
-              <div
-                key={kit.id}
-                className="bg-slate-800/60 border border-purple-500/20 rounded-lg p-3 hover:border-purple-500 hover:translate-x-1 transition-all cursor-move relative group"
-                draggable
-              >
-                <span className="absolute left-1 top-1/2 -translate-y-1/2 text-slate-600 text-xs opacity-0 group-hover:opacity-100 transition-opacity">
-                  ⋮⋮
-                </span>
-                <div className="font-bold text-sm text-slate-200 mb-1">
-                  📷 {kit.name}
-                </div>
-                <div className="text-xs text-slate-400 mb-1">
-                  {kit.gearIds.length} items
-                </div>
-                <div className="text-xs text-green-400 flex items-center gap-1">
-                  ✓ Available
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
         {/* Calendar Panel */}
-        <div className="flex-1 bg-slate-900/60 backdrop-blur-md flex flex-col min-w-[600px]">
+        <div className="flex-1 bg-slate-900/60 backdrop-blur-md border-r border-cyan-500/20 flex flex-col min-w-[600px]">
           <div className="flex-shrink-0 px-5 py-4 bg-slate-950/80 border-b border-cyan-500/20">
             <span className="text-base font-semibold text-slate-200">
               {getMonthName()} Calendar
@@ -284,6 +244,46 @@ export default function PlanningPage() {
                 );
               })}
             </div>
+          </div>
+        </div>
+
+        {/* Kits Panel */}
+        <div className="w-1/5 min-w-[240px] bg-slate-900/60 backdrop-blur-md border-r border-purple-500/20 flex flex-col">
+          <div className="flex-shrink-0 px-5 py-4 bg-slate-950/80 border-b border-purple-500/20 flex justify-between items-center">
+            <span className="text-base font-semibold text-slate-200">Kits</span>
+            <div className="flex gap-2">
+              <button className="w-8 h-8 rounded-md bg-purple-500/10 border border-purple-500/20 text-purple-400 hover:bg-purple-500/20 hover:border-purple-500 transition-all text-sm">
+                🔍
+              </button>
+              <button
+                onClick={() => setIsKitModalOpen(true)}
+                className="w-8 h-8 rounded-md bg-purple-500/10 border border-purple-500/20 text-purple-400 hover:bg-purple-500/20 hover:border-purple-500 transition-all text-lg font-bold"
+              >
+                +
+              </button>
+            </div>
+          </div>
+          <div className="flex-1 overflow-y-auto p-4 space-y-3">
+            {kits?.map((kit: any) => (
+              <div
+                key={kit.id}
+                className="bg-slate-800/60 border border-purple-500/20 rounded-lg p-3 hover:border-purple-500 hover:translate-x-1 transition-all cursor-move relative group"
+                draggable
+              >
+                <span className="absolute left-1 top-1/2 -translate-y-1/2 text-slate-600 text-xs opacity-0 group-hover:opacity-100 transition-opacity">
+                  ⋮⋮
+                </span>
+                <div className="font-bold text-sm text-slate-200 mb-1">
+                  📷 {kit.name}
+                </div>
+                <div className="text-xs text-slate-400 mb-1">
+                  {kit.gearIds.length} items
+                </div>
+                <div className="text-xs text-green-400 flex items-center gap-1">
+                  ✓ Available
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
