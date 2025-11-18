@@ -41,7 +41,7 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
     revenue: Number(campaignData.revenue),
   };
 
-  const emailSteps = campaignData.steps.map((step) => ({
+  const emailSteps = campaignData.steps.map((step: any) => ({
     step: step.stepNumber,
     name: step.stepName,
     subject: step.subject,
@@ -51,7 +51,7 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
     replied: step.repliedCount,
   }));
 
-  const leads = campaignData.campaignLeads.map((cl) => ({
+  const leads = campaignData.campaignLeads.map((cl: any) => ({
     id: cl.lead.id,
     name: cl.lead.organization || cl.lead.contactName || 'Unknown',
     email: cl.lead.email,
