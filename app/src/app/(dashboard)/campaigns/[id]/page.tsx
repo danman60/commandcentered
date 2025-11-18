@@ -3,79 +3,76 @@
 import { use } from 'react';
 import { useState } from 'react';
 import Link from 'next/link';
+import { trpc } from '@/lib/trpc/client';
 
 export default function CampaignDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const [activeTab, setActiveTab] = useState<'overview' | 'leads' | 'emails' | 'settings'>('overview');
 
-  // Mock campaign data
+  // Fetch campaign data from backend
+  const { data: campaignData, isLoading } = trpc.campaign.getById.useQuery({ id });
+
+  if (isLoading) {
+    return <div className="flex items-center justify-center h-full">Loading...</div>;
+  }
+
+  if (!campaignData) {
+    return <div className="flex items-center justify-center h-full">Campaign not found</div>;
+  }
+
+  // Transform data for UI
   const campaign = {
-    id,
-    name: 'Spring Recital 2025 Outreach',
-    status: 'ACTIVE',
-    createdAt: 'Nov 10, 2025',
-    progress: 45,
-    sent: 127,
-    total: 180,
-    opened: 89,
-    replied: 12,
-    opportunities: 3,
-    revenue: 8400,
+    id: campaignData.id,
+    name: campaignData.name,
+    status: campaignData.status,
+    createdAt: new Date(campaignData.createdAt).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    }),
+    progress: campaignData.totalLeads > 0
+      ? Math.round((campaignData.sentCount / campaignData.totalLeads) * 100)
+      : 0,
+    sent: campaignData.sentCount,
+    total: campaignData.totalLeads,
+    opened: campaignData.openedCount,
+    replied: campaignData.repliedCount,
+    opportunities: 0, // TODO: Calculate from leads
+    revenue: Number(campaignData.revenue),
   };
 
-  const emailSteps = [
-    {
-      step: 1,
-      name: 'Initial Outreach',
-      subject: 'Capture Your Recital with Professional Video',
-      delay: '0 days',
-      sent: 127,
-      opened: 89,
-      replied: 12,
-    },
-    {
-      step: 2,
-      name: 'Follow-up',
-      subject: 'Re: Video Services for Your Event',
-      delay: '3 days',
-      sent: 78,
-      opened: 52,
-      replied: 8,
-    },
-    {
-      step: 3,
-      name: 'Final Reminder',
-      subject: 'Last Chance: Spring Recital Filming',
-      delay: '7 days',
-      sent: 45,
-      opened: 31,
-      replied: 5,
-    },
-  ];
+  const emailSteps = campaignData.steps.map((step) => ({
+    step: step.stepNumber,
+    name: step.stepName,
+    subject: step.subject,
+    delay: `${step.delayDays} day${step.delayDays !== 1 ? 's' : ''}`,
+    sent: step.sentCount,
+    opened: step.openedCount,
+    replied: step.repliedCount,
+  }));
 
-  const leads = [
-    {
-      id: '1',
-      name: 'Woodstock School of Dance',
-      email: 'info@woodstockdance.com',
-      status: 'REPLIED',
-      lastSent: '2 hours ago',
-    },
-    {
-      id: '2',
-      name: 'EMPWR Dance Experience',
-      email: 'empwrdance@gmail.com',
-      status: 'OPENED',
-      lastSent: '1 day ago',
-    },
-    {
-      id: '3',
-      name: 'Grand River Dance Company',
-      email: 'info@grandriverdance.com',
-      status: 'SENT',
-      lastSent: '3 days ago',
-    },
-  ];
+  const leads = campaignData.campaignLeads.map((cl) => ({
+    id: cl.lead.id,
+    name: cl.lead.organization || cl.lead.contactName || 'Unknown',
+    email: cl.lead.email,
+    status: cl.status,
+    lastSent: cl.lastSentAt
+      ? formatRelativeTime(new Date(cl.lastSentAt))
+      : 'Not sent',
+  }));
+
+  function formatRelativeTime(date: Date): string {
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+    const diffDays = Math.floor(diffMs / 86400000);
+
+    if (diffMins < 60) return `${diffMins} min${diffMins !== 1 ? 's' : ''} ago`;
+    if (diffHours < 24) return `${diffHours} hour${diffHours !== 1 ? 's' : ''} ago`;
+    if (diffDays < 7) return `${diffDays} day${diffDays !== 1 ? 's' : ''} ago`;
+    return `${Math.floor(diffDays / 7)} week${Math.floor(diffDays / 7) !== 1 ? 's' : ''} ago`;
+  }
 
   return (
     <div className="flex flex-col h-full bg-gray-50">

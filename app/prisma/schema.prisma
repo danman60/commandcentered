@@ -87,6 +87,9 @@ model Tenant {
   automatedEmailConfigs        AutomatedEmailConfig[] // Round 6 - GAP-12
   savedLeadSearches            SavedLeadSearch[] // Phase 12 - Lead Finder
   leadSourceConfigs            LeadSourceConfig[] // Phase 12 - Lead Finder
+  campaigns                    Campaign[] // Phase 13 - Email Campaigns
+  campaignSteps                CampaignStep[] // Phase 13 - Email Campaigns
+  campaignLeads                CampaignLead[] // Phase 13 - Email Campaigns
 
   @@map("tenants")
   @@schema("commandcentered")
@@ -1232,6 +1235,7 @@ model Lead {
   clients                  Client[]
   leadProducts             LeadProduct[] // Round 6 - GAP-10
   communicationTouchpoints CommunicationTouchpoint[] // Round 6 - GAP-11
+  campaignLeads            CampaignLead[] // Phase 13 - Email Campaigns
 
   @@index([tenantId])
   @@index([status])
@@ -2395,5 +2399,118 @@ model LeadSourceConfig {
   @@index([tenantId])
   @@index([isActive])
   @@map("lead_source_configs")
+  @@schema("commandcentered")
+}
+
+// ============================================
+// PHASE 13: EMAIL CAMPAIGNS (3 tables)
+// BUILD_PROTOCOL - Mailgun Integration
+// ============================================
+
+// Campaign - Email marketing campaigns
+model Campaign {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  tenantId String @map("tenant_id") @db.Uuid
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Restrict)
+
+  name         String          @db.VarChar(255)
+  status       CampaignStatus  @default(DRAFT)
+  totalLeads   Int             @default(0) @map("total_leads")
+  sentCount    Int             @default(0) @map("sent_count")
+  openedCount  Int             @default(0) @map("opened_count")
+  repliedCount Int             @default(0) @map("replied_count")
+  revenue      Decimal         @default(0) @map("revenue") @db.Decimal(10, 2)
+  lastSentAt   DateTime?       @map("last_sent_at")
+
+  // Relations
+  steps         CampaignStep[]
+  campaignLeads CampaignLead[]
+
+  @@index([tenantId])
+  @@index([status])
+  @@map("campaigns")
+  @@schema("commandcentered")
+}
+
+enum CampaignStatus {
+  DRAFT     @map("draft")
+  ACTIVE    @map("active")
+  PAUSED    @map("paused")
+  COMPLETED @map("completed")
+
+  @@map("campaign_status")
+  @@schema("commandcentered")
+}
+
+// Campaign Step - Individual emails in a campaign sequence
+model CampaignStep {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  tenantId String @map("tenant_id") @db.Uuid
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Restrict)
+
+  campaignId String   @map("campaign_id") @db.Uuid
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  stepNumber   Int     @map("step_number") // 1, 2, 3, etc.
+  stepName     String  @map("step_name") @db.VarChar(100) // "Initial Outreach", "Follow-up"
+  subject      String  @db.VarChar(255)
+  bodyTemplate String  @map("body_template") @db.Text // HTML template with {{placeholders}}
+  delayDays    Int     @default(0) @map("delay_days") // Days to wait after previous step
+  sentCount    Int     @default(0) @map("sent_count")
+  openedCount  Int     @default(0) @map("opened_count")
+  repliedCount Int     @default(0) @map("replied_count")
+
+  @@index([tenantId])
+  @@index([campaignId])
+  @@map("campaign_steps")
+  @@schema("commandcentered")
+}
+
+// Campaign Lead - Join table linking campaigns to leads with tracking
+model CampaignLead {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  tenantId String @map("tenant_id") @db.Uuid
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Restrict)
+
+  campaignId String   @map("campaign_id") @db.Uuid
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  leadId String @map("lead_id") @db.Uuid
+  lead   Lead   @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  status          CampaignLeadStatus @default(PENDING)
+  currentStep     Int                @default(1) @map("current_step")
+  lastSentAt      DateTime?          @map("last_sent_at")
+  lastOpenedAt    DateTime?          @map("last_opened_at")
+  repliedAt       DateTime?          @map("replied_at")
+  unsubscribedAt  DateTime?          @map("unsubscribed_at")
+  opportunityValue Decimal?          @map("opportunity_value") @db.Decimal(10, 2)
+
+  @@unique([campaignId, leadId])
+  @@index([tenantId])
+  @@index([campaignId])
+  @@index([leadId])
+  @@index([status])
+  @@map("campaign_leads")
+  @@schema("commandcentered")
+}
+
+enum CampaignLeadStatus {
+  PENDING      @map("pending")
+  SENT         @map("sent")
+  OPENED       @map("opened")
+  REPLIED      @map("replied")
+  UNSUBSCRIBED @map("unsubscribed")
+
+  @@map("campaign_lead_status")
   @@schema("commandcentered")
 }

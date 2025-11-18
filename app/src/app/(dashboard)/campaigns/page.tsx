@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { trpc } from '@/lib/trpc/client';
 
 type CampaignStatus = 'ACTIVE' | 'PAUSED' | 'DRAFT' | 'COMPLETED';
 
@@ -26,65 +27,42 @@ export default function CampaignsPage() {
   const [sortBy, setSortBy] = useState('newest');
   const [selectedCampaigns, setSelectedCampaigns] = useState<string[]>([]);
 
-  // Mock data for demonstration
-  const campaigns: Campaign[] = [
-    {
-      id: '1',
-      name: 'Spring Recital 2025 Outreach',
-      createdAt: 'Nov 10',
-      lastSentAt: '2 hours ago',
-      status: 'ACTIVE',
-      progress: 45,
-      sent: 127,
-      total: 180,
-      opened: 89,
-      replied: 12,
-      opportunities: 3,
-      revenue: 8400,
-    },
-    {
-      id: '2',
-      name: 'Summer Camp Services',
-      createdAt: 'Nov 5',
-      lastSentAt: '3 days ago',
-      status: 'PAUSED',
-      progress: 18,
-      sent: 43,
-      total: 240,
-      opened: 31,
-      replied: 5,
-      opportunities: 1,
-      revenue: 2800,
-    },
-    {
-      id: '3',
-      name: 'Competition Season Announcement',
-      createdAt: 'Oct 28',
-      lastSentAt: '1 week ago',
-      status: 'COMPLETED',
-      progress: 100,
-      sent: 156,
-      total: 156,
-      opened: 134,
-      replied: 23,
-      opportunities: 7,
-      revenue: 18200,
-    },
-    {
-      id: '4',
-      name: 'Holiday Event Specials',
-      createdAt: 'Oct 15',
-      lastSentAt: 'Never',
-      status: 'DRAFT',
-      progress: 0,
-      sent: 0,
-      total: 200,
-      opened: 0,
-      replied: 0,
-      opportunities: 0,
-      revenue: 0,
-    },
-  ];
+  // Fetch campaigns from backend
+  const { data: campaignsData = [], isLoading } = trpc.campaign.list.useQuery({
+    status: statusFilter !== 'all' ? (statusFilter.toUpperCase() as any) : undefined,
+    search: searchQuery || undefined,
+  });
+
+  // Transform backend data to match UI format
+  const campaigns: Campaign[] = campaignsData.map((c) => ({
+    id: c.id,
+    name: c.name,
+    createdAt: new Date(c.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+    lastSentAt: c.lastSentAt
+      ? formatRelativeTime(new Date(c.lastSentAt))
+      : 'Never',
+    status: c.status as CampaignStatus,
+    progress: c.totalLeads > 0 ? Math.round((c.sentCount / c.totalLeads) * 100) : 0,
+    sent: c.sentCount,
+    total: c.totalLeads,
+    opened: c.openedCount,
+    replied: c.repliedCount,
+    opportunities: 0, // TODO: Calculate from campaign leads with opportunityValue
+    revenue: Number(c.revenue),
+  }));
+
+  function formatRelativeTime(date: Date): string {
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+    const diffDays = Math.floor(diffMs / 86400000);
+
+    if (diffMins < 60) return `${diffMins} min${diffMins !== 1 ? 's' : ''} ago`;
+    if (diffHours < 24) return `${diffHours} hour${diffHours !== 1 ? 's' : ''} ago`;
+    if (diffDays < 7) return `${diffDays} day${diffDays !== 1 ? 's' : ''} ago`;
+    return `${Math.floor(diffDays / 7)} week${Math.floor(diffDays / 7) !== 1 ? 's' : ''} ago`;
+  }
 
   const handleCampaignSelect = (campaignId: string) => {
     setSelectedCampaigns((prev) =>
