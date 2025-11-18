@@ -90,12 +90,203 @@ export const gearRouter = router({
       return ctx.prisma.gear.update({ where: { id: input.id }, data: { status: input.status } });
     }),
 
-  trackLocation: tenantProcedure
-    .input(z.object({ id: z.string().uuid(), location: z.string() }))
-    .mutation(async ({ ctx, input }) => {
-      const gear = await ctx.prisma.gear.findFirst({ where: { id: input.id, tenantId: ctx.tenantId } });
+  /**
+   * Get gear by category
+   */
+  getByCategory: tenantProcedure
+    .input(
+      z.object({
+        category: z.enum([
+          'CAMERA',
+          'LENS',
+          'AUDIO',
+          'COMPUTER',
+          'RIGGING',
+          'CABLE',
+          'LIGHTING',
+          'ACCESSORIES',
+          'STABILIZERS',
+          'DRONES',
+          'MONITORS',
+          'OTHER',
+        ]),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      return ctx.prisma.gear.findMany({
+        where: {
+          tenantId: ctx.tenantId,
+          category: input.category,
+        },
+        orderBy: { name: 'asc' },
+      });
+    }),
+
+  /**
+   * Get available gear (status = AVAILABLE)
+   */
+  getAvailable: tenantProcedure
+    .input(
+      z
+        .object({
+          category: z
+            .enum([
+              'CAMERA',
+              'LENS',
+              'AUDIO',
+              'COMPUTER',
+              'RIGGING',
+              'CABLE',
+              'LIGHTING',
+              'ACCESSORIES',
+              'STABILIZERS',
+              'DRONES',
+              'MONITORS',
+              'OTHER',
+            ])
+            .optional(),
+        })
+        .optional()
+    )
+    .query(async ({ ctx, input }) => {
+      return ctx.prisma.gear.findMany({
+        where: {
+          tenantId: ctx.tenantId,
+          status: 'AVAILABLE',
+          ...(input?.category && { category: input.category }),
+        },
+        orderBy: { name: 'asc' },
+      });
+    }),
+
+  /**
+   * Get gear utilization - show current assignments
+   */
+  getUtilization: tenantProcedure
+    .input(
+      z.object({
+        id: z.string().uuid(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const gear = await ctx.prisma.gear.findFirst({
+        where: { id: input.id, tenantId: ctx.tenantId },
+      });
+
       if (!gear) throw new Error('Gear not found');
-      // TODO: Add currentLocation field to Gear model
-      throw new Error('Location tracking not yet implemented');
+
+      // Get current assignments (events that haven't ended yet)
+      const currentAssignments = await ctx.prisma.gearAssignment.findMany({
+        where: {
+          gearId: input.id,
+          tenantId: ctx.tenantId,
+          event: {
+            loadOutTime: {
+              gte: new Date(), // Current or future events
+            },
+          },
+        },
+        include: {
+          event: {
+            select: {
+              id: true,
+              eventName: true,
+              eventType: true,
+              loadInTime: true,
+              loadOutTime: true,
+              venueName: true,
+            },
+          },
+          shift: {
+            select: {
+              id: true,
+              shiftName: true,
+              startTime: true,
+              endTime: true,
+            },
+          },
+        },
+        orderBy: {
+          event: {
+            loadInTime: 'asc',
+          },
+        },
+      });
+
+      return {
+        gear,
+        currentAssignments,
+        isAvailable: currentAssignments.length === 0 && gear.status === 'AVAILABLE',
+      };
+    }),
+
+  /**
+   * Get gear assignment history
+   */
+  getHistory: tenantProcedure
+    .input(
+      z.object({
+        id: z.string().uuid(),
+        limit: z.number().optional(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const gear = await ctx.prisma.gear.findFirst({
+        where: { id: input.id, tenantId: ctx.tenantId },
+      });
+
+      if (!gear) throw new Error('Gear not found');
+
+      // Get past assignments
+      const assignments = await ctx.prisma.gearAssignment.findMany({
+        where: {
+          gearId: input.id,
+          tenantId: ctx.tenantId,
+        },
+        include: {
+          event: {
+            select: {
+              id: true,
+              eventName: true,
+              eventType: true,
+              loadInTime: true,
+              loadOutTime: true,
+              clientName: true,
+            },
+          },
+          shift: {
+            select: {
+              id: true,
+              shiftName: true,
+              startTime: true,
+              endTime: true,
+            },
+          },
+        },
+        orderBy: {
+          event: {
+            loadInTime: 'desc',
+          },
+        },
+        take: input.limit || 50,
+      });
+
+      // Get movement history
+      const movements = await ctx.prisma.gearMovementHistory.findMany({
+        where: {
+          gearId: input.id,
+          tenantId: ctx.tenantId,
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+        take: input.limit || 50,
+      });
+
+      return {
+        gear,
+        assignments,
+        movements,
+      };
     }),
 });

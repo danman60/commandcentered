@@ -92,7 +92,7 @@ export default function PlanningPage() {
                     {event.shifts.length > 0 && (
                       <span>
                         {event.shifts.reduce(
-                          (acc, shift) => acc + shift.shiftAssignments.length,
+                          (acc, shift) => acc + shift._count.shiftAssignments,
                           0
                         )}{' '}
                         operators assigned

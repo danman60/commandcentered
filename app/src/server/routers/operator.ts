@@ -2,12 +2,12 @@ import { z } from 'zod';
 import { router, tenantProcedure } from '../trpc';
 
 /**
- * Operator Router - 6 procedures
+ * Operator Router - 12 procedures
  *
  * Manages operators (freelance videographers/crew):
  * - Create/update/list operators
- * - Manage availability
- * - Track skills and equipment
+ * - Manage availability and blackout dates
+ * - Track skills and assignment history
  */
 export const operatorRouter = router({
   /**
@@ -209,6 +209,255 @@ export const operatorRouter = router({
           date: input.date,
         },
         orderBy: { date: 'asc' },
+      });
+    }),
+
+  /**
+   * Get operator's assignment history
+   */
+  getAssignmentHistory: tenantProcedure
+    .input(
+      z.object({
+        operatorId: z.string().uuid(),
+        limit: z.number().optional(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      // Verify operator belongs to tenant
+      const operator = await ctx.prisma.operator.findFirst({
+        where: {
+          id: input.operatorId,
+          tenantId: ctx.tenantId,
+        },
+      });
+
+      if (!operator) {
+        throw new Error('Operator not found');
+      }
+
+      return ctx.prisma.shiftAssignment.findMany({
+        where: {
+          operatorId: input.operatorId,
+          tenantId: ctx.tenantId,
+          shift: {
+            endTime: {
+              lt: new Date(), // Only past shifts
+            },
+          },
+        },
+        include: {
+          shift: {
+            include: {
+              event: {
+                select: {
+                  id: true,
+                  eventName: true,
+                  eventType: true,
+                  clientName: true,
+                },
+              },
+            },
+          },
+        },
+        orderBy: {
+          shift: {
+            startTime: 'desc',
+          },
+        },
+        take: input.limit || 50,
+      });
+    }),
+
+  /**
+   * Get operator's upcoming assignments
+   */
+  getUpcomingAssignments: tenantProcedure
+    .input(
+      z.object({
+        operatorId: z.string().uuid(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      // Verify operator belongs to tenant
+      const operator = await ctx.prisma.operator.findFirst({
+        where: {
+          id: input.operatorId,
+          tenantId: ctx.tenantId,
+        },
+      });
+
+      if (!operator) {
+        throw new Error('Operator not found');
+      }
+
+      return ctx.prisma.shiftAssignment.findMany({
+        where: {
+          operatorId: input.operatorId,
+          tenantId: ctx.tenantId,
+          shift: {
+            startTime: {
+              gte: new Date(), // Only future shifts
+            },
+          },
+        },
+        include: {
+          shift: {
+            include: {
+              event: {
+                select: {
+                  id: true,
+                  eventName: true,
+                  eventType: true,
+                  clientName: true,
+                  venueName: true,
+                  venueAddress: true,
+                },
+              },
+            },
+          },
+        },
+        orderBy: {
+          shift: {
+            startTime: 'asc',
+          },
+        },
+      });
+    }),
+
+  /**
+   * Update operator skills
+   */
+  updateSkills: tenantProcedure
+    .input(
+      z.object({
+        operatorId: z.string().uuid(),
+        skills: z.array(
+          z.object({
+            skillDefinitionId: z.string().uuid(),
+            skillLevel: z.number().min(1).max(10),
+          })
+        ),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      // Verify operator belongs to tenant
+      const operator = await ctx.prisma.operator.findFirst({
+        where: {
+          id: input.operatorId,
+          tenantId: ctx.tenantId,
+        },
+      });
+
+      if (!operator) {
+        throw new Error('Operator not found');
+      }
+
+      // Delete existing skills and create new ones
+      await ctx.prisma.operatorSkill.deleteMany({
+        where: {
+          operatorId: input.operatorId,
+          tenantId: ctx.tenantId,
+        },
+      });
+
+      // Create new skills
+      const createdSkills = await ctx.prisma.$transaction(
+        input.skills.map((skill) =>
+          ctx.prisma.operatorSkill.create({
+            data: {
+              tenantId: ctx.tenantId,
+              operatorId: input.operatorId,
+              skillDefinitionId: skill.skillDefinitionId,
+              skillLevel: skill.skillLevel,
+            },
+          })
+        )
+      );
+
+      return createdSkills;
+    }),
+
+  /**
+   * Add blackout dates for operator
+   */
+  addBlackoutDate: tenantProcedure
+    .input(
+      z.object({
+        operatorId: z.string().uuid(),
+        startDate: z.date(),
+        endDate: z.date(),
+        reason: z.string().optional(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      // Verify operator belongs to tenant
+      const operator = await ctx.prisma.operator.findFirst({
+        where: {
+          id: input.operatorId,
+          tenantId: ctx.tenantId,
+        },
+      });
+
+      if (!operator) {
+        throw new Error('Operator not found');
+      }
+
+      return ctx.prisma.operatorBlackoutDate.create({
+        data: {
+          tenantId: ctx.tenantId,
+          operatorId: input.operatorId,
+          startDate: input.startDate,
+          endDate: input.endDate,
+          reason: input.reason,
+        },
+      });
+    }),
+
+  /**
+   * Get operator blackout dates
+   */
+  getBlackoutDates: tenantProcedure
+    .input(
+      z.object({
+        operatorId: z.string().uuid(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      return ctx.prisma.operatorBlackoutDate.findMany({
+        where: {
+          operatorId: input.operatorId,
+          tenantId: ctx.tenantId,
+        },
+        orderBy: {
+          startDate: 'asc',
+        },
+      });
+    }),
+
+  /**
+   * Delete blackout date
+   */
+  deleteBlackoutDate: tenantProcedure
+    .input(
+      z.object({
+        id: z.string().uuid(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      // Verify blackout belongs to tenant
+      const blackout = await ctx.prisma.operatorBlackoutDate.findFirst({
+        where: {
+          id: input.id,
+          tenantId: ctx.tenantId,
+        },
+      });
+
+      if (!blackout) {
+        throw new Error('Blackout date not found');
+      }
+
+      return ctx.prisma.operatorBlackoutDate.delete({
+        where: { id: input.id },
       });
     }),
 });
