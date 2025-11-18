@@ -16,9 +16,10 @@ import { userRouter } from './user';
 import { gearAssignmentRouter } from './gearAssignment';
 import { contractRouter } from './contract';
 import { proposalRouter } from './proposal';
+import { leadFinderRouter } from './leadFinder';
 
 /**
- * Main tRPC router - 17 routers, ~130 procedures
+ * Main tRPC router - 18 routers, ~137 procedures
  *
  * All routers enforce multi-tenant isolation via tenantProcedure
  */
@@ -40,6 +41,7 @@ export const appRouter = router({
   gearAssignment: gearAssignmentRouter, // 4 procedures
   contract: contractRouter, // 6 procedures
   proposal: proposalRouter, // 7 procedures
+  leadFinder: leadFinderRouter, // 7 procedures (Phase 12)
 });
 
 export type AppRouter = typeof appRouter;

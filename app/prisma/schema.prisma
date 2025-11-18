@@ -85,6 +85,8 @@ model Tenant {
   gearDependencies             GearDependency[] // Round 6 - GAP-07
   eventTypeGearRecommendations EventTypeGearRecommendation[] // Round 6 - GAP-06
   automatedEmailConfigs        AutomatedEmailConfig[] // Round 6 - GAP-12
+  savedLeadSearches            SavedLeadSearch[] // Phase 12 - Lead Finder
+  leadSourceConfigs            LeadSourceConfig[] // Phase 12 - Lead Finder
 
   @@map("tenants")
   @@schema("commandcentered")
@@ -108,6 +110,7 @@ model UserProfile {
   alertPreferences           AlertPreference[]
   clientNotesCreated         ClientNote[]
   dashboardWidgetPreferences DashboardWidgetPreference[] // Round 6 - GAP-09
+  savedLeadSearches          SavedLeadSearch[] // Phase 12 - Lead Finder
 
   @@unique([tenantId, email])
   @@index([tenantId])
@@ -2340,5 +2343,57 @@ enum AutomatedEmailType {
   THANK_YOU_FEEDBACK     @map("thank_you_feedback")
 
   @@map("automated_email_type")
+  @@schema("commandcentered")
+}
+
+// ============================================
+// PHASE 12: LEAD FINDER (2 tables)
+// BUILD_PROTOCOL - Apollo.io Integration
+// ============================================
+
+// Saved Lead Searches - User's saved search criteria for Lead Finder
+model SavedLeadSearch {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  tenantId String @map("tenant_id") @db.Uuid
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Restrict)
+
+  userId String      @map("user_id") @db.Uuid
+  user   UserProfile @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  searchName    String @map("search_name") @db.VarChar(100)
+  searchCriteria Json  @map("search_criteria") @db.JsonB // {businessTypes, location, keywords, employees, revenue, etc.}
+  resultCount   Int    @default(0) @map("result_count")
+  lastRunAt     DateTime? @map("last_run_at")
+
+  @@index([tenantId])
+  @@index([userId])
+  @@map("saved_lead_searches")
+  @@schema("commandcentered")
+}
+
+// Lead Source Configuration - API credentials and settings for external lead sources
+model LeadSourceConfig {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  tenantId String @map("tenant_id") @db.Uuid
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Restrict)
+
+  sourceName      String  @map("source_name") @db.VarChar(50) // "Apollo.io", "ZoomInfo", "Hunter.io", etc.
+  apiKey          String? @db.VarChar(255) // Encrypted API key
+  apiSecret       String? @map("api_secret") @db.VarChar(255) // Encrypted secret if needed
+  configJson      Json?   @map("config_json") @db.JsonB // Additional configuration
+  isActive        Boolean @default(false) @map("is_active")
+  lastSyncAt      DateTime? @map("last_sync_at")
+  totalLeadsFetched Int    @default(0) @map("total_leads_fetched")
+
+  @@unique([tenantId, sourceName])
+  @@index([tenantId])
+  @@index([isActive])
+  @@map("lead_source_configs")
   @@schema("commandcentered")
 }

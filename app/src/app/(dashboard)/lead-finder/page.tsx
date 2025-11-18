@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { trpc } from '@/lib/trpc/client';
 
 type BusinessType = 'dance-studio' | 'dance-school' | 'performing-arts' | 'event-venue' | 'k12-school';
 
@@ -34,40 +35,27 @@ export default function LeadFinderPage() {
   const [aiSearchQuery, setAiSearchQuery] = useState('');
   const [selectedLeads, setSelectedLeads] = useState<string[]>([]);
 
-  // Mock data for demonstration
-  const leadResults: LeadResult[] = [
-    {
-      id: '1',
-      name: 'Woodstock School of Dance & Yoga',
-      location: 'Woodstock, ON',
-      website: 'woodstockdanceyoga.com',
-      email: 'info@woodstockdanceyoga.com',
-      employees: '10-50 employees',
-      revenue: 'Est. $100K-500K',
-      tags: ['Dance Studio', 'Yoga', 'Performing Arts'],
-    },
-    {
-      id: '2',
-      name: 'EMPWR Dance Experience',
-      location: 'Guelph, ON',
-      website: 'empwrdance.com',
-      email: 'empwrdance@gmail.com',
-      employees: '10-50 employees',
-      revenue: 'Est. $100K-500K',
-      tags: ['Dance Studio', 'Competitions', 'Training'],
-    },
-    {
-      id: '3',
-      name: 'Grand River Dance Company',
-      location: 'Cambridge, ON',
-      website: 'grandriverdance.com',
-      email: 'info@grandriverdance.com',
-      employees: '10-50 employees',
-      revenue: 'Est. $50K-250K',
-      tags: ['Dance School', 'Performance Company'],
-    },
-  ];
+  // Fetch lead search results from backend
+  const { data: leadResults = [], isLoading: isSearching } = trpc.leadFinder.search.useQuery({
+    location,
+    keywords,
+    minEmployees,
+    maxEmployees,
+    minRevenue,
+    maxRevenue,
+    hasWebsite,
+    skipExisting,
+  });
 
+  // Export leads to CRM mutation
+  const exportMutation = trpc.leadFinder.exportToCRM.useMutation({
+    onSuccess: () => {
+      alert('Leads exported to CRM successfully!');
+      setSelectedLeads([]);
+    },
+  });
+
+  // Saved searches (placeholder - will be implemented with backend)
   const savedSearches = [
     { name: 'Ontario Dance Studios', count: 47 },
     { name: 'GTA Schools', count: 103 },
@@ -107,11 +95,34 @@ export default function LeadFinderPage() {
   };
 
   const handleSearch = () => {
-    alert('Search functionality will be connected to Apollo.io API');
+    // Search is automatic via tRPC useQuery - filters update automatically
   };
 
   const handleAISearch = () => {
-    alert(`AI Search: "${aiSearchQuery}" - Will be connected to Apollo.io API`);
+    // AI Search placeholder - will be implemented with Apollo.io API
+    alert(`AI Search: "${aiSearchQuery}" - Feature coming soon`);
+  };
+
+  const handleExportToCRM = (selectedOnly: boolean = false) => {
+    const leadsToExport = selectedOnly
+      ? leadResults.filter((lead) => selectedLeads.includes(lead.id))
+      : leadResults;
+
+    if (leadsToExport.length === 0) {
+      alert('No leads selected');
+      return;
+    }
+
+    exportMutation.mutate({
+      leads: leadsToExport.map((lead) => ({
+        name: lead.name,
+        email: lead.email,
+        location: lead.location,
+        website: lead.website,
+        tags: lead.tags,
+      })),
+      source: 'Apollo.io',
+    });
   };
 
   return (
@@ -394,14 +405,30 @@ export default function LeadFinderPage() {
           {/* Results Header */}
           <div className="flex justify-between items-center mb-4 pb-4 border-b border-slate-700/30">
             <div className="text-sm text-slate-400">
-              <strong className="text-slate-100 font-semibold">{leadResults.length} results</strong> found
+              {isSearching ? (
+                <span>Searching...</span>
+              ) : (
+                <>
+                  <strong className="text-slate-100 font-semibold">{leadResults.length} results</strong> found
+                  {selectedLeads.length > 0 && (
+                    <span className="ml-2">({selectedLeads.length} selected)</span>
+                  )}
+                </>
+              )}
             </div>
             <div className="flex gap-2">
-              <button className="px-4 py-2 bg-slate-700/30 text-slate-300 border border-slate-700/50 rounded-lg text-sm font-medium hover:bg-slate-700/50 transition-all">
+              <button
+                onClick={() => alert('CSV export feature coming soon')}
+                className="px-4 py-2 bg-slate-700/30 text-slate-300 border border-slate-700/50 rounded-lg text-sm font-medium hover:bg-slate-700/50 transition-all"
+              >
                 Export CSV
               </button>
-              <button className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg text-sm font-semibold hover:shadow-lg hover:shadow-cyan-500/30 transition-all">
-                + Add to Campaign
+              <button
+                onClick={() => handleExportToCRM(true)}
+                disabled={selectedLeads.length === 0 || exportMutation.isPending}
+                className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg text-sm font-semibold hover:shadow-lg hover:shadow-cyan-500/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {exportMutation.isPending ? 'Adding...' : `+ Add Selected to CRM (${selectedLeads.length})`}
               </button>
             </div>
           </div>
@@ -445,11 +472,21 @@ export default function LeadFinderPage() {
               </div>
 
               <div className="flex gap-2">
-                <button className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg text-sm font-medium hover:shadow-lg hover:shadow-cyan-500/30 transition-all">
+                <button
+                  onClick={() => alert('Campaign feature coming in Phase 13')}
+                  className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg text-sm font-medium hover:shadow-lg hover:shadow-cyan-500/30 transition-all"
+                >
                   Add to Campaign
                 </button>
-                <button className="px-4 py-2 bg-slate-700/30 text-slate-300 border border-slate-700/50 rounded-lg text-sm font-medium hover:bg-slate-700/50 transition-all">
-                  Add to CRM
+                <button
+                  onClick={() => {
+                    setSelectedLeads([lead.id]);
+                    handleExportToCRM(true);
+                  }}
+                  disabled={exportMutation.isPending}
+                  className="px-4 py-2 bg-slate-700/30 text-slate-300 border border-slate-700/50 rounded-lg text-sm font-medium hover:bg-slate-700/50 transition-all disabled:opacity-50"
+                >
+                  {exportMutation.isPending ? 'Adding...' : 'Add to CRM'}
                 </button>
                 <button className="px-4 py-2 bg-slate-700/30 text-slate-300 border border-slate-700/50 rounded-lg text-sm font-medium hover:bg-slate-700/50 transition-all">
                   View Details
