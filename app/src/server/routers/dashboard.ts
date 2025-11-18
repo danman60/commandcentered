@@ -61,7 +61,7 @@ export const dashboardRouter = router({
         where: { tenantId: ctx.tenantId, loadInTime: { gte: new Date() } },
         orderBy: { loadInTime: 'asc' },
         take: input.limit,
-        include: { client: true, _count: { select: { shifts: true } } },
+        include: { _count: { select: { shifts: true } } },
       });
     }),
 });

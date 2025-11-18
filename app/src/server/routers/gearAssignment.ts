@@ -31,6 +31,7 @@ export const gearAssignmentRouter = router({
 
       return ctx.prisma.gearAssignment.create({
         data: {
+          tenantId: ctx.tenantId,
           gearId: input.gearId,
           eventId: input.eventId,
           kitId: input.kitId,

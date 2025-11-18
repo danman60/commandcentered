@@ -29,8 +29,7 @@ export const operatorRouter = router({
           tenantId: ctx.tenantId,
           ...(input?.search && {
             OR: [
-              { firstName: { contains: input.search, mode: 'insensitive' } },
-              { lastName: { contains: input.search, mode: 'insensitive' } },
+              { name: { contains: input.search, mode: 'insensitive' } },
               { email: { contains: input.search, mode: 'insensitive' } },
             ],
           }),
@@ -45,7 +44,7 @@ export const operatorRouter = router({
             },
           },
         },
-        orderBy: { firstName: 'asc' },
+        orderBy: { name: 'asc' },
       });
     }),
 
@@ -67,7 +66,6 @@ export const operatorRouter = router({
         include: {
           skills: true,
           availability: true,
-          personalGear: true,
           shiftAssignments: {
             include: {
               shift: {
@@ -98,12 +96,11 @@ export const operatorRouter = router({
   create: tenantProcedure
     .input(
       z.object({
-        firstName: z.string().min(1),
-        lastName: z.string().min(1),
+        name: z.string().min(1),
         email: z.string().email(),
         phone: z.string().optional(),
         primaryRole: z.string().optional(),
-        hourlyRate: z.number().optional(),
+        hourlyRate: z.number(),
         bio: z.string().optional(),
         portfolioUrl: z.string().url().optional(),
       })
@@ -124,8 +121,7 @@ export const operatorRouter = router({
     .input(
       z.object({
         id: z.string().uuid(),
-        firstName: z.string().min(1).optional(),
-        lastName: z.string().min(1).optional(),
+        name: z.string().min(1).optional(),
         email: z.string().email().optional(),
         phone: z.string().optional(),
         primaryRole: z.string().optional(),
@@ -162,12 +158,11 @@ export const operatorRouter = router({
     .input(
       z.object({
         operatorId: z.string().uuid(),
-        startDate: z.date(),
-        endDate: z.date(),
-        availabilityType: z.enum(['AVAILABLE', 'UNAVAILABLE', 'PARTIAL']),
+        date: z.date(),
+        availableType: z.enum(['AVAILABLE', 'UNAVAILABLE', 'PARTIAL']),
         startTime: z.date().optional(),
         endTime: z.date().optional(),
-        reason: z.string().optional(),
+        notes: z.string().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -185,13 +180,13 @@ export const operatorRouter = router({
 
       return ctx.prisma.operatorAvailability.create({
         data: {
+          tenantId: ctx.tenantId,
           operatorId: input.operatorId,
-          startDate: input.startDate,
-          endDate: input.endDate,
-          availabilityType: input.availabilityType,
+          date: input.date,
+          availableType: input.availableType,
           startTime: input.startTime,
           endTime: input.endTime,
-          reason: input.reason,
+          notes: input.notes,
         },
       });
     }),
@@ -203,8 +198,7 @@ export const operatorRouter = router({
     .input(
       z.object({
         operatorId: z.string().uuid(),
-        startDate: z.date(),
-        endDate: z.date(),
+        date: z.date(),
       })
     )
     .query(async ({ ctx, input }) => {
@@ -212,22 +206,9 @@ export const operatorRouter = router({
         where: {
           operatorId: input.operatorId,
           operator: { tenantId: ctx.tenantId },
-          OR: [
-            {
-              startDate: {
-                gte: input.startDate,
-                lte: input.endDate,
-              },
-            },
-            {
-              endDate: {
-                gte: input.startDate,
-                lte: input.endDate,
-              },
-            },
-          ],
+          date: input.date,
         },
-        orderBy: { startDate: 'asc' },
+        orderBy: { date: 'asc' },
       });
     }),
 });

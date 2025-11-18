@@ -19,8 +19,6 @@ export const leadRouter = router({
           ...(input?.search && { companyName: { contains: input.search, mode: 'insensitive' } }),
         },
         include: {
-          products: true,
-          touchpoints: true,
         },
         orderBy: { lastContactedAt: 'desc' },
       });
@@ -32,8 +30,6 @@ export const leadRouter = router({
       return ctx.prisma.lead.findFirst({
         where: { id: input.id, tenantId: ctx.tenantId },
         include: {
-          products: true,
-          touchpoints: { orderBy: { touchpointDate: 'desc' } },
         },
       });
     }),

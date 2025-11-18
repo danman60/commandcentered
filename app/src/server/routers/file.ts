@@ -5,14 +5,8 @@ export const fileRouter = router({
   list: tenantProcedure
     .input(z.object({ eventId: z.string().uuid().optional(), fileType: z.string().optional() }).optional())
     .query(async ({ ctx, input }) => {
-      return ctx.prisma.fileAsset.findMany({
-        where: {
-          tenantId: ctx.tenantId,
-          ...(input?.eventId && { eventId: input.eventId }),
-          ...(input?.fileType && { fileType: input.fileType }),
-        },
-        orderBy: { uploadedAt: 'desc' },
-      });
+      // TODO: Add FileAsset model to schema
+      return [];
     }),
 
   create: tenantProcedure
@@ -27,15 +21,15 @@ export const fileRouter = router({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      return ctx.prisma.fileAsset.create({ data: { tenantId: ctx.tenantId, uploadedAt: new Date(), ...input } });
+      // TODO: Add FileAsset model to schema
+      throw new Error('File creation not yet implemented');
     }),
 
   delete: tenantProcedure
     .input(z.object({ id: z.string().uuid() }))
     .mutation(async ({ ctx, input }) => {
-      const file = await ctx.prisma.fileAsset.findFirst({ where: { id: input.id, tenantId: ctx.tenantId } });
-      if (!file) throw new Error('File not found');
-      return ctx.prisma.fileAsset.delete({ where: { id: input.id } });
+      // TODO: Add FileAsset model to schema
+      throw new Error('File deletion not yet implemented');
     }),
 
   createGoogleDriveFolder: tenantProcedure

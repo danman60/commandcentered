@@ -6,8 +6,8 @@ export const gearRouter = router({
     .input(
       z
         .object({
-          category: z.string().optional(),
-          status: z.enum(['AVAILABLE', 'IN_USE', 'MAINTENANCE']).optional(),
+          category: z.enum(['CAMERA', 'LENS', 'AUDIO', 'COMPUTER', 'RIGGING', 'CABLE', 'LIGHTING', 'ACCESSORIES', 'STABILIZERS', 'DRONES', 'MONITORS', 'OTHER']).optional(),
+          status: z.enum(['AVAILABLE', 'IN_USE', 'NEEDS_REPAIR', 'IN_REPAIR', 'RETIRED', 'UNAVAILABLE', 'OUT_OF_SERVICE']).optional(),
           search: z.string().optional(),
         })
         .optional()
@@ -20,16 +20,12 @@ export const gearRouter = router({
           ...(input?.status && { status: input.status }),
           ...(input?.search && {
             OR: [
-              { gearName: { contains: input.search, mode: 'insensitive' } },
+              { name: { contains: input.search, mode: 'insensitive' } },
               { serialNumber: { contains: input.search, mode: 'insensitive' } },
             ],
           }),
         },
-        include: {
-          currentEvent: true,
-          _count: { select: { gearAssignments: true } },
-        },
-        orderBy: { gearName: 'asc' },
+        orderBy: { name: 'asc' },
       });
     }),
 
@@ -38,18 +34,15 @@ export const gearRouter = router({
     .query(async ({ ctx, input }) => {
       return ctx.prisma.gear.findFirst({
         where: { id: input.id, tenantId: ctx.tenantId },
-        include: {
-          currentEvent: true,
-          gearAssignments: { include: { event: true, kit: true }, orderBy: { createdAt: 'desc' }, take: 10 },
-        },
       });
     }),
 
   create: tenantProcedure
     .input(
       z.object({
-        gearName: z.string().min(1),
-        category: z.string(),
+        name: z.string().min(1),
+        category: z.enum(['CAMERA', 'LENS', 'AUDIO', 'COMPUTER', 'RIGGING', 'CABLE', 'LIGHTING', 'ACCESSORIES', 'STABILIZERS', 'DRONES', 'MONITORS', 'OTHER']),
+        type: z.string(),
         manufacturer: z.string().optional(),
         model: z.string().optional(),
         serialNumber: z.string().optional(),
@@ -68,8 +61,8 @@ export const gearRouter = router({
     .input(
       z.object({
         id: z.string().uuid(),
-        gearName: z.string().min(1).optional(),
-        status: z.enum(['AVAILABLE', 'IN_USE', 'MAINTENANCE']).optional(),
+        name: z.string().min(1).optional(),
+        status: z.enum(['AVAILABLE', 'IN_USE', 'NEEDS_REPAIR', 'IN_REPAIR', 'RETIRED', 'UNAVAILABLE', 'OUT_OF_SERVICE']).optional(),
         serialNumber: z.string().optional(),
         notes: z.string().optional(),
       })
@@ -90,7 +83,7 @@ export const gearRouter = router({
     }),
 
   updateStatus: tenantProcedure
-    .input(z.object({ id: z.string().uuid(), status: z.enum(['AVAILABLE', 'IN_USE', 'MAINTENANCE']) }))
+    .input(z.object({ id: z.string().uuid(), status: z.enum(['AVAILABLE', 'IN_USE', 'NEEDS_REPAIR', 'IN_REPAIR', 'RETIRED', 'UNAVAILABLE', 'OUT_OF_SERVICE']) }))
     .mutation(async ({ ctx, input }) => {
       const gear = await ctx.prisma.gear.findFirst({ where: { id: input.id, tenantId: ctx.tenantId } });
       if (!gear) throw new Error('Gear not found');
@@ -102,6 +95,7 @@ export const gearRouter = router({
     .mutation(async ({ ctx, input }) => {
       const gear = await ctx.prisma.gear.findFirst({ where: { id: input.id, tenantId: ctx.tenantId } });
       if (!gear) throw new Error('Gear not found');
-      return ctx.prisma.gear.update({ where: { id: input.id }, data: { currentLocation: input.location } });
+      // TODO: Add currentLocation field to Gear model
+      throw new Error('Location tracking not yet implemented');
     }),
 });

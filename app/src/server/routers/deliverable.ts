@@ -3,7 +3,7 @@ import { router, tenantProcedure } from '../trpc';
 
 export const deliverableRouter = router({
   list: tenantProcedure
-    .input(z.object({ eventId: z.string().uuid().optional(), status: z.string().optional() }).optional())
+    .input(z.object({ eventId: z.string().uuid().optional(), status: z.enum(['NOT_STARTED', 'IN_PROGRESS', 'IN_REVIEW', 'DELIVERED', 'CANCELLED']).optional() }).optional())
     .query(async ({ ctx, input }) => {
       return ctx.prisma.deliverable.findMany({
         where: {
@@ -11,7 +11,7 @@ export const deliverableRouter = router({
           ...(input?.eventId && { eventId: input.eventId }),
           ...(input?.status && { status: input.status }),
         },
-        include: { event: { include: { client: true } }, assignedEditor: true },
+        include: { event: true, assignedEditor: true },
         orderBy: { dueDate: 'asc' },
       });
     }),
@@ -21,7 +21,7 @@ export const deliverableRouter = router({
     .query(async ({ ctx, input }) => {
       return ctx.prisma.deliverable.findFirst({
         where: { id: input.id, tenantId: ctx.tenantId },
-        include: { event: { include: { client: true } }, assignedEditor: true },
+        include: { event: true, assignedEditor: true },
       });
     }),
 
@@ -30,21 +30,21 @@ export const deliverableRouter = router({
       z.object({
         eventId: z.string().uuid(),
         deliverableType: z.string(),
+        deliverableName: z.string(),
         dueDate: z.date(),
         assignedEditorId: z.string().uuid().optional(),
-        googleDriveUrl: z.string().url().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
       const event = await ctx.prisma.event.findFirst({ where: { id: input.eventId, tenantId: ctx.tenantId } });
       if (!event) throw new Error('Event not found');
       return ctx.prisma.deliverable.create({
-        data: { tenantId: ctx.tenantId, status: 'PENDING', ...input },
+        data: { tenantId: ctx.tenantId, status: 'NOT_STARTED', ...input },
       });
     }),
 
   updateStatus: tenantProcedure
-    .input(z.object({ id: z.string().uuid(), status: z.enum(['PENDING', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED']) }))
+    .input(z.object({ id: z.string().uuid(), status: z.enum(['NOT_STARTED', 'IN_PROGRESS', 'IN_REVIEW', 'DELIVERED', 'CANCELLED']) }))
     .mutation(async ({ ctx, input }) => {
       const deliverable = await ctx.prisma.deliverable.findFirst({ where: { id: input.id, tenantId: ctx.tenantId } });
       if (!deliverable) throw new Error('Deliverable not found');
@@ -58,13 +58,5 @@ export const deliverableRouter = router({
       const editor = await ctx.prisma.operator.findFirst({ where: { id: input.editorId, tenantId: ctx.tenantId } });
       if (!deliverable || !editor) throw new Error('Deliverable or editor not found');
       return ctx.prisma.deliverable.update({ where: { id: input.id }, data: { assignedEditorId: input.editorId } });
-    }),
-
-  updateGoogleDriveUrl: tenantProcedure
-    .input(z.object({ id: z.string().uuid(), url: z.string().url() }))
-    .mutation(async ({ ctx, input }) => {
-      const deliverable = await ctx.prisma.deliverable.findFirst({ where: { id: input.id, tenantId: ctx.tenantId } });
-      if (!deliverable) throw new Error('Deliverable not found');
-      return ctx.prisma.deliverable.update({ where: { id: input.id }, data: { googleDriveUrl: input.url } });
     }),
 });
