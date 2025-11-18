@@ -1,0 +1,390 @@
+'use client';
+
+import { trpc } from '@/lib/trpc/client';
+import { useState } from 'react';
+
+export default function FilesPage() {
+  const [activeTab, setActiveTab] = useState<'documents' | 'contracts' | 'proposals' | 'livestreams' | 'service-library'>('documents');
+  const [selectedServices, setSelectedServices] = useState<string[]>(['multi-camera', 'highlight-reel']);
+
+  // Mock data for demonstration (backend integration TODO)
+  const documents = [
+    { id: '1', icon: '📄', name: 'EMPWR_Contract_2025.pdf', size: '2.3 MB', date: 'Nov 10, 2025' },
+    { id: '2', icon: '📊', name: 'Glow_Proposal.pdf', size: '1.8 MB', date: 'Nov 8, 2025' },
+    { id: '3', icon: '📄', name: 'ABC_Questionnaire.pdf', size: '512 KB', date: 'Nov 5, 2025' },
+    { id: '4', icon: '📄', name: 'Event_Schedule.xlsx', size: '1.2 MB', date: 'Nov 3, 2025' },
+  ];
+
+  const contracts = [
+    { id: '1', name: 'EMPWR Dance Contract 2025', client: 'EMPWR Dance', status: 'signed', date: 'Nov 10, 2025' },
+    { id: '2', name: 'Glow Competition Agreement', client: 'Glow Dance', status: 'sent', date: 'Nov 8, 2025' },
+    { id: '3', name: 'ABC Studio Contract', client: 'ABC Dance', status: 'draft', date: 'Nov 5, 2025' },
+  ];
+
+  const proposals = [
+    { id: '1', name: 'EMPWR_Proposal_2025.pdf', amount: '$8,500', status: 'Sent Nov 10' },
+    { id: '2', name: 'Glow_Proposal_Dec.pdf', amount: '$6,200', status: 'Sent Nov 8' },
+    { id: '3', name: 'ABC_Studio_Proposal.pdf', amount: '$5,500', status: 'Draft' },
+  ];
+
+  const livestreams = [
+    {
+      id: '1',
+      title: 'EMPWR Dance Experience - Dec 6',
+      streamKey: 'live-abc123',
+      rtmpUrl: 'rtmp://vimeo.com/live',
+      embedCode: '<iframe src="...">',
+    },
+    {
+      id: '2',
+      title: 'Glow Dance Competition - Dec 10',
+      streamKey: 'live-xyz789',
+      rtmpUrl: 'rtmp://vimeo.com/live',
+      embedCode: '<iframe src="...">',
+    },
+  ];
+
+  const services = [
+    { id: 'multi-camera', name: 'Multi-Camera Coverage', description: 'Professional 3-camera setup with switching', price: 2500 },
+    { id: 'highlight-reel', name: 'Highlight Reel', description: '3-5 minute edited highlight video', price: 800 },
+    { id: 'livestream', name: 'Livestream', description: 'Live streaming to Vimeo or YouTube', price: 1200 },
+    { id: 'raw-footage', name: 'Raw Footage Delivery', description: 'All raw footage via Google Drive', price: 400 },
+  ];
+
+  const serviceLibraryTemplates = [
+    { id: '1', name: 'Dance Recital Package', description: 'Multi-camera setup, livestream, 3-min highlight reel, full event video', price: '$8,500' },
+    { id: '2', name: 'Competition Coverage', description: 'Full competition recording, awards ceremony, livestream archive', price: '$6,200' },
+    { id: '3', name: 'Corporate Event', description: 'Professional coverage, interviews, B-roll, highlight package', price: '$4,500' },
+    { id: '4', name: 'Content Capture Day', description: '8-hour shoot, multiple setups, raw footage + 3-5 reels', price: '$3,800' },
+    { id: '5', name: 'Wedding Video', description: 'Full day coverage, ceremony + reception, 10-min highlight film', price: '$5,500' },
+    { id: '6', name: 'Livestream Only', description: 'Single-camera livestream setup, no editing or deliverables', price: '$1,800' },
+  ];
+
+  const toggleService = (serviceId: string) => {
+    setSelectedServices(prev =>
+      prev.includes(serviceId) ? prev.filter(id => id !== serviceId) : [...prev, serviceId]
+    );
+  };
+
+  const calculateTotal = () => {
+    return services
+      .filter(s => selectedServices.includes(s.id))
+      .reduce((sum, s) => sum + s.price, 0);
+  };
+
+  return (
+    <div className="flex flex-col h-full bg-gray-50">
+      {/* Header */}
+      <div className="bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border-b border-cyan-500/30 px-8 py-6">
+        <div className="flex justify-between items-center">
+          <div className="flex items-center gap-4">
+            <div className="text-4xl">📄</div>
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-500 to-purple-600 bg-clip-text text-transparent">
+              Files & Assets
+            </h1>
+          </div>
+          <div className="flex gap-3">
+            <button className="px-5 py-3 bg-slate-700/30 text-slate-300 border border-slate-700/50 rounded-lg font-semibold hover:bg-slate-700/50 transition-all">
+              📁 Open Google Drive
+            </button>
+            <button className="px-5 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg font-semibold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/40 hover:-translate-y-0.5 transition-all">
+              ⬆️ Upload File
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="flex-1 overflow-y-auto px-8 py-8">
+        {/* Tabs */}
+        <div className="flex gap-2 mb-6 border-b border-slate-700/30">
+          <button
+            onClick={() => setActiveTab('documents')}
+            className={`px-6 py-3 font-medium transition-all ${
+              activeTab === 'documents'
+                ? 'text-cyan-500 border-b-2 border-cyan-500'
+                : 'text-slate-400 hover:text-slate-300'
+            }`}
+          >
+            📄 Documents
+          </button>
+          <button
+            onClick={() => setActiveTab('contracts')}
+            className={`px-6 py-3 font-medium transition-all ${
+              activeTab === 'contracts'
+                ? 'text-cyan-500 border-b-2 border-cyan-500'
+                : 'text-slate-400 hover:text-slate-300'
+            }`}
+          >
+            📝 Contracts
+          </button>
+          <button
+            onClick={() => setActiveTab('proposals')}
+            className={`px-6 py-3 font-medium transition-all ${
+              activeTab === 'proposals'
+                ? 'text-cyan-500 border-b-2 border-cyan-500'
+                : 'text-slate-400 hover:text-slate-300'
+            }`}
+          >
+            💼 Proposals
+          </button>
+          <button
+            onClick={() => setActiveTab('livestreams')}
+            className={`px-6 py-3 font-medium transition-all ${
+              activeTab === 'livestreams'
+                ? 'text-cyan-500 border-b-2 border-cyan-500'
+                : 'text-slate-400 hover:text-slate-300'
+            }`}
+          >
+            📡 Livestreams
+          </button>
+          <button
+            onClick={() => setActiveTab('service-library')}
+            className={`px-6 py-3 font-medium transition-all ${
+              activeTab === 'service-library'
+                ? 'text-cyan-500 border-b-2 border-cyan-500'
+                : 'text-slate-400 hover:text-slate-300'
+            }`}
+          >
+            📚 Service Library
+          </button>
+        </div>
+
+        {/* Tab 1: Documents */}
+        {activeTab === 'documents' && (
+          <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6">
+            <h2 className="text-xl font-semibold text-cyan-500 mb-5">📁 Recent Documents</h2>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {documents.map((doc) => (
+                <div
+                  key={doc.id}
+                  className="bg-slate-900/60 border border-slate-700/50 rounded-lg p-4 cursor-pointer hover:border-cyan-500/60 hover:-translate-y-1 transition-all"
+                >
+                  <div className="text-5xl text-center mb-3">{doc.icon}</div>
+                  <div className="text-sm font-semibold text-slate-100 mb-1 truncate">{doc.name}</div>
+                  <div className="text-xs text-slate-500">{doc.size} • {doc.date}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Tab 2: Contracts */}
+        {activeTab === 'contracts' && (
+          <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6">
+            <h2 className="text-xl font-semibold text-cyan-500 mb-5">📝 Client Contracts</h2>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-slate-900/80">
+                  <tr>
+                    <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
+                      Contract Name
+                    </th>
+                    <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
+                      Client
+                    </th>
+                    <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
+                      Status
+                    </th>
+                    <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
+                      Date
+                    </th>
+                    <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {contracts.map((contract) => (
+                    <tr
+                      key={contract.id}
+                      className="border-b border-slate-700/20 hover:bg-cyan-500/5 transition-colors cursor-pointer"
+                    >
+                      <td className="px-5 py-4 text-sm text-slate-300">{contract.name}</td>
+                      <td className="px-5 py-4 text-sm text-slate-300">{contract.client}</td>
+                      <td className="px-5 py-4 text-sm">
+                        <span
+                          className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${
+                            contract.status === 'signed'
+                              ? 'bg-green-500/20 text-green-500'
+                              : contract.status === 'sent'
+                              ? 'bg-orange-500/20 text-orange-500'
+                              : 'bg-slate-500/20 text-slate-400'
+                          }`}
+                        >
+                          {contract.status.charAt(0).toUpperCase() + contract.status.slice(1)}
+                        </span>
+                      </td>
+                      <td className="px-5 py-4 text-sm text-slate-300">{contract.date}</td>
+                      <td className="px-5 py-4 text-sm">
+                        <button className="px-4 py-2 bg-slate-700/30 border border-slate-700/50 rounded-md text-slate-300 text-xs hover:bg-slate-700/50 transition-all">
+                          View
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {/* Tab 3: Proposals */}
+        {activeTab === 'proposals' && (
+          <div>
+            {/* Proposal Builder */}
+            <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6 mb-6">
+              <h2 className="text-xl font-semibold text-cyan-500 mb-5">💼 Proposal Builder</h2>
+
+              {/* Steps */}
+              <div className="flex items-center justify-center gap-4 mb-6">
+                <div className="flex flex-col items-center gap-2">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-cyan-600 text-white flex items-center justify-center font-bold">
+                    1
+                  </div>
+                  <div className="text-xs text-cyan-500">Services</div>
+                </div>
+                <div className="text-2xl text-slate-600">→</div>
+                <div className="flex flex-col items-center gap-2">
+                  <div className="w-10 h-10 rounded-full bg-slate-700/50 text-slate-400 flex items-center justify-center font-bold">
+                    2
+                  </div>
+                  <div className="text-xs text-slate-500">Pricing</div>
+                </div>
+                <div className="text-2xl text-slate-600">→</div>
+                <div className="flex flex-col items-center gap-2">
+                  <div className="w-10 h-10 rounded-full bg-slate-700/50 text-slate-400 flex items-center justify-center font-bold">
+                    3
+                  </div>
+                  <div className="text-xs text-slate-500">Review</div>
+                </div>
+              </div>
+
+              {/* Service Selection */}
+              <div className="bg-slate-900/60 p-6 rounded-lg">
+                <h3 className="text-lg text-cyan-500 mb-4">Select Services</h3>
+
+                <div className="flex flex-col gap-3 mb-5">
+                  {services.map((service) => (
+                    <label
+                      key={service.id}
+                      className="flex items-center gap-4 p-4 bg-slate-800/50 border border-slate-700/30 rounded-lg cursor-pointer hover:border-cyan-500/50 transition-all"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selectedServices.includes(service.id)}
+                        onChange={() => toggleService(service.id)}
+                        className="w-5 h-5 cursor-pointer"
+                      />
+                      <div className="flex-1">
+                        <div className="text-base font-semibold text-slate-100 mb-1">{service.name}</div>
+                        <div className="text-sm text-slate-500">{service.description}</div>
+                      </div>
+                      <div className="text-xl font-bold text-slate-100">${service.price.toLocaleString()}</div>
+                    </label>
+                  ))}
+                </div>
+
+                {/* Total */}
+                <div className="flex justify-between items-center p-5 bg-cyan-500/10 rounded-lg mb-6">
+                  <div className="text-lg font-semibold text-slate-400">Estimated Total:</div>
+                  <div className="text-3xl font-bold text-cyan-500">${calculateTotal().toLocaleString()}</div>
+                </div>
+
+                {/* Actions */}
+                <div className="flex gap-3">
+                  <button className="px-5 py-3 bg-slate-700/30 border border-slate-700/50 rounded-lg text-slate-300 font-semibold hover:bg-slate-700/50 transition-all">
+                    ← Previous
+                  </button>
+                  <button className="px-5 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg font-semibold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/40 transition-all">
+                    Next: Pricing →
+                  </button>
+                  <button className="ml-auto px-5 py-3 bg-slate-700/30 border border-slate-700/50 rounded-lg text-slate-300 font-semibold hover:bg-slate-700/50 transition-all">
+                    💾 Save Draft
+                  </button>
+                  <button className="px-5 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg font-semibold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/40 transition-all">
+                    📄 Generate PDF
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Recent Proposals */}
+            <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6">
+              <h2 className="text-xl font-semibold text-cyan-500 mb-5">📋 Recent Proposals</h2>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {proposals.map((proposal) => (
+                  <div
+                    key={proposal.id}
+                    className="bg-slate-900/60 border border-slate-700/50 rounded-lg p-4 cursor-pointer hover:border-cyan-500/60 hover:-translate-y-1 transition-all"
+                  >
+                    <div className="text-5xl text-center mb-3">📊</div>
+                    <div className="text-sm font-semibold text-slate-100 mb-1 truncate">{proposal.name}</div>
+                    <div className="text-xs text-slate-500">{proposal.amount} • {proposal.status}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Tab 4: Livestreams */}
+        {activeTab === 'livestreams' && (
+          <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6">
+            <h2 className="text-xl font-semibold text-cyan-500 mb-5">📡 Vimeo Livestreams</h2>
+            <div className="flex flex-col gap-4">
+              {livestreams.map((stream) => (
+                <div
+                  key={stream.id}
+                  className="bg-slate-900/60 border border-slate-700/50 rounded-lg p-5 flex gap-5 items-center"
+                >
+                  <div className="w-48 h-28 bg-gradient-to-br from-cyan-500 to-purple-600 rounded-lg flex items-center justify-center text-5xl">
+                    🎥
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-base font-bold text-slate-100 mb-2">{stream.title}</h3>
+                    <div className="text-sm text-slate-400 mb-3">
+                      <strong>Stream Key:</strong> {stream.streamKey} • <strong>RTMP URL:</strong> {stream.rtmpUrl}
+                      <br />
+                      <strong>Embed Code:</strong> {stream.embedCode}
+                    </div>
+                    <div className="flex gap-2">
+                      <button className="px-4 py-2 bg-cyan-500/15 border border-cyan-500/30 rounded-md text-cyan-500 text-xs hover:bg-cyan-500/25 transition-all">
+                        📋 Copy Stream Key
+                      </button>
+                      <button className="px-4 py-2 bg-cyan-500/15 border border-cyan-500/30 rounded-md text-cyan-500 text-xs hover:bg-cyan-500/25 transition-all">
+                        🔗 Copy RTMP URL
+                      </button>
+                      <button className="px-4 py-2 bg-cyan-500/15 border border-cyan-500/30 rounded-md text-cyan-500 text-xs hover:bg-cyan-500/25 transition-all">
+                        📺 View on Vimeo
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Tab 5: Service Library */}
+        {activeTab === 'service-library' && (
+          <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6">
+            <h2 className="text-xl font-semibold text-cyan-500 mb-5">📚 Service Templates Library</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+              {serviceLibraryTemplates.map((template) => (
+                <div
+                  key={template.id}
+                  className="bg-slate-900/60 border border-slate-700/50 rounded-lg p-5 cursor-pointer hover:border-cyan-500/60 hover:-translate-y-1 transition-all"
+                >
+                  <h3 className="text-base font-bold text-slate-100 mb-3">{template.name}</h3>
+                  <p className="text-sm text-slate-400 mb-3 leading-relaxed">{template.description}</p>
+                  <div className="text-2xl font-bold text-green-500">{template.price}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
