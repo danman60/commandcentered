@@ -115,16 +115,18 @@ export default function DashboardPage() {
   return (
     <div className="p-8">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-3xl font-bold text-white">Dashboard</h1>
-        <Button
-          variant="secondary"
-          size="medium"
-          onClick={() => setIsCustomizeOpen(true)}
-        >
-          <Settings className="w-4 h-4" />
-          Customize
-        </Button>
+      <div className="bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border-b border-cyan-500/30 -mx-8 px-8 py-6 mb-6">
+        <div className="flex items-center justify-between">
+          <h1 className="text-3xl font-bold text-white">Dashboard</h1>
+          <Button
+            variant="secondary"
+            size="medium"
+            onClick={() => setIsCustomizeOpen(true)}
+          >
+            <Settings className="w-4 h-4" />
+            Customize
+          </Button>
+        </div>
       </div>
 
       {/* Grid Layout */}

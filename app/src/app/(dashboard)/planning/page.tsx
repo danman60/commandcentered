@@ -94,7 +94,7 @@ export default function PlanningPage() {
   return (
     <div className="flex flex-col h-screen bg-gradient-to-br from-slate-900 to-slate-800">
       {/* Top Bar */}
-      <div className="flex-shrink-0 bg-gradient-to-r from-slate-950 to-slate-800 border-b-2 border-cyan-500/30 px-9 py-4 shadow-xl">
+      <div className="flex-shrink-0 bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border-b border-cyan-500/30 px-9 py-4 shadow-xl">
         <div className="flex justify-between items-center">
           <div>
             <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">

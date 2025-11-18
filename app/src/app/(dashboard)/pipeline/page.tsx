@@ -51,19 +51,21 @@ export default function PipelinePage() {
   return (
     <div className="p-8">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-3xl font-bold text-white">Pipeline</h1>
-          <p className="text-gray-400 mt-1">Manage leads and track opportunities</p>
+      <div className="bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border-b border-cyan-500/30 -mx-8 px-8 py-6 mb-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-white">Pipeline</h1>
+            <p className="text-gray-400 mt-1">Manage leads and track opportunities</p>
+          </div>
+          <Button
+            variant="primary"
+            size="medium"
+            onClick={() => setIsNewLeadOpen(true)}
+          >
+            <Plus className="w-4 h-4" />
+            New Lead
+          </Button>
         </div>
-        <Button
-          variant="primary"
-          size="medium"
-          onClick={() => setIsNewLeadOpen(true)}
-        >
-          <Plus className="w-4 h-4" />
-          New Lead
-        </Button>
       </div>
 
       {/* Filters */}
