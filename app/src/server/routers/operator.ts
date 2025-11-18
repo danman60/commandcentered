@@ -159,7 +159,7 @@ export const operatorRouter = router({
       z.object({
         operatorId: z.string().uuid(),
         date: z.date(),
-        availableType: z.enum(['AVAILABLE', 'UNAVAILABLE', 'PARTIAL']),
+        availableType: z.enum(['full_day', 'morning', 'afternoon', 'evening', 'custom']),
         startTime: z.date().optional(),
         endTime: z.date().optional(),
         notes: z.string().optional(),

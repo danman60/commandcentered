@@ -6,7 +6,21 @@ export const leadRouter = router({
     .input(
       z
         .object({
-          status: z.enum(['HOT', 'WARM', 'COLD']).optional(),
+          status: z
+            .enum([
+              'NEW',
+              'CONTACTED',
+              'QUALIFIED',
+              'PROPOSAL_SENT',
+              'PROPOSAL_VIEWED',
+              'ENGAGED',
+              'PROPOSAL_SUBMITTED',
+              'CONTRACT_SENT',
+              'CONVERTED',
+              'LOST',
+            ])
+            .optional(),
+          productName: z.string().optional(),
           search: z.string().optional(),
         })
         .optional()
@@ -15,10 +29,25 @@ export const leadRouter = router({
       return ctx.prisma.lead.findMany({
         where: {
           tenantId: ctx.tenantId,
-          ...(input?.status && { leadStatus: input.status }),
-          ...(input?.search && { companyName: { contains: input.search, mode: 'insensitive' } }),
+          ...(input?.status && { status: input.status }),
+          ...(input?.productName && {
+            leadProducts: {
+              some: {
+                productName: input.productName,
+                isInterested: true,
+              },
+            },
+          }),
+          ...(input?.search && {
+            OR: [
+              { organization: { contains: input.search, mode: 'insensitive' } },
+              { contactName: { contains: input.search, mode: 'insensitive' } },
+              { email: { contains: input.search, mode: 'insensitive' } },
+            ],
+          }),
         },
         include: {
+          leadProducts: true,
         },
         orderBy: { lastContactedAt: 'desc' },
       });
@@ -30,6 +59,12 @@ export const leadRouter = router({
       return ctx.prisma.lead.findFirst({
         where: { id: input.id, tenantId: ctx.tenantId },
         include: {
+          leadProducts: true,
+          notes: true,
+          communicationTouchpoints: {
+            orderBy: { createdAt: 'desc' },
+            take: 10,
+          },
         },
       });
     }),
@@ -37,16 +72,36 @@ export const leadRouter = router({
   create: tenantProcedure
     .input(
       z.object({
-        companyName: z.string().min(1),
+        organization: z.string().min(1),
         contactName: z.string().min(1),
         email: z.string().email(),
         phone: z.string().optional(),
-        leadStatus: z.enum(['HOT', 'WARM', 'COLD']).optional(),
+        status: z
+          .enum([
+            'NEW',
+            'CONTACTED',
+            'QUALIFIED',
+            'PROPOSAL_SENT',
+            'PROPOSAL_VIEWED',
+            'ENGAGED',
+            'PROPOSAL_SUBMITTED',
+            'CONTRACT_SENT',
+            'CONVERTED',
+            'LOST',
+          ])
+          .optional(),
+        source: z.string().optional(),
+        sourceDetails: z.string().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
       return ctx.prisma.lead.create({
-        data: { tenantId: ctx.tenantId, leadStatus: 'WARM', lastContactedAt: new Date(), ...input },
+        data: {
+          tenantId: ctx.tenantId,
+          status: input.status || 'NEW',
+          lastContactedAt: new Date(),
+          ...input,
+        },
       });
     }),
 
@@ -54,11 +109,27 @@ export const leadRouter = router({
     .input(
       z.object({
         id: z.string().uuid(),
-        companyName: z.string().min(1).optional(),
+        organization: z.string().min(1).optional(),
         contactName: z.string().min(1).optional(),
         email: z.string().email().optional(),
         phone: z.string().optional(),
-        leadStatus: z.enum(['HOT', 'WARM', 'COLD']).optional(),
+        status: z
+          .enum([
+            'NEW',
+            'CONTACTED',
+            'QUALIFIED',
+            'PROPOSAL_SENT',
+            'PROPOSAL_VIEWED',
+            'ENGAGED',
+            'PROPOSAL_SUBMITTED',
+            'CONTRACT_SENT',
+            'CONVERTED',
+            'LOST',
+          ])
+          .optional(),
+        statusReason: z.string().optional(),
+        source: z.string().optional(),
+        sourceDetails: z.string().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -66,6 +137,17 @@ export const leadRouter = router({
       const lead = await ctx.prisma.lead.findFirst({ where: { id, tenantId: ctx.tenantId } });
       if (!lead) throw new Error('Lead not found');
       return ctx.prisma.lead.update({ where: { id }, data });
+    }),
+
+  delete: tenantProcedure
+    .input(z.object({ id: z.string().uuid() }))
+    .mutation(async ({ ctx, input }) => {
+      const lead = await ctx.prisma.lead.findFirst({ where: { id: input.id, tenantId: ctx.tenantId } });
+      if (!lead) throw new Error('Lead not found');
+      return ctx.prisma.lead.update({
+        where: { id: input.id },
+        data: { status: 'LOST', statusReason: 'Deleted by user' },
+      });
     }),
 
   updateProduct: tenantProcedure
@@ -101,6 +183,170 @@ export const leadRouter = router({
           notes: input.notes,
         },
       });
+    }),
+
+  getProducts: tenantProcedure
+    .input(z.object({ leadId: z.string().uuid() }))
+    .query(async ({ ctx, input }) => {
+      const lead = await ctx.prisma.lead.findFirst({ where: { id: input.leadId, tenantId: ctx.tenantId } });
+      if (!lead) throw new Error('Lead not found');
+
+      return ctx.prisma.leadProduct.findMany({
+        where: { leadId: input.leadId, tenantId: ctx.tenantId },
+        orderBy: { productName: 'asc' },
+      });
+    }),
+
+  bulkUpdateProducts: tenantProcedure
+    .input(
+      z.object({
+        leadId: z.string().uuid(),
+        products: z.array(
+          z.object({
+            productName: z.string(),
+            isInterested: z.boolean(),
+            status: z.enum(['NOT_INTERESTED', 'DISCUSSING', 'PROPOSAL', 'WON', 'LOST']),
+            revenueAmount: z.number().optional(),
+            notes: z.string().optional(),
+          })
+        ),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const lead = await ctx.prisma.lead.findFirst({ where: { id: input.leadId, tenantId: ctx.tenantId } });
+      if (!lead) throw new Error('Lead not found');
+
+      const updates = input.products.map((product) =>
+        ctx.prisma.leadProduct.upsert({
+          where: { leadId_productName: { leadId: input.leadId, productName: product.productName } },
+          create: {
+            leadId: input.leadId,
+            tenantId: ctx.tenantId,
+            productName: product.productName,
+            isInterested: product.isInterested,
+            status: product.status,
+            revenueAmount: product.revenueAmount,
+            notes: product.notes,
+          },
+          update: {
+            isInterested: product.isInterested,
+            status: product.status,
+            revenueAmount: product.revenueAmount,
+            notes: product.notes,
+          },
+        })
+      );
+
+      return ctx.prisma.$transaction(updates);
+    }),
+
+  updateStage: tenantProcedure
+    .input(
+      z.object({
+        id: z.string().uuid(),
+        status: z.enum([
+          'NEW',
+          'CONTACTED',
+          'QUALIFIED',
+          'PROPOSAL_SENT',
+          'PROPOSAL_VIEWED',
+          'ENGAGED',
+          'PROPOSAL_SUBMITTED',
+          'CONTRACT_SENT',
+          'CONVERTED',
+          'LOST',
+        ]),
+        statusReason: z.string().optional(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { id, ...data } = input;
+      const lead = await ctx.prisma.lead.findFirst({ where: { id, tenantId: ctx.tenantId } });
+      if (!lead) throw new Error('Lead not found');
+      return ctx.prisma.lead.update({ where: { id }, data });
+    }),
+
+  getByStage: tenantProcedure
+    .input(
+      z.object({
+        status: z.enum([
+          'NEW',
+          'CONTACTED',
+          'QUALIFIED',
+          'PROPOSAL_SENT',
+          'PROPOSAL_VIEWED',
+          'ENGAGED',
+          'PROPOSAL_SUBMITTED',
+          'CONTRACT_SENT',
+          'CONVERTED',
+          'LOST',
+        ]),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      return ctx.prisma.lead.findMany({
+        where: {
+          tenantId: ctx.tenantId,
+          status: input.status,
+        },
+        include: {
+          leadProducts: true,
+        },
+        orderBy: { lastContactedAt: 'desc' },
+      });
+    }),
+
+  updateContactInfo: tenantProcedure
+    .input(
+      z.object({
+        id: z.string().uuid(),
+        lastContactedAt: z.date().optional(),
+        nextFollowUpAt: z.date().optional(),
+        typeOfContact: z.string().optional(),
+        contactFrequency: z.string().optional(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { id, ...data } = input;
+      const lead = await ctx.prisma.lead.findFirst({ where: { id, tenantId: ctx.tenantId } });
+      if (!lead) throw new Error('Lead not found');
+      return ctx.prisma.lead.update({ where: { id }, data });
+    }),
+
+  convertToClient: tenantProcedure
+    .input(
+      z.object({
+        leadId: z.string().uuid(),
+        clientData: z.object({
+          organization: z.string().min(1),
+          contactName: z.string().min(1),
+          email: z.string().email(),
+          phone: z.string().optional(),
+        }),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const lead = await ctx.prisma.lead.findFirst({ where: { id: input.leadId, tenantId: ctx.tenantId } });
+      if (!lead) throw new Error('Lead not found');
+
+      const client = await ctx.prisma.client.create({
+        data: {
+          tenantId: ctx.tenantId,
+          leadId: input.leadId,
+          organization: input.clientData.organization,
+          contactName: input.clientData.contactName,
+          email: input.clientData.email,
+          phone: input.clientData.phone,
+          status: 'ACTIVE',
+        },
+      });
+
+      await ctx.prisma.lead.update({
+        where: { id: input.leadId },
+        data: { status: 'CONVERTED' },
+      });
+
+      return client;
     }),
 
   logTouchpoint: tenantProcedure
