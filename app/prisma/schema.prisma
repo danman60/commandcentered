@@ -10,6 +10,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  schemas  = ["commandcentered"]
 }
 
 // ============================================
@@ -86,6 +87,7 @@ model Tenant {
   automatedEmailConfigs        AutomatedEmailConfig[] // Round 6 - GAP-12
 
   @@map("tenants")
+  @@schema("commandcentered")
 }
 
 model UserProfile {
@@ -110,6 +112,7 @@ model UserProfile {
   @@unique([tenantId, email])
   @@index([tenantId])
   @@map("user_profiles")
+  @@schema("commandcentered")
 }
 
 enum UserRole {
@@ -120,6 +123,7 @@ enum UserRole {
   VIEWER
 
   @@map("user_role")
+  @@schema("commandcentered")
 }
 
 // ============================================
@@ -210,6 +214,7 @@ model Event {
   @@index([status])
   @@index([loadInTime])
   @@map("events")
+  @@schema("commandcentered")
 }
 
 enum EventType {
@@ -220,6 +225,7 @@ enum EventType {
   OTHER             @map("other")
 
   @@map("event_type")
+  @@schema("commandcentered")
 }
 
 enum EventStatus {
@@ -236,6 +242,7 @@ enum EventStatus {
   PROPOSAL              @map("proposal") // GAP-01: Calendar status
 
   @@map("event_status")
+  @@schema("commandcentered")
 }
 
 model Shift {
@@ -265,6 +272,7 @@ model Shift {
   @@index([eventId])
   @@index([startTime])
   @@map("shifts")
+  @@schema("commandcentered")
 }
 
 model ShiftAssignment {
@@ -330,6 +338,7 @@ model ShiftAssignment {
   @@index([status])
   @@index([needsRide])
   @@map("shift_assignments")
+  @@schema("commandcentered")
 }
 
 enum OperatorRole {
@@ -340,6 +349,7 @@ enum OperatorRole {
   OTHER        @map("other")
 
   @@map("operator_role")
+  @@schema("commandcentered")
 }
 
 enum PayType {
@@ -347,6 +357,7 @@ enum PayType {
   FLAT   @map("flat")
 
   @@map("pay_type")
+  @@schema("commandcentered")
 }
 
 enum ShiftAssignmentStatus {
@@ -356,6 +367,7 @@ enum ShiftAssignmentStatus {
   CANCELLED @map("cancelled")
 
   @@map("shift_assignment_status")
+  @@schema("commandcentered")
 }
 
 enum ConflictLevel {
@@ -364,6 +376,7 @@ enum ConflictLevel {
   IMPOSSIBLE @map("impossible")
 
   @@map("conflict_level")
+  @@schema("commandcentered")
 }
 
 // Operators
@@ -408,6 +421,7 @@ model Operator {
   @@index([tenantId])
   @@index([status])
   @@map("operators")
+  @@schema("commandcentered")
 }
 
 enum OperatorStatus {
@@ -415,6 +429,7 @@ enum OperatorStatus {
   INACTIVE @map("inactive")
 
   @@map("operator_status")
+  @@schema("commandcentered")
 }
 
 model OperatorBlackoutDate {
@@ -436,6 +451,7 @@ model OperatorBlackoutDate {
   @@index([operatorId])
   @@index([startDate, endDate])
   @@map("operator_blackout_dates")
+  @@schema("commandcentered")
 }
 
 model OperatorSkill {
@@ -459,6 +475,7 @@ model OperatorSkill {
   @@index([operatorId])
   @@index([skillDefinitionId])
   @@map("operator_skills")
+  @@schema("commandcentered")
 }
 
 model OperatorSkillHistory {
@@ -482,6 +499,7 @@ model OperatorSkillHistory {
   @@index([tenantId])
   @@index([operatorId])
   @@map("operator_skill_history")
+  @@schema("commandcentered")
 }
 
 enum SkillType {
@@ -491,6 +509,7 @@ enum SkillType {
   PROFESSIONALISM @map("professionalism")
 
   @@map("skill_type")
+  @@schema("commandcentered")
 }
 
 model OperatorGear {
@@ -518,6 +537,7 @@ model OperatorGear {
   @@index([category])
   @@index([status])
   @@map("operator_gear")
+  @@schema("commandcentered")
 }
 
 model OperatorGearRequest {
@@ -546,6 +566,7 @@ model OperatorGearRequest {
   @@index([operatorId])
   @@index([requestStatus])
   @@map("operator_gear_requests")
+  @@schema("commandcentered")
 }
 
 enum RequestStatus {
@@ -555,6 +576,7 @@ enum RequestStatus {
   CANCELLED @map("cancelled")
 
   @@map("request_status")
+  @@schema("commandcentered")
 }
 
 // Skills & Drills
@@ -579,6 +601,7 @@ model SkillDefinition {
   @@unique([tenantId, skillName])
   @@index([tenantId])
   @@map("skill_definitions")
+  @@schema("commandcentered")
 }
 
 model Drill {
@@ -604,6 +627,7 @@ model Drill {
   @@index([tenantId])
   @@index([drillDate])
   @@map("drills")
+  @@schema("commandcentered")
 }
 
 model DrillAttendee {
@@ -627,6 +651,7 @@ model DrillAttendee {
   @@index([drillId])
   @@index([operatorId])
   @@map("drill_attendees")
+  @@schema("commandcentered")
 }
 
 model DrillAgendaItem {
@@ -647,6 +672,7 @@ model DrillAgendaItem {
   @@index([tenantId])
   @@index([drillId])
   @@map("drill_agenda_items")
+  @@schema("commandcentered")
 }
 
 // Gear & Vehicles
@@ -679,6 +705,7 @@ model Gear {
   @@index([category])
   @@index([status])
   @@map("gear")
+  @@schema("commandcentered")
 }
 
 enum GearCategory {
@@ -696,6 +723,7 @@ enum GearCategory {
   OTHER       @map("other")
 
   @@map("gear_category")
+  @@schema("commandcentered")
 }
 
 enum GearStatus {
@@ -708,6 +736,7 @@ enum GearStatus {
   OUT_OF_SERVICE @map("out_of_service")
 
   @@map("gear_status")
+  @@schema("commandcentered")
 }
 
 model GearMovementHistory {
@@ -730,6 +759,7 @@ model GearMovementHistory {
   @@index([gearId])
   @@index([createdAt])
   @@map("gear_movement_history")
+  @@schema("commandcentered")
 }
 
 model GearAssignment {
@@ -770,6 +800,7 @@ model GearAssignment {
   @@index([kitId]) // GAP-02
   @@index([shiftId]) // GAP-05
   @@map("gear_assignments")
+  @@schema("commandcentered")
 }
 
 enum PackStatus {
@@ -779,6 +810,7 @@ enum PackStatus {
   RETURNED      @map("returned")
 
   @@map("pack_status")
+  @@schema("commandcentered")
 }
 
 model Vehicle {
@@ -803,6 +835,7 @@ model Vehicle {
   @@index([tenantId])
   @@index([status])
   @@map("vehicles")
+  @@schema("commandcentered")
 }
 
 enum VehicleStatus {
@@ -812,6 +845,7 @@ enum VehicleStatus {
   IN_REPAIR      @map("in_repair")
 
   @@map("vehicle_status")
+  @@schema("commandcentered")
 }
 
 model GearKit {
@@ -832,6 +866,7 @@ model GearKit {
 
   @@index([tenantId])
   @@map("gear_kits")
+  @@schema("commandcentered")
 }
 
 // Post-Production (Phase 2.4)
@@ -869,6 +904,7 @@ model Deliverable {
   @@index([dueDate])
   @@index([status])
   @@map("deliverables")
+  @@schema("commandcentered")
 }
 
 enum DeliverableStatus {
@@ -879,6 +915,7 @@ enum DeliverableStatus {
   CANCELLED   @map("cancelled")
 
   @@map("deliverable_status")
+  @@schema("commandcentered")
 }
 
 model DeliverableAsset {
@@ -912,6 +949,7 @@ model DeliverableAsset {
   @@index([assignedEditorId])
   @@index([completed])
   @@map("deliverable_assets")
+  @@schema("commandcentered")
 }
 
 model Editor {
@@ -942,6 +980,7 @@ model Editor {
   @@index([tenantId])
   @@index([isActive])
   @@map("editors")
+  @@schema("commandcentered")
 }
 
 model Bounty {
@@ -976,6 +1015,7 @@ model Bounty {
   @@index([bountyStatus])
   @@index([claimedBy])
   @@map("bounties")
+  @@schema("commandcentered")
 }
 
 enum BountyStatus {
@@ -986,6 +1026,7 @@ enum BountyStatus {
   EXPIRED   @map("expired")
 
   @@map("bounty_status")
+  @@schema("commandcentered")
 }
 
 model ClientNote {
@@ -1016,6 +1057,7 @@ model ClientNote {
   @@index([isActionRequired])
   @@index([createdAt(sort: Desc)])
   @@map("client_notes")
+  @@schema("commandcentered")
 }
 
 enum Priority {
@@ -1026,6 +1068,7 @@ enum Priority {
   CRITICAL @map("critical")
 
   @@map("priority")
+  @@schema("commandcentered")
 }
 
 enum ActionStatus {
@@ -1035,6 +1078,7 @@ enum ActionStatus {
   IGNORED     @map("ignored")
 
   @@map("action_status")
+  @@schema("commandcentered")
 }
 
 model DeliverableRevisionHistory {
@@ -1066,6 +1110,7 @@ model DeliverableRevisionHistory {
   @@index([deliverableAssetId])
   @@index([status])
   @@map("deliverable_revision_history")
+  @@schema("commandcentered")
 }
 
 enum RevisionStatus {
@@ -1075,6 +1120,7 @@ enum RevisionStatus {
   REJECTED    @map("rejected")
 
   @@map("revision_status")
+  @@schema("commandcentered")
 }
 
 // Alerts
@@ -1103,6 +1149,7 @@ model Alert {
   @@index([eventId])
   @@index([level, createdAt])
   @@map("alerts")
+  @@schema("commandcentered")
 }
 
 enum AlertLevel {
@@ -1114,6 +1161,7 @@ enum AlertLevel {
   LOW      @map("low")
 
   @@map("alert_level")
+  @@schema("commandcentered")
 }
 
 model AlertPreference {
@@ -1135,6 +1183,7 @@ model AlertPreference {
   @@index([tenantId])
   @@index([userId])
   @@map("alert_preferences")
+  @@schema("commandcentered")
 }
 
 // ============================================
@@ -1186,6 +1235,7 @@ model Lead {
   @@index([assignedTo])
   @@index([nextFollowUpAt])
   @@map("leads")
+  @@schema("commandcentered")
 }
 
 enum LeadStatus {
@@ -1202,6 +1252,7 @@ enum LeadStatus {
   DISQUALIFIED       @map("disqualified")
 
   @@map("lead_status")
+  @@schema("commandcentered")
 }
 
 model LeadNote {
@@ -1220,6 +1271,7 @@ model LeadNote {
   @@index([tenantId])
   @@index([leadId])
   @@map("lead_notes")
+  @@schema("commandcentered")
 }
 
 // Proposal System
@@ -1249,6 +1301,7 @@ model ProposalTemplate {
   @@index([tenantId, slug])
   @@index([tenantId, publishedAt])
   @@map("proposal_templates")
+  @@schema("commandcentered")
 }
 
 model Proposal {
@@ -1293,6 +1346,7 @@ model Proposal {
   @@index([eventDate])
   @@index([reviewedBy])
   @@map("proposals")
+  @@schema("commandcentered")
 }
 
 enum ProposalStatus {
@@ -1302,6 +1356,7 @@ enum ProposalStatus {
   REJECTED  @map("rejected")
 
   @@map("proposal_status")
+  @@schema("commandcentered")
 }
 
 model ProposalLineItem {
@@ -1323,6 +1378,7 @@ model ProposalLineItem {
   @@index([proposalId])
   @@index([category])
   @@map("proposal_line_items")
+  @@schema("commandcentered")
 }
 
 // Contracts
@@ -1373,6 +1429,7 @@ model Contract {
   @@index([clientId])
   @@index([status])
   @@map("contracts")
+  @@schema("commandcentered")
 }
 
 enum ContractStatus {
@@ -1382,6 +1439,7 @@ enum ContractStatus {
   CANCELLED @map("cancelled")
 
   @@map("contract_status")
+  @@schema("commandcentered")
 }
 
 model ContractSignature {
@@ -1410,6 +1468,7 @@ model ContractSignature {
   @@index([status])
   @@index([signerEmail])
   @@map("contract_signatures")
+  @@schema("commandcentered")
 }
 
 enum SignatureStatus {
@@ -1420,6 +1479,7 @@ enum SignatureStatus {
   DECLINED @map("declined")
 
   @@map("signature_status")
+  @@schema("commandcentered")
 }
 
 // Payments
@@ -1470,6 +1530,7 @@ model Invoice {
   @@index([dueDate])
   @@index([stripeInvoiceId])
   @@map("invoices")
+  @@schema("commandcentered")
 }
 
 enum InvoiceStatus {
@@ -1481,6 +1542,7 @@ enum InvoiceStatus {
   CANCELLED @map("cancelled")
 
   @@map("invoice_status")
+  @@schema("commandcentered")
 }
 
 model InvoiceLineItem {
@@ -1500,6 +1562,7 @@ model InvoiceLineItem {
 
   @@index([invoiceId])
   @@map("invoice_line_items")
+  @@schema("commandcentered")
 }
 
 model Payment {
@@ -1537,6 +1600,7 @@ model Payment {
   @@index([stripePaymentIntentId])
   @@index([stripeChargeId])
   @@map("payments")
+  @@schema("commandcentered")
 }
 
 enum PaymentStatus {
@@ -1547,6 +1611,7 @@ enum PaymentStatus {
   DISPUTED  @map("disputed")
 
   @@map("payment_status")
+  @@schema("commandcentered")
 }
 
 model PaymentSchedule {
@@ -1581,6 +1646,7 @@ model PaymentSchedule {
   @@index([status])
   @@index([dueDate])
   @@map("payment_schedules")
+  @@schema("commandcentered")
 }
 
 enum ScheduleStatus {
@@ -1591,6 +1657,7 @@ enum ScheduleStatus {
   WAIVED  @map("waived")
 
   @@map("schedule_status")
+  @@schema("commandcentered")
 }
 
 // Clients
@@ -1636,6 +1703,7 @@ model Client {
   @@index([leadId])
   @@index([status])
   @@map("clients")
+  @@schema("commandcentered")
 }
 
 enum ClientStatus {
@@ -1644,6 +1712,7 @@ enum ClientStatus {
   BLACKLISTED @map("blacklisted")
 
   @@map("client_status")
+  @@schema("commandcentered")
 }
 
 model ClientQuestionnaire {
@@ -1671,6 +1740,7 @@ model ClientQuestionnaire {
   @@index([contractId])
   @@index([status])
   @@map("client_questionnaires")
+  @@schema("commandcentered")
 }
 
 enum QuestionnaireStatus {
@@ -1680,6 +1750,7 @@ enum QuestionnaireStatus {
   COMPLETED @map("completed")
 
   @@map("questionnaire_status")
+  @@schema("commandcentered")
 }
 
 // Email & CRM
@@ -1719,6 +1790,7 @@ model EmailTracking {
   @@index([emailProviderId])
   @@index([sentAt])
   @@map("email_tracking")
+  @@schema("commandcentered")
 }
 
 enum EmailStatus {
@@ -1730,6 +1802,7 @@ enum EmailStatus {
   COMPLAINED @map("complained")
 
   @@map("email_status")
+  @@schema("commandcentered")
 }
 
 model CrmOrganization {
@@ -1770,6 +1843,7 @@ model CrmOrganization {
   @@index([organizationType])
   @@index([nextFollowUpAt])
   @@map("crm_organizations")
+  @@schema("commandcentered")
 }
 
 model CrmContact {
@@ -1800,6 +1874,7 @@ model CrmContact {
   @@index([organizationId])
   @@index([organizationId, isPrimary])
   @@map("crm_contacts")
+  @@schema("commandcentered")
 }
 
 model CrmInteraction {
@@ -1835,6 +1910,7 @@ model CrmInteraction {
   @@index([interactionDate])
   @@index([followUpDate])
   @@map("crm_interactions")
+  @@schema("commandcentered")
 }
 
 // Integrations
@@ -1863,6 +1939,7 @@ model GoogleDriveFolder {
   @@index([relatedEntityType, relatedEntityId])
   @@index([folderId])
   @@map("google_drive_folders")
+  @@schema("commandcentered")
 }
 
 enum FolderStatus {
@@ -1871,6 +1948,7 @@ enum FolderStatus {
   DELETED  @map("deleted")
 
   @@map("folder_status")
+  @@schema("commandcentered")
 }
 
 // ============================================
@@ -1898,6 +1976,7 @@ model ServiceTemplate {
   @@index([tenantId])
   @@index([isActive])
   @@map("service_templates")
+  @@schema("commandcentered")
 }
 
 model OperatorAvailability {
@@ -1922,6 +2001,7 @@ model OperatorAvailability {
   @@index([operatorId])
   @@index([date])
   @@map("operator_availability")
+  @@schema("commandcentered")
 }
 
 model MagicLink {
@@ -1947,6 +2027,7 @@ model MagicLink {
   @@index([clientId])
   @@index([expiresAt])
   @@map("magic_links")
+  @@schema("commandcentered")
 }
 
 model SystemSettings {
@@ -1977,6 +2058,7 @@ model SystemSettings {
 
   @@index([tenantId])
   @@map("system_settings")
+  @@schema("commandcentered")
 }
 
 model IntegrationLog {
@@ -2007,6 +2089,7 @@ model IntegrationLog {
   @@index([status])
   @@index([createdAt])
   @@map("integration_logs")
+  @@schema("commandcentered")
 }
 
 enum IntegrationStatus {
@@ -2016,6 +2099,7 @@ enum IntegrationStatus {
   RETRYING @map("retrying")
 
   @@map("integration_status")
+  @@schema("commandcentered")
 }
 
 // ============================================
@@ -2043,6 +2127,7 @@ model ShiftTemplate {
   @@index([tenantId])
   @@index([isActive])
   @@map("shift_templates")
+  @@schema("commandcentered")
 }
 
 // GAP-10 (P0 CRITICAL): LeadProduct table
@@ -2069,6 +2154,7 @@ model LeadProduct {
   @@index([leadId])
   @@index([status])
   @@map("lead_products")
+  @@schema("commandcentered")
 }
 
 enum ProductStatus {
@@ -2079,6 +2165,7 @@ enum ProductStatus {
   LOST           @map("lost")
 
   @@map("product_status")
+  @@schema("commandcentered")
 }
 
 // GAP-09 (P0 CRITICAL): DashboardWidgetPreference table
@@ -2104,6 +2191,7 @@ model DashboardWidgetPreference {
   @@index([tenantId])
   @@index([userId])
   @@map("dashboard_widget_preferences")
+  @@schema("commandcentered")
 }
 
 // GAP-11 (P0 CRITICAL): CommunicationTouchpoint table
@@ -2136,6 +2224,7 @@ model CommunicationTouchpoint {
   @@index([eventId])
   @@index([touchpointType])
   @@map("communication_touchpoints")
+  @@schema("commandcentered")
 }
 
 enum TouchpointType {
@@ -2152,6 +2241,7 @@ enum TouchpointType {
   REBOOKING_OUTREACH      @map("rebooking_outreach")
 
   @@map("touchpoint_type")
+  @@schema("commandcentered")
 }
 
 enum TouchpointStatus {
@@ -2161,6 +2251,7 @@ enum TouchpointStatus {
   SKIPPED   @map("skipped")
 
   @@map("touchpoint_status")
+  @@schema("commandcentered")
 }
 
 // GAP-07 (P1 HIGH): GearDependency table
@@ -2187,6 +2278,7 @@ model GearDependency {
   @@index([gearId])
   @@index([dependentGearId])
   @@map("gear_dependencies")
+  @@schema("commandcentered")
 }
 
 // GAP-06 (P1 HIGH): EventTypeGearRecommendation table
@@ -2212,6 +2304,7 @@ model EventTypeGearRecommendation {
   @@index([eventType])
   @@index([gearId])
   @@map("event_type_gear_recommendations")
+  @@schema("commandcentered")
 }
 
 // GAP-12 (P1 HIGH): AutomatedEmailConfig table
@@ -2234,6 +2327,7 @@ model AutomatedEmailConfig {
   @@index([tenantId])
   @@index([isActive])
   @@map("automated_email_configs")
+  @@schema("commandcentered")
 }
 
 enum AutomatedEmailType {
@@ -2246,4 +2340,5 @@ enum AutomatedEmailType {
   THANK_YOU_FEEDBACK     @map("thank_you_feedback")
 
   @@map("automated_email_type")
+  @@schema("commandcentered")
 }
