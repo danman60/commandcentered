@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
+import { useAuth } from '@/lib/auth/AuthProvider'
 import {
   Calendar,
   LayoutDashboard,
@@ -16,6 +17,7 @@ import {
   FolderOpen,
   Wrench,
   UserCircle,
+  LogOut,
 } from 'lucide-react'
 
 const navigation = [
@@ -34,6 +36,7 @@ const navigation = [
 
 export function Sidebar() {
   const pathname = usePathname()
+  const { user, signOut } = useAuth()
 
   return (
     <div className="flex flex-col w-64 bg-slate-800 border-r border-slate-700">
@@ -60,11 +63,29 @@ export function Sidebar() {
           )
         })}
       </nav>
-      <div className="border-t border-slate-700 p-4">
-        <div className="text-xs text-gray-400">
-          <p>StreamStage</p>
-          <p className="text-cyan-400 mt-1">streamstage.commandcentered.app</p>
-        </div>
+      <div className="border-t border-slate-700">
+        {user && (
+          <div className="p-4">
+            <div className="flex items-center space-x-3 mb-3">
+              <div className="w-8 h-8 rounded-full bg-cyan-500/20 flex items-center justify-center">
+                <UserCircle className="w-5 h-5 text-cyan-400" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-white truncate">
+                  {user.user_metadata?.company_name || 'User'}
+                </p>
+                <p className="text-xs text-gray-400 truncate">{user.email}</p>
+              </div>
+            </div>
+            <button
+              onClick={signOut}
+              className="w-full flex items-center justify-center px-3 py-2 text-sm font-medium text-gray-300 bg-slate-700 rounded-md hover:bg-slate-600 hover:text-white transition-colors"
+            >
+              <LogOut className="w-4 h-4 mr-2" />
+              Sign Out
+            </button>
+          </div>
+        )}
       </div>
     </div>
   )

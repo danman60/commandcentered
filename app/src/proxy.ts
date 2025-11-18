@@ -41,26 +41,48 @@ export async function proxy(request: NextRequest) {
   // Extract subdomain
   const subdomain = hostname.split('.')[0]
 
-  // Protect dashboard routes
-  if (url.pathname.startsWith('/dashboard')) {
-    if (!session) {
-      url.pathname = '/login'
-      return NextResponse.redirect(url)
-    }
+  // Refresh session if expired - required for Server Components
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
 
-    // TODO: Verify user belongs to subdomain's tenant
-    // This will be implemented after RLS policies are set up
+  // Protected routes - require authentication
+  if (
+    !user &&
+    !url.pathname.startsWith('/login') &&
+    !url.pathname.startsWith('/signup') &&
+    !url.pathname.startsWith('/api') &&
+    !url.pathname.startsWith('/_next') &&
+    url.pathname !== '/'
+  ) {
+    // Redirect to login if not authenticated
+    url.pathname = '/login'
+    url.searchParams.set('redirectedFrom', request.nextUrl.pathname)
+    return NextResponse.redirect(url)
   }
 
   // Redirect authenticated users away from auth pages
-  if (session && (url.pathname === '/login' || url.pathname === '/signup')) {
+  if (user && (url.pathname === '/login' || url.pathname === '/signup')) {
     url.pathname = '/dashboard'
     return NextResponse.redirect(url)
   }
+
+  // TODO: Multi-tenant subdomain verification
+  // Extract subdomain and verify user belongs to tenant
+  // This will be implemented after tenant/organization system is set up
 
   return response
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|api).*)'],
+  matcher: [
+    /*
+     * Match all request paths except:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * - public folder
+     */
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+  ],
 }
