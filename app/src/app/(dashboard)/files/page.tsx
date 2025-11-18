@@ -1,11 +1,44 @@
 'use client';
 
 import { trpc } from '@/lib/trpc/client';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 
 export default function FilesPage() {
   const [activeTab, setActiveTab] = useState<'documents' | 'contracts' | 'proposals' | 'livestreams' | 'service-library'>('documents');
   const [selectedServices, setSelectedServices] = useState<string[]>(['multi-camera', 'highlight-reel']);
+
+  // Fetch contracts and proposals from backend
+  const { data: contractsData, isLoading: contractsLoading } = trpc.contract.list.useQuery();
+  const { data: proposalsData, isLoading: proposalsLoading } = trpc.proposal.list.useQuery();
+
+  // Transform contracts for display
+  const contracts = useMemo(() => {
+    if (!contractsData) return [];
+
+    return contractsData.map(contract => ({
+      id: contract.id,
+      name: contract.contractNumber,
+      client: contract.client?.organization || contract.lead?.organization || 'Unknown Client',
+      status: contract.status.toLowerCase(),
+      date: new Date(contract.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+    }));
+  }, [contractsData]);
+
+  // Transform proposals for display
+  const proposals = useMemo(() => {
+    if (!proposalsData) return [];
+
+    return proposalsData.map(proposal => ({
+      id: proposal.id,
+      name: `${proposal.lead?.organization || 'Unknown'}_Proposal`,
+      amount: `$${proposal.totalAmount.toLocaleString()}`,
+      status: proposal.status === 'SUBMITTED' ? `Sent ${new Date(proposal.submittedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}` :
+              proposal.status === 'REVIEWING' ? 'Under Review' :
+              proposal.status === 'ACCEPTED' ? 'Accepted' :
+              proposal.status === 'REJECTED' ? 'Rejected' :
+              proposal.status,
+    }));
+  }, [proposalsData]);
 
   // Mock data for demonstration (backend integration TODO)
   const documents = [
@@ -13,18 +46,6 @@ export default function FilesPage() {
     { id: '2', icon: '📊', name: 'Glow_Proposal.pdf', size: '1.8 MB', date: 'Nov 8, 2025' },
     { id: '3', icon: '📄', name: 'ABC_Questionnaire.pdf', size: '512 KB', date: 'Nov 5, 2025' },
     { id: '4', icon: '📄', name: 'Event_Schedule.xlsx', size: '1.2 MB', date: 'Nov 3, 2025' },
-  ];
-
-  const contracts = [
-    { id: '1', name: 'EMPWR Dance Contract 2025', client: 'EMPWR Dance', status: 'signed', date: 'Nov 10, 2025' },
-    { id: '2', name: 'Glow Competition Agreement', client: 'Glow Dance', status: 'sent', date: 'Nov 8, 2025' },
-    { id: '3', name: 'ABC Studio Contract', client: 'ABC Dance', status: 'draft', date: 'Nov 5, 2025' },
-  ];
-
-  const proposals = [
-    { id: '1', name: 'EMPWR_Proposal_2025.pdf', amount: '$8,500', status: 'Sent Nov 10' },
-    { id: '2', name: 'Glow_Proposal_Dec.pdf', amount: '$6,200', status: 'Sent Nov 8' },
-    { id: '3', name: 'ABC_Studio_Proposal.pdf', amount: '$5,500', status: 'Draft' },
   ];
 
   const livestreams = [
@@ -173,29 +194,38 @@ export default function FilesPage() {
         {activeTab === 'contracts' && (
           <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6">
             <h2 className="text-xl font-semibold text-cyan-500 mb-5">📝 Client Contracts</h2>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-slate-900/80">
-                  <tr>
-                    <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
-                      Contract Name
-                    </th>
-                    <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
-                      Client
-                    </th>
-                    <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
-                      Status
-                    </th>
-                    <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
-                      Date
-                    </th>
-                    <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
-                      Actions
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {contracts.map((contract) => (
+            {contractsLoading ? (
+              <div className="bg-slate-900/60 p-12 rounded-lg text-center text-slate-400">
+                Loading contracts...
+              </div>
+            ) : contracts.length === 0 ? (
+              <div className="bg-slate-900/60 p-12 rounded-lg text-center text-slate-400">
+                No contracts yet
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="bg-slate-900/80">
+                    <tr>
+                      <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
+                        Contract Name
+                      </th>
+                      <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
+                        Client
+                      </th>
+                      <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
+                        Status
+                      </th>
+                      <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
+                        Date
+                      </th>
+                      <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {contracts.map((contract) => (
                     <tr
                       key={contract.id}
                       className="border-b border-slate-700/20 hover:bg-cyan-500/5 transition-colors cursor-pointer"
@@ -226,6 +256,7 @@ export default function FilesPage() {
                 </tbody>
               </table>
             </div>
+            )}
           </div>
         )}
 
@@ -312,18 +343,28 @@ export default function FilesPage() {
             {/* Recent Proposals */}
             <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6">
               <h2 className="text-xl font-semibold text-cyan-500 mb-5">📋 Recent Proposals</h2>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {proposals.map((proposal) => (
-                  <div
-                    key={proposal.id}
-                    className="bg-slate-900/60 border border-slate-700/50 rounded-lg p-4 cursor-pointer hover:border-cyan-500/60 hover:-translate-y-1 transition-all"
-                  >
-                    <div className="text-5xl text-center mb-3">📊</div>
-                    <div className="text-sm font-semibold text-slate-100 mb-1 truncate">{proposal.name}</div>
-                    <div className="text-xs text-slate-500">{proposal.amount} • {proposal.status}</div>
-                  </div>
-                ))}
-              </div>
+              {proposalsLoading ? (
+                <div className="bg-slate-900/60 p-12 rounded-lg text-center text-slate-400">
+                  Loading proposals...
+                </div>
+              ) : proposals.length === 0 ? (
+                <div className="bg-slate-900/60 p-12 rounded-lg text-center text-slate-400">
+                  No proposals yet
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                  {proposals.map((proposal) => (
+                    <div
+                      key={proposal.id}
+                      className="bg-slate-900/60 border border-slate-700/50 rounded-lg p-4 cursor-pointer hover:border-cyan-500/60 hover:-translate-y-1 transition-all"
+                    >
+                      <div className="text-5xl text-center mb-3">📊</div>
+                      <div className="text-sm font-semibold text-slate-100 mb-1 truncate">{proposal.name}</div>
+                      <div className="text-xs text-slate-500">{proposal.amount} • {proposal.status}</div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         )}
