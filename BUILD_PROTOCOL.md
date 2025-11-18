@@ -62,12 +62,12 @@ Wait for completion → Commit → Report
 ## 📊 OVERALL PROGRESS TRACKER
 
 **Total Tasks:** 108 (93 original + 15 router implementations)
-**Completed:** 38 (Phase 0: 6/7, Phase 1: 8/8 ✅, Phase 2: 5/7 ✅, Routers: 15/15 ✅)
+**Completed:** 40 (Phase 0: 6/7, Phase 1: 8/8 ✅, Phase 2: 7/7 ✅, Routers: 15/15 ✅)
 **In Progress:** Phase 3 - Pipeline Page (next)
-**Remaining:** 70
+**Remaining:** 68
 
-**Current Phase:** Phase 2 (Dashboard Page) - CORE COMPLETE ✅
-**Current Status:** Dashboard functional with 6 widgets, customization features optional
+**Current Phase:** Phase 2 (Dashboard Page) - COMPLETE ✅
+**Current Status:** Dashboard complete with all customization features (widget visibility, drag-drop-resize, layout persistence)
 
 **Phase 0.7 COMPLETE:** All 15 tRPC routers implemented (100%)
 - **Session 1:** event, operator, gear, client, shift ✅
@@ -325,11 +325,11 @@ create: tenantProcedure
 **Frontend:**
 - [x] Task 2.4: Build Dashboard page layout (01-dashboard.html) ✅ (app/(dashboard)/dashboard/page.tsx)
 - [x] Task 2.5: Build 6 dashboard widgets (Event Pipeline, Annual Revenue, etc.) ✅ (All 6 widgets implemented)
-- [ ] Task 2.6: Implement customize modal (checkbox visibility) ⏸️ (Optional - can be added later)
-- [ ] Task 2.7: Implement drag-drop-resize (React Grid Layout) ⏸️ (Optional - can be added later)
+- [x] Task 2.6: Implement customize modal (checkbox visibility) ✅ (Modal with toggle checkboxes)
+- [x] Task 2.7: Implement drag-drop-resize (React Grid Layout) ✅ (Full drag-drop-resize with persistence)
 
-**Phase 2 Status:** 5/7 core tasks complete ✅ Dashboard functional with all 6 widgets displaying data
-**Optional Tasks:** Widget customization features (2.6, 2.7) deferred - Dashboard is fully functional without them
+**Phase 2 Status:** 7/7 tasks complete ✅ PHASE 2 COMPLETE
+**Features:** All widgets functional with live data, customizable visibility, drag-drop-resize, layout persistence
 
 ---
 
