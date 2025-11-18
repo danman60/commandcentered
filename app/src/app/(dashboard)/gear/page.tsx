@@ -3,192 +3,142 @@
 import { trpc } from '@/lib/trpc/client';
 import { useState } from 'react';
 
-export default function GearPage() {
-  const [activeTab, setActiveTab] = useState<'inventory' | 'calendar' | 'maintenance' | 'kits'>('inventory');
-  const [activeView, setActiveView] = useState<'cards' | 'table'>('cards');
-  const [searchQuery, setSearchQuery] = useState('');
+type ActiveTab = 'inventory' | 'calendar' | 'maintenance' | 'kits';
+type ActiveView = 'cards' | 'table';
 
-  // Fetch gear
-  const { data: gear } = trpc.gear.list.useQuery({
+export default function GearPage() {
+  const [activeTab, setActiveTab] = useState<ActiveTab>('inventory');
+  const [activeView, setActiveView] = useState<ActiveView>('cards');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showCreateGearModal, setShowCreateGearModal] = useState(false);
+  const [showCreateKitModal, setShowCreateKitModal] = useState(false);
+
+  // Fetch gear with real data
+  const { data: gear, isLoading: gearLoading, refetch: refetchGear } = trpc.gear.list.useQuery({
     search: searchQuery || undefined,
   });
 
-  // Mock data for demonstration
-  const gearData = [
-    {
-      id: '1',
-      name: 'Canon EOS R5',
-      category: 'Camera',
-      type: 'Full-Frame Mirrorless',
-      serialNumber: 'CFJ012345',
-      purchaseDate: '2023-01-15',
-      status: 'available',
-      icon: '📷',
-    },
-    {
-      id: '2',
-      name: 'Sony FX30',
-      category: 'Camera',
-      type: 'Cinema Camera',
-      serialNumber: 'SONY98765',
-      purchaseDate: '2023-06-20',
-      status: 'in-use',
-      icon: '🎥',
-    },
-    {
-      id: '3',
-      name: 'Rode Wireless GO II',
-      category: 'Audio',
-      type: 'Wireless Microphone',
-      serialNumber: 'RODE54321',
-      purchaseDate: '2023-03-10',
-      status: 'available',
-      icon: '🔊',
-    },
-    {
-      id: '4',
-      name: 'Neewer LED Panel',
-      category: 'Lighting',
-      type: 'Bi-Color LED',
-      serialNumber: 'NWLED99999',
-      purchaseDate: '2023-02-28',
-      status: 'repair',
-      icon: '💡',
-    },
-    {
-      id: '5',
-      name: 'HDMI Cable Bundle',
-      category: 'Cable',
-      type: 'Audio/Video Cable Set',
-      serialNumber: 'CABLE00001',
-      purchaseDate: '2023-01-05',
-      status: 'available',
-      icon: '🔌',
-    },
-    {
-      id: '6',
-      name: 'Ronin 4D Gimbal',
-      category: 'Rigging',
-      type: 'Stabilization Gimbal',
-      serialNumber: 'DJI456789',
-      purchaseDate: '2024-01-12',
-      status: 'retired',
-      icon: '🎬',
-    },
-  ];
+  // Fetch kits with real data
+  const { data: kits, isLoading: kitsLoading, refetch: refetchKits } = trpc.kit.list.useQuery();
 
-  const kitData = [
-    {
-      id: '1',
-      name: 'Standard Dance Kit',
-      description: 'Complete setup for single-camera dance events',
-      items: [
-        { name: 'Canon EOS R5', type: 'Full-Frame Mirrorless Camera', status: 'available' },
-        { name: 'Rode Wireless GO II', type: 'Wireless Microphone System', status: 'available' },
-        { name: 'HDMI Cable Bundle', type: 'Audio/Video Cable Set', status: 'available' },
-      ],
-      allAvailable: true,
+  // Create gear mutation
+  const createGear = trpc.gear.create.useMutation({
+    onSuccess: () => {
+      setShowCreateGearModal(false);
+      refetchGear();
     },
-    {
-      id: '2',
-      name: 'Drone Package',
-      description: 'Aerial footage kit with backup batteries',
-      items: [
-        { name: 'DJI Air 3S', type: '4K Drone with Gimbal', status: 'available' },
-        { name: 'Extra Battery Pack (x3)', type: 'DJI Flight Batteries', status: 'in-use' },
-        { name: 'ND Filter Set', type: 'Neutral Density Filters', status: 'available' },
-      ],
-      allAvailable: false,
-      conflict: 'Battery pack already assigned to "XYZ Concert" event (Nov 15)',
-    },
-    {
-      id: '3',
-      name: 'Audio Kit',
-      description: 'Professional audio recording and monitoring setup',
-      items: [
-        { name: 'Sony FX30', type: 'Cinema Camera with Audio I/O', status: 'in-use' },
-        { name: 'Sennheiser EW 100 G4', type: 'Wireless Mic System', status: 'available' },
-        { name: 'Audio Interface & XLR Bundle', type: 'Audio Connectors & Equipment', status: 'available' },
-      ],
-      allAvailable: false,
-      conflict: 'Sony FX30 assigned to "ABC Dance Recital" (Nov 8)',
-    },
-  ];
+  });
 
-  const maintenanceTimeline = [
-    {
-      gearName: 'Canon EOS R5',
-      events: [
-        { date: '2025-10-15', description: 'Sensor cleaning performed by technician. Status: AVAILABLE' },
-        { date: '2025-09-20', description: 'Software update (v1.4.2) installed. No issues found.' },
-        { date: '2025-08-10', description: 'Annual maintenance check-up. All components functioning normally.' },
-        { date: '2025-07-05', description: 'Battery replaced. Original battery at 85% capacity.' },
-      ],
+  // Create kit mutation
+  const createKit = trpc.kit.create.useMutation({
+    onSuccess: () => {
+      setShowCreateKitModal(false);
+      refetchKits();
     },
-    {
-      gearName: 'Neewer LED Panel',
-      isInRepair: true,
-      events: [
-        { date: '2025-11-01', description: 'Sent to technician. Issue: Power supply malfunction. Status: IN REPAIR' },
-        { date: '2025-10-28', description: 'Intermittent power issues reported during event.' },
-        { date: '2025-08-15', description: 'Warranty service: LED cooling fan replacement.' },
-      ],
-    },
-  ];
+  });
 
-  const activeAssignments = [
-    {
-      gear: 'Canon EOS R5',
-      event: 'ABC Dance Recital',
-      fromDate: '2025-11-08',
-      toDate: '2025-11-08',
-      packStatus: 'packed',
-    },
-    {
-      gear: 'Sony FX30',
-      event: 'XYZ Concert',
-      fromDate: '2025-11-15',
-      toDate: '2025-11-16',
-      packStatus: 'at-event',
-    },
-    {
-      gear: 'Rode Wireless GO II',
-      event: 'Metro Promo Video',
-      fromDate: '2025-11-22',
-      toDate: '2025-11-22',
-      packStatus: 'needs-packing',
-    },
-  ];
+  // Transform gear data for UI
+  const gearData = gear?.map((item) => ({
+    id: item.id,
+    name: item.name,
+    category: item.category,
+    type: item.type || 'N/A',
+    serialNumber: item.serialNumber || 'N/A',
+    purchaseDate: item.purchaseDate ? new Date(item.purchaseDate).toLocaleDateString() : 'N/A',
+    status: item.status,
+    icon: getCategoryIcon(item.category),
+  })) || [];
+
+  // Transform kit data for UI
+  const kitData = kits?.map((kit) => ({
+    id: kit.id,
+    name: kit.kitName,
+    description: kit.description || 'No description',
+    itemCount: kit.gearIds?.length || 0,
+    isActive: kit.isActive,
+  })) || [];
+
+  function getCategoryIcon(category: string): string {
+    const icons: Record<string, string> = {
+      CAMERA: '📷',
+      LENS: '🔭',
+      AUDIO: '🎤',
+      COMPUTER: '💻',
+      RIGGING: '🎬',
+      CABLE: '🔌',
+      LIGHTING: '💡',
+      ACCESSORIES: '🎒',
+      STABILIZERS: '📐',
+      DRONES: '🚁',
+      MONITORS: '🖥️',
+      OTHER: '📦',
+    };
+    return icons[category] || '📦';
+  }
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'available':
+      case 'AVAILABLE':
         return 'bg-green-500 text-slate-900';
-      case 'in-use':
+      case 'IN_USE':
         return 'bg-blue-500 text-white';
-      case 'repair':
+      case 'NEEDS_REPAIR':
+      case 'IN_REPAIR':
         return 'bg-orange-500 text-slate-900';
-      case 'retired':
+      case 'RETIRED':
+      case 'OUT_OF_SERVICE':
         return 'bg-red-500 text-white';
+      case 'UNAVAILABLE':
+        return 'bg-gray-500 text-white';
       default:
         return 'bg-gray-500 text-white';
     }
   };
 
   const getStatusLabel = (status: string) => {
-    switch (status) {
-      case 'available':
-        return 'Available';
-      case 'in-use':
-        return 'In Use';
-      case 'repair':
-        return 'In Repair';
-      case 'retired':
-        return 'Retired';
-      default:
-        return 'Unknown';
-    }
+    return status.split('_').map(word =>
+      word.charAt(0) + word.slice(1).toLowerCase()
+    ).join(' ');
   };
+
+  const handleCreateGear = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+
+    createGear.mutate({
+      name: formData.get('name') as string,
+      category: formData.get('category') as any,
+      type: formData.get('type') as string,
+      serialNumber: formData.get('serialNumber') as string || undefined,
+      purchaseDate: formData.get('purchaseDate')
+        ? new Date(formData.get('purchaseDate') as string)
+        : undefined,
+      purchasePrice: formData.get('purchasePrice')
+        ? Number(formData.get('purchasePrice'))
+        : undefined,
+      notes: formData.get('notes') as string || undefined,
+    });
+  };
+
+  const handleCreateKit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+
+    createKit.mutate({
+      kitName: formData.get('kitName') as string,
+      description: formData.get('description') as string || undefined,
+      gearIds: [], // Will add gear selection in future enhancement
+      isActive: true,
+    });
+  };
+
+  if (gearLoading || kitsLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-gray-50">
+        <div className="text-slate-400">Loading gear...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col h-full bg-gray-50">
@@ -205,8 +155,17 @@ export default function GearPage() {
             <button className="px-5 py-3 bg-slate-700/30 text-slate-300 border border-slate-700/50 rounded-lg font-semibold hover:bg-slate-700/50 transition-all">
               📊 Export Inventory
             </button>
-            <button className="px-5 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg font-semibold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/40 hover:-translate-y-0.5 transition-all">
-              ➕ Add Gear
+            <button
+              onClick={() => {
+                if (activeTab === 'kits') {
+                  setShowCreateKitModal(true);
+                } else {
+                  setShowCreateGearModal(true);
+                }
+              }}
+              className="px-5 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg font-semibold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/40 hover:-translate-y-0.5 transition-all"
+            >
+              ➕ {activeTab === 'kits' ? 'Add Kit' : 'Add Gear'}
             </button>
           </div>
         </div>
@@ -289,30 +248,52 @@ export default function GearPage() {
               </div>
             </div>
 
+            {/* Empty State */}
+            {gearData.length === 0 && (
+              <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-12 text-center">
+                <div className="text-6xl mb-4">🎥</div>
+                <h2 className="text-2xl font-bold text-slate-100 mb-2">No Gear Yet</h2>
+                <p className="text-slate-400 mb-6">Add your first gear item to get started</p>
+                <button
+                  onClick={() => setShowCreateGearModal(true)}
+                  className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg font-semibold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/40 hover:-translate-y-0.5 transition-all"
+                >
+                  ➕ Add Gear
+                </button>
+              </div>
+            )}
+
             {/* Card View */}
-            {activeView === 'cards' && (
+            {activeView === 'cards' && gearData.length > 0 && (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
                 {gearData.map((item) => (
                   <div
                     key={item.id}
                     className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-5 hover:border-cyan-500/50 hover:-translate-y-1 transition-all"
                   >
-                    {/* Icon */}
-                    <div className="w-full h-32 bg-slate-900/60 rounded-lg flex items-center justify-center text-5xl mb-4">
-                      {item.icon}
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="text-4xl">{item.icon}</div>
+                      <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(item.status)}`}>
+                        {getStatusLabel(item.status)}
+                      </span>
                     </div>
-
-                    {/* Info */}
-                    <div className="space-y-2">
-                      <h3 className="text-lg font-bold text-cyan-500">{item.name}</h3>
-                      <p className="text-sm text-slate-400">Category: {item.category}</p>
-                      <p className="text-sm text-slate-400">Type: {item.type}</p>
-                      <p className="text-sm text-slate-400">Serial: {item.serialNumber}</p>
-                      <p className="text-sm text-slate-400">Purchase: {item.purchaseDate}</p>
-                      <div className="mt-3">
-                        <span className={`inline-block px-3 py-1 rounded text-xs font-semibold ${getStatusColor(item.status)}`}>
-                          {getStatusLabel(item.status)}
-                        </span>
+                    <h3 className="text-lg font-bold text-slate-100 mb-2">{item.name}</h3>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between">
+                        <span className="text-slate-500">Category:</span>
+                        <span className="text-slate-300">{item.category}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-500">Type:</span>
+                        <span className="text-slate-300">{item.type}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-500">Serial #:</span>
+                        <span className="text-slate-300 font-mono text-xs">{item.serialNumber}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-500">Purchased:</span>
+                        <span className="text-slate-300">{item.purchaseDate}</span>
                       </div>
                     </div>
                   </div>
@@ -321,337 +302,324 @@ export default function GearPage() {
             )}
 
             {/* Table View */}
-            {activeView === 'table' && (
-              <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl overflow-hidden">
-                <table className="w-full">
-                  <thead className="bg-slate-900/80">
-                    <tr>
-                      <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
-                        Name
-                      </th>
-                      <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
-                        Category
-                      </th>
-                      <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
-                        Type
-                      </th>
-                      <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
-                        Serial #
-                      </th>
-                      <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
-                        Purchase Date
-                      </th>
-                      <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
-                        Status
-                      </th>
-                      <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
-                        Actions
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {gearData.map((item) => (
-                      <tr
-                        key={item.id}
-                        className="border-b border-slate-700/20 hover:bg-cyan-500/5 transition-colors"
-                      >
-                        <td className="px-5 py-4 text-sm text-slate-100 font-medium">{item.name}</td>
-                        <td className="px-5 py-4 text-sm text-slate-300">{item.category}</td>
-                        <td className="px-5 py-4 text-sm text-slate-300">{item.type}</td>
-                        <td className="px-5 py-4 text-sm text-slate-300">{item.serialNumber}</td>
-                        <td className="px-5 py-4 text-sm text-slate-300">{item.purchaseDate}</td>
-                        <td className="px-5 py-4">
-                          <span className={`inline-block px-3 py-1 rounded text-xs font-semibold ${getStatusColor(item.status)}`}>
-                            {getStatusLabel(item.status)}
-                          </span>
-                        </td>
-                        <td className="px-5 py-4">
-                          <button className="px-3 py-1 bg-cyan-500 text-white rounded text-xs font-semibold hover:bg-cyan-600 transition-all">
-                            Edit
-                          </button>
-                        </td>
+            {activeView === 'table' && gearData.length > 0 && (
+              <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6">
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead className="bg-slate-900/80">
+                      <tr>
+                        <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
+                          Item
+                        </th>
+                        <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
+                          Category
+                        </th>
+                        <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
+                          Type
+                        </th>
+                        <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
+                          Serial Number
+                        </th>
+                        <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
+                          Status
+                        </th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {gearData.map((item) => (
+                        <tr
+                          key={item.id}
+                          className="border-b border-slate-700/20 hover:bg-cyan-500/5 transition-colors cursor-pointer"
+                        >
+                          <td className="px-5 py-4">
+                            <div className="flex items-center gap-3">
+                              <div className="text-2xl">{item.icon}</div>
+                              <div className="text-sm font-medium text-slate-100">{item.name}</div>
+                            </div>
+                          </td>
+                          <td className="px-5 py-4 text-sm text-slate-300">{item.category}</td>
+                          <td className="px-5 py-4 text-sm text-slate-300">{item.type}</td>
+                          <td className="px-5 py-4 text-sm text-slate-300 font-mono text-xs">{item.serialNumber}</td>
+                          <td className="px-5 py-4">
+                            <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(item.status)}`}>
+                              {getStatusLabel(item.status)}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             )}
-          </div>
-        )}
-
-        {/* CALENDAR TAB */}
-        {activeTab === 'calendar' && (
-          <div className="space-y-6">
-            <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6">
-              <h2 className="text-xl font-bold text-slate-100 mb-6">Gear Assignment Calendar</h2>
-              <p className="text-slate-400 text-sm mb-6">View when gear is assigned to events and deployments</p>
-
-              {/* Simple calendar visualization */}
-              <div className="bg-slate-900/80 p-4 rounded-lg border border-slate-700/30">
-                <div className="grid grid-cols-7 gap-1">
-                  {['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'].map((day) => (
-                    <div key={day} className="text-center text-xs font-semibold text-cyan-500 py-2">
-                      {day}
-                    </div>
-                  ))}
-
-                  {/* Calendar days */}
-                  <div className="bg-slate-800/50 p-3 min-h-[80px] rounded">
-                    <div className="text-sm font-semibold text-slate-100 mb-2">4</div>
-                    <div className="bg-cyan-500 text-slate-900 px-2 py-1 text-xs rounded mb-1 font-semibold">Canon R5</div>
-                    <div className="bg-blue-500 text-white px-2 py-1 text-xs rounded font-semibold">Audio Kit</div>
-                  </div>
-                  <div className="bg-slate-800/50 p-3 min-h-[80px] rounded text-slate-400">5</div>
-                  <div className="bg-slate-800/50 p-3 min-h-[80px] rounded text-slate-400">6</div>
-                  <div className="bg-slate-800/50 p-3 min-h-[80px] rounded text-slate-400">7</div>
-                  <div className="bg-slate-800/50 p-3 min-h-[80px] rounded text-slate-400">8</div>
-                  <div className="bg-slate-800/50 p-3 min-h-[80px] rounded text-slate-400">9</div>
-                  <div className="bg-slate-800/50 p-3 min-h-[80px] rounded text-slate-400">10</div>
-
-                  <div className="bg-slate-800/50 p-3 min-h-[80px] rounded text-slate-400">11</div>
-                  <div className="bg-slate-800/50 p-3 min-h-[80px] rounded text-slate-400">12</div>
-                  <div className="bg-slate-800/50 p-3 min-h-[80px] rounded">
-                    <div className="text-sm font-semibold text-slate-100 mb-2">13</div>
-                    <div className="bg-green-500 text-slate-900 px-2 py-1 text-xs rounded font-semibold">LED Panel</div>
-                  </div>
-                  <div className="bg-slate-800/50 p-3 min-h-[80px] rounded text-slate-400">14</div>
-                  <div className="bg-slate-800/50 p-3 min-h-[80px] rounded text-slate-400">15</div>
-                  <div className="bg-slate-800/50 p-3 min-h-[80px] rounded text-slate-400">16</div>
-                  <div className="bg-slate-800/50 p-3 min-h-[80px] rounded text-slate-400">17</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Active Assignments */}
-            <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6">
-              <h2 className="text-xl font-bold text-slate-100 mb-4">Active Assignments</h2>
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead className="bg-slate-900/80">
-                    <tr>
-                      <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
-                        Gear
-                      </th>
-                      <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
-                        Event
-                      </th>
-                      <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
-                        From Date
-                      </th>
-                      <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
-                        To Date
-                      </th>
-                      <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
-                        Pack Status
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {activeAssignments.map((assignment, idx) => (
-                      <tr key={idx} className="border-b border-slate-700/20 hover:bg-cyan-500/5 transition-colors">
-                        <td className="px-5 py-4 text-sm text-slate-100">{assignment.gear}</td>
-                        <td className="px-5 py-4 text-sm text-slate-300">{assignment.event}</td>
-                        <td className="px-5 py-4 text-sm text-slate-300">{assignment.fromDate}</td>
-                        <td className="px-5 py-4 text-sm text-slate-300">{assignment.toDate}</td>
-                        <td className="px-5 py-4">
-                          <span
-                            className={`inline-block px-3 py-1 rounded text-xs font-semibold ${
-                              assignment.packStatus === 'packed'
-                                ? 'bg-green-500 text-slate-900'
-                                : assignment.packStatus === 'at-event'
-                                ? 'bg-blue-500 text-white'
-                                : 'bg-green-500 text-slate-900'
-                            }`}
-                          >
-                            {assignment.packStatus === 'packed'
-                              ? 'Packed'
-                              : assignment.packStatus === 'at-event'
-                              ? 'At Event'
-                              : 'Needs Packing'}
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* MAINTENANCE TAB */}
-        {activeTab === 'maintenance' && (
-          <div className="space-y-6">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold text-slate-800">Maintenance & Service History</h2>
-              <button className="px-5 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg font-semibold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/40 hover:-translate-y-0.5 transition-all">
-                + LOG MAINTENANCE
-              </button>
-            </div>
-
-            {maintenanceTimeline.map((gear, idx) => (
-              <div key={idx} className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6">
-                <h3 className="text-xl font-bold text-cyan-500 mb-4">{gear.gearName} - Service Timeline</h3>
-
-                {gear.isInRepair && (
-                  <div className="bg-orange-500/20 border-l-3 border-orange-500 p-4 mb-4">
-                    <strong className="text-orange-500">Currently In Repair</strong> - Expected completion: 2025-11-20
-                  </div>
-                )}
-
-                <div className="relative pl-8">
-                  {gear.events.map((event, eventIdx) => (
-                    <div key={eventIdx} className="relative pb-8 last:pb-0">
-                      {/* Timeline dot */}
-                      <div className="absolute left-[-1.5rem] top-0 w-3 h-3 rounded-full bg-cyan-500 border-2 border-slate-800"></div>
-                      {/* Timeline line */}
-                      {eventIdx < gear.events.length - 1 && (
-                        <div className="absolute left-[-1.25rem] top-3 w-0.5 h-full bg-slate-700/30"></div>
-                      )}
-                      {/* Event content */}
-                      <div>
-                        <div className="text-sm font-bold text-cyan-500 mb-1">{event.date}</div>
-                        <div className="text-sm text-slate-400">{event.description}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-
-            {/* Upcoming Maintenance */}
-            <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6">
-              <h3 className="text-xl font-bold text-cyan-500 mb-4">Upcoming Maintenance Schedule</h3>
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead className="bg-slate-900/80">
-                    <tr>
-                      <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
-                        Gear
-                      </th>
-                      <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
-                        Maintenance Type
-                      </th>
-                      <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
-                        Due Date
-                      </th>
-                      <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
-                        Priority
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr className="border-b border-slate-700/20 hover:bg-cyan-500/5 transition-colors">
-                      <td className="px-5 py-4 text-sm text-slate-100">Sony FX30</td>
-                      <td className="px-5 py-4 text-sm text-slate-300">Sensor Cleaning</td>
-                      <td className="px-5 py-4 text-sm text-slate-300">2025-12-01</td>
-                      <td className="px-5 py-4">
-                        <span className="inline-block px-3 py-1 rounded text-xs font-semibold bg-green-500 text-slate-900">
-                          Scheduled
-                        </span>
-                      </td>
-                    </tr>
-                    <tr className="border-b border-slate-700/20 hover:bg-cyan-500/5 transition-colors">
-                      <td className="px-5 py-4 text-sm text-slate-100">Rode Wireless GO II</td>
-                      <td className="px-5 py-4 text-sm text-slate-300">Battery Check</td>
-                      <td className="px-5 py-4 text-sm text-slate-300">2025-11-25</td>
-                      <td className="px-5 py-4">
-                        <span className="inline-block px-3 py-1 rounded text-xs font-semibold bg-green-500 text-slate-900">
-                          Scheduled
-                        </span>
-                      </td>
-                    </tr>
-                    <tr className="border-b border-slate-700/20 hover:bg-cyan-500/5 transition-colors">
-                      <td className="px-5 py-4 text-sm text-slate-100">HDMI Cable Bundle</td>
-                      <td className="px-5 py-4 text-sm text-slate-300">Visual Inspection</td>
-                      <td className="px-5 py-4 text-sm text-slate-300">2025-12-15</td>
-                      <td className="px-5 py-4">
-                        <span className="inline-block px-3 py-1 rounded text-xs font-semibold bg-green-500 text-slate-900">
-                          Scheduled
-                        </span>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
           </div>
         )}
 
         {/* KITS TAB */}
         {activeTab === 'kits' && (
           <div>
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold text-slate-800">Gear Kits</h2>
-              <button className="px-5 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg font-semibold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/40 hover:-translate-y-0.5 transition-all">
-                + CREATE KIT
-              </button>
-            </div>
+            <h2 className="text-2xl font-bold text-slate-800 mb-6">Gear Kits</h2>
 
-            <div className="space-y-6">
-              {kitData.map((kit) => (
-                <div key={kit.id} className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6">
-                  <div className="flex justify-between items-start mb-4">
-                    <div>
-                      <h3 className="text-xl font-bold text-cyan-500">{kit.name}</h3>
-                      <p className="text-sm text-slate-400 mt-1">{kit.description}</p>
-                    </div>
-                    <div className="flex gap-2">
-                      <button className="px-4 py-2 bg-cyan-500 text-white rounded text-sm font-semibold hover:bg-cyan-600 transition-all">
-                        EDIT
-                      </button>
-                      <button className="px-4 py-2 bg-slate-700/30 text-slate-300 border border-slate-700/50 rounded text-sm font-semibold hover:bg-slate-700/50 transition-all">
-                        ARCHIVE
-                      </button>
-                    </div>
-                  </div>
+            {/* Empty State */}
+            {kitData.length === 0 && (
+              <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-12 text-center">
+                <div className="text-6xl mb-4">📦</div>
+                <h2 className="text-2xl font-bold text-slate-100 mb-2">No Kits Yet</h2>
+                <p className="text-slate-400 mb-6">Create your first gear kit to get started</p>
+                <button
+                  onClick={() => setShowCreateKitModal(true)}
+                  className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg font-semibold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/40 hover:-translate-y-0.5 transition-all"
+                >
+                  ➕ Create Kit
+                </button>
+              </div>
+            )}
 
-                  {/* Kit Items */}
-                  <div className="bg-slate-900/60 border border-slate-700/30 rounded-lg p-4 mb-4 max-h-[200px] overflow-y-auto">
-                    {kit.items.map((item, idx) => (
-                      <div key={idx} className="flex justify-between items-center py-3 border-b border-slate-700/20 last:border-b-0">
-                        <div>
-                          <div className="text-sm font-semibold text-slate-100">{item.name}</div>
-                          <div className="text-xs text-slate-400 mt-0.5">{item.type}</div>
-                        </div>
-                        <span
-                          className={`inline-block px-3 py-1 rounded text-xs font-semibold ${
-                            item.status === 'available' ? 'bg-green-500 text-slate-900' : 'bg-blue-500 text-white'
-                          }`}
-                        >
-                          {item.status === 'available' ? 'Available' : 'In Use'}
+            {/* Kits Grid */}
+            {kitData.length > 0 && (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                {kitData.map((kit) => (
+                  <div
+                    key={kit.id}
+                    className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6 hover:border-cyan-500/50 hover:-translate-y-1 transition-all"
+                  >
+                    <div className="flex items-start justify-between mb-4">
+                      <h3 className="text-lg font-bold text-slate-100">{kit.name}</h3>
+                      {kit.isActive && (
+                        <span className="px-2 py-1 bg-green-500/20 text-green-500 rounded text-xs font-semibold">
+                          Active
                         </span>
-                      </div>
-                    ))}
+                      )}
+                    </div>
+                    <p className="text-sm text-slate-400 mb-4">{kit.description}</p>
+                    <div className="text-sm text-cyan-500">
+                      {kit.itemCount} {kit.itemCount === 1 ? 'item' : 'items'} in kit
+                    </div>
                   </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
 
-                  {/* Deploy Button + Conflict Warning */}
-                  <div className="border-t border-slate-700/30 pt-4">
-                    {kit.allAvailable ? (
-                      <>
-                        <button className="px-5 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg font-semibold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/40 hover:-translate-y-0.5 transition-all">
-                          DEPLOY TO EVENT
-                        </button>
-                        <span className="ml-4 text-green-500 font-semibold text-sm">✓ All items available</span>
-                      </>
-                    ) : (
-                      <>
-                        <div className="bg-red-500/20 border border-red-500 rounded-lg p-3 mb-3 flex items-center gap-2">
-                          <div className="w-2 h-2 rounded-full bg-red-500"></div>
-                          <span className="text-sm text-red-500">Warning: {kit.conflict}</span>
-                        </div>
-                        <button className="px-5 py-3 bg-slate-700/30 text-slate-400 border border-slate-700/50 rounded-lg font-semibold cursor-not-allowed">
-                          DEPLOY TO EVENT
-                        </button>
-                      </>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
+        {/* CALENDAR TAB - TODO */}
+        {activeTab === 'calendar' && (
+          <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-12 text-center">
+            <div className="text-6xl mb-4">📅</div>
+            <h2 className="text-2xl font-bold text-slate-100 mb-2">Calendar View</h2>
+            <p className="text-slate-400">Gear assignment calendar coming soon...</p>
+          </div>
+        )}
+
+        {/* MAINTENANCE TAB - TODO */}
+        {activeTab === 'maintenance' && (
+          <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-12 text-center">
+            <div className="text-6xl mb-4">🔧</div>
+            <h2 className="text-2xl font-bold text-slate-100 mb-2">Maintenance History</h2>
+            <p className="text-slate-400">Maintenance tracking coming soon...</p>
           </div>
         )}
       </div>
+
+      {/* Create Gear Modal */}
+      {showCreateGearModal && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
+          <div className="bg-slate-800 border border-slate-700 rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div className="bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border-b border-cyan-500/30 p-6">
+              <h2 className="text-2xl font-bold text-slate-100">Add New Gear</h2>
+            </div>
+
+            <form onSubmit={handleCreateGear} className="p-6 space-y-6">
+              {/* Name */}
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-2">
+                  Name *
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  required
+                  className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+                  placeholder="Canon EOS R5"
+                />
+              </div>
+
+              {/* Category */}
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-2">
+                  Category *
+                </label>
+                <select
+                  name="category"
+                  required
+                  className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 focus:outline-none focus:border-cyan-500"
+                >
+                  <option value="">Select category...</option>
+                  <option value="CAMERA">Camera</option>
+                  <option value="LENS">Lens</option>
+                  <option value="AUDIO">Audio</option>
+                  <option value="COMPUTER">Computer</option>
+                  <option value="RIGGING">Rigging</option>
+                  <option value="CABLE">Cable</option>
+                  <option value="LIGHTING">Lighting</option>
+                  <option value="ACCESSORIES">Accessories</option>
+                  <option value="STABILIZERS">Stabilizers</option>
+                  <option value="DRONES">Drones</option>
+                  <option value="MONITORS">Monitors</option>
+                  <option value="OTHER">Other</option>
+                </select>
+              </div>
+
+              {/* Type */}
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-2">
+                  Type *
+                </label>
+                <input
+                  type="text"
+                  name="type"
+                  required
+                  className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+                  placeholder="Full-Frame Mirrorless"
+                />
+              </div>
+
+              {/* Serial Number */}
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-2">
+                  Serial Number
+                </label>
+                <input
+                  type="text"
+                  name="serialNumber"
+                  className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+                  placeholder="CFJ012345"
+                />
+              </div>
+
+              {/* Purchase Date & Price */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                    Purchase Date
+                  </label>
+                  <input
+                    type="date"
+                    name="purchaseDate"
+                    className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 focus:outline-none focus:border-cyan-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                    Purchase Price ($)
+                  </label>
+                  <input
+                    type="number"
+                    name="purchasePrice"
+                    min="0"
+                    step="0.01"
+                    className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+                    placeholder="3999.00"
+                  />
+                </div>
+              </div>
+
+              {/* Notes */}
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-2">
+                  Notes
+                </label>
+                <textarea
+                  name="notes"
+                  rows={3}
+                  className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+                  placeholder="Additional notes about this gear..."
+                />
+              </div>
+
+              {/* Actions */}
+              <div className="flex gap-3 justify-end pt-4 border-t border-slate-700/30">
+                <button
+                  type="button"
+                  onClick={() => setShowCreateGearModal(false)}
+                  className="px-6 py-3 bg-slate-700/30 text-slate-300 border border-slate-700/50 rounded-lg font-semibold hover:bg-slate-700/50 transition-all"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={createGear.isPending}
+                  className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg font-semibold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/40 hover:-translate-y-0.5 transition-all disabled:opacity-50"
+                >
+                  {createGear.isPending ? 'Creating...' : 'Create Gear'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Create Kit Modal */}
+      {showCreateKitModal && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
+          <div className="bg-slate-800 border border-slate-700 rounded-xl w-full max-w-2xl">
+            <div className="bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border-b border-cyan-500/30 p-6">
+              <h2 className="text-2xl font-bold text-slate-100">Create New Kit</h2>
+            </div>
+
+            <form onSubmit={handleCreateKit} className="p-6 space-y-6">
+              {/* Kit Name */}
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-2">
+                  Kit Name *
+                </label>
+                <input
+                  type="text"
+                  name="kitName"
+                  required
+                  className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+                  placeholder="Standard Dance Kit"
+                />
+              </div>
+
+              {/* Description */}
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-2">
+                  Description
+                </label>
+                <textarea
+                  name="description"
+                  rows={3}
+                  className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+                  placeholder="Complete setup for single-camera dance events"
+                />
+              </div>
+
+              <div className="text-sm text-slate-400">
+                Note: Add gear items to kits in a future update
+              </div>
+
+              {/* Actions */}
+              <div className="flex gap-3 justify-end pt-4 border-t border-slate-700/30">
+                <button
+                  type="button"
+                  onClick={() => setShowCreateKitModal(false)}
+                  className="px-6 py-3 bg-slate-700/30 text-slate-300 border border-slate-700/50 rounded-lg font-semibold hover:bg-slate-700/50 transition-all"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={createKit.isPending}
+                  className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg font-semibold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/40 hover:-translate-y-0.5 transition-all disabled:opacity-50"
+                >
+                  {createKit.isPending ? 'Creating...' : 'Create Kit'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
