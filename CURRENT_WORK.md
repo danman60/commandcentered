@@ -121,7 +121,6 @@
 - ✅ **Phase 7:** Files Page (6/6) - 5-tab layout complete
 - ⏳ **Phase 8:** Operators Page (0/5) - NEXT
 - 🔜 **Phase 9:** Gear Page (0/6)
-- 🔜 **Phase 9:** Gear Page (0/6)
 - 🔜 **Phase 10:** Reports Page (0/4)
 - 🔜 **Phase 11:** Settings Page (0/5)
 - 🔜 **Phase 12:** Lead Finder Page (0/6)
