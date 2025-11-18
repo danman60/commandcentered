@@ -5,9 +5,9 @@
 
 ---
 
-## 📊 CURRENT STATUS: Phase 17-20 Complete - Backend Integration for Mock Data Pages ✅
+## 📊 CURRENT STATUS: Phase 17-21 Complete - Backend Integration for Mock Data Pages ✅
 
-### **Current Session (Nov 18 - Phase 17-20 Backend Integration):**
+### **Current Session (Nov 18 - Phase 17-21 Backend Integration):**
 
 **Session Goal:** Replace mock data with real backend integration on remaining pages
 
@@ -113,6 +113,42 @@
    - Push pending
 
 **Backend Coverage:** Reports page: **90% complete** (4 charts + metrics from real data, operators/equipment columns simplified to N/A pending relation inclusion)
+
+#### Phase 21: Contract & Proposal Backend Integration ✅
+
+1. ✅ **Created Contract Router (6 procedures)**
+   - list - List contracts with filters (status, clientId, search)
+   - getById - Get contract with full relations (client, lead, proposal, signatures, invoices)
+   - create - Create contract from proposal
+   - update - Update contract details
+   - updateStatus - Change status with auto-timestamps (sentAt, signedAt)
+   - delete - Soft delete (set status to CANCELLED)
+
+2. ✅ **Created Proposal Router (7 procedures)**
+   - list - List proposals with filters (status, leadId, search)
+   - getById - Get proposal with full relations (lead, template, lineItems, contracts)
+   - create - Create new proposal from template
+   - update - Update proposal details
+   - updateStatus - Change status with auto-review tracking
+   - addLineItem - Add line items to proposal
+   - convertToContract - Convert accepted proposal to contract
+
+3. ✅ **Imported Routers**
+   - Added both routers to _app.ts
+   - Updated totals: 17 routers, ~130 procedures
+
+4. ✅ **Files Page Integration**
+   - Replaced contracts mock data with trpc.contract.list.useQuery()
+   - Replaced proposals mock data with trpc.proposal.list.useQuery()
+   - Added loading/empty states for both tabs
+   - Transform data for UI display (status mapping, date formatting)
+
+5. ✅ **Build & Commit**
+   - 18/18 pages passing
+   - 0 TypeScript errors
+   - Committed: 95d4b57
+
+**Backend Coverage:** Files page: **60% complete** (Contracts + Proposals functional, Documents/Livestreams/Service-Library tabs remain mock)
 
 ---
 
