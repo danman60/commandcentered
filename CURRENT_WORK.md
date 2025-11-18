@@ -186,5 +186,12 @@ None - Phase 5 complete with all functionality working
 
 ---
 
-**Status:** Phase 5 Complete ✅ - Ready for Phase 6 (Communications Page)
-**Next Command:** User says "continue" to begin Phase 6
+**Status:** Phase 5 Complete ✅ - Awaiting Supabase MCP Authentication
+**Next Steps:**
+1. Restart Claude Code
+2. Authenticate CommandCentered Supabase MCP (project: netbsyvxrhrqxyzqflmd)
+3. Verify database connection (should be empty/separate from CompPortal)
+4. Run initial Prisma migrations
+5. Continue to Phase 6
+
+**See:** `SESSION_SUPABASE_SETUP.md` for full setup details
