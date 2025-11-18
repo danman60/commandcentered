@@ -62,12 +62,12 @@ Wait for completion → Commit → Report
 ## 📊 OVERALL PROGRESS TRACKER
 
 **Total Tasks:** 108 (93 original + 15 router implementations)
-**Completed:** 55 (Phase 0: 6/7, Phase 1: 8/8 ✅, Phase 2: 7/7 ✅, Phase 3: 9/9 ✅, Phase 4: 10/12, Routers: 15/15 ✅)
-**In Progress:** Phase 4 - Planning Page modals (deferred)
-**Remaining:** 53
+**Completed:** 57 (Phase 0: 6/7, Phase 1: 8/8 ✅, Phase 2: 7/7 ✅, Phase 3: 9/9 ✅, Phase 4: 12/12 ✅, Routers: 15/15 ✅)
+**In Progress:** None
+**Remaining:** 51
 
-**Current Phase:** Phase 4 (Planning Page) - 83% COMPLETE ✅
-**Current Status:** Planning page with 3-panel layout, month calendar, event bars, operator/kit display (modals deferred)
+**Current Phase:** Phase 4 (Planning Page) - 100% COMPLETE ✅
+**Current Status:** Planning page with 3-panel layout, month calendar, event bars, operator/kit display, NewEventModal, EventDetailModal with shift builder, KitCreationModal
 
 **Phase 0.7 COMPLETE:** All 15 tRPC routers implemented (100%)
 - **Session 1:** event, operator, gear, client, shift ✅
@@ -370,11 +370,11 @@ create: tenantProcedure
 **Frontend:**
 - [x] Task 4.9: Build Planning page 3-panel layout (03-planning.html) ✅ (app/(dashboard)/planning/page.tsx - 285 lines)
 - [x] Task 4.10: Build month calendar with event bars ✅ (calendar grid with event display)
-- [ ] Task 4.11: Build event detail modal (shift builder) ⏸ DEFERRED (modal skeleton present, full shift builder TODO)
-- [ ] Task 4.12: Build kit creation modal (gear dependencies) ⏸ DEFERRED (basic kit list present, creation modal TODO)
+- [x] Task 4.11: Build event detail modal (shift builder) ✅ (EventDetailModal with shift creation + operator assignment - planning/page.tsx:470-616)
+- [x] Task 4.12: Build kit creation modal (gear dependencies) ✅ (KitCreationModal with gear multi-select - planning/page.tsx:618-756)
 
-**Phase 4 Status:** 10/12 tasks complete (83%) - Core functionality complete ✅
-**Features:** 3-panel layout (operators/kits/calendar), month navigation, event bars with status colors, draggable operator/kit cards
+**Phase 4 Status:** 12/12 tasks complete (100%) ✅ COMPLETE
+**Features:** 3-panel layout (operators/kits/calendar), month navigation, event bars with status colors, NewEventModal, EventDetailModal with shift builder, KitCreationModal with gear selection
 
 ---
 
