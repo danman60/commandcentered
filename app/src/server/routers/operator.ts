@@ -36,7 +36,11 @@ export const operatorRouter = router({
           ...(input?.role && { primaryRole: input.role }),
         },
         include: {
-          skills: true,
+          skills: {
+            include: {
+              skillDefinition: true,
+            },
+          },
           availability: true,
           _count: {
             select: {
