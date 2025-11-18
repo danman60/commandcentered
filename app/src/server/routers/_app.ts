@@ -16,7 +16,7 @@ import { userRouter } from './user';
 import { gearAssignmentRouter } from './gearAssignment';
 
 /**
- * Main tRPC router - 15 routers, ~110 procedures
+ * Main tRPC router - 15 routers, ~117 procedures
  *
  * All routers enforce multi-tenant isolation via tenantProcedure
  */
@@ -29,12 +29,12 @@ export const appRouter = router({
   lead: leadRouter, // 8 procedures
   communication: communicationRouter, // 5 procedures
   deliverable: deliverableRouter, // 6 procedures
-  dashboard: dashboardRouter, // 5 procedures
+  dashboard: dashboardRouter, // 9 procedures
   client: clientRouter, // 6 procedures
   report: reportRouter, // 4 procedures
-  file: fileRouter, // 5 procedures
-  settings: settingsRouter, // 4 procedures
-  user: userRouter, // 6 procedures
+  file: fileRouter, // 8 procedures (6 stubs + 2 integration stubs)
+  settings: settingsRouter, // 6 procedures
+  user: userRouter, // 8 procedures
   gearAssignment: gearAssignmentRouter, // 4 procedures
 });
 
