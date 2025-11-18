@@ -21,7 +21,11 @@ export const deliverableRouter = router({
     .query(async ({ ctx, input }) => {
       const deliverable = await ctx.prisma.deliverable.findFirst({
         where: { id: input.id, tenantId: ctx.tenantId },
-        include: { event: true, assignedEditor: true },
+        include: {
+          event: true,
+          assignedEditor: true,
+          assets: true,
+        },
       });
       if (!deliverable) throw new Error('Deliverable not found');
       return deliverable;
