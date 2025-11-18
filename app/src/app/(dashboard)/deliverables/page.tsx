@@ -39,7 +39,7 @@ export default function DeliverablesPage() {
   return (
     <div className="flex-1 flex flex-col overflow-hidden bg-slate-950">
       {/* Header */}
-      <div className="flex-shrink-0 bg-gradient-to-r from-slate-900 to-slate-800 border-b-2 border-cyan-500/30 px-8 py-6 shadow-xl shadow-black/50">
+      <div className="flex-shrink-0 bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border-b border-cyan-500/30 px-8 py-6">
         <div className="flex justify-between items-center">
           <div>
             <div className="flex items-center gap-4 mb-2">
