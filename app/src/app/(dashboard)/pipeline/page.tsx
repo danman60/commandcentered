@@ -169,27 +169,80 @@ export default function PipelinePage() {
         lead.nextFollowUpAt ? new Date(lead.nextFollowUpAt).toLocaleDateString() : '',
         lead.contactFrequency || '',
         productList,
-        `$${totalRevenue.toLocaleString()}`,
-        `$${projectedRevenue.toLocaleString()}`,
+        totalRevenue.toString(),
+        projectedRevenue.toString(),
       ];
     });
 
-    // Combine headers and rows
-    const csvContent = [headers, ...rows]
-      .map((row) => row.map((cell) => `"${cell}"`).join(','))
-      .join('\n');
+    // Combine into CSV string
+    const csv = [
+      headers.join(','),
+      ...rows.map(row => row.map(cell => `"${cell.toString().replace(/"/g, '""')}"`).join(',')),
+    ].join('\n');
 
-    // Create download link
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    // Download
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
     const url = URL.createObjectURL(blob);
     link.setAttribute('href', url);
-    link.setAttribute('download', `pipeline-leads-${new Date().toISOString().split('T')[0]}.csv`);
+    link.setAttribute('download', `pipeline-${new Date().toISOString().split('T')[0]}.csv`);
     link.style.visibility = 'hidden';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   };
+
+  // Keyboard shortcuts
+  React.useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      // Don't trigger if user is typing in an input/textarea
+      const target = e.target as HTMLElement;
+      if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.tagName === 'SELECT') {
+        // Allow Escape to clear focus
+        if (e.key === 'Escape') {
+          target.blur();
+        }
+        return;
+      }
+
+      switch (e.key.toLowerCase()) {
+        case 'n':
+          e.preventDefault();
+          setIsNewLeadOpen(true);
+          break;
+        case 'e':
+          e.preventDefault();
+          handleExport();
+          break;
+        case '/':
+          e.preventDefault();
+          document.querySelector<HTMLInputElement>('input[placeholder*="Search"]')?.focus();
+          break;
+        case 'escape':
+          e.preventDefault();
+          setSearchQuery('');
+          setProductFilter('');
+          setTemperatureFilter('');
+          setSortBy('');
+          break;
+        case '1':
+          e.preventDefault();
+          setViewMode('kanban');
+          break;
+        case '2':
+          e.preventDefault();
+          setViewMode('card');
+          break;
+        case '3':
+          e.preventDefault();
+          setViewMode('table');
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [handleExport]);
 
   return (
     <div className="p-8">
@@ -247,6 +300,51 @@ export default function PipelinePage() {
               <TrendingUp className="w-4 h-4" />
               📊 Export
             </Button>
+
+            {/* Keyboard Shortcuts Help */}
+            <div className="relative group">
+              <button
+                className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-gray-400 hover:text-white border border-slate-600 rounded-lg transition-colors"
+                title="Keyboard Shortcuts"
+              >
+                <span className="text-sm">⌨️</span>
+              </button>
+              <div className="absolute right-0 top-full mt-2 w-80 bg-slate-800 border border-slate-600 rounded-lg p-4 shadow-xl opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity z-50">
+                <div className="text-sm font-semibold text-white mb-3 border-b border-slate-700 pb-2">
+                  Keyboard Shortcuts
+                </div>
+                <div className="space-y-2 text-xs">
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-400">New Lead</span>
+                    <kbd className="px-2 py-1 bg-slate-700 text-gray-300 rounded border border-slate-600">N</kbd>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-400">Export CSV</span>
+                    <kbd className="px-2 py-1 bg-slate-700 text-gray-300 rounded border border-slate-600">E</kbd>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-400">Focus Search</span>
+                    <kbd className="px-2 py-1 bg-slate-700 text-gray-300 rounded border border-slate-600">/</kbd>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-400">Clear Filters</span>
+                    <kbd className="px-2 py-1 bg-slate-700 text-gray-300 rounded border border-slate-600">Esc</kbd>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-400">Kanban View</span>
+                    <kbd className="px-2 py-1 bg-slate-700 text-gray-300 rounded border border-slate-600">1</kbd>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-400">Card View</span>
+                    <kbd className="px-2 py-1 bg-slate-700 text-gray-300 rounded border border-slate-600">2</kbd>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-400">Table View</span>
+                    <kbd className="px-2 py-1 bg-slate-700 text-gray-300 rounded border border-slate-600">3</kbd>
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <Button
               variant="primary"
