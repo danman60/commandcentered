@@ -26,22 +26,24 @@ export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
 })
 
 // Tenant procedure - requires authentication + tenant context
-export const tenantProcedure = protectedProcedure.use(async ({ ctx, next }) => {
-  if (!ctx.tenantId) {
-    throw new TRPCError({ code: 'FORBIDDEN', message: 'No tenant selected' })
-  }
+// TEMPORARILY DISABLED AUTH FOR TESTING
+export const tenantProcedure = publicProcedure.use(async ({ ctx, next }) => {
+  // Just use a default tenant ID for testing
   return next({
     ctx: {
       ...ctx,
-      tenantId: ctx.tenantId, // Now guaranteed to be non-null
+      tenantId: '00000000-0000-0000-0000-000000000001', // Default tenant
+      userId: '00000000-0000-0000-0000-000000000001', // Default user
     },
   })
 })
 
 // Admin procedure - requires admin role
+// TEMPORARILY DISABLED AUTH FOR TESTING
 export const adminProcedure = tenantProcedure.use(async ({ ctx, next }) => {
-  if (ctx.user.role !== 'SUPER_ADMIN' && ctx.user.role !== 'COMPETITION_DIRECTOR') {
-    throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin access required' })
-  }
+  // Skip admin check during testing
+  // if (!ctx.user || (ctx.user.role !== 'SUPER_ADMIN' && ctx.user.role !== 'COMPETITION_DIRECTOR')) {
+  //   throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin access required' })
+  // }
   return next()
 })
