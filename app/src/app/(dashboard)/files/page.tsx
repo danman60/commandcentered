@@ -10,9 +10,12 @@ export default function FilesPage() {
   const [proposalPricing, setProposalPricing] = useState({ discount: 0, notes: '', terms: '' });
   const [selectedClientId, setSelectedClientId] = useState<string>('all');
   const [showUploadModal, setShowUploadModal] = useState(false);
+  const [showAddServiceModal, setShowAddServiceModal] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploadCategory, setUploadCategory] = useState('documents');
   const [uploadDescription, setUploadDescription] = useState('');
+  const [serviceFormData, setServiceFormData] = useState({ name: '', description: '', price: '' });
+  const [customServices, setCustomServices] = useState<Array<{ id: string; name: string; description: string; price: string }>>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Fetch contracts and proposals from backend
@@ -131,6 +134,23 @@ export default function FilesPage() {
       category: uploadCategory,
       description: uploadDescription || undefined,
     });
+  };
+
+  const handleAddService = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!serviceFormData.name || !serviceFormData.description || !serviceFormData.price) return;
+
+    const newService = {
+      id: Date.now().toString(),
+      name: serviceFormData.name,
+      description: serviceFormData.description,
+      price: serviceFormData.price,
+    };
+
+    setCustomServices([...customServices, newService]);
+    setShowAddServiceModal(false);
+    setServiceFormData({ name: '', description: '', price: '' });
   };
 
   return (
@@ -655,8 +675,17 @@ export default function FilesPage() {
         {/* Tab 5: Service Library */}
         {activeTab === 'service-library' && (
           <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6">
-            <h2 className="text-xl font-semibold text-cyan-500 mb-5">📚 Service Templates Library</h2>
+            <div className="flex justify-between items-center mb-5">
+              <h2 className="text-xl font-semibold text-cyan-500">📚 Service Templates Library</h2>
+              <button
+                onClick={() => setShowAddServiceModal(true)}
+                className="px-5 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg font-semibold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/40 transition-all"
+              >
+                ➕ Add Service
+              </button>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+              {/* Default Templates */}
               {serviceLibraryTemplates.map((template) => (
                 <div
                   key={template.id}
@@ -665,6 +694,20 @@ export default function FilesPage() {
                   <h3 className="text-base font-bold text-slate-100 mb-3">{template.name}</h3>
                   <p className="text-sm text-slate-400 mb-3 leading-relaxed">{template.description}</p>
                   <div className="text-2xl font-bold text-green-500">{template.price}</div>
+                </div>
+              ))}
+              {/* Custom Services */}
+              {customServices.map((service) => (
+                <div
+                  key={service.id}
+                  className="bg-slate-900/60 border border-purple-500/50 rounded-lg p-5 cursor-pointer hover:border-purple-500/80 hover:-translate-y-1 transition-all"
+                >
+                  <div className="flex justify-between items-start mb-3">
+                    <h3 className="text-base font-bold text-slate-100">{service.name}</h3>
+                    <span className="text-xs bg-purple-500/20 text-purple-400 px-2 py-1 rounded">Custom</span>
+                  </div>
+                  <p className="text-sm text-slate-400 mb-3 leading-relaxed">{service.description}</p>
+                  <div className="text-2xl font-bold text-green-500">{service.price}</div>
                 </div>
               ))}
             </div>
@@ -746,6 +789,78 @@ export default function FilesPage() {
                 </button>
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Add Service Modal */}
+      {showAddServiceModal && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+          <div className="bg-slate-900 border border-slate-700 rounded-xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
+            <h2 className="text-2xl font-bold text-cyan-500 mb-5">Add New Service Template</h2>
+
+            <form onSubmit={handleAddService} className="flex flex-col gap-4">
+              <div>
+                <label className="block text-sm font-semibold text-slate-300 mb-2">
+                  Service Name *
+                </label>
+                <input
+                  type="text"
+                  value={serviceFormData.name}
+                  onChange={(e) => setServiceFormData({ ...serviceFormData, name: e.target.value })}
+                  placeholder="e.g., Dance Recital Package"
+                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-cyan-500"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-slate-300 mb-2">
+                  Description *
+                </label>
+                <textarea
+                  value={serviceFormData.description}
+                  onChange={(e) => setServiceFormData({ ...serviceFormData, description: e.target.value })}
+                  placeholder="Describe what's included in this service package..."
+                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-cyan-500 resize-none"
+                  rows={3}
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-slate-300 mb-2">
+                  Base Price *
+                </label>
+                <input
+                  type="text"
+                  value={serviceFormData.price}
+                  onChange={(e) => setServiceFormData({ ...serviceFormData, price: e.target.value })}
+                  placeholder="e.g., $5,500"
+                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-cyan-500"
+                  required
+                />
+              </div>
+
+              <div className="flex gap-3 mt-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowAddServiceModal(false);
+                    setServiceFormData({ name: '', description: '', price: '' });
+                  }}
+                  className="flex-1 px-5 py-3 bg-slate-700/30 border border-slate-700/50 rounded-lg text-slate-300 font-semibold hover:bg-slate-700/50 transition-all"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 px-5 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg font-semibold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/40 transition-all"
+                >
+                  Add Service
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
