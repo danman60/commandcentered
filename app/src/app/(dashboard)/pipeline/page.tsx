@@ -131,6 +131,23 @@ export default function PipelinePage() {
             weekAgo.setDate(weekAgo.getDate() - 7);
             return new Date(lead.lastContactedAt) >= weekAgo;
 
+          case 'needsContact':
+            // Check if lead needs contact based on frequency setting
+            if (!lead.contactFrequency || !lead.lastContactedAt) return false;
+            const lastContact = new Date(lead.lastContactedAt);
+            const now = new Date();
+            const daysSinceContact = Math.floor((now.getTime() - lastContact.getTime()) / (1000 * 60 * 60 * 24));
+            const frequency = lead.contactFrequency.toLowerCase();
+            let expectedDays = 0;
+            if (frequency.includes('daily')) expectedDays = 1;
+            else if (frequency.includes('weekly')) expectedDays = 7;
+            else if (frequency.includes('biweekly') || frequency.includes('bi-weekly')) expectedDays = 14;
+            else if (frequency.includes('monthly')) expectedDays = 30;
+            else if (frequency.includes('quarterly')) expectedDays = 90;
+            else return false;
+            // Return true if overdue (beyond expected) or needs attention (within 3 days of expected)
+            return daysSinceContact > expectedDays - 3;
+
           default:
             return true;
         }
@@ -654,6 +671,7 @@ export default function PipelinePage() {
                       {quickFilter === 'highValue' && 'High Value'}
                       {quickFilter === 'noContact' && 'No Contact'}
                       {quickFilter === 'activeWeek' && 'Active This Week'}
+                      {quickFilter === 'needsContact' && 'Needs Contact'}
                     </span>
                     <button
                       onClick={() => setQuickFilter('')}
@@ -795,6 +813,16 @@ export default function PipelinePage() {
               }`}
             >
               ⚡ Active This Week
+            </button>
+            <button
+              onClick={() => setQuickFilter(quickFilter === 'needsContact' ? '' : 'needsContact')}
+              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                quickFilter === 'needsContact'
+                  ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-white shadow-lg shadow-yellow-500/30'
+                  : 'bg-slate-800 text-gray-400 hover:text-white hover:bg-slate-700 border border-slate-600'
+              }`}
+            >
+              📞 Needs Contact
             </button>
           </div>
         </div>
