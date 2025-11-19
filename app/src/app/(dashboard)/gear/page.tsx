@@ -12,6 +12,8 @@ export default function GearPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [showCreateGearModal, setShowCreateGearModal] = useState(false);
   const [showCreateKitModal, setShowCreateKitModal] = useState(false);
+  const [selectedGearIds, setSelectedGearIds] = useState<string[]>([]);
+  const [kitFormData, setKitFormData] = useState({ name: '', description: '' });
 
   // Fetch gear with real data
   const { data: gear, isLoading: gearLoading, refetch: refetchGear } = trpc.gear.list.useQuery({
@@ -33,9 +35,19 @@ export default function GearPage() {
   const createKit = trpc.kit.create.useMutation({
     onSuccess: () => {
       setShowCreateKitModal(false);
+      setKitFormData({ name: '', description: '' });
+      setSelectedGearIds([]);
       refetchKits();
     },
   });
+
+  const toggleGear = (gearId: string) => {
+    setSelectedGearIds(prev =>
+      prev.includes(gearId)
+        ? prev.filter(id => id !== gearId)
+        : [...prev, gearId]
+    );
+  };
 
   // Transform gear data for UI
   const gearData = gear?.map((item) => ({
@@ -122,12 +134,11 @@ export default function GearPage() {
 
   const handleCreateKit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
 
     createKit.mutate({
-      kitName: formData.get('kitName') as string,
-      description: formData.get('description') as string || undefined,
-      gearIds: [], // Will add gear selection in future enhancement
+      kitName: kitFormData.name,
+      description: kitFormData.description || undefined,
+      gearIds: selectedGearIds,
       isActive: true,
     });
   };
@@ -561,57 +572,105 @@ export default function GearPage() {
 
       {/* Create Kit Modal */}
       {showCreateKitModal && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-          <div className="bg-slate-800 border border-slate-700 rounded-xl w-full max-w-2xl">
-            <div className="bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border-b border-cyan-500/30 p-6">
-              <h2 className="text-2xl font-bold text-slate-100">Create New Kit</h2>
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-slate-900 border-2 border-purple-500/30 rounded-xl w-[700px] max-h-[90vh] overflow-y-auto shadow-2xl">
+            <div className="px-6 py-4 border-b border-purple-500/20 flex justify-between items-center">
+              <h2 className="text-xl font-bold text-white">Create New Kit</h2>
+              <button
+                onClick={() => {
+                  setShowCreateKitModal(false);
+                  setKitFormData({ name: '', description: '' });
+                  setSelectedGearIds([]);
+                }}
+                className="text-slate-400 hover:text-white text-2xl font-bold"
+              >
+                ×
+              </button>
             </div>
 
-            <form onSubmit={handleCreateKit} className="p-6 space-y-6">
-              {/* Kit Name */}
+            <form onSubmit={handleCreateKit} className="p-6 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">
-                  Kit Name *
+                <label className="block text-sm font-semibold text-slate-300 mb-2">
+                  Kit Name
                 </label>
                 <input
                   type="text"
-                  name="kitName"
+                  value={kitFormData.name}
+                  onChange={(e) => setKitFormData({ ...kitFormData, name: e.target.value })}
+                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-purple-500"
+                  placeholder="e.g., Wedding Package A"
                   required
-                  className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500"
-                  placeholder="Standard Dance Kit"
                 />
               </div>
 
-              {/* Description */}
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">
+                <label className="block text-sm font-semibold text-slate-300 mb-2">
                   Description
                 </label>
                 <textarea
-                  name="description"
-                  rows={3}
-                  className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500"
-                  placeholder="Complete setup for single-camera dance events"
+                  value={kitFormData.description}
+                  onChange={(e) => setKitFormData({ ...kitFormData, description: e.target.value })}
+                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-purple-500 min-h-[80px]"
+                  placeholder="Optional description..."
                 />
               </div>
 
-              <div className="text-sm text-slate-400">
-                Note: Add gear items to kits in a future update
+              <div>
+                <label className="block text-sm font-semibold text-slate-300 mb-2">
+                  Select Gear Items ({selectedGearIds.length} selected)
+                </label>
+                <div className="border border-slate-700 rounded-lg max-h-[300px] overflow-y-auto">
+                  {gear && gear.length > 0 ? (
+                    <div className="divide-y divide-slate-700">
+                      {gear.map((item: any) => (
+                        <label
+                          key={item.id}
+                          className="flex items-center gap-3 p-3 hover:bg-slate-800/50 cursor-pointer"
+                        >
+                          <input
+                            type="checkbox"
+                            checked={selectedGearIds.includes(item.id)}
+                            onChange={() => toggleGear(item.id)}
+                            className="w-4 h-4 rounded border-slate-600 bg-slate-800 text-purple-500 focus:ring-purple-500"
+                          />
+                          <div className="flex-1">
+                            <div className="text-white font-medium">{item.name}</div>
+                            <div className="text-xs text-slate-400">{item.category}</div>
+                          </div>
+                          <div className={`text-xs px-2 py-1 rounded ${
+                            item.status === 'AVAILABLE'
+                              ? 'bg-green-500/20 text-green-400'
+                              : 'bg-red-500/20 text-red-400'
+                          }`}>
+                            {item.status}
+                          </div>
+                        </label>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="p-6 text-center text-slate-400">
+                      No gear items available. Create some gear first.
+                    </div>
+                  )}
+                </div>
               </div>
 
-              {/* Actions */}
-              <div className="flex gap-3 justify-end pt-4 border-t border-slate-700/30">
+              <div className="flex gap-3 pt-4">
                 <button
                   type="button"
-                  onClick={() => setShowCreateKitModal(false)}
-                  className="px-6 py-3 bg-slate-700/30 text-slate-300 border border-slate-700/50 rounded-lg font-semibold hover:bg-slate-700/50 transition-all"
+                  onClick={() => {
+                    setShowCreateKitModal(false);
+                    setKitFormData({ name: '', description: '' });
+                    setSelectedGearIds([]);
+                  }}
+                  className="flex-1 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white font-semibold rounded-lg transition-all"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={createKit.isPending}
-                  className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg font-semibold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/40 hover:-translate-y-0.5 transition-all disabled:opacity-50"
+                  className="flex-1 px-4 py-2 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-400 hover:to-purple-500 text-white font-semibold rounded-lg transition-all disabled:opacity-50"
                 >
                   {createKit.isPending ? 'Creating...' : 'Create Kit'}
                 </button>
