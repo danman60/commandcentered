@@ -432,7 +432,7 @@ export default function CommunicationsPage() {
       {/* Create Touchpoint Modal */}
       {showComposeModal && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
-          <div className="bg-slate-900 border border-slate-700 rounded-xl p-6 w-full max-w-2xl">
+          <div className="bg-slate-900 border border-slate-700 rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <h2 className="text-2xl font-bold text-cyan-500 mb-5">Create Touchpoint</h2>
             <form onSubmit={handleComposeSubmit} className="space-y-4">
               <div>
