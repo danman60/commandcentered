@@ -103,6 +103,38 @@ export function ClientCard({
 
   const totalRevenue = getTotalRevenue();
 
+  // Check contact consistency based on frequency
+  const getContactConsistency = () => {
+    if (!lead.contactFrequency || !lead.lastContactedAt) return null;
+
+    const lastContact = new Date(lead.lastContactedAt);
+    const now = new Date();
+    const daysSinceContact = Math.floor((now.getTime() - lastContact.getTime()) / (1000 * 60 * 60 * 24));
+
+    const frequency = lead.contactFrequency.toLowerCase();
+    let expectedDays = 0;
+
+    if (frequency.includes('daily')) expectedDays = 1;
+    else if (frequency.includes('weekly')) expectedDays = 7;
+    else if (frequency.includes('biweekly') || frequency.includes('bi-weekly')) expectedDays = 14;
+    else if (frequency.includes('monthly')) expectedDays = 30;
+    else if (frequency.includes('quarterly')) expectedDays = 90;
+    else return null;
+
+    // On track: within expected window
+    if (daysSinceContact <= expectedDays) {
+      return { icon: '✅', text: 'On track', color: 'bg-green-500/20 text-green-400 border-green-500/30' };
+    }
+    // Attention needed: 1-3 days overdue
+    if (daysSinceContact <= expectedDays + 3) {
+      return { icon: '⚠️', text: 'Attention', color: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30' };
+    }
+    // Overdue: more than 3 days past expected
+    return { icon: '🔴', text: 'Overdue', color: 'bg-red-500/20 text-red-400 border-red-500/30' };
+  };
+
+  const contactConsistency = getContactConsistency();
+
   // Highlight matching text
   const highlightMatch = (text: string) => {
     if (!searchQuery || !text) return text;
@@ -162,6 +194,11 @@ export function ClientCard({
             {contactMethod && (
               <span className={`px-2 py-0.5 text-xs rounded border font-medium ${contactMethod.color}`}>
                 {contactMethod.icon} {contactMethod.text}
+              </span>
+            )}
+            {contactConsistency && (
+              <span className={`px-2 py-0.5 text-xs rounded border font-medium ${contactConsistency.color}`}>
+                {contactConsistency.icon} {contactConsistency.text}
               </span>
             )}
           </div>
