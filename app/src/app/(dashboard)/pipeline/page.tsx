@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Modal } from '@/components/ui/Modal';
@@ -104,6 +104,25 @@ export default function PipelinePage() {
   const getLeadsByStatus = (status: LeadStatus) => {
     return leads?.filter(lead => lead.status === status) ?? [];
   };
+
+  // Calculate temperature counts
+  const temperatureCounts = React.useMemo(() => {
+    const counts = {
+      hot: 0,
+      warm: 0,
+      cold: 0,
+      none: 0,
+    };
+
+    allLeads?.forEach((lead) => {
+      if (lead.temperature === 'Hot Lead') counts.hot++;
+      else if (lead.temperature === 'Warm Lead') counts.warm++;
+      else if (lead.temperature === 'Cold Lead') counts.cold++;
+      else counts.none++;
+    });
+
+    return counts;
+  }, [allLeads]);
 
   // Export leads to CSV
   const handleExport = () => {
@@ -286,6 +305,63 @@ export default function PipelinePage() {
           </select>
         </div>
       </Card>
+
+      {/* Temperature Distribution Badges */}
+      {allLeads && allLeads.length > 0 && (
+        <div className="flex items-center gap-3 mb-4">
+          <span className="text-sm text-gray-400">Pipeline Distribution:</span>
+          <button
+            onClick={() => setTemperatureFilter('Hot Lead')}
+            className={`px-3 py-1.5 rounded-full text-sm font-medium border transition-all ${
+              temperatureFilter === 'Hot Lead'
+                ? 'bg-red-500/30 text-red-300 border-red-500/50'
+                : 'bg-red-500/10 text-red-400 border-red-500/30 hover:bg-red-500/20'
+            }`}
+          >
+            🔥 Hot: {temperatureCounts.hot}
+          </button>
+          <button
+            onClick={() => setTemperatureFilter('Warm Lead')}
+            className={`px-3 py-1.5 rounded-full text-sm font-medium border transition-all ${
+              temperatureFilter === 'Warm Lead'
+                ? 'bg-orange-500/30 text-orange-300 border-orange-500/50'
+                : 'bg-orange-500/10 text-orange-400 border-orange-500/30 hover:bg-orange-500/20'
+            }`}
+          >
+            🟠 Warm: {temperatureCounts.warm}
+          </button>
+          <button
+            onClick={() => setTemperatureFilter('Cold Lead')}
+            className={`px-3 py-1.5 rounded-full text-sm font-medium border transition-all ${
+              temperatureFilter === 'Cold Lead'
+                ? 'bg-blue-500/30 text-blue-300 border-blue-500/50'
+                : 'bg-blue-500/10 text-blue-400 border-blue-500/30 hover:bg-blue-500/20'
+            }`}
+          >
+            🔵 Cold: {temperatureCounts.cold}
+          </button>
+          {temperatureCounts.none > 0 && (
+            <button
+              onClick={() => setTemperatureFilter('')}
+              className={`px-3 py-1.5 rounded-full text-sm font-medium border transition-all ${
+                temperatureFilter === ''
+                  ? 'bg-gray-500/30 text-gray-300 border-gray-500/50'
+                  : 'bg-gray-500/10 text-gray-400 border-gray-500/30 hover:bg-gray-500/20'
+              }`}
+            >
+              ⚪ Unclassified: {temperatureCounts.none}
+            </button>
+          )}
+          {temperatureFilter && (
+            <button
+              onClick={() => setTemperatureFilter('')}
+              className="px-3 py-1.5 rounded-lg text-sm font-medium bg-slate-700 text-gray-300 hover:bg-slate-600 transition-colors"
+            >
+              Clear Filter
+            </button>
+          )}
+        </div>
+      )}
 
       {/* Revenue Summary Cards */}
       {leads && leads.length > 0 && <RevenueSummaryCards leads={leads as any} />}
