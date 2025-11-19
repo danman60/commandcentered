@@ -24,6 +24,22 @@ export function ClientCard({
   // Check if follow-up is overdue
   const isOverdue = lead.nextFollowUpAt && new Date(lead.nextFollowUpAt) < new Date();
 
+  // Calculate lead age
+  const getLeadAge = () => {
+    const createdDate = new Date(lead.createdAt);
+    const now = new Date();
+    const daysOld = Math.floor((now.getTime() - createdDate.getTime()) / (1000 * 60 * 60 * 24));
+
+    if (daysOld === 0) return { text: 'New today', color: 'bg-green-500/20 text-green-400 border-green-500/30' };
+    if (daysOld === 1) return { text: '1 day old', color: 'bg-green-500/20 text-green-400 border-green-500/30' };
+    if (daysOld < 7) return { text: `${daysOld} days old`, color: 'bg-green-500/20 text-green-400 border-green-500/30' };
+    if (daysOld < 30) return { text: `${Math.floor(daysOld / 7)} weeks old`, color: 'bg-green-500/20 text-green-400 border-green-500/30' };
+    if (daysOld < 90) return { text: `${Math.floor(daysOld / 30)} months old`, color: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30' };
+    return { text: `${Math.floor(daysOld / 30)} months old`, color: 'bg-red-500/20 text-red-400 border-red-500/30' };
+  };
+
+  const leadAge = getLeadAge();
+
   // Highlight matching text
   const highlightMatch = (text: string) => {
     if (!searchQuery || !text) return text;
@@ -55,6 +71,9 @@ export function ClientCard({
                 ⚠️ OVERDUE
               </span>
             )}
+            <span className={`px-2 py-0.5 text-xs rounded border font-medium ${leadAge.color}`}>
+              {leadAge.text}
+            </span>
           </div>
           <div className="flex items-center gap-3 text-sm text-gray-400">
             {lead.email && (
