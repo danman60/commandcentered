@@ -1,0 +1,238 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]:
+      - heading "CommandCentered" [level=1] [ref=e5]
+      - navigation [ref=e6]:
+        - link "📊 Dashboard" [ref=e7] [cursor=pointer]:
+          - /url: /dashboard
+          - generic [ref=e8]: 📊
+          - text: Dashboard
+        - link "📅 Planning" [ref=e9] [cursor=pointer]:
+          - /url: /planning
+          - generic [ref=e10]: 📅
+          - text: Planning
+        - link "⚡ Pipeline" [ref=e11] [cursor=pointer]:
+          - /url: /pipeline
+          - generic [ref=e12]: ⚡
+          - text: Pipeline
+        - link "🎥 Gear Inventory" [ref=e13] [cursor=pointer]:
+          - /url: /gear
+          - generic [ref=e14]: 🎥
+          - text: Gear Inventory
+        - link "👥 Operators" [ref=e15] [cursor=pointer]:
+          - /url: /operators
+          - generic [ref=e16]: 👥
+          - text: Operators
+        - link "📦 Deliverables" [ref=e17] [cursor=pointer]:
+          - /url: /deliverables
+          - generic [ref=e18]: 📦
+          - text: Deliverables
+        - link "💬 Communications" [ref=e19] [cursor=pointer]:
+          - /url: /communications
+          - generic [ref=e20]: 💬
+          - text: Communications
+        - link "📁 Files & Assets" [ref=e21] [cursor=pointer]:
+          - /url: /files
+          - generic [ref=e22]: 📁
+          - text: Files & Assets
+        - link "📈 Reports" [ref=e23] [cursor=pointer]:
+          - /url: /reports
+          - generic [ref=e24]: 📈
+          - text: Reports
+        - link "👤 Operator Portal" [ref=e25] [cursor=pointer]:
+          - /url: /operator-portal
+          - generic [ref=e26]: 👤
+          - text: Operator Portal
+        - link "🔧 Settings" [ref=e27] [cursor=pointer]:
+          - /url: /settings
+          - generic [ref=e28]: 🔧
+          - text: Settings
+    - main [ref=e30]:
+      - generic [ref=e31]:
+        - generic [ref=e33]:
+          - generic [ref=e34]:
+            - generic [ref=e35]:
+              - heading "Pipeline" [level=1] [ref=e36]
+              - generic [ref=e37]:
+                - generic [ref=e38]: Total Value
+                - generic [ref=e39]: $54,400
+            - paragraph [ref=e40]: Manage leads and track opportunities
+          - generic [ref=e41]:
+            - generic [ref=e42]:
+              - button "📇 Kanban" [ref=e43]:
+                - generic [ref=e44]: 📇
+                - generic [ref=e45]: Kanban
+              - button "📊 Card" [ref=e46]:
+                - generic [ref=e47]: 📊
+                - generic [ref=e48]: Card
+              - button "📋 Table" [ref=e49]:
+                - generic [ref=e50]: 📋
+                - generic [ref=e51]: Table
+            - button "📊 Export" [ref=e52]:
+              - img [ref=e53]
+              - text: 📊 Export
+            - generic [ref=e56]:
+              - button "⌨️" [ref=e57]
+              - generic:
+                - generic: Keyboard Shortcuts
+                - generic:
+                  - generic:
+                    - generic: New Lead
+                    - generic: "N"
+                  - generic:
+                    - generic: Export CSV
+                    - generic: E
+                  - generic:
+                    - generic: Focus Search
+                    - generic: /
+                  - generic:
+                    - generic: Clear Filters
+                    - generic: Esc
+                  - generic:
+                    - generic: Kanban View
+                    - generic: "1"
+                  - generic:
+                    - generic: Card View
+                    - generic: "2"
+                  - generic:
+                    - generic: Table View
+                    - generic: "3"
+            - generic [ref=e58]:
+              - button "📦" [ref=e59]
+              - generic:
+                - generic: Product Status Guide
+                - generic:
+                  - generic:
+                    - generic: Discussing
+                    - generic: Initial conversations about product
+                  - generic:
+                    - generic: Proposal
+                    - generic: Formal proposal has been sent
+                  - generic:
+                    - generic: Won
+                    - generic: Deal closed successfully
+                  - generic:
+                    - generic: Lost
+                    - generic: Opportunity was lost
+                  - generic:
+                    - generic: Not Interested
+                    - generic: Client not interested in this product
+                  - generic:
+                    - generic: Not Applicable
+                    - generic: Product doesn't apply to this client
+            - button "New Lead" [ref=e60]:
+              - img [ref=e61]
+              - text: New Lead
+        - generic [ref=e63]:
+          - generic [ref=e64]:
+            - img [ref=e65]
+            - textbox "Search leads by organization, contact, or email..." [ref=e68]
+          - combobox [ref=e69]:
+            - option "All Statuses" [selected]
+            - option "Hot Leads"
+            - option "Warm Leads"
+            - option "Cold Leads"
+          - combobox [ref=e70]:
+            - option "All Products" [selected]
+            - option "Studio Sage"
+            - option "Dance Recital"
+            - option "Competition Software"
+            - option "Core Video"
+          - combobox [ref=e71]:
+            - option "Sort by..." [selected]
+            - option "Last Contacted (Oldest)"
+            - option "Next Follow-Up (Upcoming)"
+            - option "Revenue Potential (Highest)"
+            - option "Client Name (A-Z)"
+        - generic [ref=e72]:
+          - generic [ref=e73]: "Pipeline Distribution:"
+          - 'button "🔥 Hot: 1" [ref=e74]'
+          - 'button "🟠 Warm: 1" [ref=e75]'
+          - 'button "🔵 Cold: 1" [ref=e76]'
+        - generic [ref=e79]: Showing 3 of 3 leads
+        - generic [ref=e80]:
+          - generic [ref=e81]:
+            - img [ref=e84]
+            - generic [ref=e87]: $54,400
+            - generic [ref=e88]: Total Pipeline Value
+          - generic [ref=e89]:
+            - img [ref=e92]
+            - generic [ref=e98]: $14,700
+            - generic [ref=e99]: Won Deals
+          - generic [ref=e100]:
+            - img [ref=e103]
+            - generic [ref=e105]: $39,700
+            - generic [ref=e106]: Projected Revenue
+          - generic [ref=e107]:
+            - img [ref=e110]
+            - generic [ref=e112]: $7,771
+            - generic [ref=e113]: Avg Deal Size
+        - generic [ref=e115]:
+          - generic [ref=e116]: "Quick Filters:"
+          - button "🔔 Needs Follow-Up" [ref=e117]
+          - button "🔥 Hot Leads" [ref=e118]
+          - button "💎 High Value ($10k+)" [ref=e119]
+          - button "📭 No Contact Yet" [ref=e120]
+          - button "⚡ Active This Week" [ref=e121]
+          - button "📞 Needs Contact" [ref=e122]
+        - generic [ref=e123]:
+          - generic [ref=e124]:
+            - generic [ref=e126]:
+              - heading "New" [level=3] [ref=e127]
+              - generic [ref=e128]: "0"
+            - generic [ref=e130]:
+              - generic [ref=e131]: 📭
+              - paragraph [ref=e132]: No leads yet
+          - generic [ref=e133]:
+            - generic [ref=e135]:
+              - heading "Contacted" [level=3] [ref=e136]
+              - generic [ref=e137]: "1"
+            - generic [ref=e139] [cursor=pointer]:
+              - heading "ABC Dance Studio" [level=4] [ref=e140]
+              - paragraph [ref=e141]: ABC Contact
+              - generic [ref=e142]:
+                - generic [ref=e143]: Studio Sage Chatbot
+                - generic [ref=e144]: Dance Recital Package
+                - generic [ref=e145]: "+2"
+          - generic [ref=e146]:
+            - generic [ref=e148]:
+              - heading "Qualified" [level=3] [ref=e149]
+              - generic [ref=e150]: "0"
+            - generic [ref=e152]:
+              - generic [ref=e153]: 📭
+              - paragraph [ref=e154]: No leads yet
+          - generic [ref=e155]:
+            - generic [ref=e157]:
+              - heading "Proposal Sent" [level=3] [ref=e158]
+              - generic [ref=e159]: "1"
+            - generic [ref=e161] [cursor=pointer]:
+              - heading "Glow Dance Competition" [level=4] [ref=e162]
+              - paragraph [ref=e163]: Glow Contact
+              - generic [ref=e164]:
+                - generic [ref=e165]: Studio Sage Chatbot
+                - generic [ref=e166]: Dance Recital Package
+                - generic [ref=e167]: "+2"
+          - generic [ref=e168]:
+            - generic [ref=e170]:
+              - heading "Engaged" [level=3] [ref=e171]
+              - generic [ref=e172]: "1"
+            - generic [ref=e174] [cursor=pointer]:
+              - heading "EMPWR Dance Experience" [level=4] [ref=e175]
+              - paragraph [ref=e176]: EMPWR Contact
+              - generic [ref=e177]:
+                - generic [ref=e178]: Studio Sage Chatbot
+                - generic [ref=e179]: Dance Recital Package
+                - generic [ref=e180]: "+2"
+          - generic [ref=e181]:
+            - generic [ref=e183]:
+              - heading "Converted" [level=3] [ref=e184]
+              - generic [ref=e185]: "0"
+            - generic [ref=e187]:
+              - generic [ref=e188]: 📭
+              - paragraph [ref=e189]: No leads yet
+  - generic [ref=e190]: "Build: cb96428 | 11/19/2025, 08:06 EST"
+  - alert [ref=e191]
+```

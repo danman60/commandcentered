@@ -149,13 +149,13 @@ function DroppableCalendarDay({
                     key={idx}
                     className="bg-black/30 px-1.5 py-0.5 rounded text-[10px] font-bold text-white"
                   >
-                    {getOperatorInitials(assignment.operator)}
+                    {getOperatorInitials(assignment?.operator)}
                   </span>
-                ))
-              )}
+                )) || []
+              ) || []}
               {event.gearAssignments?.slice(0, 2).map((ga: any, idx: number) => (
                 <span key={idx} className="text-xs">📷</span>
-              ))}
+              )) || []}
             </div>
           </div>
         ))}
@@ -269,6 +269,9 @@ export default function PlanningPage() {
   };
 
   const getOperatorInitials = (operator: any) => {
+    if (!operator || !operator.firstName || !operator.lastName) {
+      return '??';
+    }
     return `${operator.firstName[0]}${operator.lastName[0]}`;
   };
 
