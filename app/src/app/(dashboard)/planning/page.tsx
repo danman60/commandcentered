@@ -742,7 +742,7 @@ function EventDetailModal({ eventId, isOpen, onClose }: { eventId: string; isOpe
                       <div>
                         <div className="font-bold text-white">{shift.role}</div>
                         <div className="text-sm text-slate-400">
-                          {shift.startTime} - {shift.endTime}
+                          {new Date(shift.startTime).toLocaleString()} - {new Date(shift.endTime).toLocaleString()}
                         </div>
                       </div>
                       <button
