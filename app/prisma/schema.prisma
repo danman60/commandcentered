@@ -1227,6 +1227,9 @@ model Lead {
   contactFrequency String? @map("contact_frequency") @db.VarChar(50) // "Weekly", "Biweekly", "Monthly"
   productService   String? @map("product_service") @db.VarChar(100) // "Dance Recital", "Concert", etc.
 
+  // Product-Focused Pipeline (Round 7 - Nov 2025)
+  temperature String? @db.Text // "Hot Lead", "Warm Lead", "Cold Lead"
+
   // Relations
   notes                    LeadNote[]
   proposals                Proposal[]
@@ -2150,11 +2153,12 @@ model LeadProduct {
   leadId String @map("lead_id") @db.Uuid
   lead   Lead   @relation(fields: [leadId], references: [id], onDelete: Cascade)
 
-  productName   String        @map("product_name") @db.VarChar(100) // "Studio Sage", "Dance Recital Package", etc.
-  isInterested  Boolean       @default(false) @map("is_interested")
-  status        ProductStatus @default(NOT_INTERESTED)
-  revenueAmount Decimal?      @map("revenue_amount") @db.Decimal(10, 2)
-  notes         String?       @db.Text
+  productName      String        @map("product_name") @db.VarChar(100) // "Studio Sage", "Dance Recital Package", etc.
+  isInterested     Boolean       @default(false) @map("is_interested")
+  status           ProductStatus @default(NOT_INTERESTED)
+  revenueAmount    Decimal?      @map("revenue_amount") @db.Decimal(10, 2)
+  projectedRevenue Decimal?      @map("projected_revenue") @db.Decimal(10, 2) // Round 7 - Product Pipeline
+  notes            String?       @db.Text
 
   @@unique([leadId, productName])
   @@index([tenantId])
@@ -2170,6 +2174,7 @@ enum ProductStatus {
   PROPOSAL       @map("proposal")
   WON            @map("won")
   LOST           @map("lost")
+  NOT_APPLICABLE @map("not_applicable") // Round 7 - Product Pipeline
 
   @@map("product_status")
   @@schema("commandcentered")

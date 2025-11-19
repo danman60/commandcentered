@@ -156,8 +156,9 @@ export const leadRouter = router({
         leadId: z.string().uuid(),
         productName: z.string(),
         isInterested: z.boolean(),
-        status: z.enum(['NOT_INTERESTED', 'DISCUSSING', 'PROPOSAL', 'WON', 'LOST']),
+        status: z.enum(['NOT_INTERESTED', 'DISCUSSING', 'PROPOSAL', 'WON', 'LOST', 'NOT_APPLICABLE']),
         revenueAmount: z.number().optional(),
+        projectedRevenue: z.number().optional(), // Round 7 - Product Pipeline
         notes: z.string().optional(),
       })
     )
@@ -174,12 +175,14 @@ export const leadRouter = router({
           isInterested: input.isInterested,
           status: input.status,
           revenueAmount: input.revenueAmount,
+          projectedRevenue: input.projectedRevenue,
           notes: input.notes,
         },
         update: {
           isInterested: input.isInterested,
           status: input.status,
           revenueAmount: input.revenueAmount,
+          projectedRevenue: input.projectedRevenue,
           notes: input.notes,
         },
       });
@@ -205,8 +208,9 @@ export const leadRouter = router({
           z.object({
             productName: z.string(),
             isInterested: z.boolean(),
-            status: z.enum(['NOT_INTERESTED', 'DISCUSSING', 'PROPOSAL', 'WON', 'LOST']),
+            status: z.enum(['NOT_INTERESTED', 'DISCUSSING', 'PROPOSAL', 'WON', 'LOST', 'NOT_APPLICABLE']),
             revenueAmount: z.number().optional(),
+            projectedRevenue: z.number().optional(), // Round 7 - Product Pipeline
             notes: z.string().optional(),
           })
         ),
@@ -226,12 +230,14 @@ export const leadRouter = router({
             isInterested: product.isInterested,
             status: product.status,
             revenueAmount: product.revenueAmount,
+            projectedRevenue: product.projectedRevenue,
             notes: product.notes,
           },
           update: {
             isInterested: product.isInterested,
             status: product.status,
             revenueAmount: product.revenueAmount,
+            projectedRevenue: product.projectedRevenue,
             notes: product.notes,
           },
         })
@@ -304,6 +310,7 @@ export const leadRouter = router({
         nextFollowUpAt: z.date().optional(),
         typeOfContact: z.string().optional(),
         contactFrequency: z.string().optional(),
+        temperature: z.enum(['Hot Lead', 'Warm Lead', 'Cold Lead']).optional(), // Round 7 - Product Pipeline
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -311,6 +318,23 @@ export const leadRouter = router({
       const lead = await ctx.prisma.lead.findFirst({ where: { id, tenantId: ctx.tenantId } });
       if (!lead) throw new Error('Lead not found');
       return ctx.prisma.lead.update({ where: { id }, data });
+    }),
+
+  updateTemperature: tenantProcedure
+    .input(
+      z.object({
+        id: z.string().uuid(),
+        temperature: z.enum(['Hot Lead', 'Warm Lead', 'Cold Lead']),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { id, temperature } = input;
+      const lead = await ctx.prisma.lead.findFirst({ where: { id, tenantId: ctx.tenantId } });
+      if (!lead) throw new Error('Lead not found');
+      return ctx.prisma.lead.update({
+        where: { id },
+        data: { temperature },
+      });
     }),
 
   convertToClient: tenantProcedure
