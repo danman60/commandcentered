@@ -119,7 +119,7 @@ export default function DashboardPage() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-white">Dashboard</h1>
-            <div className="text-sm text-slate-400 mt-1">
+            <div className="text-sm text-slate-400 mt-1" suppressHydrationWarning>
               Good {new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 18 ? 'afternoon' : 'evening'}, Commander
             </div>
           </div>
