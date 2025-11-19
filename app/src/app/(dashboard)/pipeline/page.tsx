@@ -284,6 +284,24 @@ export default function PipelinePage() {
     return () => window.removeEventListener('keydown', handleKeyPress);
   }, [handleExport]);
 
+  // Highlight search matches
+  const highlightMatch = (text: string | null | undefined): React.ReactNode => {
+    if (!searchQuery || !text) return text || '';
+
+    const regex = new RegExp(`(${searchQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+    const parts = text.split(regex);
+
+    return parts.map((part, index) =>
+      regex.test(part) ? (
+        <mark key={index} className="bg-yellow-400/30 text-yellow-200 px-0.5 rounded">
+          {part}
+        </mark>
+      ) : (
+        <React.Fragment key={index}>{part}</React.Fragment>
+      )
+    );
+  };
+
   return (
     <div className="p-8">
       {/* Header */}
@@ -698,9 +716,9 @@ export default function PipelinePage() {
                       onClick={() => setSelectedLeadId(lead.id)}
                     >
                       <h4 className="font-medium text-white text-sm mb-1">
-                        {lead.organization}
+                        {highlightMatch(lead.organization)}
                       </h4>
-                      <p className="text-xs text-gray-400 mb-2">{lead.contactName}</p>
+                      <p className="text-xs text-gray-400 mb-2">{highlightMatch(lead.contactName)}</p>
 
                       {lead.leadProducts && lead.leadProducts.length > 0 && (
                         <div className="flex flex-wrap gap-1 mt-2">
@@ -742,6 +760,7 @@ export default function PipelinePage() {
               onSendEmail={() => setSendEmailLeadId(lead.id)}
               onViewDetails={() => setSelectedLeadId(lead.id)}
               onProductUpdate={() => refetchLeads()}
+              searchQuery={searchQuery}
             />
           ))}
           {(!leads || leads.length === 0) && (

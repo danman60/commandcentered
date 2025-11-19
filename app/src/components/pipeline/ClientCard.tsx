@@ -10,6 +10,7 @@ interface ClientCardProps {
   onSendEmail?: () => void;
   onViewDetails?: () => void;
   onProductUpdate?: () => void;
+  searchQuery?: string;
 }
 
 export function ClientCard({
@@ -18,19 +19,37 @@ export function ClientCard({
   onSendEmail,
   onViewDetails,
   onProductUpdate,
+  searchQuery,
 }: ClientCardProps) {
+  // Highlight matching text
+  const highlightMatch = (text: string) => {
+    if (!searchQuery || !text) return text;
+
+    const regex = new RegExp(`(${searchQuery})`, 'gi');
+    const parts = text.split(regex);
+
+    return parts.map((part, index) =>
+      regex.test(part) ? (
+        <mark key={index} className="bg-yellow-400/30 text-yellow-200 px-0.5 rounded">
+          {part}
+        </mark>
+      ) : (
+        part
+      )
+    );
+  };
   return (
     <div className="bg-gray-800 rounded-lg border border-gray-700 p-6 hover:border-gray-600 transition-colors cursor-pointer">
       {/* Header */}
       <div className="flex items-start justify-between mb-4">
         <div>
           <h3 className="text-xl font-semibold text-gray-100 mb-1">
-            {lead.organization || 'Unnamed Organization'}
+            {highlightMatch(lead.organization || 'Unnamed Organization')}
           </h3>
           <div className="flex items-center gap-3 text-sm text-gray-400">
             {lead.email && (
               <span className="flex items-center gap-1">
-                📧 {lead.email}
+                📧 {highlightMatch(lead.email)}
               </span>
             )}
             {lead.phone && (
