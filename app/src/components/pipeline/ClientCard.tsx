@@ -40,6 +40,26 @@ export function ClientCard({
 
   const leadAge = getLeadAge();
 
+  // Get contact method icon and style
+  const getContactMethod = () => {
+    if (!lead.typeOfContact) return null;
+    const method = lead.typeOfContact.toLowerCase();
+
+    if (method.includes('email')) {
+      return { icon: '📧', text: 'Email', color: 'bg-blue-500/20 text-blue-400 border-blue-500/30' };
+    }
+    if (method.includes('phone')) {
+      return { icon: '📱', text: 'Phone', color: 'bg-purple-500/20 text-purple-400 border-purple-500/30' };
+    }
+    if (method.includes('person') || method.includes('in-person')) {
+      return { icon: '🤝', text: 'In-person', color: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30' };
+    }
+
+    return { icon: '💬', text: lead.typeOfContact, color: 'bg-gray-500/20 text-gray-400 border-gray-500/30' };
+  };
+
+  const contactMethod = getContactMethod();
+
   // Highlight matching text
   const highlightMatch = (text: string) => {
     if (!searchQuery || !text) return text;
@@ -84,6 +104,11 @@ export function ClientCard({
             {lead.phone && (
               <span className="flex items-center gap-1">
                 📱 {lead.phone}
+              </span>
+            )}
+            {contactMethod && (
+              <span className={`px-2 py-0.5 text-xs rounded border font-medium ${contactMethod.color}`}>
+                {contactMethod.icon} {contactMethod.text}
               </span>
             )}
           </div>
