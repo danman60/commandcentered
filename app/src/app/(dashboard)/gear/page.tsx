@@ -134,14 +134,14 @@ export default function GearPage() {
 
   if (gearLoading || kitsLoading) {
     return (
-      <div className="flex items-center justify-center h-screen bg-gray-50">
+      <div className="flex items-center justify-center h-screen bg-gray-900">
         <div className="text-slate-400">Loading gear...</div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col h-full bg-gray-50">
+    <div className="flex flex-col h-full bg-gray-900">
       {/* Header */}
       <div className="bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border-b border-cyan-500/30 px-8 py-6">
         <div className="flex justify-between items-center">
@@ -221,7 +221,7 @@ export default function GearPage() {
         {activeTab === 'inventory' && (
           <div>
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold text-slate-800">Gear Inventory</h2>
+              <h2 className="text-2xl font-bold text-slate-100">Gear Inventory</h2>
               <div className="flex gap-0">
                 <button
                   onClick={() => setActiveView('cards')}
@@ -358,7 +358,7 @@ export default function GearPage() {
         {/* KITS TAB */}
         {activeTab === 'kits' && (
           <div>
-            <h2 className="text-2xl font-bold text-slate-800 mb-6">Gear Kits</h2>
+            <h2 className="text-2xl font-bold text-slate-100 mb-6">Gear Kits</h2>
 
             {/* Empty State */}
             {kitData.length === 0 && (
