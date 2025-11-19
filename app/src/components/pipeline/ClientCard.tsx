@@ -9,6 +9,7 @@ interface ClientCardProps {
   onLogContact?: () => void;
   onSendEmail?: () => void;
   onViewDetails?: () => void;
+  onProductUpdate?: () => void;
 }
 
 export function ClientCard({
@@ -16,6 +17,7 @@ export function ClientCard({
   onLogContact,
   onSendEmail,
   onViewDetails,
+  onProductUpdate,
 }: ClientCardProps) {
   return (
     <div className="bg-gray-800 rounded-lg border border-gray-700 p-6 hover:border-gray-600 transition-colors cursor-pointer">
@@ -61,6 +63,7 @@ export function ClientCard({
           {lead.leadProducts.map((product) => (
             <ProductCard
               key={product.id}
+              leadId={lead.id}
               productName={product.productName}
               status={product.status}
               isInterested={product.isInterested}
@@ -69,6 +72,7 @@ export function ClientCard({
                 product.projectedRevenue ? Number(product.projectedRevenue) : null
               }
               notes={product.notes}
+              onUpdate={onProductUpdate}
             />
           ))}
         </div>

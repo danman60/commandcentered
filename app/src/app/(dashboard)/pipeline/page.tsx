@@ -437,6 +437,7 @@ export default function PipelinePage() {
               lead={lead as any}
               onLogContact={() => setLogContactLeadId(lead.id)}
               onViewDetails={() => setSelectedLeadId(lead.id)}
+              onProductUpdate={() => refetchLeads()}
             />
           ))}
           {(!leads || leads.length === 0) && (
