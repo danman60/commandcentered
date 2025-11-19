@@ -654,19 +654,21 @@ function NewEventModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
 
 // Event Detail Modal with Shift Builder
 function EventDetailModal({ eventId, isOpen, onClose }: { eventId: string; isOpen: boolean; onClose: () => void }) {
-  const { data: event } = trpc.event.getById.useQuery({ id: eventId });
+  const { data: event, refetch: refetchEvent } = trpc.event.getById.useQuery({ id: eventId });
   const { data: operators } = trpc.operator.list.useQuery({});
   const [selectedShiftId, setSelectedShiftId] = useState<string | null>(null);
 
   const createShift = trpc.shift.create.useMutation({
     onSuccess: () => {
-      window.location.reload();
+      // Refetch event data to show new shift without page reload
+      refetchEvent();
     },
   });
 
   const assignOperator = trpc.shift.assignOperator.useMutation({
     onSuccess: () => {
-      window.location.reload();
+      // Refetch event data to show new assignment without page reload
+      refetchEvent();
     },
   });
 
@@ -711,6 +713,7 @@ function EventDetailModal({ eventId, isOpen, onClose }: { eventId: string; isOpe
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-bold text-white">Shifts & Assignments</h3>
               <button
+                type="button"
                 onClick={() => {
                   const shiftDate = new Date(event.loadInTime);
                   const startTime = new Date(shiftDate);
