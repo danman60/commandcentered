@@ -34,7 +34,7 @@ export default function CampaignsPage() {
   });
 
   // Transform backend data to match UI format
-  const campaigns: Campaign[] = campaignsData.map((c) => ({
+  const campaigns: Campaign[] = campaignsData.map((c: any) => ({
     id: c.id,
     name: c.name,
     createdAt: new Date(c.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
