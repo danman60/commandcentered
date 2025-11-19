@@ -46,6 +46,7 @@ export default function PipelinePage() {
   const [temperatureFilter, setTemperatureFilter] = useState<string>('');
   const [sortBy, setSortBy] = useState<string>('');
   const [viewMode, setViewMode] = useState<ViewMode>('kanban');
+  const [quickFilter, setQuickFilter] = useState<string>('');
 
   // Fetch leads
   const { data: allLeads, refetch: refetchLeads } = trpc.lead.list.useQuery({
@@ -60,6 +61,44 @@ export default function PipelinePage() {
       if (!temperatureFilter) return true;
       return lead.temperature === temperatureFilter;
     }) || [];
+
+    // Apply quick filter
+    if (quickFilter) {
+      filtered = filtered.filter(lead => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const totalRevenue = lead.leadProducts?.reduce(
+          (sum, p) => sum + Number(p.revenueAmount || 0) + Number(p.projectedRevenue || 0),
+          0
+        ) || 0;
+
+        switch (quickFilter) {
+          case 'needsFollowUp':
+            if (!lead.nextFollowUpAt) return false;
+            const followUpDate = new Date(lead.nextFollowUpAt);
+            followUpDate.setHours(0, 0, 0, 0);
+            return followUpDate <= today;
+
+          case 'hotLeads':
+            return lead.temperature === 'Hot Lead';
+
+          case 'highValue':
+            return totalRevenue >= 10000;
+
+          case 'noContact':
+            return !lead.lastContactedAt;
+
+          case 'activeWeek':
+            if (!lead.lastContactedAt) return false;
+            const weekAgo = new Date();
+            weekAgo.setDate(weekAgo.getDate() - 7);
+            return new Date(lead.lastContactedAt) >= weekAgo;
+
+          default:
+            return true;
+        }
+      });
+    }
 
     // Then sort
     if (sortBy) {
@@ -224,6 +263,7 @@ export default function PipelinePage() {
           setProductFilter('');
           setTemperatureFilter('');
           setSortBy('');
+          setQuickFilter('');
           break;
         case '1':
           e.preventDefault();
@@ -471,10 +511,29 @@ export default function PipelinePage() {
               Showing <span className="font-semibold text-white">{leads?.length || 0}</span> of{' '}
               <span className="font-semibold text-white">{allLeads.length}</span> leads
             </span>
-            {(searchQuery || productFilter || temperatureFilter || sortBy) && (
+            {(searchQuery || productFilter || temperatureFilter || sortBy || quickFilter) && (
               <div className="flex items-center gap-2">
                 <span className="text-sm text-gray-500">|</span>
                 <span className="text-xs text-gray-500">Active filters:</span>
+                {quickFilter && (
+                  <div className="flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border border-cyan-500/30 rounded text-xs text-cyan-400">
+                    <span>
+                      Quick:{' '}
+                      {quickFilter === 'needsFollowUp' && 'Needs Follow-Up'}
+                      {quickFilter === 'hotLeads' && 'Hot Leads'}
+                      {quickFilter === 'highValue' && 'High Value'}
+                      {quickFilter === 'noContact' && 'No Contact'}
+                      {quickFilter === 'activeWeek' && 'Active This Week'}
+                    </span>
+                    <button
+                      onClick={() => setQuickFilter('')}
+                      className="hover:text-cyan-300"
+                      title="Clear quick filter"
+                    >
+                      ×
+                    </button>
+                  </div>
+                )}
                 {searchQuery && (
                   <div className="flex items-center gap-1 px-2 py-1 bg-cyan-500/10 border border-cyan-500/30 rounded text-xs text-cyan-400">
                     <span>Search: "{searchQuery}"</span>
@@ -532,13 +591,14 @@ export default function PipelinePage() {
               </div>
             )}
           </div>
-          {(searchQuery || productFilter || temperatureFilter || sortBy) && (
+          {(searchQuery || productFilter || temperatureFilter || sortBy || quickFilter) && (
             <button
               onClick={() => {
                 setSearchQuery('');
                 setProductFilter('');
                 setTemperatureFilter('');
                 setSortBy('');
+                setQuickFilter('');
               }}
               className="px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-gray-300 rounded text-xs font-medium transition-colors"
             >
@@ -550,6 +610,65 @@ export default function PipelinePage() {
 
       {/* Revenue Summary Cards */}
       {leads && leads.length > 0 && <RevenueSummaryCards leads={leads as any} />}
+
+      {/* Quick Filters */}
+      {allLeads && allLeads.length > 0 && (
+        <div className="mb-6">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-sm text-gray-400 font-medium mr-2">Quick Filters:</span>
+            <button
+              onClick={() => setQuickFilter(quickFilter === 'needsFollowUp' ? '' : 'needsFollowUp')}
+              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                quickFilter === 'needsFollowUp'
+                  ? 'bg-gradient-to-r from-red-500 to-orange-500 text-white shadow-lg shadow-red-500/30'
+                  : 'bg-slate-800 text-gray-400 hover:text-white hover:bg-slate-700 border border-slate-600'
+              }`}
+            >
+              🔔 Needs Follow-Up
+            </button>
+            <button
+              onClick={() => setQuickFilter(quickFilter === 'hotLeads' ? '' : 'hotLeads')}
+              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                quickFilter === 'hotLeads'
+                  ? 'bg-gradient-to-r from-red-500 to-orange-500 text-white shadow-lg shadow-red-500/30'
+                  : 'bg-slate-800 text-gray-400 hover:text-white hover:bg-slate-700 border border-slate-600'
+              }`}
+            >
+              🔥 Hot Leads
+            </button>
+            <button
+              onClick={() => setQuickFilter(quickFilter === 'highValue' ? '' : 'highValue')}
+              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                quickFilter === 'highValue'
+                  ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg shadow-cyan-500/30'
+                  : 'bg-slate-800 text-gray-400 hover:text-white hover:bg-slate-700 border border-slate-600'
+              }`}
+            >
+              💎 High Value ($10k+)
+            </button>
+            <button
+              onClick={() => setQuickFilter(quickFilter === 'noContact' ? '' : 'noContact')}
+              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                quickFilter === 'noContact'
+                  ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg shadow-purple-500/30'
+                  : 'bg-slate-800 text-gray-400 hover:text-white hover:bg-slate-700 border border-slate-600'
+              }`}
+            >
+              📭 No Contact Yet
+            </button>
+            <button
+              onClick={() => setQuickFilter(quickFilter === 'activeWeek' ? '' : 'activeWeek')}
+              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                quickFilter === 'activeWeek'
+                  ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-lg shadow-green-500/30'
+                  : 'bg-slate-800 text-gray-400 hover:text-white hover:bg-slate-700 border border-slate-600'
+              }`}
+            >
+              ⚡ Active This Week
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Kanban View */}
       {viewMode === 'kanban' && (
