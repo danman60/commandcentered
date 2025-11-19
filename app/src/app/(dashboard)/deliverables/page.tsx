@@ -43,7 +43,7 @@ export default function DeliverablesPage() {
         <div className="flex justify-between items-center">
           <div>
             <div className="flex items-center gap-4 mb-2">
-              <span className="text-4xl">📦</span>
+              <span className="text-4xl">🎬</span>
               <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
                 Deliverables
               </h1>
@@ -56,7 +56,7 @@ export default function DeliverablesPage() {
             onClick={() => setIsNewDeliverableModalOpen(true)}
             className="px-5 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-400 hover:to-cyan-500 text-white font-semibold rounded-lg shadow-lg shadow-cyan-500/30 transition-all hover:-translate-y-0.5"
           >
-            + NEW DELIVERABLE
+            ➕ Add Deliverable
           </button>
         </div>
       </div>
