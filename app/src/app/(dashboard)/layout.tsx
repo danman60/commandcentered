@@ -7,14 +7,15 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode
 }) {
-  const supabase = await createClient()
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
+  // TEMPORARILY DISABLED AUTH FOR TESTING
+  // const supabase = await createClient()
+  // const {
+  //   data: { session },
+  // } = await supabase.auth.getSession()
 
-  if (!session) {
-    redirect('/login')
-  }
+  // if (!session) {
+  //   redirect('/login')
+  // }
 
   return (
     <div className="flex h-screen bg-slate-900">
