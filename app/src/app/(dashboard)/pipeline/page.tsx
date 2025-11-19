@@ -5,6 +5,7 @@ import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Modal } from '@/components/ui/Modal';
 import { trpc } from '@/lib/trpc/client';
+import { ClientCard } from '@/components/pipeline';
 import {
   Plus,
   Search,
@@ -200,64 +201,18 @@ export default function PipelinePage() {
         </div>
       )}
 
-      {/* Card View */}
+      {/* Card View - Product-Focused */}
       {viewMode === 'card' && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div className="space-y-4">
           {leads?.map((lead) => (
-            <Card
+            <ClientCard
               key={lead.id}
-              padding="medium"
-              hover="lift"
-              className="cursor-pointer"
-              onClick={() => setSelectedLeadId(lead.id)}
-            >
-              <div className="flex items-start justify-between mb-3">
-                <div className="flex-1">
-                  <h3 className="font-bold text-white text-lg mb-1">{lead.organization}</h3>
-                  <p className="text-sm text-gray-400">{lead.contactName}</p>
-                </div>
-                <span
-                  className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                    PIPELINE_STAGES.find(s => s.id === lead.status)?.color || 'bg-gray-600'
-                  } bg-opacity-20 ${
-                    PIPELINE_STAGES.find(s => s.id === lead.status)?.color.replace('bg-', 'text-') || 'text-gray-400'
-                  }`}
-                >
-                  {PIPELINE_STAGES.find(s => s.id === lead.status)?.label}
-                </span>
-              </div>
-
-              <div className="space-y-2 text-sm">
-                {lead.email && (
-                  <div className="flex items-center gap-2 text-gray-400">
-                    <Mail className="w-4 h-4 flex-shrink-0" />
-                    <span className="truncate">{lead.email}</span>
-                  </div>
-                )}
-                {lead.phone && (
-                  <div className="flex items-center gap-2 text-gray-400">
-                    <Phone className="w-4 h-4 flex-shrink-0" />
-                    <span>{lead.phone}</span>
-                  </div>
-                )}
-              </div>
-
-              {lead.leadProducts && lead.leadProducts.length > 0 && (
-                <div className="flex flex-wrap gap-1 mt-3 pt-3 border-t border-slate-700">
-                  {lead.leadProducts.map((product) => (
-                    <span
-                      key={product.productName}
-                      className="text-xs px-2 py-1 bg-cyan-600/20 text-cyan-400 rounded"
-                    >
-                      {product.productName}
-                    </span>
-                  ))}
-                </div>
-              )}
-            </Card>
+              lead={lead as any}
+              onViewDetails={() => setSelectedLeadId(lead.id)}
+            />
           ))}
           {(!leads || leads.length === 0) && (
-            <div className="col-span-full text-center text-gray-500 py-12">
+            <div className="text-center text-gray-500 py-12 bg-gray-800 rounded-lg border border-gray-700">
               No leads found. Click "New Lead" to get started.
             </div>
           )}
