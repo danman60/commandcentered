@@ -1,15 +1,29 @@
 'use client';
 
 import { trpc } from '@/lib/trpc/client';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef } from 'react';
 
 export default function FilesPage() {
   const [activeTab, setActiveTab] = useState<'documents' | 'contracts' | 'proposals' | 'livestreams' | 'service-library'>('documents');
   const [selectedServices, setSelectedServices] = useState<string[]>(['multi-camera', 'highlight-reel']);
+  const [showUploadModal, setShowUploadModal] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [uploadCategory, setUploadCategory] = useState('documents');
+  const [uploadDescription, setUploadDescription] = useState('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Fetch contracts and proposals from backend
   const { data: contractsData, isLoading: contractsLoading } = trpc.contract.list.useQuery();
   const { data: proposalsData, isLoading: proposalsLoading } = trpc.proposal.list.useQuery();
+  const { data: filesData, refetch: refetchFiles } = trpc.file.list.useQuery({ category: activeTab === 'documents' ? 'documents' : undefined });
+  const createFile = trpc.file.create.useMutation({
+    onSuccess: () => {
+      refetchFiles();
+      setShowUploadModal(false);
+      setSelectedFile(null);
+      setUploadDescription('');
+    },
+  });
 
   // Transform contracts for display
   const contracts = useMemo(() => {
@@ -93,6 +107,25 @@ export default function FilesPage() {
       .reduce((sum, s) => sum + s.price, 0);
   };
 
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setSelectedFile(e.target.files[0]);
+    }
+  };
+
+  const handleUpload = () => {
+    if (!selectedFile) return;
+
+    createFile.mutate({
+      fileName: selectedFile.name,
+      fileType: selectedFile.type,
+      filePath: `/uploads/${selectedFile.name}`, // Placeholder path
+      fileSize: selectedFile.size,
+      category: uploadCategory,
+      description: uploadDescription || undefined,
+    });
+  };
+
   return (
     <div className="flex flex-col h-full bg-gray-900">
       {/* Header */}
@@ -108,7 +141,10 @@ export default function FilesPage() {
             <button className="px-5 py-3 bg-slate-700/30 text-slate-300 border border-slate-700/50 rounded-lg font-semibold hover:bg-slate-700/50 transition-all">
               📁 Open Google Drive
             </button>
-            <button className="px-5 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg font-semibold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/40 hover:-translate-y-0.5 transition-all">
+            <button
+              onClick={() => setShowUploadModal(true)}
+              className="px-5 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg font-semibold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/40 hover:-translate-y-0.5 transition-all"
+            >
               ⬆️ Upload File
             </button>
           </div>
@@ -426,6 +462,84 @@ export default function FilesPage() {
           </div>
         )}
       </div>
+
+      {/* Upload Modal */}
+      {showUploadModal && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+          <div className="bg-slate-900 border border-slate-700 rounded-xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
+            <h2 className="text-2xl font-bold text-cyan-500 mb-5">Upload File</h2>
+
+            <div className="flex flex-col gap-4">
+              <div>
+                <label className="block text-sm font-semibold text-slate-300 mb-2">
+                  Select File
+                </label>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  onChange={handleFileSelect}
+                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-cyan-500 file:text-white file:cursor-pointer hover:file:bg-cyan-600"
+                />
+                {selectedFile && (
+                  <p className="text-sm text-slate-400 mt-2">
+                    {selectedFile.name} ({(selectedFile.size / 1024 / 1024).toFixed(2)} MB)
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-slate-300 mb-2">
+                  Category
+                </label>
+                <select
+                  value={uploadCategory}
+                  onChange={(e) => setUploadCategory(e.target.value)}
+                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-cyan-500"
+                >
+                  <option value="documents">Documents</option>
+                  <option value="contracts">Contracts</option>
+                  <option value="proposals">Proposals</option>
+                  <option value="livestreams">Livestreams</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-slate-300 mb-2">
+                  Description (optional)
+                </label>
+                <textarea
+                  value={uploadDescription}
+                  onChange={(e) => setUploadDescription(e.target.value)}
+                  placeholder="Add a description for this file..."
+                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-cyan-500 resize-none"
+                  rows={3}
+                />
+              </div>
+
+              <div className="flex gap-3 mt-2">
+                <button
+                  onClick={() => {
+                    setShowUploadModal(false);
+                    setSelectedFile(null);
+                    setUploadDescription('');
+                  }}
+                  className="flex-1 px-5 py-3 bg-slate-700/30 border border-slate-700/50 rounded-lg text-slate-300 font-semibold hover:bg-slate-700/50 transition-all"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleUpload}
+                  disabled={!selectedFile || createFile.isPending}
+                  className="flex-1 px-5 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg font-semibold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/40 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {createFile.isPending ? 'Uploading...' : 'Upload'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -2,109 +2,169 @@ import { z } from 'zod';
 import { router, tenantProcedure } from '../trpc';
 
 export const fileRouter = router({
-  // TODO: Implement when FileAsset model added to schema
   list: tenantProcedure
     .input(
       z
         .object({
           eventId: z.string().uuid().optional(),
-          fileType: z.string().optional(),
-          uploadedBy: z.string().uuid().optional(),
+          clientId: z.string().uuid().optional(),
+          leadId: z.string().uuid().optional(),
+          category: z.string().optional(),
         })
         .optional()
     )
     .query(async ({ ctx, input }) => {
-      // TODO: Implement when FileAsset model added to schema
-      // Should return ctx.prisma.fileAsset.findMany({
-      //   where: {
-      //     tenantId: ctx.tenantId,
-      //     eventId: input?.eventId,
-      //     fileType: input?.fileType,
-      //     uploadedBy: input?.uploadedBy,
-      //   },
-      //   orderBy: { createdAt: 'desc' },
-      // });
-      return [];
+      return ctx.prisma.file.findMany({
+        where: {
+          tenantId: ctx.tenantId,
+          eventId: input?.eventId,
+          clientId: input?.clientId,
+          leadId: input?.leadId,
+          category: input?.category,
+        },
+        include: {
+          event: { select: { eventName: true } },
+          client: { select: { organization: true } },
+          lead: { select: { organization: true } },
+          uploadedBy: { select: { name: true, email: true } },
+        },
+        orderBy: { createdAt: 'desc' },
+      });
     }),
 
-  // TODO: Implement when FileAsset model added to schema
   getById: tenantProcedure
     .input(z.object({ id: z.string().uuid() }))
     .query(async ({ ctx, input }) => {
-      // TODO: Implement when FileAsset model added to schema
-      // Should return ctx.prisma.fileAsset.findFirst({
-      //   where: { id: input.id, tenantId: ctx.tenantId },
-      // });
-      return null;
+      return ctx.prisma.file.findFirst({
+        where: { id: input.id, tenantId: ctx.tenantId },
+        include: {
+          event: { select: { eventName: true } },
+          client: { select: { organization: true } },
+          lead: { select: { organization: true } },
+          uploadedBy: { select: { name: true, email: true } },
+        },
+      });
     }),
 
-  // TODO: Implement when FileAsset model added to schema
   getByEvent: tenantProcedure
     .input(z.object({ eventId: z.string().uuid() }))
     .query(async ({ ctx, input }) => {
-      // TODO: Implement when FileAsset model added to schema
-      // Should verify event exists and belongs to tenant
-      // Should return ctx.prisma.fileAsset.findMany({
-      //   where: { eventId: input.eventId, tenantId: ctx.tenantId },
-      //   orderBy: { createdAt: 'desc' },
-      // });
-      return [];
+      // Verify event exists and belongs to tenant
+      const event = await ctx.prisma.event.findFirst({
+        where: { id: input.eventId, tenantId: ctx.tenantId },
+      });
+      if (!event) throw new Error('Event not found');
+
+      return ctx.prisma.file.findMany({
+        where: { eventId: input.eventId, tenantId: ctx.tenantId },
+        include: {
+          uploadedBy: { select: { name: true, email: true } },
+        },
+        orderBy: { createdAt: 'desc' },
+      });
     }),
 
-  // TODO: Implement when FileAsset model added to schema
   create: tenantProcedure
     .input(
       z.object({
         fileName: z.string().min(1),
         fileType: z.string(),
-        fileUrl: z.string().url(),
-        fileSize: z.number().optional(),
+        filePath: z.string(),
+        fileSize: z.number().int(),
+        category: z.string().optional(),
+        description: z.string().optional(),
         eventId: z.string().uuid().optional(),
-        googleDriveUrl: z.string().url().optional(),
+        clientId: z.string().uuid().optional(),
+        leadId: z.string().uuid().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      // TODO: Implement when FileAsset model added to schema
-      // Should verify event exists if eventId provided
-      // Should create: ctx.prisma.fileAsset.create({
-      //   data: {
-      //     ...input,
-      //     tenantId: ctx.tenantId,
-      //     uploadedBy: ctx.userId,
-      //   },
-      // });
-      throw new Error('File creation not yet implemented - FileAsset model not in schema');
+      // Verify event exists if eventId provided
+      if (input.eventId) {
+        const event = await ctx.prisma.event.findFirst({
+          where: { id: input.eventId, tenantId: ctx.tenantId },
+        });
+        if (!event) throw new Error('Event not found');
+      }
+
+      // Verify client exists if clientId provided
+      if (input.clientId) {
+        const client = await ctx.prisma.client.findFirst({
+          where: { id: input.clientId, tenantId: ctx.tenantId },
+        });
+        if (!client) throw new Error('Client not found');
+      }
+
+      // Verify lead exists if leadId provided
+      if (input.leadId) {
+        const lead = await ctx.prisma.lead.findFirst({
+          where: { id: input.leadId, tenantId: ctx.tenantId },
+        });
+        if (!lead) throw new Error('Lead not found');
+      }
+
+      return ctx.prisma.file.create({
+        data: {
+          fileName: input.fileName,
+          fileType: input.fileType,
+          filePath: input.filePath,
+          fileSize: BigInt(input.fileSize),
+          category: input.category || 'documents',
+          description: input.description,
+          eventId: input.eventId,
+          clientId: input.clientId,
+          leadId: input.leadId,
+          tenantId: ctx.tenantId,
+          uploadedById: ctx.user.id,
+        },
+        include: {
+          event: { select: { eventName: true } },
+          client: { select: { organization: true } },
+          lead: { select: { organization: true } },
+          uploadedBy: { select: { name: true, email: true } },
+        },
+      });
     }),
 
-  // TODO: Implement when FileAsset model added to schema
   update: tenantProcedure
     .input(
       z.object({
         id: z.string().uuid(),
         fileName: z.string().min(1).optional(),
-        googleDriveUrl: z.string().url().optional(),
+        description: z.string().optional(),
+        category: z.string().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      // TODO: Implement when FileAsset model added to schema
-      // Should verify file exists and belongs to tenant
-      // Should update: ctx.prisma.fileAsset.update({
-      //   where: { id: input.id },
-      //   data: { fileName: input.fileName, googleDriveUrl: input.googleDriveUrl },
-      // });
-      throw new Error('File update not yet implemented - FileAsset model not in schema');
+      // Verify file exists and belongs to tenant
+      const file = await ctx.prisma.file.findFirst({
+        where: { id: input.id, tenantId: ctx.tenantId },
+      });
+      if (!file) throw new Error('File not found');
+
+      return ctx.prisma.file.update({
+        where: { id: input.id },
+        data: {
+          fileName: input.fileName,
+          description: input.description,
+          category: input.category,
+        },
+      });
     }),
 
-  // TODO: Implement when FileAsset model added to schema
   delete: tenantProcedure
     .input(z.object({ id: z.string().uuid() }))
     .mutation(async ({ ctx, input }) => {
-      // TODO: Implement when FileAsset model added to schema
-      // Should verify file exists and belongs to tenant
-      // Should hard delete: ctx.prisma.fileAsset.delete({
-      //   where: { id: input.id },
-      // });
-      throw new Error('File deletion not yet implemented - FileAsset model not in schema');
+      // Verify file exists and belongs to tenant
+      const file = await ctx.prisma.file.findFirst({
+        where: { id: input.id, tenantId: ctx.tenantId },
+      });
+      if (!file) throw new Error('File not found');
+
+      // TODO: Also delete from Supabase Storage
+      return ctx.prisma.file.delete({
+        where: { id: input.id },
+      });
     }),
 
   // Google Drive integration (keeps existing stub)
