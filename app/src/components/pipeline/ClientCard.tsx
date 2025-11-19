@@ -135,6 +135,35 @@ export function ClientCard({
 
   const contactConsistency = getContactConsistency();
 
+  // Get lead source icon and styling
+  const getLeadSource = () => {
+    if (!lead.source) return null;
+    const source = lead.source.toLowerCase();
+
+    if (source.includes('referral') || source.includes('referred')) {
+      return { icon: '🤝', text: lead.source, color: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30' };
+    }
+    if (source.includes('website') || source.includes('web') || source.includes('online')) {
+      return { icon: '🌐', text: lead.source, color: 'bg-blue-500/20 text-blue-400 border-blue-500/30' };
+    }
+    if (source.includes('event') || source.includes('conference') || source.includes('trade show')) {
+      return { icon: '🎪', text: lead.source, color: 'bg-purple-500/20 text-purple-400 border-purple-500/30' };
+    }
+    if (source.includes('cold') || source.includes('outreach') || source.includes('prospecting')) {
+      return { icon: '📞', text: lead.source, color: 'bg-orange-500/20 text-orange-400 border-orange-500/30' };
+    }
+    if (source.includes('social') || source.includes('linkedin') || source.includes('facebook') || source.includes('instagram')) {
+      return { icon: '💬', text: lead.source, color: 'bg-pink-500/20 text-pink-400 border-pink-500/30' };
+    }
+    if (source.includes('partner') || source.includes('integration')) {
+      return { icon: '🔗', text: lead.source, color: 'bg-green-500/20 text-green-400 border-green-500/30' };
+    }
+
+    return { icon: '📍', text: lead.source, color: 'bg-gray-500/20 text-gray-400 border-gray-500/30' };
+  };
+
+  const leadSource = getLeadSource();
+
   // Highlight matching text
   const highlightMatch = (text: string) => {
     if (!searchQuery || !text) return text;
@@ -199,6 +228,11 @@ export function ClientCard({
             {contactConsistency && (
               <span className={`px-2 py-0.5 text-xs rounded border font-medium ${contactConsistency.color}`}>
                 {contactConsistency.icon} {contactConsistency.text}
+              </span>
+            )}
+            {leadSource && (
+              <span className={`px-2 py-0.5 text-xs rounded border font-medium ${leadSource.color}`}>
+                {leadSource.icon} {leadSource.text}
               </span>
             )}
           </div>
