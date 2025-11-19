@@ -326,6 +326,15 @@ function NewLeadModal({
 }
 
 // Lead Detail Modal Component
+// Product types
+type ProductFormData = {
+  productName: string;
+  status: 'NOT_INTERESTED' | 'DISCUSSING' | 'PROPOSAL' | 'WON' | 'LOST';
+  revenueAmount: string;
+  notes: string;
+  isInterested: boolean;
+};
+
 function LeadDetailModal({
   leadId,
   isOpen,
@@ -344,8 +353,12 @@ function LeadDetailModal({
   const deleteLead = trpc.lead.delete.useMutation({
     onSuccess: () => onSuccess(),
   });
+  const bulkUpdateProducts = trpc.lead.bulkUpdateProducts.useMutation({
+    onSuccess: () => onSuccess(),
+  });
 
   const [isEditing, setIsEditing] = useState(false);
+  const [isEditingProducts, setIsEditingProducts] = useState(false);
   const [formData, setFormData] = useState({
     organization: '',
     contactName: '',
@@ -353,6 +366,7 @@ function LeadDetailModal({
     phone: '',
     status: '' as LeadStatus | 'PROPOSAL_VIEWED' | 'PROPOSAL_SUBMITTED' | 'CONTRACT_SENT' | 'LOST',
   });
+  const [productsData, setProductsData] = useState<ProductFormData[]>([]);
 
   // Update form when lead loads
   if (lead && formData.organization === '') {
@@ -363,11 +377,44 @@ function LeadDetailModal({
       phone: lead.phone || '',
       status: lead.status as any,
     });
+
+    // Initialize products data
+    if (lead.leadProducts && lead.leadProducts.length > 0) {
+      setProductsData(
+        lead.leadProducts.map((p: any) => ({
+          productName: p.productName,
+          status: p.status,
+          revenueAmount: p.revenueAmount ? p.revenueAmount.toString() : '',
+          notes: p.notes || '',
+          isInterested: p.isInterested || false,
+        }))
+      );
+    }
   }
 
   const handleSave = () => {
     updateLead.mutate({ id: leadId, ...formData });
     setIsEditing(false);
+  };
+
+  const handleSaveProducts = () => {
+    bulkUpdateProducts.mutate({
+      leadId,
+      products: productsData.map((p) => ({
+        productName: p.productName,
+        status: p.status,
+        isInterested: p.isInterested,
+        revenueAmount: p.revenueAmount ? parseFloat(p.revenueAmount) : undefined,
+        notes: p.notes || undefined,
+      })),
+    });
+    setIsEditingProducts(false);
+  };
+
+  const handleProductChange = (index: number, field: keyof ProductFormData, value: any) => {
+    const updated = [...productsData];
+    updated[index] = { ...updated[index], [field]: value };
+    setProductsData(updated);
   };
 
   const handleDelete = () => {
@@ -517,26 +564,108 @@ function LeadDetailModal({
         </div>
 
         {/* Products */}
-        {lead.leadProducts && lead.leadProducts.length > 0 && (
+        {productsData && productsData.length > 0 && (
           <div>
-            <h3 className="text-sm font-medium text-gray-300 mb-3">Products</h3>
-            <div className="space-y-2">
-              {lead.leadProducts.map((product) => (
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-sm font-medium text-gray-300">Products</h3>
+              {!isEditingProducts ? (
+                <Button variant="secondary" size="small" onClick={() => setIsEditingProducts(true)}>
+                  Edit Products
+                </Button>
+              ) : (
+                <div className="flex gap-2">
+                  <Button variant="secondary" size="small" onClick={() => {
+                    setIsEditingProducts(false);
+                    // Reset to original data
+                    if (lead.leadProducts) {
+                      setProductsData(
+                        lead.leadProducts.map((p: any) => ({
+                          productName: p.productName,
+                          status: p.status,
+                          revenueAmount: p.revenueAmount ? p.revenueAmount.toString() : '',
+                          notes: p.notes || '',
+                          isInterested: p.isInterested || false,
+                        }))
+                      );
+                    }
+                  }}>
+                    Cancel
+                  </Button>
+                  <Button variant="primary" size="small" onClick={handleSaveProducts} disabled={bulkUpdateProducts.isPending}>
+                    {bulkUpdateProducts.isPending ? 'Saving...' : 'Save Products'}
+                  </Button>
+                </div>
+              )}
+            </div>
+            <div className="space-y-3">
+              {productsData.map((product, index) => (
                 <div
                   key={product.productName}
-                  className="p-3 bg-slate-800/50 rounded-lg border border-slate-700"
+                  className="p-4 bg-slate-800/50 rounded-lg border border-slate-700"
                 >
-                  <div className="flex items-center justify-between">
-                    <span className="text-white font-medium">{product.productName}</span>
-                    <span className={`text-xs px-2 py-1 rounded-full ${getProductStatusColor(product.status)}`}>
-                      {product.status}
-                    </span>
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      {isEditingProducts && (
+                        <input
+                          type="checkbox"
+                          checked={product.isInterested}
+                          onChange={(e) => handleProductChange(index, 'isInterested', e.target.checked)}
+                          className="w-4 h-4 rounded accent-cyan-500"
+                        />
+                      )}
+                      <span className="text-white font-medium">{product.productName}</span>
+                    </div>
+                    {!isEditingProducts ? (
+                      <span className={`text-xs px-3 py-1 rounded-full ${getProductStatusColor(product.status)}`}>
+                        {product.status.replace('_', ' ')}
+                      </span>
+                    ) : (
+                      <select
+                        value={product.status}
+                        onChange={(e) => handleProductChange(index, 'status', e.target.value)}
+                        className="px-3 py-1 bg-slate-700 border border-slate-600 rounded-lg text-white text-xs focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                      >
+                        <option value="NOT_INTERESTED">Not Interested</option>
+                        <option value="DISCUSSING">Discussing</option>
+                        <option value="PROPOSAL">Proposal</option>
+                        <option value="WON">Won</option>
+                        <option value="LOST">Lost</option>
+                      </select>
+                    )}
                   </div>
-                  {product.revenueAmount && (
-                    <p className="text-sm text-gray-400 mt-1 flex items-center gap-1">
-                      <DollarSign className="w-3 h-3" />
-                      ${product.revenueAmount.toLocaleString()}
-                    </p>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs text-gray-400 mb-1">Revenue</label>
+                      {!isEditingProducts ? (
+                        <p className="text-sm text-white flex items-center gap-1">
+                          <DollarSign className="w-3 h-3" />
+                          {product.revenueAmount ? `$${parseFloat(product.revenueAmount).toLocaleString()}` : 'N/A'}
+                        </p>
+                      ) : (
+                        <input
+                          type="number"
+                          value={product.revenueAmount}
+                          onChange={(e) => handleProductChange(index, 'revenueAmount', e.target.value)}
+                          placeholder="0.00"
+                          className="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-white text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                        />
+                      )}
+                    </div>
+                  </div>
+                  {isEditingProducts && (
+                    <div className="mt-3">
+                      <label className="block text-xs text-gray-400 mb-1">Notes</label>
+                      <textarea
+                        value={product.notes}
+                        onChange={(e) => handleProductChange(index, 'notes', e.target.value)}
+                        placeholder="Product discussion notes..."
+                        rows={2}
+                        className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                      />
+                    </div>
+                  )}
+                  {!isEditingProducts && product.notes && (
+                    <p className="text-xs text-gray-400 mt-2 italic">"{product.notes}"</p>
                   )}
                 </div>
               ))}
