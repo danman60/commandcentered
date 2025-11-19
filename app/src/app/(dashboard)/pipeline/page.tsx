@@ -45,8 +45,24 @@ export default function PipelinePage() {
   const [productFilter, setProductFilter] = useState<string>('');
   const [temperatureFilter, setTemperatureFilter] = useState<string>('');
   const [sortBy, setSortBy] = useState<string>('');
-  const [viewMode, setViewMode] = useState<ViewMode>('kanban');
+  const [viewMode, setViewMode] = useState<ViewMode>(() => {
+    // Load saved view mode from localStorage
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('pipeline-view-mode');
+      if (saved === 'kanban' || saved === 'card' || saved === 'table') {
+        return saved;
+      }
+    }
+    return 'kanban';
+  });
   const [quickFilter, setQuickFilter] = useState<string>('');
+
+  // Save view mode preference
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('pipeline-view-mode', viewMode);
+    }
+  }, [viewMode]);
 
   // Fetch leads
   const { data: allLeads, refetch: refetchLeads } = trpc.lead.list.useQuery({
