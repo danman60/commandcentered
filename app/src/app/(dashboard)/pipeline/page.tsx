@@ -300,6 +300,18 @@ export default function PipelinePage() {
     return () => window.removeEventListener('keydown', handleKeyPress);
   }, [handleExport]);
 
+  // Calculate total pipeline value
+  const totalPipelineValue = React.useMemo(() => {
+    if (!allLeads) return 0;
+    return allLeads.reduce((total, lead) => {
+      const leadValue = lead.leadProducts?.reduce(
+        (sum, p) => sum + Number(p.revenueAmount || 0) + Number(p.projectedRevenue || 0),
+        0
+      ) || 0;
+      return total + leadValue;
+    }, 0);
+  }, [allLeads]);
+
   // Highlight search matches
   const highlightMatch = (text: string | null | undefined): React.ReactNode => {
     if (!searchQuery || !text) return text || '';
@@ -324,7 +336,17 @@ export default function PipelinePage() {
       <div className="bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border-b border-cyan-500/30 -mx-8 px-8 py-6 mb-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-white">Pipeline</h1>
+            <div className="flex items-center gap-4">
+              <h1 className="text-3xl font-bold text-white">Pipeline</h1>
+              {allLeads && allLeads.length > 0 && (
+                <div className="px-4 py-2 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 border border-cyan-500/30 rounded-lg">
+                  <div className="text-xs text-gray-400 uppercase font-semibold">Total Value</div>
+                  <div className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                    ${totalPipelineValue.toLocaleString()}
+                  </div>
+                </div>
+              )}
+            </div>
             <p className="text-gray-400 mt-1">Manage leads and track opportunities</p>
           </div>
           <div className="flex items-center gap-3">
