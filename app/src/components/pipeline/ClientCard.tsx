@@ -164,6 +164,44 @@ export function ClientCard({
 
   const leadSource = getLeadSource();
 
+  // Calculate follow-up countdown
+  const getFollowUpCountdown = () => {
+    if (!lead.nextFollowUpAt) return null;
+
+    const followUpDate = new Date(lead.nextFollowUpAt);
+    followUpDate.setHours(0, 0, 0, 0);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const daysUntil = Math.floor((followUpDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+
+    // Overdue
+    if (daysUntil < 0) {
+      const daysOverdue = Math.abs(daysUntil);
+      const text = daysOverdue === 1 ? '1 day overdue' : `${daysOverdue} days overdue`;
+      return { text, color: 'bg-red-500/20 text-red-400 border-red-500/30' };
+    }
+
+    // Due today
+    if (daysUntil === 0) {
+      return { text: 'Due today', color: 'bg-orange-500/20 text-orange-400 border-orange-500/30' };
+    }
+
+    // Due tomorrow
+    if (daysUntil === 1) {
+      return { text: 'Due tomorrow', color: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30' };
+    }
+
+    // Due within a week
+    if (daysUntil <= 7) {
+      return { text: `Due in ${daysUntil} days`, color: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30' };
+    }
+
+    // Due later
+    return { text: `Due in ${daysUntil} days`, color: 'bg-green-500/20 text-green-400 border-green-500/30' };
+  };
+
+  const followUpCountdown = getFollowUpCountdown();
+
   // Highlight matching text
   const highlightMatch = (text: string) => {
     if (!searchQuery || !text) return text;
@@ -193,6 +231,11 @@ export function ClientCard({
             {isOverdue && (
               <span className="px-2 py-0.5 bg-red-500/20 text-red-400 text-xs rounded border border-red-500/30 font-semibold animate-pulse">
                 ⚠️ OVERDUE
+              </span>
+            )}
+            {followUpCountdown && !isOverdue && (
+              <span className={`px-2 py-0.5 text-xs rounded border font-medium ${followUpCountdown.color}`}>
+                📅 {followUpCountdown.text}
               </span>
             )}
             <span className={`px-2 py-0.5 text-xs rounded border font-medium ${leadAge.color}`}>
