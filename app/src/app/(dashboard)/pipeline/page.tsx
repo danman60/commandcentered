@@ -740,7 +740,10 @@ export default function PipelinePage() {
                     </Card>
                   ))}
                   {stageLeads.length === 0 && (
-                    <p className="text-gray-500 text-sm text-center py-8">No leads in this stage</p>
+                    <div className="flex flex-col items-center justify-center py-12 text-gray-500">
+                      <div className="text-3xl mb-2 opacity-30">📭</div>
+                      <p className="text-xs text-center">No leads yet</p>
+                    </div>
                   )}
                 </div>
               </div>
@@ -764,8 +767,42 @@ export default function PipelinePage() {
             />
           ))}
           {(!leads || leads.length === 0) && (
-            <div className="text-center text-gray-500 py-12 bg-gray-800 rounded-lg border border-gray-700">
-              No leads found. Click "New Lead" to get started.
+            <div className="text-center py-16 bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-lg border border-slate-700">
+              {allLeads && allLeads.length > 0 ? (
+                <div className="max-w-md mx-auto">
+                  <div className="text-5xl mb-4">🔍</div>
+                  <h3 className="text-xl font-semibold text-white mb-2">No matching leads</h3>
+                  <p className="text-gray-400 mb-4">
+                    Try adjusting your filters or search terms to see more results.
+                  </p>
+                  <button
+                    onClick={() => {
+                      setSearchQuery('');
+                      setProductFilter('');
+                      setTemperatureFilter('');
+                      setSortBy('');
+                      setQuickFilter('');
+                    }}
+                    className="px-4 py-2 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg transition-colors"
+                  >
+                    Clear All Filters
+                  </button>
+                </div>
+              ) : (
+                <div className="max-w-md mx-auto">
+                  <div className="text-5xl mb-4">📊</div>
+                  <h3 className="text-xl font-semibold text-white mb-2">Your pipeline is empty</h3>
+                  <p className="text-gray-400 mb-4">
+                    Start building your sales pipeline by adding your first lead.
+                  </p>
+                  <button
+                    onClick={() => setIsNewLeadOpen(true)}
+                    className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-600 hover:to-purple-600 text-white rounded-lg transition-colors shadow-lg shadow-cyan-500/30"
+                  >
+                    ➕ Add Your First Lead
+                  </button>
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -833,8 +870,44 @@ export default function PipelinePage() {
                 ))}
                 {(!leads || leads.length === 0) && (
                   <tr>
-                    <td colSpan={6} className="px-4 py-12 text-center text-gray-500">
-                      No leads found. Click "New Lead" to get started.
+                    <td colSpan={6} className="px-4 py-16">
+                      <div className="text-center">
+                        {allLeads && allLeads.length > 0 ? (
+                          <div className="max-w-md mx-auto">
+                            <div className="text-5xl mb-4">🔍</div>
+                            <h3 className="text-xl font-semibold text-white mb-2">No matching leads</h3>
+                            <p className="text-gray-400 mb-4">
+                              Try adjusting your filters or search terms to see more results.
+                            </p>
+                            <button
+                              onClick={() => {
+                                setSearchQuery('');
+                                setProductFilter('');
+                                setTemperatureFilter('');
+                                setSortBy('');
+                                setQuickFilter('');
+                              }}
+                              className="px-4 py-2 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg transition-colors"
+                            >
+                              Clear All Filters
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="max-w-md mx-auto">
+                            <div className="text-5xl mb-4">📊</div>
+                            <h3 className="text-xl font-semibold text-white mb-2">Your pipeline is empty</h3>
+                            <p className="text-gray-400 mb-4">
+                              Start building your sales pipeline by adding your first lead.
+                            </p>
+                            <button
+                              onClick={() => setIsNewLeadOpen(true)}
+                              className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-600 hover:to-purple-600 text-white rounded-lg transition-colors shadow-lg shadow-cyan-500/30"
+                            >
+                              ➕ Add Your First Lead
+                            </button>
+                          </div>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 )}
