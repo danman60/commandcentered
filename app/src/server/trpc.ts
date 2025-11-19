@@ -28,12 +28,18 @@ export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
 // Tenant procedure - requires authentication + tenant context
 // TEMPORARILY DISABLED AUTH FOR TESTING
 export const tenantProcedure = publicProcedure.use(async ({ ctx, next }) => {
-  // Just use a default tenant ID for testing
+  // Provide a mock user object for testing
   return next({
     ctx: {
       ...ctx,
       tenantId: '00000000-0000-0000-0000-000000000001', // Default tenant
-      userId: '00000000-0000-0000-0000-000000000001', // Default user
+      user: {
+        id: '00000000-0000-0000-0000-000000000001',
+        tenantId: '00000000-0000-0000-0000-000000000001',
+        role: 'SUPER_ADMIN' as const,
+        email: 'test@commandcentered.app',
+        name: 'Test User',
+      },
     },
   })
 })
