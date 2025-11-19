@@ -22,16 +22,16 @@ import {
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'Planning', href: '/dashboard/planning', icon: Calendar },
-  { name: 'Pipeline', href: '/dashboard/pipeline', icon: TrendingUp },
-  { name: 'Gear Inventory', href: '/dashboard/gear', icon: Package },
-  { name: 'Operators', href: '/dashboard/operators', icon: Users },
-  { name: 'Deliverables', href: '/dashboard/deliverables', icon: FileText },
-  { name: 'Communications', href: '/dashboard/communications', icon: MessageSquare },
-  { name: 'Files & Assets', href: '/dashboard/files', icon: FolderOpen },
-  { name: 'Reports', href: '/dashboard/reports', icon: BarChart3 },
-  { name: 'Operator Portal', href: '/dashboard/operator-portal', icon: UserCircle },
-  { name: 'Settings', href: '/dashboard/settings', icon: Settings },
+  { name: 'Planning', href: '/planning', icon: Calendar },
+  { name: 'Pipeline', href: '/pipeline', icon: TrendingUp },
+  { name: 'Gear Inventory', href: '/gear', icon: Package },
+  { name: 'Operators', href: '/operators', icon: Users },
+  { name: 'Deliverables', href: '/deliverables', icon: FileText },
+  { name: 'Communications', href: '/communications', icon: MessageSquare },
+  { name: 'Files & Assets', href: '/files', icon: FolderOpen },
+  { name: 'Reports', href: '/reports', icon: BarChart3 },
+  { name: 'Operator Portal', href: '/operator-portal', icon: UserCircle },
+  { name: 'Settings', href: '/settings', icon: Settings },
 ]
 
 export function Sidebar() {
