@@ -6,6 +6,8 @@ import { useState, useMemo, useRef } from 'react';
 export default function FilesPage() {
   const [activeTab, setActiveTab] = useState<'documents' | 'contracts' | 'proposals' | 'livestreams' | 'service-library'>('documents');
   const [selectedServices, setSelectedServices] = useState<string[]>(['multi-camera', 'highlight-reel']);
+  const [currentStep, setCurrentStep] = useState(1);
+  const [proposalPricing, setProposalPricing] = useState({ discount: 0, notes: '', terms: '' });
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploadCategory, setUploadCategory] = useState('documents');
@@ -306,74 +308,244 @@ export default function FilesPage() {
               {/* Steps */}
               <div className="flex items-center justify-center gap-4 mb-6">
                 <div className="flex flex-col items-center gap-2">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-cyan-600 text-white flex items-center justify-center font-bold">
+                  <div className={`w-10 h-10 rounded-full ${currentStep >= 1 ? 'bg-gradient-to-br from-cyan-500 to-cyan-600' : 'bg-slate-700/50'} text-white flex items-center justify-center font-bold`}>
                     1
                   </div>
-                  <div className="text-xs text-cyan-500">Services</div>
+                  <div className={`text-xs ${currentStep >= 1 ? 'text-cyan-500' : 'text-slate-500'}`}>Services</div>
                 </div>
-                <div className="text-2xl text-slate-600">→</div>
+                <div className={`text-2xl ${currentStep >= 2 ? 'text-cyan-500' : 'text-slate-600'}`}>→</div>
                 <div className="flex flex-col items-center gap-2">
-                  <div className="w-10 h-10 rounded-full bg-slate-700/50 text-slate-400 flex items-center justify-center font-bold">
+                  <div className={`w-10 h-10 rounded-full ${currentStep >= 2 ? 'bg-gradient-to-br from-cyan-500 to-cyan-600' : 'bg-slate-700/50'} ${currentStep >= 2 ? 'text-white' : 'text-slate-400'} flex items-center justify-center font-bold`}>
                     2
                   </div>
-                  <div className="text-xs text-slate-500">Pricing</div>
+                  <div className={`text-xs ${currentStep >= 2 ? 'text-cyan-500' : 'text-slate-500'}`}>Pricing</div>
                 </div>
-                <div className="text-2xl text-slate-600">→</div>
+                <div className={`text-2xl ${currentStep >= 3 ? 'text-cyan-500' : 'text-slate-600'}`}>→</div>
                 <div className="flex flex-col items-center gap-2">
-                  <div className="w-10 h-10 rounded-full bg-slate-700/50 text-slate-400 flex items-center justify-center font-bold">
+                  <div className={`w-10 h-10 rounded-full ${currentStep >= 3 ? 'bg-gradient-to-br from-cyan-500 to-cyan-600' : 'bg-slate-700/50'} ${currentStep >= 3 ? 'text-white' : 'text-slate-400'} flex items-center justify-center font-bold`}>
                     3
                   </div>
-                  <div className="text-xs text-slate-500">Review</div>
+                  <div className={`text-xs ${currentStep >= 3 ? 'text-cyan-500' : 'text-slate-500'}`}>Review</div>
                 </div>
               </div>
 
-              {/* Service Selection */}
-              <div className="bg-slate-900/60 p-6 rounded-lg">
-                <h3 className="text-lg text-cyan-500 mb-4">Select Services</h3>
+              {/* Step 1: Service Selection */}
+              {currentStep === 1 && (
+                <div className="bg-slate-900/60 p-6 rounded-lg">
+                  <h3 className="text-lg text-cyan-500 mb-4">Select Services</h3>
 
-                <div className="flex flex-col gap-3 mb-5">
-                  {services.map((service) => (
-                    <label
-                      key={service.id}
-                      className="flex items-center gap-4 p-4 bg-slate-800/50 border border-slate-700/30 rounded-lg cursor-pointer hover:border-cyan-500/50 transition-all"
+                  <div className="flex flex-col gap-3 mb-5">
+                    {services.map((service) => (
+                      <label
+                        key={service.id}
+                        className="flex items-center gap-4 p-4 bg-slate-800/50 border border-slate-700/30 rounded-lg cursor-pointer hover:border-cyan-500/50 transition-all"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={selectedServices.includes(service.id)}
+                          onChange={() => toggleService(service.id)}
+                          className="w-5 h-5 cursor-pointer"
+                        />
+                        <div className="flex-1">
+                          <div className="text-base font-semibold text-slate-100 mb-1">{service.name}</div>
+                          <div className="text-sm text-slate-500">{service.description}</div>
+                        </div>
+                        <div className="text-xl font-bold text-slate-100">${service.price.toLocaleString()}</div>
+                      </label>
+                    ))}
+                  </div>
+
+                  {/* Total */}
+                  <div className="flex justify-between items-center p-5 bg-cyan-500/10 rounded-lg mb-6">
+                    <div className="text-lg font-semibold text-slate-400">Estimated Total:</div>
+                    <div className="text-3xl font-bold text-cyan-500">${calculateTotal().toLocaleString()}</div>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex gap-3">
+                    <button
+                      disabled
+                      className="px-5 py-3 bg-slate-700/30 border border-slate-700/50 rounded-lg text-slate-500 font-semibold cursor-not-allowed opacity-50"
                     >
-                      <input
-                        type="checkbox"
-                        checked={selectedServices.includes(service.id)}
-                        onChange={() => toggleService(service.id)}
-                        className="w-5 h-5 cursor-pointer"
-                      />
-                      <div className="flex-1">
-                        <div className="text-base font-semibold text-slate-100 mb-1">{service.name}</div>
-                        <div className="text-sm text-slate-500">{service.description}</div>
-                      </div>
-                      <div className="text-xl font-bold text-slate-100">${service.price.toLocaleString()}</div>
+                      ← Previous
+                    </button>
+                    <button
+                      onClick={() => setCurrentStep(2)}
+                      disabled={selectedServices.length === 0}
+                      className="px-5 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg font-semibold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/40 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      Next: Pricing →
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Step 2: Pricing & Terms */}
+              {currentStep === 2 && (
+                <div className="bg-slate-900/60 p-6 rounded-lg">
+                  <h3 className="text-lg text-cyan-500 mb-4">Pricing & Terms</h3>
+
+                  {/* Pricing Summary */}
+                  <div className="bg-slate-800/50 border border-slate-700/30 rounded-lg p-5 mb-5">
+                    <h4 className="text-sm font-semibold text-slate-300 mb-3">Selected Services</h4>
+                    {services
+                      .filter(s => selectedServices.includes(s.id))
+                      .map(service => (
+                        <div key={service.id} className="flex justify-between items-center py-2 border-b border-slate-700/30 last:border-0">
+                          <span className="text-slate-300">{service.name}</span>
+                          <span className="text-slate-100 font-semibold">${service.price.toLocaleString()}</span>
+                        </div>
+                      ))}
+                    <div className="flex justify-between items-center pt-3 mt-3 border-t border-slate-700/50">
+                      <span className="text-slate-400 font-semibold">Subtotal</span>
+                      <span className="text-xl text-slate-100 font-bold">${calculateTotal().toLocaleString()}</span>
+                    </div>
+                  </div>
+
+                  {/* Discount */}
+                  <div className="mb-5">
+                    <label className="block text-sm font-semibold text-slate-300 mb-2">
+                      Discount (%)
                     </label>
-                  ))}
-                </div>
+                    <input
+                      type="number"
+                      min="0"
+                      max="100"
+                      value={proposalPricing.discount}
+                      onChange={(e) => setProposalPricing({ ...proposalPricing, discount: Number(e.target.value) })}
+                      className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-cyan-500"
+                      placeholder="0"
+                    />
+                  </div>
 
-                {/* Total */}
-                <div className="flex justify-between items-center p-5 bg-cyan-500/10 rounded-lg mb-6">
-                  <div className="text-lg font-semibold text-slate-400">Estimated Total:</div>
-                  <div className="text-3xl font-bold text-cyan-500">${calculateTotal().toLocaleString()}</div>
-                </div>
+                  {/* Final Total */}
+                  <div className="flex justify-between items-center p-5 bg-cyan-500/10 rounded-lg mb-5">
+                    <div className="text-lg font-semibold text-slate-400">Final Total:</div>
+                    <div className="text-3xl font-bold text-cyan-500">
+                      ${(calculateTotal() * (1 - proposalPricing.discount / 100)).toLocaleString()}
+                    </div>
+                  </div>
 
-                {/* Actions */}
-                <div className="flex gap-3">
-                  <button className="px-5 py-3 bg-slate-700/30 border border-slate-700/50 rounded-lg text-slate-300 font-semibold hover:bg-slate-700/50 transition-all">
-                    ← Previous
-                  </button>
-                  <button className="px-5 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg font-semibold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/40 transition-all">
-                    Next: Pricing →
-                  </button>
-                  <button className="ml-auto px-5 py-3 bg-slate-700/30 border border-slate-700/50 rounded-lg text-slate-300 font-semibold hover:bg-slate-700/50 transition-all">
-                    💾 Save Draft
-                  </button>
-                  <button className="px-5 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg font-semibold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/40 transition-all">
-                    📄 Generate PDF
-                  </button>
+                  {/* Notes */}
+                  <div className="mb-5">
+                    <label className="block text-sm font-semibold text-slate-300 mb-2">
+                      Additional Notes
+                    </label>
+                    <textarea
+                      value={proposalPricing.notes}
+                      onChange={(e) => setProposalPricing({ ...proposalPricing, notes: e.target.value })}
+                      className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-cyan-500 resize-none"
+                      rows={3}
+                      placeholder="Any special notes or customizations for this proposal..."
+                    />
+                  </div>
+
+                  {/* Payment Terms */}
+                  <div className="mb-6">
+                    <label className="block text-sm font-semibold text-slate-300 mb-2">
+                      Payment Terms
+                    </label>
+                    <textarea
+                      value={proposalPricing.terms}
+                      onChange={(e) => setProposalPricing({ ...proposalPricing, terms: e.target.value })}
+                      className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-cyan-500 resize-none"
+                      rows={3}
+                      placeholder="e.g., 50% deposit upon booking, 50% due 7 days before event..."
+                    />
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => setCurrentStep(1)}
+                      className="px-5 py-3 bg-slate-700/30 border border-slate-700/50 rounded-lg text-slate-300 font-semibold hover:bg-slate-700/50 transition-all"
+                    >
+                      ← Previous
+                    </button>
+                    <button
+                      onClick={() => setCurrentStep(3)}
+                      className="px-5 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg font-semibold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/40 transition-all"
+                    >
+                      Next: Review →
+                    </button>
+                  </div>
                 </div>
-              </div>
+              )}
+
+              {/* Step 3: Review & Generate */}
+              {currentStep === 3 && (
+                <div className="bg-slate-900/60 p-6 rounded-lg">
+                  <h3 className="text-lg text-cyan-500 mb-4">Review & Generate Proposal</h3>
+
+                  {/* Summary */}
+                  <div className="bg-slate-800/50 border border-slate-700/30 rounded-lg p-5 mb-5">
+                    <h4 className="text-sm font-semibold text-cyan-500 mb-3">📋 Proposal Summary</h4>
+
+                    {/* Services */}
+                    <div className="mb-4">
+                      <p className="text-xs text-slate-400 uppercase font-semibold mb-2">Services Included</p>
+                      <ul className="space-y-1">
+                        {services
+                          .filter(s => selectedServices.includes(s.id))
+                          .map(service => (
+                            <li key={service.id} className="text-slate-300 flex justify-between">
+                              <span>• {service.name}</span>
+                              <span className="text-slate-400">${service.price.toLocaleString()}</span>
+                            </li>
+                          ))}
+                      </ul>
+                    </div>
+
+                    {/* Pricing */}
+                    <div className="border-t border-slate-700/50 pt-3 mb-4">
+                      <div className="flex justify-between text-slate-300 mb-1">
+                        <span>Subtotal</span>
+                        <span>${calculateTotal().toLocaleString()}</span>
+                      </div>
+                      {proposalPricing.discount > 0 && (
+                        <div className="flex justify-between text-green-400 mb-1">
+                          <span>Discount ({proposalPricing.discount}%)</span>
+                          <span>-${(calculateTotal() * proposalPricing.discount / 100).toLocaleString()}</span>
+                        </div>
+                      )}
+                      <div className="flex justify-between text-xl font-bold text-cyan-500 pt-2 border-t border-slate-700/50">
+                        <span>Total</span>
+                        <span>${(calculateTotal() * (1 - proposalPricing.discount / 100)).toLocaleString()}</span>
+                      </div>
+                    </div>
+
+                    {/* Notes & Terms */}
+                    {proposalPricing.notes && (
+                      <div className="mb-4">
+                        <p className="text-xs text-slate-400 uppercase font-semibold mb-1">Additional Notes</p>
+                        <p className="text-sm text-slate-300">{proposalPricing.notes}</p>
+                      </div>
+                    )}
+                    {proposalPricing.terms && (
+                      <div>
+                        <p className="text-xs text-slate-400 uppercase font-semibold mb-1">Payment Terms</p>
+                        <p className="text-sm text-slate-300">{proposalPricing.terms}</p>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => setCurrentStep(2)}
+                      className="px-5 py-3 bg-slate-700/30 border border-slate-700/50 rounded-lg text-slate-300 font-semibold hover:bg-slate-700/50 transition-all"
+                    >
+                      ← Previous
+                    </button>
+                    <button className="ml-auto px-5 py-3 bg-slate-700/30 border border-slate-700/50 rounded-lg text-slate-300 font-semibold hover:bg-slate-700/50 transition-all">
+                      💾 Save Draft
+                    </button>
+                    <button className="px-5 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold shadow-lg shadow-green-500/30 hover:shadow-green-500/40 transition-all">
+                      📄 Generate HTML Proposal
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Recent Proposals */}
