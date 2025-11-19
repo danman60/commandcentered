@@ -5,7 +5,7 @@ import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Modal } from '@/components/ui/Modal';
 import { trpc } from '@/lib/trpc/client';
-import { ClientCard } from '@/components/pipeline';
+import { ClientCard, RevenueSummaryCards } from '@/components/pipeline';
 import {
   Plus,
   Search,
@@ -286,6 +286,9 @@ export default function PipelinePage() {
           </select>
         </div>
       </Card>
+
+      {/* Revenue Summary Cards */}
+      {leads && leads.length > 0 && <RevenueSummaryCards leads={leads as any} />}
 
       {/* Kanban View */}
       {viewMode === 'kanban' && (
