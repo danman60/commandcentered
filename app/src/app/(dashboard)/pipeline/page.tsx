@@ -17,6 +17,9 @@ import {
   DollarSign,
   TrendingUp,
   X,
+  LayoutGrid,
+  Table as TableIcon,
+  Columns,
 } from 'lucide-react';
 
 // Lead status columns for pipeline view
@@ -30,12 +33,14 @@ const PIPELINE_STAGES = [
 ] as const;
 
 type LeadStatus = typeof PIPELINE_STAGES[number]['id'];
+type ViewMode = 'kanban' | 'card' | 'table';
 
 export default function PipelinePage() {
   const [isNewLeadOpen, setIsNewLeadOpen] = useState(false);
   const [selectedLeadId, setSelectedLeadId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [productFilter, setProductFilter] = useState<string>('');
+  const [viewMode, setViewMode] = useState<ViewMode>('kanban');
 
   // Fetch leads
   const { data: leads, refetch: refetchLeads } = trpc.lead.list.useQuery({
@@ -57,14 +62,53 @@ export default function PipelinePage() {
             <h1 className="text-3xl font-bold text-white">Pipeline</h1>
             <p className="text-gray-400 mt-1">Manage leads and track opportunities</p>
           </div>
-          <Button
-            variant="primary"
-            size="medium"
-            onClick={() => setIsNewLeadOpen(true)}
-          >
-            <Plus className="w-4 h-4" />
-            New Lead
-          </Button>
+          <div className="flex items-center gap-3">
+            {/* View Mode Toggles */}
+            <div className="flex bg-slate-800/50 border border-slate-600 rounded-lg p-1">
+              <button
+                onClick={() => setViewMode('kanban')}
+                className={`px-3 py-2 rounded flex items-center gap-2 transition-all ${
+                  viewMode === 'kanban'
+                    ? 'bg-cyan-500 text-white shadow-lg shadow-cyan-500/30'
+                    : 'text-gray-400 hover:text-white hover:bg-slate-700/50'
+                }`}
+              >
+                <Columns className="w-4 h-4" />
+                <span className="text-sm font-medium">Kanban</span>
+              </button>
+              <button
+                onClick={() => setViewMode('card')}
+                className={`px-3 py-2 rounded flex items-center gap-2 transition-all ${
+                  viewMode === 'card'
+                    ? 'bg-cyan-500 text-white shadow-lg shadow-cyan-500/30'
+                    : 'text-gray-400 hover:text-white hover:bg-slate-700/50'
+                }`}
+              >
+                <LayoutGrid className="w-4 h-4" />
+                <span className="text-sm font-medium">Card</span>
+              </button>
+              <button
+                onClick={() => setViewMode('table')}
+                className={`px-3 py-2 rounded flex items-center gap-2 transition-all ${
+                  viewMode === 'table'
+                    ? 'bg-cyan-500 text-white shadow-lg shadow-cyan-500/30'
+                    : 'text-gray-400 hover:text-white hover:bg-slate-700/50'
+                }`}
+              >
+                <TableIcon className="w-4 h-4" />
+                <span className="text-sm font-medium">Table</span>
+              </button>
+            </div>
+
+            <Button
+              variant="primary"
+              size="medium"
+              onClick={() => setIsNewLeadOpen(true)}
+            >
+              <Plus className="w-4 h-4" />
+              New Lead
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -95,64 +139,203 @@ export default function PipelinePage() {
         </div>
       </Card>
 
-      {/* Pipeline Columns */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-6 gap-4">
-        {PIPELINE_STAGES.map((stage) => {
-          const stageLeads = getLeadsByStatus(stage.id);
-          return (
-            <div key={stage.id} className="flex flex-col">
-              {/* Column Header */}
-              <div className={`${stage.color} bg-opacity-20 border border-opacity-30 ${stage.color.replace('bg-', 'border-')} rounded-t-lg p-3`}>
-                <div className="flex items-center justify-between">
-                  <h3 className="font-semibold text-white">{stage.label}</h3>
-                  <span className={`${stage.color} text-white text-xs px-2 py-1 rounded-full`}>
-                    {stageLeads.length}
-                  </span>
+      {/* Kanban View */}
+      {viewMode === 'kanban' && (
+        <div className="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+          {PIPELINE_STAGES.map((stage) => {
+            const stageLeads = getLeadsByStatus(stage.id);
+            return (
+              <div key={stage.id} className="flex flex-col">
+                {/* Column Header */}
+                <div className={`${stage.color} bg-opacity-20 border border-opacity-30 ${stage.color.replace('bg-', 'border-')} rounded-t-lg p-3`}>
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-semibold text-white">{stage.label}</h3>
+                    <span className={`${stage.color} text-white text-xs px-2 py-1 rounded-full`}>
+                      {stageLeads.length}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Lead Cards */}
+                <div className="flex-1 bg-slate-800/30 border border-slate-700 border-t-0 rounded-b-lg p-2 space-y-2 min-h-[500px] max-h-[600px] overflow-y-auto">
+                  {stageLeads.map((lead) => (
+                    <Card
+                      key={lead.id}
+                      padding="small"
+                      hover="lift"
+                      className="cursor-pointer"
+                      onClick={() => setSelectedLeadId(lead.id)}
+                    >
+                      <h4 className="font-medium text-white text-sm mb-1">
+                        {lead.organization}
+                      </h4>
+                      <p className="text-xs text-gray-400 mb-2">{lead.contactName}</p>
+
+                      {lead.leadProducts && lead.leadProducts.length > 0 && (
+                        <div className="flex flex-wrap gap-1 mt-2">
+                          {lead.leadProducts.slice(0, 2).map((product) => (
+                            <span
+                              key={product.productName}
+                              className="text-xs px-2 py-1 bg-cyan-600/20 text-cyan-400 rounded"
+                            >
+                              {product.productName}
+                            </span>
+                          ))}
+                          {lead.leadProducts.length > 2 && (
+                            <span className="text-xs px-2 py-1 bg-gray-600/20 text-gray-400 rounded">
+                              +{lead.leadProducts.length - 2}
+                            </span>
+                          )}
+                        </div>
+                      )}
+                    </Card>
+                  ))}
+                  {stageLeads.length === 0 && (
+                    <p className="text-gray-500 text-sm text-center py-8">No leads in this stage</p>
+                  )}
                 </div>
               </div>
+            );
+          })}
+        </div>
+      )}
 
-              {/* Lead Cards */}
-              <div className="flex-1 bg-slate-800/30 border border-slate-700 border-t-0 rounded-b-lg p-2 space-y-2 min-h-[500px] max-h-[600px] overflow-y-auto">
-                {stageLeads.map((lead) => (
-                  <Card
-                    key={lead.id}
-                    padding="small"
-                    hover="lift"
-                    className="cursor-pointer"
-                    onClick={() => setSelectedLeadId(lead.id)}
-                  >
-                    <h4 className="font-medium text-white text-sm mb-1">
-                      {lead.organization}
-                    </h4>
-                    <p className="text-xs text-gray-400 mb-2">{lead.contactName}</p>
+      {/* Card View */}
+      {viewMode === 'card' && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {leads?.map((lead) => (
+            <Card
+              key={lead.id}
+              padding="medium"
+              hover="lift"
+              className="cursor-pointer"
+              onClick={() => setSelectedLeadId(lead.id)}
+            >
+              <div className="flex items-start justify-between mb-3">
+                <div className="flex-1">
+                  <h3 className="font-bold text-white text-lg mb-1">{lead.organization}</h3>
+                  <p className="text-sm text-gray-400">{lead.contactName}</p>
+                </div>
+                <span
+                  className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                    PIPELINE_STAGES.find(s => s.id === lead.status)?.color || 'bg-gray-600'
+                  } bg-opacity-20 ${
+                    PIPELINE_STAGES.find(s => s.id === lead.status)?.color.replace('bg-', 'text-') || 'text-gray-400'
+                  }`}
+                >
+                  {PIPELINE_STAGES.find(s => s.id === lead.status)?.label}
+                </span>
+              </div>
 
-                    {lead.leadProducts && lead.leadProducts.length > 0 && (
-                      <div className="flex flex-wrap gap-1 mt-2">
-                        {lead.leadProducts.slice(0, 2).map((product) => (
-                          <span
-                            key={product.productName}
-                            className="text-xs px-2 py-1 bg-cyan-600/20 text-cyan-400 rounded"
-                          >
-                            {product.productName}
-                          </span>
-                        ))}
-                        {lead.leadProducts.length > 2 && (
-                          <span className="text-xs px-2 py-1 bg-gray-600/20 text-gray-400 rounded">
-                            +{lead.leadProducts.length - 2}
-                          </span>
-                        )}
-                      </div>
-                    )}
-                  </Card>
-                ))}
-                {stageLeads.length === 0 && (
-                  <p className="text-gray-500 text-sm text-center py-8">No leads in this stage</p>
+              <div className="space-y-2 text-sm">
+                {lead.email && (
+                  <div className="flex items-center gap-2 text-gray-400">
+                    <Mail className="w-4 h-4 flex-shrink-0" />
+                    <span className="truncate">{lead.email}</span>
+                  </div>
+                )}
+                {lead.phone && (
+                  <div className="flex items-center gap-2 text-gray-400">
+                    <Phone className="w-4 h-4 flex-shrink-0" />
+                    <span>{lead.phone}</span>
+                  </div>
                 )}
               </div>
+
+              {lead.leadProducts && lead.leadProducts.length > 0 && (
+                <div className="flex flex-wrap gap-1 mt-3 pt-3 border-t border-slate-700">
+                  {lead.leadProducts.map((product) => (
+                    <span
+                      key={product.productName}
+                      className="text-xs px-2 py-1 bg-cyan-600/20 text-cyan-400 rounded"
+                    >
+                      {product.productName}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </Card>
+          ))}
+          {(!leads || leads.length === 0) && (
+            <div className="col-span-full text-center text-gray-500 py-12">
+              No leads found. Click "New Lead" to get started.
             </div>
-          );
-        })}
-      </div>
+          )}
+        </div>
+      )}
+
+      {/* Table View */}
+      {viewMode === 'table' && (
+        <Card padding="none">
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead className="bg-slate-800/80 border-b border-slate-700">
+                <tr>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-cyan-400 uppercase">Organization</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-cyan-400 uppercase">Contact</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-cyan-400 uppercase">Email</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-cyan-400 uppercase">Phone</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-cyan-400 uppercase">Products</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-cyan-400 uppercase">Status</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-700">
+                {leads?.map((lead) => (
+                  <tr
+                    key={lead.id}
+                    onClick={() => setSelectedLeadId(lead.id)}
+                    className="hover:bg-cyan-500/5 cursor-pointer transition-colors"
+                  >
+                    <td className="px-4 py-3 text-white font-medium">{lead.organization}</td>
+                    <td className="px-4 py-3 text-gray-400">{lead.contactName}</td>
+                    <td className="px-4 py-3 text-gray-400">{lead.email || '-'}</td>
+                    <td className="px-4 py-3 text-gray-400">{lead.phone || '-'}</td>
+                    <td className="px-4 py-3">
+                      {lead.leadProducts && lead.leadProducts.length > 0 ? (
+                        <div className="flex flex-wrap gap-1">
+                          {lead.leadProducts.slice(0, 2).map((product) => (
+                            <span
+                              key={product.productName}
+                              className="text-xs px-2 py-1 bg-cyan-600/20 text-cyan-400 rounded"
+                            >
+                              {product.productName}
+                            </span>
+                          ))}
+                          {lead.leadProducts.length > 2 && (
+                            <span className="text-xs px-2 py-1 bg-gray-600/20 text-gray-400 rounded">
+                              +{lead.leadProducts.length - 2}
+                            </span>
+                          )}
+                        </div>
+                      ) : (
+                        <span className="text-gray-500">-</span>
+                      )}
+                    </td>
+                    <td className="px-4 py-3">
+                      <span
+                        className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                          PIPELINE_STAGES.find(s => s.id === lead.status)?.color || 'bg-gray-600'
+                        } bg-opacity-20 ${
+                          PIPELINE_STAGES.find(s => s.id === lead.status)?.color.replace('bg-', 'text-') || 'text-gray-400'
+                        }`}
+                      >
+                        {PIPELINE_STAGES.find(s => s.id === lead.status)?.label}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+                {(!leads || leads.length === 0) && (
+                  <tr>
+                    <td colSpan={6} className="px-4 py-12 text-center text-gray-500">
+                      No leads found. Click "New Lead" to get started.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </Card>
+      )}
 
       {/* New Lead Modal */}
       {isNewLeadOpen && (
