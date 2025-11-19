@@ -41,12 +41,19 @@ export default function PipelinePage() {
   const [selectedLeadId, setSelectedLeadId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [productFilter, setProductFilter] = useState<string>('');
+  const [temperatureFilter, setTemperatureFilter] = useState<string>('');
   const [viewMode, setViewMode] = useState<ViewMode>('kanban');
 
   // Fetch leads
-  const { data: leads, refetch: refetchLeads } = trpc.lead.list.useQuery({
+  const { data: allLeads, refetch: refetchLeads } = trpc.lead.list.useQuery({
     search: searchQuery || undefined,
     productName: productFilter || undefined,
+  });
+
+  // Filter leads by temperature
+  const leads = allLeads?.filter(lead => {
+    if (!temperatureFilter) return true;
+    return lead.temperature === temperatureFilter;
   });
 
   // Get leads by status
@@ -74,7 +81,7 @@ export default function PipelinePage() {
                     : 'text-gray-400 hover:text-white hover:bg-slate-700/50'
                 }`}
               >
-                <Columns className="w-4 h-4" />
+                <span>📇</span>
                 <span className="text-sm font-medium">Kanban</span>
               </button>
               <button
@@ -85,7 +92,7 @@ export default function PipelinePage() {
                     : 'text-gray-400 hover:text-white hover:bg-slate-700/50'
                 }`}
               >
-                <LayoutGrid className="w-4 h-4" />
+                <span>📊</span>
                 <span className="text-sm font-medium">Card</span>
               </button>
               <button
@@ -96,7 +103,7 @@ export default function PipelinePage() {
                     : 'text-gray-400 hover:text-white hover:bg-slate-700/50'
                 }`}
               >
-                <TableIcon className="w-4 h-4" />
+                <span>📋</span>
                 <span className="text-sm font-medium">Table</span>
               </button>
             </div>
@@ -126,6 +133,16 @@ export default function PipelinePage() {
               className="w-full pl-10 pr-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500"
             />
           </div>
+          <select
+            value={temperatureFilter}
+            onChange={(e) => setTemperatureFilter(e.target.value)}
+            className="px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+          >
+            <option value="">All Statuses</option>
+            <option value="Hot Lead">Hot Leads</option>
+            <option value="Warm Lead">Warm Leads</option>
+            <option value="Cold Lead">Cold Leads</option>
+          </select>
           <select
             value={productFilter}
             onChange={(e) => setProductFilter(e.target.value)}
