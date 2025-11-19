@@ -42,6 +42,7 @@ export default function PipelinePage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [productFilter, setProductFilter] = useState<string>('');
   const [temperatureFilter, setTemperatureFilter] = useState<string>('');
+  const [sortBy, setSortBy] = useState<string>('');
   const [viewMode, setViewMode] = useState<ViewMode>('kanban');
 
   // Fetch leads
@@ -50,11 +51,54 @@ export default function PipelinePage() {
     productName: productFilter || undefined,
   });
 
-  // Filter leads by temperature
-  const leads = allLeads?.filter(lead => {
-    if (!temperatureFilter) return true;
-    return lead.temperature === temperatureFilter;
-  });
+  // Filter and sort leads
+  const leads = (() => {
+    // First filter by temperature
+    let filtered = allLeads?.filter(lead => {
+      if (!temperatureFilter) return true;
+      return lead.temperature === temperatureFilter;
+    }) || [];
+
+    // Then sort
+    if (sortBy) {
+      filtered = [...filtered].sort((a, b) => {
+        switch (sortBy) {
+          case 'lastContacted':
+            // Oldest first (nulls last)
+            if (!a.lastContactedAt) return 1;
+            if (!b.lastContactedAt) return -1;
+            return new Date(a.lastContactedAt).getTime() - new Date(b.lastContactedAt).getTime();
+
+          case 'nextFollowUp':
+            // Upcoming first (nulls last)
+            if (!a.nextFollowUpAt) return 1;
+            if (!b.nextFollowUpAt) return -1;
+            return new Date(a.nextFollowUpAt).getTime() - new Date(b.nextFollowUpAt).getTime();
+
+          case 'revenue':
+            // Highest first
+            const aRevenue = (a.leadProducts?.reduce(
+              (sum, p) => sum + Number(p.revenueAmount || 0) + Number(p.projectedRevenue || 0),
+              0
+            ) || 0);
+            const bRevenue = (b.leadProducts?.reduce(
+              (sum, p) => sum + Number(p.revenueAmount || 0) + Number(p.projectedRevenue || 0),
+              0
+            ) || 0);
+            return bRevenue - aRevenue;
+
+          case 'name':
+            // A-Z alphabetical
+            return (a.organization || '').localeCompare(b.organization || '');
+
+          default:
+            return 0;
+        }
+      });
+    }
+
+    return filtered;
+  })();
 
   // Get leads by status
   const getLeadsByStatus = (status: LeadStatus) => {
@@ -228,6 +272,17 @@ export default function PipelinePage() {
             <option value="Dance Recital">Dance Recital</option>
             <option value="Competition Software">Competition Software</option>
             <option value="Core Video">Core Video</option>
+          </select>
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            className="px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+          >
+            <option value="">Sort by...</option>
+            <option value="lastContacted">Last Contacted (Oldest)</option>
+            <option value="nextFollowUp">Next Follow-Up (Upcoming)</option>
+            <option value="revenue">Revenue Potential (Highest)</option>
+            <option value="name">Client Name (A-Z)</option>
           </select>
         </div>
       </Card>
