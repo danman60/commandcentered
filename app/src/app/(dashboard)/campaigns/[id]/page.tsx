@@ -162,7 +162,7 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
           <div>
             <h2 className="text-xl font-bold text-cyan-500 mb-4">Email Sequence</h2>
             <div className="space-y-4">
-              {emailSteps.map((step) => (
+              {emailSteps.map((step: any) => (
                 <div
                   key={step.step}
                   className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-5 hover:border-cyan-500/50 transition-all"
@@ -226,7 +226,7 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
                   </tr>
                 </thead>
                 <tbody>
-                  {leads.map((lead) => (
+                  {leads.map((lead: any) => (
                     <tr key={lead.id} className="border-b border-slate-700/20 hover:bg-cyan-500/5">
                       <td className="px-5 py-4">
                         <div className="text-sm font-medium text-slate-100">{lead.name}</div>
