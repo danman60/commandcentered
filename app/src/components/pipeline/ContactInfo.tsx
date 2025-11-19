@@ -47,6 +47,29 @@ export function ContactInfo({
     return `In ${Math.floor(daysUntil / 30)} months`;
   };
 
+  // Get frequency badge styling
+  const getFrequencyStyle = () => {
+    if (!contactFrequency) return null;
+
+    const frequency = contactFrequency.toLowerCase();
+    if (frequency.includes('daily')) {
+      return 'bg-red-500/20 text-red-400 border-red-500/30';
+    }
+    if (frequency.includes('weekly')) {
+      return 'bg-orange-500/20 text-orange-400 border-orange-500/30';
+    }
+    if (frequency.includes('biweekly') || frequency.includes('bi-weekly')) {
+      return 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
+    }
+    if (frequency.includes('monthly')) {
+      return 'bg-green-500/20 text-green-400 border-green-500/30';
+    }
+    if (frequency.includes('quarterly')) {
+      return 'bg-blue-500/20 text-blue-400 border-blue-500/30';
+    }
+    return 'bg-gray-500/20 text-gray-400 border-gray-500/30';
+  };
+
   return (
     <div className="grid grid-cols-3 gap-4">
       <div className="bg-gray-800/50 rounded-lg p-3 border border-gray-700">
@@ -86,7 +109,13 @@ export function ContactInfo({
 
       <div className="bg-gray-800/50 rounded-lg p-3 border border-gray-700">
         <div className="text-xs text-gray-400 uppercase mb-1">Contact Frequency</div>
-        <div className="text-sm text-gray-200">{contactFrequency || 'Not set'}</div>
+        {contactFrequency ? (
+          <div className={`inline-block px-2 py-1 rounded text-xs font-semibold border ${getFrequencyStyle()}`}>
+            {contactFrequency}
+          </div>
+        ) : (
+          <div className="text-sm text-gray-200">Not set</div>
+        )}
       </div>
     </div>
   );
