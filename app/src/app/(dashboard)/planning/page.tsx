@@ -506,11 +506,14 @@ function NewEventModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
   const [formData, setFormData] = useState({
     eventName: '',
     eventType: 'RECITAL' as const,
+    clientId: '',
     loadInTime: '',
     loadOutTime: '',
     venueName: '',
     venueAddress: '',
   });
+
+  const { data: clients } = trpc.client.list.useQuery({});
 
   const createEvent = trpc.event.create.useMutation({
     onSuccess: () => {
@@ -524,6 +527,7 @@ function NewEventModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
     createEvent.mutate({
       eventName: formData.eventName,
       eventType: formData.eventType,
+      clientId: formData.clientId || undefined,
       loadInTime: new Date(formData.loadInTime),
       loadOutTime: new Date(formData.loadOutTime),
       venueName: formData.venueName,
@@ -559,6 +563,24 @@ function NewEventModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
               className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-cyan-500"
               required
             />
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-slate-300 mb-2">
+              Client
+            </label>
+            <select
+              value={formData.clientId}
+              onChange={(e) => setFormData({ ...formData, clientId: e.target.value })}
+              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-cyan-500"
+            >
+              <option value="">Select a client (optional)</option>
+              {clients?.map((client) => (
+                <option key={client.id} value={client.id}>
+                  {client.organization}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div>
