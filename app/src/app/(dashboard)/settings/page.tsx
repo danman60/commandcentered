@@ -117,7 +117,7 @@ export default function SettingsPage() {
   ] as const;
 
   return (
-    <div className="flex flex-col h-full bg-gray-50">
+    <div className="flex flex-col h-full bg-gray-900">
       {/* Header */}
       <div className="bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border-b border-cyan-500/30 px-8 py-6">
         <div className="flex items-center gap-4">
