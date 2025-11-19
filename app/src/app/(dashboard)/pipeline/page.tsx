@@ -5,7 +5,7 @@ import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Modal } from '@/components/ui/Modal';
 import { trpc } from '@/lib/trpc/client';
-import { ClientCard, RevenueSummaryCards, LogContactModal } from '@/components/pipeline';
+import { ClientCard, RevenueSummaryCards, LogContactModal, SendEmailModal } from '@/components/pipeline';
 import {
   Plus,
   Search,
@@ -40,6 +40,7 @@ export default function PipelinePage() {
   const [isNewLeadOpen, setIsNewLeadOpen] = useState(false);
   const [selectedLeadId, setSelectedLeadId] = useState<string | null>(null);
   const [logContactLeadId, setLogContactLeadId] = useState<string | null>(null);
+  const [sendEmailLeadId, setSendEmailLeadId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [productFilter, setProductFilter] = useState<string>('');
   const [temperatureFilter, setTemperatureFilter] = useState<string>('');
@@ -436,6 +437,7 @@ export default function PipelinePage() {
               key={lead.id}
               lead={lead as any}
               onLogContact={() => setLogContactLeadId(lead.id)}
+              onSendEmail={() => setSendEmailLeadId(lead.id)}
               onViewDetails={() => setSelectedLeadId(lead.id)}
               onProductUpdate={() => refetchLeads()}
             />
@@ -556,6 +558,15 @@ export default function PipelinePage() {
             refetchLeads();
             setLogContactLeadId(null);
           }}
+        />
+      )}
+
+      {/* Send Email Modal */}
+      {sendEmailLeadId && (
+        <SendEmailModal
+          isOpen={!!sendEmailLeadId}
+          onClose={() => setSendEmailLeadId(null)}
+          lead={allLeads?.find(l => l.id === sendEmailLeadId) as any}
         />
       )}
     </div>
