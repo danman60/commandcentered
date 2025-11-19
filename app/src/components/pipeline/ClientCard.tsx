@@ -21,6 +21,9 @@ export function ClientCard({
   onProductUpdate,
   searchQuery,
 }: ClientCardProps) {
+  // Check if follow-up is overdue
+  const isOverdue = lead.nextFollowUpAt && new Date(lead.nextFollowUpAt) < new Date();
+
   // Highlight matching text
   const highlightMatch = (text: string) => {
     if (!searchQuery || !text) return text;
@@ -42,10 +45,17 @@ export function ClientCard({
     <div className="bg-gray-800 rounded-lg border border-gray-700 p-6 hover:border-gray-600 transition-colors cursor-pointer">
       {/* Header */}
       <div className="flex items-start justify-between mb-4">
-        <div>
-          <h3 className="text-xl font-semibold text-gray-100 mb-1">
-            {highlightMatch(lead.organization || 'Unnamed Organization')}
-          </h3>
+        <div className="flex-1">
+          <div className="flex items-center gap-2 mb-1">
+            <h3 className="text-xl font-semibold text-gray-100">
+              {highlightMatch(lead.organization || 'Unnamed Organization')}
+            </h3>
+            {isOverdue && (
+              <span className="px-2 py-0.5 bg-red-500/20 text-red-400 text-xs rounded border border-red-500/30 font-semibold animate-pulse">
+                ⚠️ OVERDUE
+              </span>
+            )}
+          </div>
           <div className="flex items-center gap-3 text-sm text-gray-400">
             {lead.email && (
               <span className="flex items-center gap-1">
