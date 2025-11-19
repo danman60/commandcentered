@@ -399,6 +399,11 @@ model Operator {
   email String  @db.VarChar(255)
   phone String? @db.Text
 
+  // Profile
+  primaryRole  String? @map("primary_role") @db.Text
+  bio          String? @db.Text
+  portfolioUrl String? @map("portfolio_url") @db.Text
+
   // Rates
   hourlyRate      Decimal @map("hourly_rate") @db.Decimal(10, 2)
   acceptsFlatRate Boolean @default(true) @map("accepts_flat_rate")
