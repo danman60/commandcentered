@@ -5,6 +5,31 @@
 
 ---
 
+## 🚨 CRITICAL RULE: NEVER STAY BLOCKED
+
+**IF BLOCKED BY:**
+- Backend issues (database, API, 500 errors)
+- Environment variables
+- Deployment issues
+- Any technical blocker requiring user action
+
+**IMMEDIATELY SWITCH TO:**
+- ✅ Visual audit (compare production to mockups in `mockups/round-7-complete/`)
+- ✅ Fix aesthetic issues (colors, spacing, fonts, layout)
+- ✅ Fix UI/UX issues (navigation, buttons, forms)
+- ✅ Document visual discrepancies
+- ✅ Make CSS/styling improvements
+
+**DO NOT:**
+- ❌ Wait for user to fix blockers
+- ❌ Pause testing
+- ❌ Stop making progress
+- ❌ Create blocker docs and sit idle
+
+**PRINCIPLE:** Always have a parallel workstream. Backend blocked? Do frontend. Frontend blocked? Do documentation. Documentation done? Do optimization. Never idle.
+
+---
+
 ## 🚀 PROTOCOL ACTIVATION
 
 **User says:** "continue" (after PlaywrightMCP installed)
