@@ -61,6 +61,71 @@ export default function PipelinePage() {
     return leads?.filter(lead => lead.status === status) ?? [];
   };
 
+  // Export leads to CSV
+  const handleExport = () => {
+    if (!leads || leads.length === 0) return;
+
+    // Build CSV header
+    const headers = [
+      'Organization',
+      'Contact Name',
+      'Email',
+      'Phone',
+      'Temperature',
+      'Status',
+      'Last Contacted',
+      'Next Follow-Up',
+      'Contact Frequency',
+      'Products',
+      'Total Revenue',
+      'Projected Revenue',
+    ];
+
+    // Build CSV rows
+    const rows = leads.map((lead) => {
+      const totalRevenue = lead.leadProducts?.reduce(
+        (sum, p) => sum + Number(p.revenueAmount || 0),
+        0
+      ) || 0;
+      const projectedRevenue = lead.leadProducts?.reduce(
+        (sum, p) => sum + Number(p.projectedRevenue || 0),
+        0
+      ) || 0;
+      const productList = lead.leadProducts?.map(p => `${p.productName} (${p.status})`).join('; ') || '';
+
+      return [
+        lead.organization || '',
+        lead.contactName || '',
+        lead.email,
+        lead.phone || '',
+        lead.temperature || '',
+        lead.status,
+        lead.lastContactedAt ? new Date(lead.lastContactedAt).toLocaleDateString() : '',
+        lead.nextFollowUpAt ? new Date(lead.nextFollowUpAt).toLocaleDateString() : '',
+        lead.contactFrequency || '',
+        productList,
+        `$${totalRevenue.toLocaleString()}`,
+        `$${projectedRevenue.toLocaleString()}`,
+      ];
+    });
+
+    // Combine headers and rows
+    const csvContent = [headers, ...rows]
+      .map((row) => row.map((cell) => `"${cell}"`).join(','))
+      .join('\n');
+
+    // Create download link
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `pipeline-leads-${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="p-8">
       {/* Header */}
@@ -107,6 +172,16 @@ export default function PipelinePage() {
                 <span className="text-sm font-medium">Table</span>
               </button>
             </div>
+
+            <Button
+              variant="secondary"
+              size="medium"
+              onClick={handleExport}
+              disabled={!leads || leads.length === 0}
+            >
+              <TrendingUp className="w-4 h-4" />
+              📊 Export
+            </Button>
 
             <Button
               variant="primary"
