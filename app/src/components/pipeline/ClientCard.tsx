@@ -78,6 +78,31 @@ export function ClientCard({
 
   const productCount = getProductCount();
 
+  // Calculate total revenue and styling
+  const getTotalRevenue = () => {
+    const total = lead.leadProducts?.reduce(
+      (sum, p) => sum + Number(p.revenueAmount || 0) + Number(p.projectedRevenue || 0),
+      0
+    ) || 0;
+
+    if (total === 0) return null;
+
+    const formatted = `$${total.toLocaleString()}`;
+
+    if (total < 5000) {
+      return { text: formatted, color: 'bg-gray-500/20 text-gray-400 border-gray-500/30' };
+    }
+    if (total < 15000) {
+      return { text: formatted, color: 'bg-blue-500/20 text-blue-400 border-blue-500/30' };
+    }
+    if (total < 30000) {
+      return { text: formatted, color: 'bg-purple-500/20 text-purple-400 border-purple-500/30' };
+    }
+    return { text: formatted, color: 'bg-green-500/20 text-green-400 border-green-500/30' };
+  };
+
+  const totalRevenue = getTotalRevenue();
+
   // Highlight matching text
   const highlightMatch = (text: string) => {
     if (!searchQuery || !text) return text;
@@ -115,6 +140,11 @@ export function ClientCard({
             {productCount && (
               <span className={`px-2 py-0.5 text-xs rounded border font-medium ${productCount.color}`}>
                 📦 {productCount.text}
+              </span>
+            )}
+            {totalRevenue && (
+              <span className={`px-2 py-0.5 text-xs rounded border font-semibold ${totalRevenue.color}`}>
+                💰 {totalRevenue.text}
               </span>
             )}
           </div>
