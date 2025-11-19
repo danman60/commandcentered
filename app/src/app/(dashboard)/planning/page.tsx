@@ -15,7 +15,7 @@ function DraggableOperatorCard({ operator, getOperatorInitials }: { operator: an
   const dragData: DragItem = {
     type: 'operator',
     id: operator.id,
-    name: `${operator.firstName} ${operator.lastName}`,
+    name: operator.name,
   };
 
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
@@ -36,7 +36,7 @@ function DraggableOperatorCard({ operator, getOperatorInitials }: { operator: an
         ⋮⋮
       </span>
       <div className="font-bold text-sm text-slate-200 mb-1">
-        {operator.firstName} {operator.lastName} ({operator.initials || getOperatorInitials(operator)})
+        {operator.name} ({operator.initials || getOperatorInitials(operator)})
       </div>
       <div className="flex items-center gap-2 text-xs text-slate-400">
         <span className="w-2.5 h-2.5 rounded-full bg-green-500 shadow-lg shadow-green-500/50"></span>
@@ -269,10 +269,14 @@ export default function PlanningPage() {
   };
 
   const getOperatorInitials = (operator: any) => {
-    if (!operator || !operator.firstName || !operator.lastName) {
+    if (!operator || !operator.name) {
       return '??';
     }
-    return `${operator.firstName[0]}${operator.lastName[0]}`;
+    const nameParts = operator.name.trim().split(' ');
+    if (nameParts.length >= 2) {
+      return `${nameParts[0][0]}${nameParts[nameParts.length - 1][0]}`.toUpperCase();
+    }
+    return operator.name.substring(0, 2).toUpperCase();
   };
 
   const handleDragEnd = (event: DragEndEvent) => {
@@ -783,7 +787,7 @@ function EventDetailModal({ eventId, isOpen, onClose }: { eventId: string; isOpe
                             key={assignment.id}
                             className="bg-cyan-500/20 border border-cyan-500/30 px-3 py-1 rounded-full text-sm text-cyan-300"
                           >
-                            {assignment.operator.firstName} {assignment.operator.lastName}
+                            {assignment.operator.name}
                           </div>
                         ))}
                       </div>
@@ -809,7 +813,7 @@ function EventDetailModal({ eventId, isOpen, onClose }: { eventId: string; isOpe
                               }}
                               className="px-3 py-2 bg-slate-700 hover:bg-cyan-500/20 border border-slate-600 hover:border-cyan-500 text-white rounded transition-all text-sm"
                             >
-                              {operator.firstName} {operator.lastName}
+                              {operator.name}
                             </button>
                           ))}
                         </div>
