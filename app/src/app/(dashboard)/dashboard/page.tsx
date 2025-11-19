@@ -117,15 +117,29 @@ export default function DashboardPage() {
       {/* Header */}
       <div className="bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border-b border-cyan-500/30 -mx-8 px-8 py-6 mb-6">
         <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold text-white">Dashboard</h1>
-          <Button
-            variant="secondary"
-            size="medium"
-            onClick={() => setIsCustomizeOpen(true)}
-          >
-            <Settings className="w-4 h-4" />
-            Customize
-          </Button>
+          <div>
+            <h1 className="text-3xl font-bold text-white">Dashboard</h1>
+            <div className="text-sm text-slate-400 mt-1">
+              Good {new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 18 ? 'afternoon' : 'evening'}, Commander
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <Button
+              variant="primary"
+              size="medium"
+              onClick={() => {/* TODO: Navigate to new event page */}}
+            >
+              ➕ New Event
+            </Button>
+            <Button
+              variant="secondary"
+              size="medium"
+              onClick={() => setIsCustomizeOpen(true)}
+            >
+              <Settings className="w-4 h-4" />
+              Customize
+            </Button>
+          </div>
         </div>
       </div>
 

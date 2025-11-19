@@ -21,17 +21,17 @@ import {
 } from 'lucide-react'
 
 const navigation = [
-  { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'Planning', href: '/planning', icon: Calendar },
-  { name: 'Pipeline', href: '/pipeline', icon: TrendingUp },
-  { name: 'Gear Inventory', href: '/gear', icon: Package },
-  { name: 'Operators', href: '/operators', icon: Users },
-  { name: 'Deliverables', href: '/deliverables', icon: FileText },
-  { name: 'Communications', href: '/communications', icon: MessageSquare },
-  { name: 'Files & Assets', href: '/files', icon: FolderOpen },
-  { name: 'Reports', href: '/reports', icon: BarChart3 },
-  { name: 'Operator Portal', href: '/operator-portal', icon: UserCircle },
-  { name: 'Settings', href: '/settings', icon: Settings },
+  { name: 'Dashboard', href: '/dashboard', icon: '📊' },
+  { name: 'Planning', href: '/planning', icon: '📅' },
+  { name: 'Pipeline', href: '/pipeline', icon: '⚡' },
+  { name: 'Gear Inventory', href: '/gear', icon: '🎥' },
+  { name: 'Operators', href: '/operators', icon: '👥' },
+  { name: 'Deliverables', href: '/deliverables', icon: '📦' },
+  { name: 'Communications', href: '/communications', icon: '💬' },
+  { name: 'Files & Assets', href: '/files', icon: '📁' },
+  { name: 'Reports', href: '/reports', icon: '📈' },
+  { name: 'Operator Portal', href: '/operator-portal', icon: '👤' },
+  { name: 'Settings', href: '/settings', icon: '🔧' },
 ]
 
 export function Sidebar() {
@@ -57,7 +57,7 @@ export function Sidebar() {
                   : 'text-gray-300 hover:bg-slate-700 hover:text-white'
               )}
             >
-              <item.icon className="w-5 h-5 mr-3" />
+              <span className="text-xl mr-3">{item.icon}</span>
               {item.name}
             </Link>
           )
