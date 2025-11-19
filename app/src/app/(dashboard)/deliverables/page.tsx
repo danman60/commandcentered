@@ -227,6 +227,8 @@ export default function DeliverablesPage() {
 function NewDeliverableModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const [formData, setFormData] = useState({
     eventId: '',
+    deliverableType: '',
+    deliverableName: '',
     assignedEditorId: '',
     dueDate: '',
   });
@@ -243,14 +245,13 @@ function NewDeliverableModal({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const payload: any = {
+    createDeliverable.mutate({
       eventId: formData.eventId,
-      status: 'NOT_STARTED',
-    };
-    if (formData.assignedEditorId) payload.assignedEditorId = formData.assignedEditorId;
-    if (formData.dueDate) payload.dueDate = new Date(formData.dueDate);
-
-    createDeliverable.mutate(payload);
+      deliverableType: formData.deliverableType,
+      deliverableName: formData.deliverableName,
+      dueDate: new Date(formData.dueDate),
+      assignedEditorId: formData.assignedEditorId || undefined,
+    });
   };
 
   if (!isOpen) return null;
@@ -286,6 +287,39 @@ function NewDeliverableModal({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                 </option>
               ))}
             </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-slate-300 mb-2">
+              Deliverable Type
+            </label>
+            <select
+              value={formData.deliverableType}
+              onChange={(e) => setFormData({ ...formData, deliverableType: e.target.value })}
+              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-cyan-500"
+              required
+            >
+              <option value="">Select type</option>
+              <option value="FULL_EDIT">Full Edit</option>
+              <option value="HIGHLIGHT_REEL">Highlight Reel</option>
+              <option value="AWARDS">Awards</option>
+              <option value="GROUP_NUMBERS">Group Numbers</option>
+              <option value="OTHER">Other</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-slate-300 mb-2">
+              Deliverable Name
+            </label>
+            <input
+              type="text"
+              value={formData.deliverableName}
+              onChange={(e) => setFormData({ ...formData, deliverableName: e.target.value })}
+              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-cyan-500"
+              placeholder="e.g., Elite Dance Competition Full Edit"
+              required
+            />
           </div>
 
           <div>
