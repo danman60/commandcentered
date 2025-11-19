@@ -231,9 +231,15 @@ export default function PipelinePage() {
       'Phone',
       'Temperature',
       'Status',
+      'Lead Age (Days)',
+      'Product Count',
       'Last Contacted',
+      'Last Contact Method',
       'Next Follow-Up',
+      'Follow-Up Status',
       'Contact Frequency',
+      'Contact Consistency',
+      'Lead Source',
       'Products',
       'Total Revenue',
       'Projected Revenue',
@@ -242,6 +248,10 @@ export default function PipelinePage() {
     // Build CSV rows
     const rows = leads.map((lead) => {
       const totalRevenue = lead.leadProducts?.reduce(
+        (sum, p) => sum + Number(p.revenueAmount || 0) + Number(p.projectedRevenue || 0),
+        0
+      ) || 0;
+      const actualRevenue = lead.leadProducts?.reduce(
         (sum, p) => sum + Number(p.revenueAmount || 0),
         0
       ) || 0;
@@ -250,6 +260,56 @@ export default function PipelinePage() {
         0
       ) || 0;
       const productList = lead.leadProducts?.map(p => `${p.productName} (${p.status})`).join('; ') || '';
+      const productCount = lead.leadProducts?.length || 0;
+
+      // Calculate lead age
+      const createdDate = new Date(lead.createdAt);
+      const now = new Date();
+      const leadAgeDays = Math.floor((now.getTime() - createdDate.getTime()) / (1000 * 60 * 60 * 24));
+
+      // Calculate follow-up status
+      let followUpStatus = '';
+      if (lead.nextFollowUpAt) {
+        const followUpDate = new Date(lead.nextFollowUpAt);
+        followUpDate.setHours(0, 0, 0, 0);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const daysUntil = Math.floor((followUpDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+
+        if (daysUntil < 0) {
+          followUpStatus = `${Math.abs(daysUntil)} days overdue`;
+        } else if (daysUntil === 0) {
+          followUpStatus = 'Due today';
+        } else if (daysUntil === 1) {
+          followUpStatus = 'Due tomorrow';
+        } else {
+          followUpStatus = `Due in ${daysUntil} days`;
+        }
+      }
+
+      // Calculate contact consistency
+      let contactConsistency = '';
+      if (lead.contactFrequency && lead.lastContactedAt) {
+        const lastContact = new Date(lead.lastContactedAt);
+        const daysSinceContact = Math.floor((now.getTime() - lastContact.getTime()) / (1000 * 60 * 60 * 24));
+        const frequency = lead.contactFrequency.toLowerCase();
+        let expectedDays = 0;
+        if (frequency.includes('daily')) expectedDays = 1;
+        else if (frequency.includes('weekly')) expectedDays = 7;
+        else if (frequency.includes('biweekly') || frequency.includes('bi-weekly')) expectedDays = 14;
+        else if (frequency.includes('monthly')) expectedDays = 30;
+        else if (frequency.includes('quarterly')) expectedDays = 90;
+
+        if (expectedDays > 0) {
+          if (daysSinceContact <= expectedDays) {
+            contactConsistency = 'On track';
+          } else if (daysSinceContact <= expectedDays + 3) {
+            contactConsistency = 'Attention needed';
+          } else {
+            contactConsistency = 'Overdue';
+          }
+        }
+      }
 
       return [
         lead.organization || '',
@@ -258,11 +318,17 @@ export default function PipelinePage() {
         lead.phone || '',
         lead.temperature || '',
         lead.status,
+        leadAgeDays.toString(),
+        productCount.toString(),
         lead.lastContactedAt ? new Date(lead.lastContactedAt).toLocaleDateString() : '',
+        lead.typeOfContact || '',
         lead.nextFollowUpAt ? new Date(lead.nextFollowUpAt).toLocaleDateString() : '',
+        followUpStatus,
         lead.contactFrequency || '',
+        contactConsistency,
+        lead.source || '',
         productList,
-        totalRevenue.toString(),
+        actualRevenue.toString(),
         projectedRevenue.toString(),
       ];
     });
