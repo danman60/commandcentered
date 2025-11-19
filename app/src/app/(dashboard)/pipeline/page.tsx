@@ -43,8 +43,20 @@ export default function PipelinePage() {
   const [sendEmailLeadId, setSendEmailLeadId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [productFilter, setProductFilter] = useState<string>('');
-  const [temperatureFilter, setTemperatureFilter] = useState<string>('');
-  const [sortBy, setSortBy] = useState<string>('');
+  const [temperatureFilter, setTemperatureFilter] = useState<string>(() => {
+    // Load saved temperature filter from localStorage
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('pipeline-temperature-filter') || '';
+    }
+    return '';
+  });
+  const [sortBy, setSortBy] = useState<string>(() => {
+    // Load saved sort preference from localStorage
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('pipeline-sort-by') || '';
+    }
+    return '';
+  });
   const [viewMode, setViewMode] = useState<ViewMode>(() => {
     // Load saved view mode from localStorage
     if (typeof window !== 'undefined') {
@@ -55,14 +67,23 @@ export default function PipelinePage() {
     }
     return 'kanban';
   });
-  const [quickFilter, setQuickFilter] = useState<string>('');
+  const [quickFilter, setQuickFilter] = useState<string>(() => {
+    // Load saved quick filter from localStorage
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('pipeline-quick-filter') || '';
+    }
+    return '';
+  });
 
-  // Save view mode preference
+  // Save filter preferences
   React.useEffect(() => {
     if (typeof window !== 'undefined') {
       localStorage.setItem('pipeline-view-mode', viewMode);
+      localStorage.setItem('pipeline-temperature-filter', temperatureFilter);
+      localStorage.setItem('pipeline-sort-by', sortBy);
+      localStorage.setItem('pipeline-quick-filter', quickFilter);
     }
-  }, [viewMode]);
+  }, [viewMode, temperatureFilter, sortBy, quickFilter]);
 
   // Fetch leads
   const { data: allLeads, refetch: refetchLeads } = trpc.lead.list.useQuery({
