@@ -6,7 +6,7 @@ Copy these to your Vercel project settings:
 
 **Go to:** Vercel Dashboard → commandcentered → Settings → Environment Variables
 
-**Add these 6 variables:**
+**Add these 4 variables:**
 
 ### 1. NEXT_PUBLIC_SUPABASE_URL
 ```
@@ -28,17 +28,7 @@ postgresql://postgres.netbsyvxrhrqxyzqflmd:CVXJBm6k0f4a9QBZ@aws-0-us-east-2.pool
 postgresql://postgres.netbsyvxrhrqxyzqflmd:CVXJBm6k0f4a9QBZ@aws-0-us-east-2.pooler.supabase.com:5432/postgres
 ```
 
-### 5. NEXT_PUBLIC_BUILD_HASH
-```
-0b2436c
-```
-*(Update this with the latest commit hash after each deploy)*
-
-### 6. NEXT_PUBLIC_BUILD_TIME
-```
-2025-11-18 21:43
-```
-*(Update this with current EST time after each deploy)*
+**Note:** Build hash and timestamp are automatically generated at build time via `next.config.ts`. No manual setup required!
 
 ---
 
