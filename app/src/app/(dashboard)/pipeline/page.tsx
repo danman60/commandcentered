@@ -365,6 +365,91 @@ export default function PipelinePage() {
         </div>
       )}
 
+      {/* Active Filters Summary */}
+      {allLeads && allLeads.length > 0 && (
+        <div className="flex items-center justify-between mb-4 p-3 bg-slate-800/30 border border-slate-700 rounded-lg">
+          <div className="flex items-center gap-3">
+            <span className="text-sm text-gray-400">
+              Showing <span className="font-semibold text-white">{leads?.length || 0}</span> of{' '}
+              <span className="font-semibold text-white">{allLeads.length}</span> leads
+            </span>
+            {(searchQuery || productFilter || temperatureFilter || sortBy) && (
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-500">|</span>
+                <span className="text-xs text-gray-500">Active filters:</span>
+                {searchQuery && (
+                  <div className="flex items-center gap-1 px-2 py-1 bg-cyan-500/10 border border-cyan-500/30 rounded text-xs text-cyan-400">
+                    <span>Search: "{searchQuery}"</span>
+                    <button
+                      onClick={() => setSearchQuery('')}
+                      className="hover:text-cyan-300"
+                      title="Clear search"
+                    >
+                      ×
+                    </button>
+                  </div>
+                )}
+                {productFilter && (
+                  <div className="flex items-center gap-1 px-2 py-1 bg-purple-500/10 border border-purple-500/30 rounded text-xs text-purple-400">
+                    <span>Product: {productFilter}</span>
+                    <button
+                      onClick={() => setProductFilter('')}
+                      className="hover:text-purple-300"
+                      title="Clear product filter"
+                    >
+                      ×
+                    </button>
+                  </div>
+                )}
+                {temperatureFilter && (
+                  <div className="flex items-center gap-1 px-2 py-1 bg-orange-500/10 border border-orange-500/30 rounded text-xs text-orange-400">
+                    <span>Temperature: {temperatureFilter}</span>
+                    <button
+                      onClick={() => setTemperatureFilter('')}
+                      className="hover:text-orange-300"
+                      title="Clear temperature filter"
+                    >
+                      ×
+                    </button>
+                  </div>
+                )}
+                {sortBy && (
+                  <div className="flex items-center gap-1 px-2 py-1 bg-blue-500/10 border border-blue-500/30 rounded text-xs text-blue-400">
+                    <span>
+                      Sort:{' '}
+                      {sortBy === 'lastContacted' && 'Last Contacted'}
+                      {sortBy === 'nextFollowUp' && 'Next Follow-Up'}
+                      {sortBy === 'revenue' && 'Revenue'}
+                      {sortBy === 'name' && 'Name'}
+                    </span>
+                    <button
+                      onClick={() => setSortBy('')}
+                      className="hover:text-blue-300"
+                      title="Clear sort"
+                    >
+                      ×
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+          {(searchQuery || productFilter || temperatureFilter || sortBy) && (
+            <button
+              onClick={() => {
+                setSearchQuery('');
+                setProductFilter('');
+                setTemperatureFilter('');
+                setSortBy('');
+              }}
+              className="px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-gray-300 rounded text-xs font-medium transition-colors"
+            >
+              Clear All
+            </button>
+          )}
+        </div>
+      )}
+
       {/* Revenue Summary Cards */}
       {leads && leads.length > 0 && <RevenueSummaryCards leads={leads as any} />}
 
