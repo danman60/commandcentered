@@ -60,6 +60,24 @@ export function ClientCard({
 
   const contactMethod = getContactMethod();
 
+  // Get product count and styling
+  const getProductCount = () => {
+    const count = lead.leadProducts?.length || 0;
+    if (count === 0) return null;
+
+    const text = count === 1 ? '1 product' : `${count} products`;
+
+    if (count === 1) {
+      return { text, color: 'bg-gray-500/20 text-gray-400 border-gray-500/30' };
+    }
+    if (count <= 3) {
+      return { text, color: 'bg-blue-500/20 text-blue-400 border-blue-500/30' };
+    }
+    return { text, color: 'bg-purple-500/20 text-purple-400 border-purple-500/30' };
+  };
+
+  const productCount = getProductCount();
+
   // Highlight matching text
   const highlightMatch = (text: string) => {
     if (!searchQuery || !text) return text;
@@ -94,6 +112,11 @@ export function ClientCard({
             <span className={`px-2 py-0.5 text-xs rounded border font-medium ${leadAge.color}`}>
               {leadAge.text}
             </span>
+            {productCount && (
+              <span className={`px-2 py-0.5 text-xs rounded border font-medium ${productCount.color}`}>
+                📦 {productCount.text}
+              </span>
+            )}
           </div>
           <div className="flex items-center gap-3 text-sm text-gray-400">
             {lead.email && (
