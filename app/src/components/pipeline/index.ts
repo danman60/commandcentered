@@ -3,3 +3,4 @@ export { ProductCard } from './ProductCard';
 export { ContactInfo } from './ContactInfo';
 export { TemperatureBadge } from './TemperatureBadge';
 export { RevenueSummaryCards } from './RevenueSummaryCards';
+export { LogContactModal } from './LogContactModal';
