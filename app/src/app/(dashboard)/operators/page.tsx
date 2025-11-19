@@ -558,25 +558,143 @@ export default function OperatorsPage() {
         </div>
       )}
 
-      {/* TODO: Operator Detail Modal */}
-      {showDetailModal && selectedOperatorId && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-          <div className="bg-slate-800 border border-slate-700 rounded-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-            <div className="bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border-b border-cyan-500/30 p-6">
-              <h2 className="text-2xl font-bold text-slate-100">Operator Details</h2>
-            </div>
-            <div className="p-6">
-              <p className="text-slate-400">Detail view coming soon...</p>
-              <button
-                onClick={() => setShowDetailModal(false)}
-                className="mt-4 px-6 py-3 bg-slate-700/30 text-slate-300 border border-slate-700/50 rounded-lg font-semibold hover:bg-slate-700/50 transition-all"
-              >
-                Close
-              </button>
+      {/* Operator Detail Modal */}
+      {showDetailModal && selectedOperatorId && (() => {
+        const operator = operatorData.find(op => op.id === selectedOperatorId);
+        if (!operator) return null;
+
+        return (
+          <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
+            <div className="bg-slate-800 border border-slate-700 rounded-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+              {/* Header */}
+              <div className="bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border-b border-cyan-500/30 p-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center text-white font-bold text-2xl">
+                      {operator.initials}
+                    </div>
+                    <div>
+                      <h2 className="text-2xl font-bold text-white">{operator.name}</h2>
+                      <p className="text-slate-400">{operator.role}</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setShowDetailModal(false)}
+                    className="text-slate-400 hover:text-white text-2xl font-bold"
+                  >
+                    ×
+                  </button>
+                </div>
+              </div>
+
+              {/* Content */}
+              <div className="p-6 space-y-6">
+                {/* Contact Information */}
+                <div>
+                  <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
+                    <span className="w-2 h-2 bg-cyan-500 rounded-full"></span>
+                    Contact Information
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="bg-slate-900/50 border border-slate-700/50 rounded-lg p-4">
+                      <p className="text-xs text-slate-400 mb-1">Email</p>
+                      <p className="text-white">{operator.email}</p>
+                    </div>
+                    <div className="bg-slate-900/50 border border-slate-700/50 rounded-lg p-4">
+                      <p className="text-xs text-slate-400 mb-1">Phone</p>
+                      <p className="text-white">{operator.phone}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Professional Information */}
+                <div>
+                  <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
+                    <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
+                    Professional Information
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="bg-slate-900/50 border border-slate-700/50 rounded-lg p-4">
+                      <p className="text-xs text-slate-400 mb-1">Hourly Rate</p>
+                      <p className="text-2xl font-bold text-green-400">${operator.hourlyRate.toFixed(2)}/hr</p>
+                    </div>
+                    <div className="bg-slate-900/50 border border-slate-700/50 rounded-lg p-4">
+                      <p className="text-xs text-slate-400 mb-1">Events This Year</p>
+                      <p className="text-2xl font-bold text-cyan-400">{operator.eventsThisYear}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Skills & Certifications */}
+                {operator.skills.length > 0 && (
+                  <div>
+                    <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
+                      <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                      Skills & Certifications
+                    </h3>
+                    <div className="flex flex-wrap gap-2">
+                      {operator.skills.map((skill, idx) => (
+                        <span
+                          key={idx}
+                          className="px-3 py-1 bg-cyan-500/20 border border-cyan-500/30 rounded-full text-sm text-cyan-300"
+                        >
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Availability Status */}
+                <div>
+                  <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
+                    <span className="w-2 h-2 bg-yellow-500 rounded-full"></span>
+                    Availability
+                  </h3>
+                  <div className="bg-slate-900/50 border border-slate-700/50 rounded-lg p-4">
+                    <div className="flex items-center gap-2">
+                      <div className={`w-3 h-3 rounded-full ${operator.available ? 'bg-green-500' : 'bg-red-500'}`}></div>
+                      <p className="text-white">{operator.availabilityStatus}</p>
+                    </div>
+                    {operator.availability.length > 0 && (
+                      <p className="text-sm text-slate-400 mt-2">
+                        {operator.availability.length} availability {operator.availability.length === 1 ? 'entry' : 'entries'} set
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Performance Metrics */}
+                <div>
+                  <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
+                    <span className="w-2 h-2 bg-orange-500 rounded-full"></span>
+                    Performance Metrics
+                  </h3>
+                  <div className="bg-slate-900/50 border border-slate-700/50 rounded-lg p-4">
+                    <p className="text-sm text-slate-400">Average Rating: Coming soon</p>
+                    <p className="text-sm text-slate-400 mt-1">Client Feedback: Coming soon</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Footer Actions */}
+              <div className="border-t border-slate-700/30 p-6 flex gap-3">
+                <button
+                  onClick={() => setShowDetailModal(false)}
+                  className="flex-1 px-6 py-3 bg-slate-700/30 text-slate-300 border border-slate-700/50 rounded-lg font-semibold hover:bg-slate-700/50 transition-all"
+                >
+                  Close
+                </button>
+                <button
+                  className="flex-1 px-6 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg font-semibold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/40 transition-all"
+                >
+                  Edit Operator
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
     </div>
   );
 }
