@@ -2,12 +2,174 @@
 
 import { useState } from 'react';
 import { trpc } from '@/lib/trpc/client';
+import { DndContext, DragEndEvent, DragOverlay, useDraggable, useDroppable } from '@dnd-kit/core';
+
+type DragItem = {
+  type: 'operator' | 'kit';
+  id: string;
+  name: string;
+};
+
+// Draggable Operator Card Component
+function DraggableOperatorCard({ operator, getOperatorInitials }: { operator: any; getOperatorInitials: (op: any) => string }) {
+  const dragData: DragItem = {
+    type: 'operator',
+    id: operator.id,
+    name: `${operator.firstName} ${operator.lastName}`,
+  };
+
+  const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
+    id: `operator-${operator.id}`,
+    data: dragData,
+  });
+
+  return (
+    <div
+      ref={setNodeRef}
+      {...listeners}
+      {...attributes}
+      className={`bg-slate-800/60 border border-cyan-500/20 rounded-lg p-3 hover:border-cyan-500 hover:translate-x-1 transition-all cursor-move relative group ${
+        isDragging ? 'opacity-50' : ''
+      }`}
+    >
+      <span className="absolute left-1 top-1/2 -translate-y-1/2 text-slate-600 text-xs opacity-0 group-hover:opacity-100 transition-opacity">
+        ⋮⋮
+      </span>
+      <div className="font-bold text-sm text-slate-200 mb-1">
+        {operator.firstName} {operator.lastName} ({operator.initials || getOperatorInitials(operator)})
+      </div>
+      <div className="flex items-center gap-2 text-xs text-slate-400">
+        <span className="w-2.5 h-2.5 rounded-full bg-green-500 shadow-lg shadow-green-500/50"></span>
+        Available Full Day
+      </div>
+    </div>
+  );
+}
+
+// Draggable Kit Card Component
+function DraggableKitCard({ kit }: { kit: any }) {
+  const dragData: DragItem = {
+    type: 'kit',
+    id: kit.id,
+    name: kit.name,
+  };
+
+  const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
+    id: `kit-${kit.id}`,
+    data: dragData,
+  });
+
+  return (
+    <div
+      ref={setNodeRef}
+      {...listeners}
+      {...attributes}
+      className={`bg-slate-800/60 border border-purple-500/20 rounded-lg p-3 hover:border-purple-500 hover:translate-x-1 transition-all cursor-move relative group ${
+        isDragging ? 'opacity-50' : ''
+      }`}
+    >
+      <span className="absolute left-1 top-1/2 -translate-y-1/2 text-slate-600 text-xs opacity-0 group-hover:opacity-100 transition-opacity">
+        ⋮⋮
+      </span>
+      <div className="font-bold text-sm text-slate-200 mb-1">
+        📷 {kit.name}
+      </div>
+      <div className="text-xs text-slate-400 mb-1">
+        {kit.gearIds.length} items
+      </div>
+      <div className="text-xs text-green-400 flex items-center gap-1">
+        ✓ Available
+      </div>
+    </div>
+  );
+}
+
+// Droppable Calendar Day Component
+function DroppableCalendarDay({
+  date,
+  events,
+  isCurrentMonth,
+  isToday,
+  getEventStatusColor,
+  getOperatorInitials,
+  onEventClick,
+}: {
+  date: Date;
+  events: any[];
+  isCurrentMonth: boolean;
+  isToday: boolean;
+  getEventStatusColor: (status: string) => string;
+  getOperatorInitials: (operator: any) => string;
+  onEventClick: (eventId: string) => void;
+}) {
+  const dropData = {
+    date,
+    eventId: events.length > 0 ? events[0].id : undefined,
+  };
+
+  const { setNodeRef, isOver } = useDroppable({
+    id: `day-${date.toISOString()}`,
+    data: dropData,
+  });
+
+  return (
+    <div
+      ref={setNodeRef}
+      className={`bg-slate-900/80 min-h-[120px] p-2 relative cursor-pointer transition-all hover:bg-cyan-500/5 hover:shadow-[inset_0_0_0_2px_rgba(6,182,212,0.3)] ${
+        !isCurrentMonth ? 'opacity-40' : ''
+      } ${isOver ? 'bg-cyan-500/20 shadow-[inset_0_0_0_3px_rgba(6,182,212,0.5)]' : ''}`}
+    >
+      <div
+        className={`text-sm font-bold mb-1.5 ${
+          isToday
+            ? 'text-cyan-400 bg-cyan-500/20 w-7 h-7 flex items-center justify-center rounded-full'
+            : 'text-slate-400'
+        }`}
+      >
+        {date.getDate()}
+      </div>
+
+      <div className="space-y-1">
+        {events.map((event: any) => (
+          <div
+            key={event.id}
+            onClick={(e) => {
+              e.stopPropagation();
+              onEventClick(event.id);
+            }}
+            className={`${getEventStatusColor(event.status)} rounded px-2 py-1.5 text-xs cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-lg shadow-md`}
+          >
+            <div className="font-bold mb-1 text-white truncate">
+              {event.client?.companyName || event.eventName}
+            </div>
+            <div className="flex gap-1 flex-wrap">
+              {event.shifts?.flatMap((shift: any) =>
+                shift.assignments?.map((assignment: any, idx: number) => (
+                  <span
+                    key={idx}
+                    className="bg-black/30 px-1.5 py-0.5 rounded text-[10px] font-bold text-white"
+                  >
+                    {getOperatorInitials(assignment.operator)}
+                  </span>
+                ))
+              )}
+              {event.gearAssignments?.slice(0, 2).map((ga: any, idx: number) => (
+                <span key={idx} className="text-xs">📷</span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function PlanningPage() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
   const [isNewEventModalOpen, setIsNewEventModalOpen] = useState(false);
   const [isKitModalOpen, setIsKitModalOpen] = useState(false);
+  const [activeDragItem, setActiveDragItem] = useState<DragItem | null>(null);
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
@@ -21,6 +183,25 @@ export default function PlanningPage() {
 
   const { data: operators } = trpc.operator.list.useQuery({});
   const { data: kits } = trpc.kit.list.useQuery({});
+
+  // Mutations for assignment
+  const assignOperator = trpc.shift.assignOperator.useMutation({
+    onSuccess: () => {
+      window.location.reload();
+    },
+  });
+
+  const assignGear = trpc.gearAssignment.assign.useMutation({
+    onSuccess: () => {
+      window.location.reload();
+    },
+  });
+
+  const createShift = trpc.shift.create.useMutation({
+    onSuccess: () => {
+      window.location.reload();
+    },
+  });
 
   const getMonthName = () => {
     return currentDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
@@ -91,8 +272,76 @@ export default function PlanningPage() {
     return `${operator.firstName[0]}${operator.lastName[0]}`;
   };
 
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (!over) {
+      setActiveDragItem(null);
+      return;
+    }
+
+    const dragData = active.data.current as DragItem;
+    const dropData = over.data.current as { date: Date; eventId?: string };
+
+    if (dragData && dropData) {
+      console.log('Dropped', dragData.type, dragData.name, 'on', dropData.date);
+
+      if (dropData.eventId) {
+        // Found an existing event on this day
+        const droppedEvent = events?.find(e => e.id === dropData.eventId);
+
+        if (dragData.type === 'operator') {
+          // Assign operator to event
+          // First, check if event has a shift, otherwise create one
+          if (droppedEvent?.shifts && droppedEvent.shifts.length > 0) {
+            // Use first shift
+            const shiftId = droppedEvent.shifts[0].id;
+            assignOperator.mutate({
+              shiftId,
+              operatorId: dragData.id,
+              role: 'VIDEOGRAPHER',
+            });
+          } else {
+            // Create a shift first, then assign
+            const shiftDate = new Date(droppedEvent?.loadInTime || dropData.date);
+            const startTime = new Date(shiftDate);
+            startTime.setHours(9, 0, 0, 0);
+            const endTime = new Date(shiftDate);
+            endTime.setHours(17, 0, 0, 0);
+
+            createShift.mutate({
+              eventId: dropData.eventId,
+              shiftName: 'Default Shift',
+              startTime,
+              endTime,
+            });
+          }
+        } else if (dragData.type === 'kit') {
+          // Assign kit/gear to event
+          assignGear.mutate({
+            eventId: dropData.eventId,
+            gearId: dragData.id,
+          });
+        }
+      } else {
+        // No event on this day - could create a new event or show a modal
+        console.log('No event on this day. Consider creating an event first.');
+      }
+    }
+
+    setActiveDragItem(null);
+  };
+
   return (
-    <div className="flex flex-col h-screen bg-gradient-to-br from-slate-900 to-slate-800">
+    <DndContext
+      onDragEnd={handleDragEnd}
+      onDragStart={(event) => {
+        const dragData = event.active.data.current as DragItem;
+        setActiveDragItem(dragData);
+      }}
+      onDragCancel={() => setActiveDragItem(null)}
+    >
+      <div className="flex flex-col h-screen bg-gradient-to-br from-slate-900 to-slate-800">
       {/* Top Bar */}
       <div className="flex-shrink-0 bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border-b border-cyan-500/30 px-9 py-4 shadow-xl">
         <div className="flex justify-between items-center">
@@ -147,22 +396,11 @@ export default function PlanningPage() {
           </div>
           <div className="flex-1 overflow-y-auto p-4 space-y-3">
             {operators?.map((operator: any) => (
-              <div
+              <DraggableOperatorCard
                 key={operator.id}
-                className="bg-slate-800/60 border border-cyan-500/20 rounded-lg p-3 hover:border-cyan-500 hover:translate-x-1 transition-all cursor-move relative group"
-                draggable
-              >
-                <span className="absolute left-1 top-1/2 -translate-y-1/2 text-slate-600 text-xs opacity-0 group-hover:opacity-100 transition-opacity">
-                  ⋮⋮
-                </span>
-                <div className="font-bold text-sm text-slate-200 mb-1">
-                  {operator.firstName} {operator.lastName} ({operator.initials || getOperatorInitials(operator)})
-                </div>
-                <div className="flex items-center gap-2 text-xs text-slate-400">
-                  <span className="w-2.5 h-2.5 rounded-full bg-green-500 shadow-lg shadow-green-500/50"></span>
-                  Available Full Day
-                </div>
-              </div>
+                operator={operator}
+                getOperatorInitials={getOperatorInitials}
+              />
             ))}
           </div>
         </div>
@@ -193,54 +431,16 @@ export default function PlanningPage() {
                 const isTodayDay = isToday(date);
 
                 return (
-                  <div
+                  <DroppableCalendarDay
                     key={index}
-                    className={`bg-slate-900/80 min-h-[120px] p-2 relative cursor-pointer transition-all hover:bg-cyan-500/5 hover:shadow-[inset_0_0_0_2px_rgba(6,182,212,0.3)] ${
-                      !isCurrentMonthDay ? 'opacity-40' : ''
-                    }`}
-                  >
-                    <div
-                      className={`text-sm font-bold mb-1.5 ${
-                        isTodayDay
-                          ? 'text-cyan-400 bg-cyan-500/20 w-7 h-7 flex items-center justify-center rounded-full'
-                          : 'text-slate-400'
-                      }`}
-                    >
-                      {date.getDate()}
-                    </div>
-
-                    <div className="space-y-1">
-                      {dayEvents.map((event: any) => (
-                        <div
-                          key={event.id}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setSelectedEventId(event.id);
-                          }}
-                          className={`${getEventStatusColor(event.status)} rounded px-2 py-1.5 text-xs cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-lg shadow-md`}
-                        >
-                          <div className="font-bold mb-1 text-white truncate">
-                            {event.client?.companyName || event.eventName}
-                          </div>
-                          <div className="flex gap-1 flex-wrap">
-                            {event.shifts?.flatMap((shift: any) =>
-                              shift.assignments?.map((assignment: any, idx: number) => (
-                                <span
-                                  key={idx}
-                                  className="bg-black/30 px-1.5 py-0.5 rounded text-[10px] font-bold text-white"
-                                >
-                                  {getOperatorInitials(assignment.operator)}
-                                </span>
-                              ))
-                            )}
-                            {event.gearAssignments?.slice(0, 2).map((ga: any, idx: number) => (
-                              <span key={idx} className="text-xs">📷</span>
-                            ))}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                    date={date}
+                    events={dayEvents}
+                    isCurrentMonth={isCurrentMonthDay}
+                    isToday={isTodayDay}
+                    getEventStatusColor={getEventStatusColor}
+                    getOperatorInitials={getOperatorInitials}
+                    onEventClick={(eventId) => setSelectedEventId(eventId)}
+                  />
                 );
               })}
             </div>
@@ -265,24 +465,7 @@ export default function PlanningPage() {
           </div>
           <div className="flex-1 overflow-y-auto p-4 space-y-3">
             {kits?.map((kit: any) => (
-              <div
-                key={kit.id}
-                className="bg-slate-800/60 border border-purple-500/20 rounded-lg p-3 hover:border-purple-500 hover:translate-x-1 transition-all cursor-move relative group"
-                draggable
-              >
-                <span className="absolute left-1 top-1/2 -translate-y-1/2 text-slate-600 text-xs opacity-0 group-hover:opacity-100 transition-opacity">
-                  ⋮⋮
-                </span>
-                <div className="font-bold text-sm text-slate-200 mb-1">
-                  📷 {kit.name}
-                </div>
-                <div className="text-xs text-slate-400 mb-1">
-                  {kit.gearIds.length} items
-                </div>
-                <div className="text-xs text-green-400 flex items-center gap-1">
-                  ✓ Available
-                </div>
-              </div>
+              <DraggableKitCard key={kit.id} kit={kit} />
             ))}
           </div>
         </div>
@@ -310,7 +493,8 @@ export default function PlanningPage() {
           onClose={() => setIsKitModalOpen(false)}
         />
       )}
-    </div>
+      </div>
+    </DndContext>
   );
 }
 
