@@ -158,9 +158,9 @@ export default function DashboardPage() {
       >
         {/* Widget 1: Overview Stats */}
         {getWidgetVisibility('overview_stats') && (
-          <div key="overview_stats">
+          <div key="overview_stats" className="overflow-hidden">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 h-full">
-              <Card padding="medium" hover="glow">
+              <Card padding="medium" hover="glow" className="overflow-hidden">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-400">Upcoming Events</p>
@@ -174,7 +174,7 @@ export default function DashboardPage() {
                 </div>
               </Card>
 
-              <Card padding="medium" hover="glow">
+              <Card padding="medium" hover="glow" className="overflow-hidden">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-400">Active Operators</p>
@@ -188,7 +188,7 @@ export default function DashboardPage() {
                 </div>
               </Card>
 
-              <Card padding="medium" hover="glow">
+              <Card padding="medium" hover="glow" className="overflow-hidden">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-400">Gear Items</p>
@@ -202,7 +202,7 @@ export default function DashboardPage() {
                 </div>
               </Card>
 
-              <Card padding="medium" hover="glow">
+              <Card padding="medium" hover="glow" className="overflow-hidden">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-400">Total Revenue</p>
@@ -221,8 +221,8 @@ export default function DashboardPage() {
 
         {/* Widget 2: Event Pipeline */}
         {getWidgetVisibility('event_pipeline') && (
-          <div key="event_pipeline">
-            <Card padding="large" hover="glow" className="h-full">
+          <div key="event_pipeline" className="overflow-hidden h-full">
+            <Card padding="large" hover="glow" className="h-full overflow-hidden">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-white">Event Pipeline</h3>
                 <TrendingUp className="w-5 h-5 text-cyan-400" />
