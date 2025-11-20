@@ -126,25 +126,24 @@
   },
   "suites": [
     {
-      "title": "01-planning-calendar.spec.ts",
-      "file": "01-planning-calendar.spec.ts",
+      "title": "03-kit-creation-modal.spec.ts",
+      "file": "03-kit-creation-modal.spec.ts",
       "column": 0,
       "line": 0,
       "specs": [],
       "suites": [
         {
-          "title": "Planning Calendar Page @p0 @critical",
-          "file": "01-planning-calendar.spec.ts",
-          "line": 10,
+          "title": "Kit Creation Modal @p1 @kit-creation",
+          "file": "03-kit-creation-modal.spec.ts",
+          "line": 9,
           "column": 6,
           "specs": [
             {
-              "title": "TC-PLAN-001: Verify month calendar loads with current month @smoke",
+              "title": "TC-KIT-001: Verify kit creation modal opens at 80% screen width",
               "ok": false,
               "tags": [
-                "p0",
-                "critical",
-                "smoke"
+                "p1",
+                "kit-creation"
               ],
               "tests": [
                 {
@@ -158,70 +157,70 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "failed",
-                      "duration": 8470,
+                      "duration": 7448,
                       "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"calendar-title\"]').or(locator('h2').filter({ hasText: /November/i }))\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"calendar-title\"]').or(locator('h2').filter({ hasText: /November/i }))\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"calendar-title\"]').or(locator('h2').filter({ hasText: /November/i }))\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"calendar-title\"]').or(locator('h2').filter({ hasText: /November/i }))\u001b[22m\n\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts:34:33",
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[role=\"dialog\"], .modal, [data-testid=\"kit-modal\"]').first()\nExpected: visible\nTimeout: 3000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 3000ms\u001b[22m\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal, [data-testid=\"kit-modal\"]').first()\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[role=\"dialog\"], .modal, [data-testid=\"kit-modal\"]').first()\nExpected: visible\nTimeout: 3000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 3000ms\u001b[22m\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal, [data-testid=\"kit-modal\"]').first()\u001b[22m\n\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts:37:25",
                         "location": {
-                          "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts",
-                          "column": 33,
-                          "line": 34
+                          "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts",
+                          "column": 25,
+                          "line": 37
                         },
-                        "snippet": "\u001b[0m \u001b[90m 32 |\u001b[39m     )\u001b[33m;\u001b[39m\n \u001b[90m 33 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 34 |\u001b[39m     \u001b[36mawait\u001b[39m expect(calendarTitle)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                 \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 35 |\u001b[39m     \u001b[36mawait\u001b[39m expect(calendarTitle)\u001b[33m.\u001b[39mtoContainText(currentMonth)\u001b[33m;\u001b[39m\n \u001b[90m 36 |\u001b[39m     \u001b[36mawait\u001b[39m expect(calendarTitle)\u001b[33m.\u001b[39mtoContainText(currentYear)\u001b[33m;\u001b[39m\n \u001b[90m 37 |\u001b[39m\u001b[0m"
+                        "snippet": "\u001b[0m \u001b[90m 35 |\u001b[39m     \u001b[90m// Verify modal opens\u001b[39m\n \u001b[90m 36 |\u001b[39m     \u001b[36mconst\u001b[39m modal \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[role=\"dialog\"], .modal, [data-testid=\"kit-modal\"]'\u001b[39m)\u001b[33m.\u001b[39mfirst()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 37 |\u001b[39m     \u001b[36mawait\u001b[39m expect(modal)\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m3000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 38 |\u001b[39m\n \u001b[90m 39 |\u001b[39m     \u001b[90m// Check modal width (should be ~80% of viewport)\u001b[39m\n \u001b[90m 40 |\u001b[39m     \u001b[36mconst\u001b[39m modalBox \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m modal\u001b[33m.\u001b[39mboundingBox()\u001b[33m;\u001b[39m\u001b[0m"
                       },
                       "errors": [
                         {
                           "location": {
-                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts",
-                            "column": 33,
-                            "line": 34
+                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts",
+                            "column": 25,
+                            "line": 37
                           },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"calendar-title\"]').or(locator('h2').filter({ hasText: /November/i }))\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"calendar-title\"]').or(locator('h2').filter({ hasText: /November/i }))\u001b[22m\n\n\n  32 |     );\n  33 |\n> 34 |     await expect(calendarTitle).toBeVisible();\n     |                                 ^\n  35 |     await expect(calendarTitle).toContainText(currentMonth);\n  36 |     await expect(calendarTitle).toContainText(currentYear);\n  37 |\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts:34:33"
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[role=\"dialog\"], .modal, [data-testid=\"kit-modal\"]').first()\nExpected: visible\nTimeout: 3000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 3000ms\u001b[22m\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal, [data-testid=\"kit-modal\"]').first()\u001b[22m\n\n\n  35 |     // Verify modal opens\n  36 |     const modal = page.locator('[role=\"dialog\"], .modal, [data-testid=\"kit-modal\"]').first();\n> 37 |     await expect(modal).toBeVisible({ timeout: 3000 });\n     |                         ^\n  38 |\n  39 |     // Check modal width (should be ~80% of viewport)\n  40 |     const modalBox = await modal.boundingBox();\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts:37:25"
                         }
                       ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-19T13:51:55.269Z",
+                      "startTime": "2025-11-20T02:23:18.999Z",
                       "annotations": [],
                       "attachments": [
                         {
                           "name": "screenshot",
                           "contentType": "image/png",
-                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\01-planning-calendar-Plann-4c35c-ds-with-current-month-smoke-chromium\\test-failed-1.png"
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\03-kit-creation-modal-Kit--298d2-al-opens-at-80-screen-width-chromium\\test-failed-1.png"
                         },
                         {
                           "name": "video",
                           "contentType": "video/webm",
-                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\01-planning-calendar-Plann-4c35c-ds-with-current-month-smoke-chromium\\video.webm"
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\03-kit-creation-modal-Kit--298d2-al-opens-at-80-screen-width-chromium\\video.webm"
                         },
                         {
                           "name": "error-context",
                           "contentType": "text/markdown",
-                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\01-planning-calendar-Plann-4c35c-ds-with-current-month-smoke-chromium\\error-context.md"
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\03-kit-creation-modal-Kit--298d2-al-opens-at-80-screen-width-chromium\\error-context.md"
                         }
                       ],
                       "errorLocation": {
-                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts",
-                        "column": 33,
-                        "line": 34
+                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts",
+                        "column": 25,
+                        "line": 37
                       }
                     }
                   ],
                   "status": "unexpected"
                 }
               ],
-              "id": "fe09c7215427b20c6391-1588a7306d8ac058a704",
-              "file": "01-planning-calendar.spec.ts",
-              "line": 23,
+              "id": "b92f4ed6ca32be6d9356-dbe46f2419cccafc9292",
+              "file": "03-kit-creation-modal.spec.ts",
+              "line": 27,
               "column": 7
             },
             {
-              "title": "TC-PLAN-002: Verify 3-panel layout renders correctly",
+              "title": "TC-KIT-002: Verify step indicator shows 3 steps with Step 1 active",
               "ok": false,
               "tags": [
-                "p0",
-                "critical"
+                "p1",
+                "kit-creation"
               ],
               "tests": [
                 {
@@ -235,70 +234,70 @@
                       "workerIndex": 1,
                       "parallelIndex": 1,
                       "status": "failed",
-                      "duration": 8475,
+                      "duration": 13759,
                       "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"operators-panel\"]').or(locator('aside').filter({ hasText: /operators/i }).first())\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"operators-panel\"]').or(locator('aside').filter({ hasText: /operators/i }).first())\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"operators-panel\"]').or(locator('aside').filter({ hasText: /operators/i }).first())\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"operators-panel\"]').or(locator('aside').filter({ hasText: /operators/i }).first())\u001b[22m\n\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts:62:34",
+                        "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal') to be visible\u001b[22m\n",
+                        "stack": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal') to be visible\u001b[22m\n\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts:61:16",
                         "location": {
-                          "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts",
-                          "column": 34,
-                          "line": 62
+                          "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts",
+                          "column": 16,
+                          "line": 61
                         },
-                        "snippet": "\u001b[0m \u001b[90m 60 |\u001b[39m\n \u001b[90m 61 |\u001b[39m     \u001b[90m// Verify all panels are visible\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 62 |\u001b[39m     \u001b[36mawait\u001b[39m expect(operatorsPanel)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 63 |\u001b[39m     \u001b[36mawait\u001b[39m expect(kitsPanel)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 64 |\u001b[39m     \u001b[36mawait\u001b[39m expect(calendarPanel)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 65 |\u001b[39m\u001b[0m"
+                        "snippet": "\u001b[0m \u001b[90m 59 |\u001b[39m     \u001b[36mawait\u001b[39m createButton\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m 60 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 61 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForSelector(\u001b[32m'[role=\"dialog\"], .modal'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 62 |\u001b[39m\n \u001b[90m 63 |\u001b[39m     \u001b[90m// Look for step indicators\u001b[39m\n \u001b[90m 64 |\u001b[39m     \u001b[36mconst\u001b[39m steps \u001b[33m=\u001b[39m [\u001b[32m'Kit Info'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'Select Gear'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'Review'\u001b[39m]\u001b[33m;\u001b[39m\u001b[0m"
                       },
                       "errors": [
                         {
                           "location": {
-                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts",
-                            "column": 34,
-                            "line": 62
+                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts",
+                            "column": 16,
+                            "line": 61
                           },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"operators-panel\"]').or(locator('aside').filter({ hasText: /operators/i }).first())\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"operators-panel\"]').or(locator('aside').filter({ hasText: /operators/i }).first())\u001b[22m\n\n\n  60 |\n  61 |     // Verify all panels are visible\n> 62 |     await expect(operatorsPanel).toBeVisible();\n     |                                  ^\n  63 |     await expect(kitsPanel).toBeVisible();\n  64 |     await expect(calendarPanel).toBeVisible();\n  65 |\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts:62:34"
+                          "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal') to be visible\u001b[22m\n\n\n  59 |     await createButton.click();\n  60 |\n> 61 |     await page.waitForSelector('[role=\"dialog\"], .modal');\n     |                ^\n  62 |\n  63 |     // Look for step indicators\n  64 |     const steps = ['Kit Info', 'Select Gear', 'Review'];\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts:61:16"
                         }
                       ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-19T13:51:55.298Z",
+                      "startTime": "2025-11-20T02:23:19.018Z",
                       "annotations": [],
                       "attachments": [
                         {
                           "name": "screenshot",
                           "contentType": "image/png",
-                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\01-planning-calendar-Plann-d10c6-el-layout-renders-correctly-chromium\\test-failed-1.png"
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\03-kit-creation-modal-Kit--43f60--3-steps-with-Step-1-active-chromium\\test-failed-1.png"
                         },
                         {
                           "name": "video",
                           "contentType": "video/webm",
-                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\01-planning-calendar-Plann-d10c6-el-layout-renders-correctly-chromium\\video.webm"
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\03-kit-creation-modal-Kit--43f60--3-steps-with-Step-1-active-chromium\\video.webm"
                         },
                         {
                           "name": "error-context",
                           "contentType": "text/markdown",
-                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\01-planning-calendar-Plann-d10c6-el-layout-renders-correctly-chromium\\error-context.md"
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\03-kit-creation-modal-Kit--43f60--3-steps-with-Step-1-active-chromium\\error-context.md"
                         }
                       ],
                       "errorLocation": {
-                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts",
-                        "column": 34,
-                        "line": 62
+                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts",
+                        "column": 16,
+                        "line": 61
                       }
                     }
                   ],
                   "status": "unexpected"
                 }
               ],
-              "id": "fe09c7215427b20c6391-0bac060737212be41e39",
-              "file": "01-planning-calendar.spec.ts",
-              "line": 49,
+              "id": "b92f4ed6ca32be6d9356-00fba467bc826579cced",
+              "file": "03-kit-creation-modal.spec.ts",
+              "line": 54,
               "column": 7
             },
             {
-              "title": "TC-PLAN-003: Verify month navigation works",
+              "title": "TC-KIT-003: Verify event-type suggestions banner appears",
               "ok": false,
               "tags": [
-                "p0",
-                "critical"
+                "p1",
+                "kit-creation"
               ],
               "tests": [
                 {
@@ -310,72 +309,72 @@
                   "results": [
                     {
                       "workerIndex": 2,
-                      "parallelIndex": 1,
+                      "parallelIndex": 0,
                       "status": "failed",
-                      "duration": 13513,
+                      "duration": 13731,
                       "error": {
-                        "message": "TimeoutError: locator.textContent: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"calendar-title\"]').or(locator('h2').filter({ hasText: /\\b(January|February|March|April|May|June|July|August|September|October|November|December)\\b/ })).first()\u001b[22m\n",
-                        "stack": "TimeoutError: locator.textContent: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"calendar-title\"]').or(locator('h2').filter({ hasText: /\\b(January|February|March|April|May|June|July|August|September|October|November|December)\\b/ })).first()\u001b[22m\n\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts:78:15",
+                        "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal') to be visible\u001b[22m\n",
+                        "stack": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal') to be visible\u001b[22m\n\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts:92:16",
                         "location": {
-                          "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts",
-                          "column": 15,
-                          "line": 78
+                          "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts",
+                          "column": 16,
+                          "line": 92
                         },
-                        "snippet": "\u001b[0m \u001b[90m 76 |\u001b[39m     \u001b[36mconst\u001b[39m initialMonth \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"calendar-title\"]'\u001b[39m)\u001b[33m.\u001b[39mor(\n \u001b[90m 77 |\u001b[39m       page\u001b[33m.\u001b[39mlocator(\u001b[32m'h2'\u001b[39m)\u001b[33m.\u001b[39mfilter({ hasText\u001b[33m:\u001b[39m \u001b[35m/\\b(January|February|March|April|May|June|July|August|September|October|November|December)\\b/\u001b[39m })\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 78 |\u001b[39m     )\u001b[33m.\u001b[39mfirst()\u001b[33m.\u001b[39mtextContent()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m               \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 79 |\u001b[39m\n \u001b[90m 80 |\u001b[39m     \u001b[90m// Click next month button\u001b[39m\n \u001b[90m 81 |\u001b[39m     \u001b[36mconst\u001b[39m nextButton \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"next-month\"]'\u001b[39m)\u001b[33m.\u001b[39mor(\u001b[0m"
+                        "snippet": "\u001b[0m \u001b[90m 90 |\u001b[39m     \u001b[36mawait\u001b[39m createButton\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m 91 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 92 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForSelector(\u001b[32m'[role=\"dialog\"], .modal'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 93 |\u001b[39m\n \u001b[90m 94 |\u001b[39m     \u001b[90m// Look for event type selector\u001b[39m\n \u001b[90m 95 |\u001b[39m     \u001b[36mconst\u001b[39m eventTypeSelect \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'select[name=\"eventType\"], select:has-option(\"Dance Recital\")'\u001b[39m)\u001b[33m.\u001b[39mfirst()\u001b[33m;\u001b[39m\u001b[0m"
                       },
                       "errors": [
                         {
                           "location": {
-                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts",
-                            "column": 15,
-                            "line": 78
+                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts",
+                            "column": 16,
+                            "line": 92
                           },
-                          "message": "TimeoutError: locator.textContent: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"calendar-title\"]').or(locator('h2').filter({ hasText: /\\b(January|February|March|April|May|June|July|August|September|October|November|December)\\b/ })).first()\u001b[22m\n\n\n  76 |     const initialMonth = await page.locator('[data-testid=\"calendar-title\"]').or(\n  77 |       page.locator('h2').filter({ hasText: /\\b(January|February|March|April|May|June|July|August|September|October|November|December)\\b/ })\n> 78 |     ).first().textContent();\n     |               ^\n  79 |\n  80 |     // Click next month button\n  81 |     const nextButton = page.locator('[data-testid=\"next-month\"]').or(\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts:78:15"
+                          "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal') to be visible\u001b[22m\n\n\n  90 |     await createButton.click();\n  91 |\n> 92 |     await page.waitForSelector('[role=\"dialog\"], .modal');\n     |                ^\n  93 |\n  94 |     // Look for event type selector\n  95 |     const eventTypeSelect = page.locator('select[name=\"eventType\"], select:has-option(\"Dance Recital\")').first();\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts:92:16"
                         }
                       ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-19T13:52:05.076Z",
+                      "startTime": "2025-11-20T02:23:27.671Z",
                       "annotations": [],
                       "attachments": [
                         {
                           "name": "screenshot",
                           "contentType": "image/png",
-                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\01-planning-calendar-Plann-cc482-rify-month-navigation-works-chromium\\test-failed-1.png"
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\03-kit-creation-modal-Kit--1caf8--suggestions-banner-appears-chromium\\test-failed-1.png"
                         },
                         {
                           "name": "video",
                           "contentType": "video/webm",
-                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\01-planning-calendar-Plann-cc482-rify-month-navigation-works-chromium\\video.webm"
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\03-kit-creation-modal-Kit--1caf8--suggestions-banner-appears-chromium\\video.webm"
                         },
                         {
                           "name": "error-context",
                           "contentType": "text/markdown",
-                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\01-planning-calendar-Plann-cc482-rify-month-navigation-works-chromium\\error-context.md"
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\03-kit-creation-modal-Kit--1caf8--suggestions-banner-appears-chromium\\error-context.md"
                         }
                       ],
                       "errorLocation": {
-                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts",
-                        "column": 15,
-                        "line": 78
+                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts",
+                        "column": 16,
+                        "line": 92
                       }
                     }
                   ],
                   "status": "unexpected"
                 }
               ],
-              "id": "fe09c7215427b20c6391-3a72d3b492b07de1cd4c",
-              "file": "01-planning-calendar.spec.ts",
-              "line": 74,
+              "id": "b92f4ed6ca32be6d9356-828776f1b3fe6ecca5c0",
+              "file": "03-kit-creation-modal.spec.ts",
+              "line": 85,
               "column": 7
             },
             {
-              "title": "TC-PLAN-004: Verify event bars display client name, operator initials, kit icons",
+              "title": "TC-KIT-004: Verify 9 gear category tabs are visible",
               "ok": false,
               "tags": [
-                "p0",
-                "critical"
+                "p1",
+                "kit-creation"
               ],
               "tests": [
                 {
@@ -387,146 +386,149 @@
                   "results": [
                     {
                       "workerIndex": 3,
-                      "parallelIndex": 0,
+                      "parallelIndex": 1,
                       "status": "failed",
-                      "duration": 8132,
+                      "duration": 13556,
                       "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=/no events|create event|add event/i').first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=/no events|create event|add event/i').first()\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=/no events|create event|add event/i').first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=/no events|create event|add event/i').first()\u001b[22m\n\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts:152:40",
+                        "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal') to be visible\u001b[22m\n",
+                        "stack": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal') to be visible\u001b[22m\n\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts:121:16",
                         "location": {
-                          "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts",
-                          "column": 40,
-                          "line": 152
+                          "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts",
+                          "column": 16,
+                          "line": 121
                         },
-                        "snippet": "\u001b[0m \u001b[90m 150 |\u001b[39m       \u001b[90m// If no events, verify empty state or create button is visible\u001b[39m\n \u001b[90m 151 |\u001b[39m       \u001b[36mconst\u001b[39m emptyState \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=/no events|create event|add event/i'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 152 |\u001b[39m       \u001b[36mawait\u001b[39m expect(emptyState\u001b[33m.\u001b[39mfirst())\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 153 |\u001b[39m     }\n \u001b[90m 154 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 155 |\u001b[39m\u001b[0m"
+                        "snippet": "\u001b[0m \u001b[90m 119 |\u001b[39m     \u001b[36mawait\u001b[39m createButton\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m 120 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 121 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForSelector(\u001b[32m'[role=\"dialog\"], .modal'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 122 |\u001b[39m\n \u001b[90m 123 |\u001b[39m     \u001b[90m// Navigate to Select Gear step if needed\u001b[39m\n \u001b[90m 124 |\u001b[39m     \u001b[36mconst\u001b[39m nextButton \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'button:has-text(\"Next\")'\u001b[39m)\u001b[33m.\u001b[39mfirst()\u001b[33m;\u001b[39m\u001b[0m"
                       },
                       "errors": [
                         {
                           "location": {
-                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts",
-                            "column": 40,
-                            "line": 152
+                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts",
+                            "column": 16,
+                            "line": 121
                           },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=/no events|create event|add event/i').first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=/no events|create event|add event/i').first()\u001b[22m\n\n\n  150 |       // If no events, verify empty state or create button is visible\n  151 |       const emptyState = page.locator('text=/no events|create event|add event/i');\n> 152 |       await expect(emptyState.first()).toBeVisible();\n      |                                        ^\n  153 |     }\n  154 |   });\n  155 |\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts:152:40"
+                          "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal') to be visible\u001b[22m\n\n\n  119 |     await createButton.click();\n  120 |\n> 121 |     await page.waitForSelector('[role=\"dialog\"], .modal');\n      |                ^\n  122 |\n  123 |     // Navigate to Select Gear step if needed\n  124 |     const nextButton = page.locator('button:has-text(\"Next\")').first();\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts:121:16"
                         }
                       ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-19T13:52:05.096Z",
+                      "startTime": "2025-11-20T02:23:33.983Z",
                       "annotations": [],
                       "attachments": [
                         {
                           "name": "screenshot",
                           "contentType": "image/png",
-                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\01-planning-calendar-Plann-faf1e-operator-initials-kit-icons-chromium\\test-failed-1.png"
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\03-kit-creation-modal-Kit--f517e-r-category-tabs-are-visible-chromium\\test-failed-1.png"
                         },
                         {
                           "name": "video",
                           "contentType": "video/webm",
-                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\01-planning-calendar-Plann-faf1e-operator-initials-kit-icons-chromium\\video.webm"
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\03-kit-creation-modal-Kit--f517e-r-category-tabs-are-visible-chromium\\video.webm"
                         },
                         {
                           "name": "error-context",
                           "contentType": "text/markdown",
-                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\01-planning-calendar-Plann-faf1e-operator-initials-kit-icons-chromium\\error-context.md"
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\03-kit-creation-modal-Kit--f517e-r-category-tabs-are-visible-chromium\\error-context.md"
                         }
                       ],
                       "errorLocation": {
-                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts",
-                        "column": 40,
-                        "line": 152
+                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts",
+                        "column": 16,
+                        "line": 121
                       }
                     }
                   ],
                   "status": "unexpected"
                 }
               ],
-              "id": "fe09c7215427b20c6391-280b0bfecce5142640e4",
-              "file": "01-planning-calendar.spec.ts",
-              "line": 123,
+              "id": "b92f4ed6ca32be6d9356-ca28b3d7b07fe1dbf1e1",
+              "file": "03-kit-creation-modal.spec.ts",
+              "line": 114,
               "column": 7
             },
             {
-              "title": "TC-PLAN-005: Verify event color-coding by status",
-              "ok": true,
-              "tags": [
-                "p0",
-                "critical"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 4,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 2598,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-19T13:52:14.493Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "fe09c7215427b20c6391-d758bb2b5c97f938d73a",
-              "file": "01-planning-calendar.spec.ts",
-              "line": 160,
-              "column": 7
-            },
-            {
-              "title": "TC-PLAN-006: Verify click event opens Event Detail Modal",
-              "ok": true,
-              "tags": [
-                "p0",
-                "critical"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 4,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 2992,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-19T13:52:17.207Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "fe09c7215427b20c6391-a2af9869bbff3c4facdd",
-              "file": "01-planning-calendar.spec.ts",
-              "line": 190,
-              "column": 7
-            },
-            {
-              "title": "TC-PLAN-007: Verify alerts banner for missing operators/kits",
+              "title": "TC-KIT-005: Verify gear checkboxes display with availability status",
               "ok": false,
               "tags": [
-                "p0",
-                "critical"
+                "p1",
+                "kit-creation"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 14243,
+                      "error": {
+                        "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal') to be visible\u001b[22m\n",
+                        "stack": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal') to be visible\u001b[22m\n\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts:165:16",
+                        "location": {
+                          "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts",
+                          "column": 16,
+                          "line": 165
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 163 |\u001b[39m     \u001b[36mawait\u001b[39m createButton\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m 164 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 165 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForSelector(\u001b[32m'[role=\"dialog\"], .modal'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 166 |\u001b[39m\n \u001b[90m 167 |\u001b[39m     \u001b[90m// Navigate to Select Gear step\u001b[39m\n \u001b[90m 168 |\u001b[39m     \u001b[36mconst\u001b[39m nextButton \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'button:has-text(\"Next\")'\u001b[39m)\u001b[33m.\u001b[39mfirst()\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts",
+                            "column": 16,
+                            "line": 165
+                          },
+                          "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal') to be visible\u001b[22m\n\n\n  163 |     await createButton.click();\n  164 |\n> 165 |     await page.waitForSelector('[role=\"dialog\"], .modal');\n      |                ^\n  166 |\n  167 |     // Navigate to Select Gear step\n  168 |     const nextButton = page.locator('button:has-text(\"Next\")').first();\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts:165:16"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T02:23:42.624Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\03-kit-creation-modal-Kit--f09b9-ay-with-availability-status-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\03-kit-creation-modal-Kit--f09b9-ay-with-availability-status-chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\03-kit-creation-modal-Kit--f09b9-ay-with-availability-status-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts",
+                        "column": 16,
+                        "line": 165
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "b92f4ed6ca32be6d9356-f086c2933eedd07a5ddd",
+              "file": "03-kit-creation-modal.spec.ts",
+              "line": 158,
+              "column": 7
+            },
+            {
+              "title": "TC-KIT-006: Verify dependency reminders suggest but allow proceeding",
+              "ok": false,
+              "tags": [
+                "p1",
+                "kit-creation"
               ],
               "tests": [
                 {
@@ -540,147 +542,70 @@
                       "workerIndex": 5,
                       "parallelIndex": 1,
                       "status": "failed",
-                      "duration": 3032,
+                      "duration": 14059,
                       "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts:251:34",
+                        "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal') to be visible\u001b[22m\n",
+                        "stack": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal') to be visible\u001b[22m\n\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts:196:16",
                         "location": {
-                          "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts",
-                          "column": 34,
-                          "line": 251
+                          "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts",
+                          "column": 16,
+                          "line": 196
                         },
-                        "snippet": "\u001b[0m \u001b[90m 249 |\u001b[39m       \u001b[36mconst\u001b[39m alertText \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m alertsBanner\u001b[33m.\u001b[39mfirst()\u001b[33m.\u001b[39mtextContent()\u001b[33m;\u001b[39m\n \u001b[90m 250 |\u001b[39m       \u001b[36mconst\u001b[39m hasRelevantContent \u001b[33m=\u001b[39m \u001b[35m/operator|kit|missing|incomplete|event/i\u001b[39m\u001b[33m.\u001b[39mtest(alertText \u001b[33m||\u001b[39m \u001b[32m''\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 251 |\u001b[39m       expect(hasRelevantContent)\u001b[33m.\u001b[39mtoBeTruthy()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 252 |\u001b[39m     }\n \u001b[90m 253 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 254 |\u001b[39m\u001b[0m"
+                        "snippet": "\u001b[0m \u001b[90m 194 |\u001b[39m     \u001b[36mawait\u001b[39m createButton\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m 195 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 196 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForSelector(\u001b[32m'[role=\"dialog\"], .modal'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 197 |\u001b[39m\n \u001b[90m 198 |\u001b[39m     \u001b[90m// Navigate to Select Gear step\u001b[39m\n \u001b[90m 199 |\u001b[39m     \u001b[36mconst\u001b[39m nextButton \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'button:has-text(\"Next\")'\u001b[39m)\u001b[33m.\u001b[39mfirst()\u001b[33m;\u001b[39m\u001b[0m"
                       },
                       "errors": [
                         {
                           "location": {
-                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts",
-                            "column": 34,
-                            "line": 251
+                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts",
+                            "column": 16,
+                            "line": 196
                           },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n\n  249 |       const alertText = await alertsBanner.first().textContent();\n  250 |       const hasRelevantContent = /operator|kit|missing|incomplete|event/i.test(alertText || '');\n> 251 |       expect(hasRelevantContent).toBeTruthy();\n      |                                  ^\n  252 |     }\n  253 |   });\n  254 |\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts:251:34"
+                          "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal') to be visible\u001b[22m\n\n\n  194 |     await createButton.click();\n  195 |\n> 196 |     await page.waitForSelector('[role=\"dialog\"], .modal');\n      |                ^\n  197 |\n  198 |     // Navigate to Select Gear step\n  199 |     const nextButton = page.locator('button:has-text(\"Next\")').first();\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts:196:16"
                         }
                       ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-19T13:52:19.832Z",
+                      "startTime": "2025-11-20T02:23:48.720Z",
                       "annotations": [],
                       "attachments": [
                         {
                           "name": "screenshot",
                           "contentType": "image/png",
-                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\01-planning-calendar-Plann-47ea2--for-missing-operators-kits-chromium\\test-failed-1.png"
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\03-kit-creation-modal-Kit--4dcd8-uggest-but-allow-proceeding-chromium\\test-failed-1.png"
                         },
                         {
                           "name": "video",
                           "contentType": "video/webm",
-                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\01-planning-calendar-Plann-47ea2--for-missing-operators-kits-chromium\\video.webm"
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\03-kit-creation-modal-Kit--4dcd8-uggest-but-allow-proceeding-chromium\\video.webm"
                         },
                         {
                           "name": "error-context",
                           "contentType": "text/markdown",
-                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\01-planning-calendar-Plann-47ea2--for-missing-operators-kits-chromium\\error-context.md"
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\03-kit-creation-modal-Kit--4dcd8-uggest-but-allow-proceeding-chromium\\error-context.md"
                         }
                       ],
                       "errorLocation": {
-                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts",
-                        "column": 34,
-                        "line": 251
+                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts",
+                        "column": 16,
+                        "line": 196
                       }
                     }
                   ],
                   "status": "unexpected"
                 }
               ],
-              "id": "fe09c7215427b20c6391-6a56dd78abcc1cabd273",
-              "file": "01-planning-calendar.spec.ts",
-              "line": 234,
+              "id": "b92f4ed6ca32be6d9356-c6d6b475f827cd9e2d36",
+              "file": "03-kit-creation-modal.spec.ts",
+              "line": 189,
               "column": 7
             },
             {
-              "title": "TC-PLAN-008: Verify operator availability indicators",
+              "title": "TC-KIT-007: Verify Link to Event checkbox assigns kit immediately",
               "ok": false,
               "tags": [
-                "p0",
-                "critical"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 4,
-                      "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 8332,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"operators-panel\"]').or(locator('aside').filter({ hasText: /operators/i }).first())\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"operators-panel\"]').or(locator('aside').filter({ hasText: /operators/i }).first())\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"operators-panel\"]').or(locator('aside').filter({ hasText: /operators/i }).first())\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"operators-panel\"]').or(locator('aside').filter({ hasText: /operators/i }).first())\u001b[22m\n\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts:264:34",
-                        "location": {
-                          "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts",
-                          "column": 34,
-                          "line": 264
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 262 |\u001b[39m     )\u001b[33m;\u001b[39m\n \u001b[90m 263 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 264 |\u001b[39m     \u001b[36mawait\u001b[39m expect(operatorsPanel)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 265 |\u001b[39m\n \u001b[90m 266 |\u001b[39m     \u001b[90m// Look for operator items\u001b[39m\n \u001b[90m 267 |\u001b[39m     \u001b[36mconst\u001b[39m operatorItems \u001b[33m=\u001b[39m operatorsPanel\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"operator-item\"]'\u001b[39m)\u001b[33m.\u001b[39mor(\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts",
-                            "column": 34,
-                            "line": 264
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"operators-panel\"]').or(locator('aside').filter({ hasText: /operators/i }).first())\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"operators-panel\"]').or(locator('aside').filter({ hasText: /operators/i }).first())\u001b[22m\n\n\n  262 |     );\n  263 |\n> 264 |     await expect(operatorsPanel).toBeVisible();\n      |                                  ^\n  265 |\n  266 |     // Look for operator items\n  267 |     const operatorItems = operatorsPanel.locator('[data-testid=\"operator-item\"]').or(\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts:264:34"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-19T13:52:20.221Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\01-planning-calendar-Plann-7215b-tor-availability-indicators-chromium\\test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\01-planning-calendar-Plann-7215b-tor-availability-indicators-chromium\\video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\01-planning-calendar-Plann-7215b-tor-availability-indicators-chromium\\error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts",
-                        "column": 34,
-                        "line": 264
-                      }
-                    }
-                  ],
-                  "status": "unexpected"
-                }
-              ],
-              "id": "fe09c7215427b20c6391-98406e56707daf13292e",
-              "file": "01-planning-calendar.spec.ts",
-              "line": 259,
-              "column": 7
-            },
-            {
-              "title": "TC-PLAN-009: Verify operators panel displays operators",
-              "ok": false,
-              "tags": [
-                "p0",
-                "critical"
+                "p1",
+                "kit-creation"
               ],
               "tests": [
                 {
@@ -692,72 +617,72 @@
                   "results": [
                     {
                       "workerIndex": 6,
-                      "parallelIndex": 1,
+                      "parallelIndex": 0,
                       "status": "failed",
-                      "duration": 8006,
+                      "duration": 13609,
                       "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"operators-panel\"]').or(locator('aside').filter({ hasText: /operators/i }).first())\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"operators-panel\"]').or(locator('aside').filter({ hasText: /operators/i }).first())\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"operators-panel\"]').or(locator('aside').filter({ hasText: /operators/i }).first())\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"operators-panel\"]').or(locator('aside').filter({ hasText: /operators/i }).first())\u001b[22m\n\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts:294:34",
+                        "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal') to be visible\u001b[22m\n",
+                        "stack": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal') to be visible\u001b[22m\n\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts:241:16",
                         "location": {
-                          "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts",
-                          "column": 34,
-                          "line": 294
+                          "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts",
+                          "column": 16,
+                          "line": 241
                         },
-                        "snippet": "\u001b[0m \u001b[90m 292 |\u001b[39m     )\u001b[33m;\u001b[39m\n \u001b[90m 293 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 294 |\u001b[39m     \u001b[36mawait\u001b[39m expect(operatorsPanel)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 295 |\u001b[39m\n \u001b[90m 296 |\u001b[39m     \u001b[90m// Look for operator items\u001b[39m\n \u001b[90m 297 |\u001b[39m     \u001b[36mconst\u001b[39m operatorItems \u001b[33m=\u001b[39m operatorsPanel\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"operator-item\"]'\u001b[39m)\u001b[33m.\u001b[39mor(\u001b[0m"
+                        "snippet": "\u001b[0m \u001b[90m 239 |\u001b[39m     \u001b[36mawait\u001b[39m createButton\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m 240 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 241 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForSelector(\u001b[32m'[role=\"dialog\"], .modal'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 242 |\u001b[39m\n \u001b[90m 243 |\u001b[39m     \u001b[90m// Look for \"Link to Event\" checkbox\u001b[39m\n \u001b[90m 244 |\u001b[39m     \u001b[36mconst\u001b[39m linkCheckbox \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'input[type=\"checkbox\"][name=\"linkToEvent\"], input:near(text=\"Link to Event\")'\u001b[39m)\u001b[33m.\u001b[39mfirst()\u001b[33m;\u001b[39m\u001b[0m"
                       },
                       "errors": [
                         {
                           "location": {
-                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts",
-                            "column": 34,
-                            "line": 294
+                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts",
+                            "column": 16,
+                            "line": 241
                           },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"operators-panel\"]').or(locator('aside').filter({ hasText: /operators/i }).first())\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"operators-panel\"]').or(locator('aside').filter({ hasText: /operators/i }).first())\u001b[22m\n\n\n  292 |     );\n  293 |\n> 294 |     await expect(operatorsPanel).toBeVisible();\n      |                                  ^\n  295 |\n  296 |     // Look for operator items\n  297 |     const operatorItems = operatorsPanel.locator('[data-testid=\"operator-item\"]').or(\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts:294:34"
+                          "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal') to be visible\u001b[22m\n\n\n  239 |     await createButton.click();\n  240 |\n> 241 |     await page.waitForSelector('[role=\"dialog\"], .modal');\n      |                ^\n  242 |\n  243 |     // Look for \"Link to Event\" checkbox\n  244 |     const linkCheckbox = page.locator('input[type=\"checkbox\"][name=\"linkToEvent\"], input:near(text=\"Link to Event\")').first();\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts:241:16"
                         }
                       ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-19T13:52:24.146Z",
+                      "startTime": "2025-11-20T02:23:58.061Z",
                       "annotations": [],
                       "attachments": [
                         {
                           "name": "screenshot",
                           "contentType": "image/png",
-                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\01-planning-calendar-Plann-5b55a-rs-panel-displays-operators-chromium\\test-failed-1.png"
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\03-kit-creation-modal-Kit--5e824-box-assigns-kit-immediately-chromium\\test-failed-1.png"
                         },
                         {
                           "name": "video",
                           "contentType": "video/webm",
-                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\01-planning-calendar-Plann-5b55a-rs-panel-displays-operators-chromium\\video.webm"
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\03-kit-creation-modal-Kit--5e824-box-assigns-kit-immediately-chromium\\video.webm"
                         },
                         {
                           "name": "error-context",
                           "contentType": "text/markdown",
-                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\01-planning-calendar-Plann-5b55a-rs-panel-displays-operators-chromium\\error-context.md"
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\03-kit-creation-modal-Kit--5e824-box-assigns-kit-immediately-chromium\\error-context.md"
                         }
                       ],
                       "errorLocation": {
-                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts",
-                        "column": 34,
-                        "line": 294
+                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts",
+                        "column": 16,
+                        "line": 241
                       }
                     }
                   ],
                   "status": "unexpected"
                 }
               ],
-              "id": "fe09c7215427b20c6391-1b2f3b702a84e0271d7e",
-              "file": "01-planning-calendar.spec.ts",
-              "line": 289,
+              "id": "b92f4ed6ca32be6d9356-24a37b202cd634c62e35",
+              "file": "03-kit-creation-modal.spec.ts",
+              "line": 234,
               "column": 7
             },
             {
-              "title": "TC-PLAN-010: Verify kits panel displays kits",
+              "title": "TC-KIT-008: Verify quick stats update in real-time",
               "ok": false,
               "tags": [
-                "p0",
-                "critical"
+                "p1",
+                "kit-creation"
               ],
               "tests": [
                 {
@@ -769,147 +694,64 @@
                   "results": [
                     {
                       "workerIndex": 7,
-                      "parallelIndex": 0,
+                      "parallelIndex": 1,
                       "status": "failed",
-                      "duration": 8581,
+                      "duration": 13620,
                       "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"kits-panel\"]').or(locator('aside').filter({ hasText: /kits/i }).first())\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"kits-panel\"]').or(locator('aside').filter({ hasText: /kits/i }).first())\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"kits-panel\"]').or(locator('aside').filter({ hasText: /kits/i }).first())\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"kits-panel\"]').or(locator('aside').filter({ hasText: /kits/i }).first())\u001b[22m\n\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts:325:29",
+                        "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal') to be visible\u001b[22m\n",
+                        "stack": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal') to be visible\u001b[22m\n\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts:265:16",
                         "location": {
-                          "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts",
-                          "column": 29,
-                          "line": 325
+                          "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts",
+                          "column": 16,
+                          "line": 265
                         },
-                        "snippet": "\u001b[0m \u001b[90m 323 |\u001b[39m     )\u001b[33m;\u001b[39m\n \u001b[90m 324 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 325 |\u001b[39m     \u001b[36mawait\u001b[39m expect(kitsPanel)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 326 |\u001b[39m\n \u001b[90m 327 |\u001b[39m     \u001b[90m// Look for kit items\u001b[39m\n \u001b[90m 328 |\u001b[39m     \u001b[36mconst\u001b[39m kitItems \u001b[33m=\u001b[39m kitsPanel\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"kit-item\"]'\u001b[39m)\u001b[33m.\u001b[39mor(\u001b[0m"
+                        "snippet": "\u001b[0m \u001b[90m 263 |\u001b[39m     \u001b[36mawait\u001b[39m createButton\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m 264 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 265 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForSelector(\u001b[32m'[role=\"dialog\"], .modal'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 266 |\u001b[39m\n \u001b[90m 267 |\u001b[39m     \u001b[90m// Navigate to Select Gear step\u001b[39m\n \u001b[90m 268 |\u001b[39m     \u001b[36mconst\u001b[39m nextButton \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'button:has-text(\"Next\")'\u001b[39m)\u001b[33m.\u001b[39mfirst()\u001b[33m;\u001b[39m\u001b[0m"
                       },
                       "errors": [
                         {
                           "location": {
-                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts",
-                            "column": 29,
-                            "line": 325
+                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts",
+                            "column": 16,
+                            "line": 265
                           },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"kits-panel\"]').or(locator('aside').filter({ hasText: /kits/i }).first())\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"kits-panel\"]').or(locator('aside').filter({ hasText: /kits/i }).first())\u001b[22m\n\n\n  323 |     );\n  324 |\n> 325 |     await expect(kitsPanel).toBeVisible();\n      |                             ^\n  326 |\n  327 |     // Look for kit items\n  328 |     const kitItems = kitsPanel.locator('[data-testid=\"kit-item\"]').or(\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts:325:29"
+                          "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal') to be visible\u001b[22m\n\n\n  263 |     await createButton.click();\n  264 |\n> 265 |     await page.waitForSelector('[role=\"dialog\"], .modal');\n      |                ^\n  266 |\n  267 |     // Navigate to Select Gear step\n  268 |     const nextButton = page.locator('button:has-text(\"Next\")').first();\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts:265:16"
                         }
                       ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-19T13:52:29.658Z",
+                      "startTime": "2025-11-20T02:24:04.005Z",
                       "annotations": [],
                       "attachments": [
                         {
                           "name": "screenshot",
                           "contentType": "image/png",
-                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\01-planning-calendar-Plann-fc245-fy-kits-panel-displays-kits-chromium\\test-failed-1.png"
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\03-kit-creation-modal-Kit--88d8b-k-stats-update-in-real-time-chromium\\test-failed-1.png"
                         },
                         {
                           "name": "video",
                           "contentType": "video/webm",
-                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\01-planning-calendar-Plann-fc245-fy-kits-panel-displays-kits-chromium\\video.webm"
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\03-kit-creation-modal-Kit--88d8b-k-stats-update-in-real-time-chromium\\video.webm"
                         },
                         {
                           "name": "error-context",
                           "contentType": "text/markdown",
-                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\01-planning-calendar-Plann-fc245-fy-kits-panel-displays-kits-chromium\\error-context.md"
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\03-kit-creation-modal-Kit--88d8b-k-stats-update-in-real-time-chromium\\error-context.md"
                         }
                       ],
                       "errorLocation": {
-                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts",
-                        "column": 29,
-                        "line": 325
+                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts",
+                        "column": 16,
+                        "line": 265
                       }
                     }
                   ],
                   "status": "unexpected"
                 }
               ],
-              "id": "fe09c7215427b20c6391-470791080d70d5e85ae7",
-              "file": "01-planning-calendar.spec.ts",
-              "line": 320,
-              "column": 7
-            },
-            {
-              "title": "TC-PLAN-011: Verify panel resizing with draggable dividers",
-              "ok": true,
-              "tags": [
-                "p0",
-                "critical"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [
-                    {
-                      "type": "skip",
-                      "location": {
-                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts",
-                        "line": 352,
-                        "column": 8
-                      }
-                    }
-                  ],
-                  "expectedStatus": "skipped",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": -1,
-                      "parallelIndex": -1,
-                      "status": "skipped",
-                      "duration": 0,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-19T13:52:32.363Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "skipped"
-                }
-              ],
-              "id": "fe09c7215427b20c6391-8aa4d5d84ffbac15bb26",
-              "file": "01-planning-calendar.spec.ts",
-              "line": 352,
-              "column": 8
-            },
-            {
-              "title": "TC-PLAN-012: Verify full-screen mode toggle",
-              "ok": true,
-              "tags": [
-                "p0",
-                "critical"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 8,
-                      "parallelIndex": 1,
-                      "status": "passed",
-                      "duration": 2701,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-19T13:52:33.367Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "fe09c7215427b20c6391-4b089ada76e1a1bdd2e9",
-              "file": "01-planning-calendar.spec.ts",
-              "line": 365,
+              "id": "b92f4ed6ca32be6d9356-df45b292cc697f736f30",
+              "file": "03-kit-creation-modal.spec.ts",
+              "line": 258,
               "column": 7
             }
           ]
@@ -917,1020 +759,24 @@
       ]
     },
     {
-      "title": "02-event-detail-modal.spec.ts",
-      "file": "02-event-detail-modal.spec.ts",
+      "title": "04-gear-inventory.spec.ts",
+      "file": "04-gear-inventory.spec.ts",
       "column": 0,
       "line": 0,
       "specs": [],
       "suites": [
         {
-          "title": "Event Detail Modal - Shift Builder @p0 @critical",
-          "file": "02-event-detail-modal.spec.ts",
-          "line": 10,
-          "column": 6,
-          "specs": [
-            {
-              "title": "TC-EVENT-001: Verify Event Detail Modal opens at 80% screen width",
-              "ok": true,
-              "tags": [
-                "p0",
-                "critical"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [
-                    {
-                      "type": "skip",
-                      "location": {
-                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\02-event-detail-modal.spec.ts",
-                        "line": 53,
-                        "column": 12
-                      }
-                    }
-                  ],
-                  "expectedStatus": "skipped",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 8,
-                      "parallelIndex": 1,
-                      "status": "skipped",
-                      "duration": 2630,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-19T13:52:36.210Z",
-                      "annotations": [
-                        {
-                          "type": "skip",
-                          "location": {
-                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\02-event-detail-modal.spec.ts",
-                            "line": 53,
-                            "column": 12
-                          }
-                        }
-                      ],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "skipped"
-                }
-              ],
-              "id": "abc38ee52c015bcd7862-c620e8b7fd8e6c8e88ca",
-              "file": "02-event-detail-modal.spec.ts",
-              "line": 21,
-              "column": 7
-            },
-            {
-              "title": "TC-EVENT-002: Verify event information displays correctly",
-              "ok": true,
-              "tags": [
-                "p0",
-                "critical"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [
-                    {
-                      "type": "skip",
-                      "location": {
-                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\02-event-detail-modal.spec.ts",
-                        "line": 82,
-                        "column": 12
-                      }
-                    }
-                  ],
-                  "expectedStatus": "skipped",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 9,
-                      "parallelIndex": 0,
-                      "status": "skipped",
-                      "duration": 2632,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-19T13:52:39.612Z",
-                      "annotations": [
-                        {
-                          "type": "skip",
-                          "location": {
-                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\02-event-detail-modal.spec.ts",
-                            "line": 82,
-                            "column": 12
-                          }
-                        }
-                      ],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "skipped"
-                }
-              ],
-              "id": "abc38ee52c015bcd7862-60008bedbc82b416e5ff",
-              "file": "02-event-detail-modal.spec.ts",
-              "line": 60,
-              "column": 7
-            },
-            {
-              "title": "TC-EVENT-003: Verify shift builder options Manual and Template",
-              "ok": true,
-              "tags": [
-                "p0",
-                "critical"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [
-                    {
-                      "type": "skip",
-                      "location": {
-                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\02-event-detail-modal.spec.ts",
-                        "line": 116,
-                        "column": 12
-                      }
-                    }
-                  ],
-                  "expectedStatus": "skipped",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 8,
-                      "parallelIndex": 1,
-                      "status": "skipped",
-                      "duration": 2568,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-19T13:52:38.862Z",
-                      "annotations": [
-                        {
-                          "type": "skip",
-                          "location": {
-                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\02-event-detail-modal.spec.ts",
-                            "line": 116,
-                            "column": 12
-                          }
-                        }
-                      ],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "skipped"
-                }
-              ],
-              "id": "abc38ee52c015bcd7862-b5524d0c45d59fd067b0",
-              "file": "02-event-detail-modal.spec.ts",
-              "line": 90,
-              "column": 7
-            },
-            {
-              "title": "TC-EVENT-004: Verify template dropdown contains templates",
-              "ok": true,
-              "tags": [
-                "p0",
-                "critical"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [
-                    {
-                      "type": "skip",
-                      "location": {
-                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\02-event-detail-modal.spec.ts",
-                        "line": 160,
-                        "column": 12
-                      }
-                    }
-                  ],
-                  "expectedStatus": "skipped",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 8,
-                      "parallelIndex": 1,
-                      "status": "skipped",
-                      "duration": 2604,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-19T13:52:41.456Z",
-                      "annotations": [
-                        {
-                          "type": "skip",
-                          "location": {
-                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\02-event-detail-modal.spec.ts",
-                            "line": 160,
-                            "column": 12
-                          }
-                        }
-                      ],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "skipped"
-                }
-              ],
-              "id": "abc38ee52c015bcd7862-f3ea85ea1898d664b643",
-              "file": "02-event-detail-modal.spec.ts",
-              "line": 124,
-              "column": 7
-            },
-            {
-              "title": "TC-EVENT-005: Verify single-shift checkbox functionality",
-              "ok": true,
-              "tags": [
-                "p0",
-                "critical"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [
-                    {
-                      "type": "skip",
-                      "location": {
-                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\02-event-detail-modal.spec.ts",
-                        "line": 203,
-                        "column": 12
-                      }
-                    }
-                  ],
-                  "expectedStatus": "skipped",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 9,
-                      "parallelIndex": 0,
-                      "status": "skipped",
-                      "duration": 2509,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-19T13:52:42.389Z",
-                      "annotations": [
-                        {
-                          "type": "skip",
-                          "location": {
-                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\02-event-detail-modal.spec.ts",
-                            "line": 203,
-                            "column": 12
-                          }
-                        }
-                      ],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "skipped"
-                }
-              ],
-              "id": "abc38ee52c015bcd7862-b8fb87c36b87333e85d2",
-              "file": "02-event-detail-modal.spec.ts",
-              "line": 168,
-              "column": 7
-            },
-            {
-              "title": "TC-EVENT-006: Verify manual shift creation",
-              "ok": true,
-              "tags": [
-                "p0",
-                "critical"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [
-                    {
-                      "type": "skip",
-                      "location": {
-                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\02-event-detail-modal.spec.ts",
-                        "line": 249,
-                        "column": 12
-                      }
-                    }
-                  ],
-                  "expectedStatus": "skipped",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 8,
-                      "parallelIndex": 1,
-                      "status": "skipped",
-                      "duration": 2586,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-19T13:52:44.091Z",
-                      "annotations": [
-                        {
-                          "type": "skip",
-                          "location": {
-                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\02-event-detail-modal.spec.ts",
-                            "line": 249,
-                            "column": 12
-                          }
-                        }
-                      ],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "skipped"
-                }
-              ],
-              "id": "abc38ee52c015bcd7862-634d2463c8ad126ddfad",
-              "file": "02-event-detail-modal.spec.ts",
-              "line": 210,
-              "column": 7
-            },
-            {
-              "title": "TC-EVENT-007: Verify template-based shift creation",
-              "ok": true,
-              "tags": [
-                "p0",
-                "critical"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [
-                    {
-                      "type": "skip",
-                      "location": {
-                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\02-event-detail-modal.spec.ts",
-                        "line": 298,
-                        "column": 12
-                      }
-                    }
-                  ],
-                  "expectedStatus": "skipped",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 9,
-                      "parallelIndex": 0,
-                      "status": "skipped",
-                      "duration": 2544,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-19T13:52:44.922Z",
-                      "annotations": [
-                        {
-                          "type": "skip",
-                          "location": {
-                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\02-event-detail-modal.spec.ts",
-                            "line": 298,
-                            "column": 12
-                          }
-                        }
-                      ],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "skipped"
-                }
-              ],
-              "id": "abc38ee52c015bcd7862-02557f18ce4b4f8d436a",
-              "file": "02-event-detail-modal.spec.ts",
-              "line": 257,
-              "column": 7
-            },
-            {
-              "title": "TC-EVENT-008: Verify kit assignment with default and override",
-              "ok": true,
-              "tags": [
-                "p0",
-                "critical"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [
-                    {
-                      "type": "skip",
-                      "location": {
-                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\02-event-detail-modal.spec.ts",
-                        "line": 348,
-                        "column": 12
-                      }
-                    }
-                  ],
-                  "expectedStatus": "skipped",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 8,
-                      "parallelIndex": 1,
-                      "status": "skipped",
-                      "duration": 2800,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-19T13:52:46.697Z",
-                      "annotations": [
-                        {
-                          "type": "skip",
-                          "location": {
-                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\02-event-detail-modal.spec.ts",
-                            "line": 348,
-                            "column": 12
-                          }
-                        }
-                      ],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "skipped"
-                }
-              ],
-              "id": "abc38ee52c015bcd7862-56161e7e350de67d5357",
-              "file": "02-event-detail-modal.spec.ts",
-              "line": 306,
-              "column": 7
-            },
-            {
-              "title": "TC-EVENT-009: Verify operator assignment per shift",
-              "ok": true,
-              "tags": [
-                "p0",
-                "critical"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [
-                    {
-                      "type": "skip",
-                      "location": {
-                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\02-event-detail-modal.spec.ts",
-                        "line": 396,
-                        "column": 12
-                      }
-                    }
-                  ],
-                  "expectedStatus": "skipped",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 9,
-                      "parallelIndex": 0,
-                      "status": "skipped",
-                      "duration": 2741,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-19T13:52:47.493Z",
-                      "annotations": [
-                        {
-                          "type": "skip",
-                          "location": {
-                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\02-event-detail-modal.spec.ts",
-                            "line": 396,
-                            "column": 12
-                          }
-                        }
-                      ],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "skipped"
-                }
-              ],
-              "id": "abc38ee52c015bcd7862-1d1d9377aaafc1321c63",
-              "file": "02-event-detail-modal.spec.ts",
-              "line": 355,
-              "column": 7
-            },
-            {
-              "title": "TC-EVENT-010: Verify overlap-only conflict detection",
-              "ok": true,
-              "tags": [
-                "p0",
-                "critical"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [
-                    {
-                      "type": "skip",
-                      "location": {
-                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\02-event-detail-modal.spec.ts",
-                        "line": 420,
-                        "column": 10
-                      }
-                    }
-                  ],
-                  "expectedStatus": "skipped",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 8,
-                      "parallelIndex": 1,
-                      "status": "skipped",
-                      "duration": 2584,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-19T13:52:49.517Z",
-                      "annotations": [
-                        {
-                          "type": "skip",
-                          "location": {
-                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\02-event-detail-modal.spec.ts",
-                            "line": 420,
-                            "column": 10
-                          }
-                        }
-                      ],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "skipped"
-                }
-              ],
-              "id": "abc38ee52c015bcd7862-c7818bdcb4218609ed59",
-              "file": "02-event-detail-modal.spec.ts",
-              "line": 409,
-              "column": 7
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "title": "06-pipeline.spec.ts",
-      "file": "06-pipeline.spec.ts",
-      "column": 0,
-      "line": 0,
-      "specs": [],
-      "suites": [
-        {
-          "title": "Pipeline with 4-Product Tracking @p0 @critical",
-          "file": "06-pipeline.spec.ts",
-          "line": 10,
-          "column": 6,
-          "specs": [
-            {
-              "title": "TC-PIPE-001: Verify client cards display CRM fields @smoke",
-              "ok": false,
-              "tags": [
-                "p0",
-                "critical",
-                "smoke"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 9,
-                      "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 7634,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=/no clients|add client/i').first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=/no clients|add client/i').first()\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=/no clients|add client/i').first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=/no clients|add client/i').first()\u001b[22m\n\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\06-pipeline.spec.ts:46:40",
-                        "location": {
-                          "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\06-pipeline.spec.ts",
-                          "column": 40,
-                          "line": 46
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 44 |\u001b[39m       \u001b[90m// Check for empty state or add client button\u001b[39m\n \u001b[90m 45 |\u001b[39m       \u001b[36mconst\u001b[39m emptyState \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=/no clients|add client/i'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 46 |\u001b[39m       \u001b[36mawait\u001b[39m expect(emptyState\u001b[33m.\u001b[39mfirst())\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 47 |\u001b[39m     }\n \u001b[90m 48 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 49 |\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\06-pipeline.spec.ts",
-                            "column": 40,
-                            "line": 46
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=/no clients|add client/i').first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=/no clients|add client/i').first()\u001b[22m\n\n\n  44 |       // Check for empty state or add client button\n  45 |       const emptyState = page.locator('text=/no clients|add client/i');\n> 46 |       await expect(emptyState.first()).toBeVisible();\n     |                                        ^\n  47 |     }\n  48 |   });\n  49 |\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\06-pipeline.spec.ts:46:40"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-19T13:52:50.269Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\06-pipeline-Pipeline-with--7fd15-ds-display-CRM-fields-smoke-chromium\\test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\06-pipeline-Pipeline-with--7fd15-ds-display-CRM-fields-smoke-chromium\\video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\06-pipeline-Pipeline-with--7fd15-ds-display-CRM-fields-smoke-chromium\\error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\06-pipeline.spec.ts",
-                        "column": 40,
-                        "line": 46
-                      }
-                    }
-                  ],
-                  "status": "unexpected"
-                }
-              ],
-              "id": "ff52f4d9fa20c667fbff-656ebbf0c77711fe734f",
-              "file": "06-pipeline.spec.ts",
-              "line": 21,
-              "column": 7
-            },
-            {
-              "title": "TC-PIPE-002: Verify client status badges with correct colors",
-              "ok": true,
-              "tags": [
-                "p0",
-                "critical"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 8,
-                      "parallelIndex": 1,
-                      "status": "passed",
-                      "duration": 2275,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-19T13:52:52.129Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "ff52f4d9fa20c667fbff-a477f20087583edf6a30",
-              "file": "06-pipeline.spec.ts",
-              "line": 53,
-              "column": 7
-            },
-            {
-              "title": "TC-PIPE-003: Verify 4-product tracking section visible",
-              "ok": true,
-              "tags": [
-                "p0",
-                "critical"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 8,
-                      "parallelIndex": 1,
-                      "status": "passed",
-                      "duration": 2283,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-19T13:52:54.430Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "ff52f4d9fa20c667fbff-a8ba8c542eef6b671437",
-              "file": "06-pipeline.spec.ts",
-              "line": 96,
-              "column": 7
-            },
-            {
-              "title": "TC-PIPE-004: Verify multi-depth product tracking fields",
-              "ok": true,
-              "tags": [
-                "p0",
-                "critical"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 8,
-                      "parallelIndex": 1,
-                      "status": "passed",
-                      "duration": 2278,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-19T13:52:56.733Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "ff52f4d9fa20c667fbff-cc650b7460eb3eef20e2",
-              "file": "06-pipeline.spec.ts",
-              "line": 146,
-              "column": 7
-            },
-            {
-              "title": "TC-PIPE-005: Verify product status change functionality",
-              "ok": true,
-              "tags": [
-                "p0",
-                "critical"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 10,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 2406,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-19T13:52:59.104Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "ff52f4d9fa20c667fbff-c29a0ac0572e3d9a3069",
-              "file": "06-pipeline.spec.ts",
-              "line": 193,
-              "column": 7
-            },
-            {
-              "title": "TC-PIPE-006: Verify revenue tracking and calculation",
-              "ok": true,
-              "tags": [
-                "p0",
-                "critical"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 8,
-                      "parallelIndex": 1,
-                      "status": "passed",
-                      "duration": 2414,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-19T13:52:59.032Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "ff52f4d9fa20c667fbff-fc70871075cd657d4b9d",
-              "file": "06-pipeline.spec.ts",
-              "line": 248,
-              "column": 7
-            },
-            {
-              "title": "TC-PIPE-007: Verify product notes field functionality",
-              "ok": true,
-              "tags": [
-                "p0",
-                "critical"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 8,
-                      "parallelIndex": 1,
-                      "status": "passed",
-                      "duration": 2428,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-19T13:53:01.465Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "ff52f4d9fa20c667fbff-c2044413b8437d9192bb",
-              "file": "06-pipeline.spec.ts",
-              "line": 284,
-              "column": 7
-            },
-            {
-              "title": "TC-PIPE-008: Verify quick action buttons are functional",
-              "ok": true,
-              "tags": [
-                "p0",
-                "critical"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 10,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 2519,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-19T13:53:01.646Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "ff52f4d9fa20c667fbff-28d773753864a9b6fc54",
-              "file": "06-pipeline.spec.ts",
-              "line": 334,
-              "column": 7
-            },
-            {
-              "title": "TC-PIPE-009: Verify inline editing functionality",
-              "ok": true,
-              "tags": [
-                "p0",
-                "critical"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 8,
-                      "parallelIndex": 1,
-                      "status": "passed",
-                      "duration": 2290,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-19T13:53:03.914Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "ff52f4d9fa20c667fbff-929ab0577811d25e19b1",
-              "file": "06-pipeline.spec.ts",
-              "line": 383,
-              "column": 7
-            },
-            {
-              "title": "TC-PIPE-010: Verify product focus filter functionality",
-              "ok": true,
-              "tags": [
-                "p0",
-                "critical"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 10,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 2274,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-19T13:53:04.189Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "ff52f4d9fa20c667fbff-ee086410d19f8e8ad596",
-              "file": "06-pipeline.spec.ts",
-              "line": 434,
-              "column": 7
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "title": "integration-workflows.spec.ts",
-      "file": "integration-workflows.spec.ts",
-      "column": 0,
-      "line": 0,
-      "specs": [],
-      "suites": [
-        {
-          "title": "Integration Workflows @p0 @critical @integration",
-          "file": "integration-workflows.spec.ts",
+          "title": "Gear Inventory Page @p1 @gear",
+          "file": "04-gear-inventory.spec.ts",
           "line": 9,
           "column": 6,
           "specs": [
             {
-              "title": "TC-INTEG-001: Event creation to completion workflow",
+              "title": "TC-GEAR-001: Verify gear table displays items with status",
               "ok": true,
               "tags": [
-                "p0",
-                "critical",
-                "integration"
+                "p1",
+                "gear"
               ],
               "tests": [
                 {
@@ -1942,14 +788,134 @@
                   "results": [
                     {
                       "workerIndex": 8,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3141,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T02:24:12.918Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "86369bec4f8681257407-34dc4c084fb6fd03713d",
+              "file": "04-gear-inventory.spec.ts",
+              "line": 20,
+              "column": 7
+            },
+            {
+              "title": "TC-GEAR-002: Verify Category column displays gear categories",
+              "ok": true,
+              "tags": [
+                "p1",
+                "gear"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2820,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T02:24:16.177Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "86369bec4f8681257407-fd963987419a5369aaa7",
+              "file": "04-gear-inventory.spec.ts",
+              "line": 45,
+              "column": 7
+            },
+            {
+              "title": "TC-GEAR-003: Verify search filters gear table",
+              "ok": true,
+              "tags": [
+                "p1",
+                "gear"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "location": {
+                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\04-gear-inventory.spec.ts",
+                        "line": 85,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T02:24:17.824Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "86369bec4f8681257407-30eaee0955b628292cd4",
+              "file": "04-gear-inventory.spec.ts",
+              "line": 85,
+              "column": 8
+            },
+            {
+              "title": "TC-GEAR-004: Verify status filter applies correctly",
+              "ok": true,
+              "tags": [
+                "p1",
+                "gear"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 9,
                       "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 3336,
+                      "duration": 2755,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-19T13:53:06.231Z",
+                      "startTime": "2025-11-20T02:24:18.921Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1957,159 +923,17 @@
                   "status": "expected"
                 }
               ],
-              "id": "082d3ea7e44599e426a2-c4300c53d570f00cdac9",
-              "file": "integration-workflows.spec.ts",
-              "line": 14,
+              "id": "86369bec4f8681257407-efc49a4942262d276954",
+              "file": "04-gear-inventory.spec.ts",
+              "line": 115,
               "column": 7
             },
             {
-              "title": "TC-INTEG-002: Conflict detection and resolution workflow",
+              "title": "TC-GEAR-005: Verify dependency tooltips on hover",
               "ok": true,
               "tags": [
-                "p0",
-                "critical",
-                "integration"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [
-                    {
-                      "type": "skip",
-                      "location": {
-                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\integration-workflows.spec.ts",
-                        "line": 105,
-                        "column": 8
-                      }
-                    }
-                  ],
-                  "expectedStatus": "skipped",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": -1,
-                      "parallelIndex": -1,
-                      "status": "skipped",
-                      "duration": 0,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-19T13:53:06.490Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "skipped"
-                }
-              ],
-              "id": "082d3ea7e44599e426a2-7ea94b696504bbb2a215",
-              "file": "integration-workflows.spec.ts",
-              "line": 105,
-              "column": 8
-            },
-            {
-              "title": "TC-INTEG-003: Kit creation to event assignment workflow",
-              "ok": true,
-              "tags": [
-                "p0",
-                "critical",
-                "integration"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [
-                    {
-                      "type": "skip",
-                      "location": {
-                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\integration-workflows.spec.ts",
-                        "line": 120,
-                        "column": 8
-                      }
-                    }
-                  ],
-                  "expectedStatus": "skipped",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": -1,
-                      "parallelIndex": -1,
-                      "status": "skipped",
-                      "duration": 0,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-19T13:53:06.490Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "skipped"
-                }
-              ],
-              "id": "082d3ea7e44599e426a2-48535040e7469f035e92",
-              "file": "integration-workflows.spec.ts",
-              "line": 120,
-              "column": 8
-            },
-            {
-              "title": "TC-INTEG-004: Pipeline to proposal to event conversion",
-              "ok": true,
-              "tags": [
-                "p0",
-                "critical",
-                "integration"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [
-                    {
-                      "type": "skip",
-                      "location": {
-                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\integration-workflows.spec.ts",
-                        "line": 134,
-                        "column": 8
-                      }
-                    }
-                  ],
-                  "expectedStatus": "skipped",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": -1,
-                      "parallelIndex": -1,
-                      "status": "skipped",
-                      "duration": 0,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-19T13:53:06.490Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "skipped"
-                }
-              ],
-              "id": "082d3ea7e44599e426a2-85bad2a8d1c1f6904234",
-              "file": "integration-workflows.spec.ts",
-              "line": 134,
-              "column": 8
-            },
-            {
-              "title": "TC-INTEG-005: Communication lifecycle workflow",
-              "ok": true,
-              "tags": [
-                "p0",
-                "critical",
-                "integration"
+                "p1",
+                "gear"
               ],
               "tests": [
                 {
@@ -2120,15 +944,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 10,
+                      "workerIndex": 8,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2549,
+                      "duration": 2606,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-19T13:53:06.494Z",
+                      "startTime": "2025-11-20T02:24:19.018Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2136,65 +960,17 @@
                   "status": "expected"
                 }
               ],
-              "id": "082d3ea7e44599e426a2-2bb99530f06cf8ce9f3b",
-              "file": "integration-workflows.spec.ts",
-              "line": 149,
+              "id": "86369bec4f8681257407-14dd0a2b2655891532f9",
+              "file": "04-gear-inventory.spec.ts",
+              "line": 153,
               "column": 7
             },
             {
-              "title": "TC-INTEG-006: Multi-tenant data isolation",
+              "title": "TC-GEAR-006: Verify current event links are clickable",
               "ok": true,
               "tags": [
-                "p0",
-                "critical",
-                "integration"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [
-                    {
-                      "type": "skip",
-                      "location": {
-                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\integration-workflows.spec.ts",
-                        "line": 186,
-                        "column": 8
-                      }
-                    }
-                  ],
-                  "expectedStatus": "skipped",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": -1,
-                      "parallelIndex": -1,
-                      "status": "skipped",
-                      "duration": 0,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-19T13:53:09.075Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "skipped"
-                }
-              ],
-              "id": "082d3ea7e44599e426a2-fb5609890b93832d33fe",
-              "file": "integration-workflows.spec.ts",
-              "line": 186,
-              "column": 8
-            },
-            {
-              "title": "TC-INTEG-007: Dashboard customization persistence",
-              "ok": true,
-              "tags": [
-                "p0",
-                "critical",
-                "integration"
+                "p1",
+                "gear"
               ],
               "tests": [
                 {
@@ -2205,15 +981,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 10,
+                      "workerIndex": 8,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3185,
+                      "duration": 3399,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-19T13:53:09.071Z",
+                      "startTime": "2025-11-20T02:24:21.647Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2221,71 +997,34 @@
                   "status": "expected"
                 }
               ],
-              "id": "082d3ea7e44599e426a2-158f9f873f79a35eb680",
-              "file": "integration-workflows.spec.ts",
-              "line": 202,
+              "id": "86369bec4f8681257407-0c1a5363def823ce310c",
+              "file": "04-gear-inventory.spec.ts",
+              "line": 180,
               "column": 7
-            },
-            {
-              "title": "TC-INTEG-008: Operator availability to assignment workflow",
-              "ok": true,
-              "tags": [
-                "p0",
-                "critical",
-                "integration"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [
-                    {
-                      "type": "skip",
-                      "location": {
-                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\integration-workflows.spec.ts",
-                        "line": 266,
-                        "column": 8
-                      }
-                    }
-                  ],
-                  "expectedStatus": "skipped",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": -1,
-                      "parallelIndex": -1,
-                      "status": "skipped",
-                      "duration": 0,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-19T13:53:09.584Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "skipped"
-                }
-              ],
-              "id": "082d3ea7e44599e426a2-0d31c6575011c36fac74",
-              "file": "integration-workflows.spec.ts",
-              "line": 266,
-              "column": 8
             }
           ]
-        },
+        }
+      ]
+    },
+    {
+      "title": "05-dashboard.spec.ts",
+      "file": "05-dashboard.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
         {
-          "title": "Navigation Tests @smoke",
-          "file": "integration-workflows.spec.ts",
-          "line": 283,
+          "title": "Dashboard Page @p1 @dashboard",
+          "file": "05-dashboard.spec.ts",
+          "line": 9,
           "column": 6,
           "specs": [
             {
-              "title": "Navigate to Dashboard page",
+              "title": "TC-DASH-001: Verify 6 widget types render correctly",
               "ok": true,
               "tags": [
-                "smoke"
+                "p1",
+                "dashboard"
               ],
               "tests": [
                 {
@@ -2296,15 +1035,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 8,
+                      "workerIndex": 9,
                       "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 2732,
+                      "duration": 2723,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-19T13:53:09.584Z",
+                      "startTime": "2025-11-20T02:24:21.879Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2312,370 +1051,398 @@
                   "status": "expected"
                 }
               ],
-              "id": "082d3ea7e44599e426a2-8e8b2596ccbcf2c76266",
-              "file": "integration-workflows.spec.ts",
-              "line": 298,
-              "column": 9
-            },
-            {
-              "title": "Navigate to Planning page",
-              "ok": true,
-              "tags": [
-                "smoke"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 10,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 2896,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-19T13:53:12.277Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "082d3ea7e44599e426a2-afb6619c3270024e99ab",
-              "file": "integration-workflows.spec.ts",
-              "line": 298,
-              "column": 9
-            },
-            {
-              "title": "Navigate to Pipeline page",
-              "ok": true,
-              "tags": [
-                "smoke"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 8,
-                      "parallelIndex": 1,
-                      "status": "passed",
-                      "duration": 2333,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-19T13:53:12.332Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "082d3ea7e44599e426a2-bef2f40698bb2847e18d",
-              "file": "integration-workflows.spec.ts",
-              "line": 298,
-              "column": 9
-            },
-            {
-              "title": "Navigate to Gear Inventory page",
-              "ok": true,
-              "tags": [
-                "smoke"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 8,
-                      "parallelIndex": 1,
-                      "status": "passed",
-                      "duration": 2380,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-19T13:53:14.686Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "082d3ea7e44599e426a2-ab9f7a938bc693bda5a4",
-              "file": "integration-workflows.spec.ts",
-              "line": 298,
-              "column": 9
-            },
-            {
-              "title": "Navigate to Operators page",
-              "ok": true,
-              "tags": [
-                "smoke"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 10,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 2428,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-19T13:53:15.193Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "082d3ea7e44599e426a2-a8dcf585a1c5cf34cdb8",
-              "file": "integration-workflows.spec.ts",
-              "line": 298,
-              "column": 9
-            },
-            {
-              "title": "Navigate to Deliverables page",
-              "ok": true,
-              "tags": [
-                "smoke"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 8,
-                      "parallelIndex": 1,
-                      "status": "passed",
-                      "duration": 2359,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-19T13:53:17.082Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "082d3ea7e44599e426a2-dea968f20be93b6c044e",
-              "file": "integration-workflows.spec.ts",
-              "line": 298,
-              "column": 9
-            },
-            {
-              "title": "Navigate to Communications page",
-              "ok": true,
-              "tags": [
-                "smoke"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 10,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 2382,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-19T13:53:17.644Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "082d3ea7e44599e426a2-a69b3870e1966da6bc98",
-              "file": "integration-workflows.spec.ts",
-              "line": 298,
-              "column": 9
-            },
-            {
-              "title": "Navigate to Files & Assets page",
-              "ok": true,
-              "tags": [
-                "smoke"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 8,
-                      "parallelIndex": 1,
-                      "status": "passed",
-                      "duration": 2291,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-19T13:53:19.457Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "082d3ea7e44599e426a2-60411e0c7c6f07ba9c16",
-              "file": "integration-workflows.spec.ts",
-              "line": 298,
-              "column": 9
-            },
-            {
-              "title": "Navigate to Reports page",
-              "ok": true,
-              "tags": [
-                "smoke"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 10,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 2344,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-19T13:53:20.044Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "082d3ea7e44599e426a2-13c696154150e87eea61",
-              "file": "integration-workflows.spec.ts",
-              "line": 298,
-              "column": 9
-            },
-            {
-              "title": "Navigate to Settings page",
-              "ok": true,
-              "tags": [
-                "smoke"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 8,
-                      "parallelIndex": 1,
-                      "status": "passed",
-                      "duration": 2512,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-19T13:53:21.764Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "082d3ea7e44599e426a2-a33433d4e48e35ff6613",
-              "file": "integration-workflows.spec.ts",
-              "line": 298,
-              "column": 9
-            },
-            {
-              "title": "Verify all navigation links functional",
-              "ok": true,
-              "tags": [
-                "smoke"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 10,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 3040,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-19T13:53:22.404Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "082d3ea7e44599e426a2-88c49c8f9aa67e994e6a",
-              "file": "integration-workflows.spec.ts",
-              "line": 314,
+              "id": "15664880665903ff2434-d846422c9b7434bdde49",
+              "file": "05-dashboard.spec.ts",
+              "line": 20,
               "column": 7
+            },
+            {
+              "title": "TC-DASH-002: Verify Event Pipeline widget displays",
+              "ok": true,
+              "tags": [
+                "p1",
+                "dashboard"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 9,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3866,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T02:24:24.626Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "15664880665903ff2434-310f1afa8134fe6b32c4",
+              "file": "05-dashboard.spec.ts",
+              "line": 61,
+              "column": 7
+            },
+            {
+              "title": "TC-DASH-003: Verify Revenue Overview widget exists",
+              "ok": true,
+              "tags": [
+                "p1",
+                "dashboard"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3291,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T02:24:25.074Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "15664880665903ff2434-7d892ff070235424e803",
+              "file": "05-dashboard.spec.ts",
+              "line": 75,
+              "column": 7
+            },
+            {
+              "title": "TC-DASH-004: Verify Customize Dashboard button opens modal",
+              "ok": false,
+              "tags": [
+                "p1",
+                "dashboard"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 5960,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[role=\"dialog\"], .modal, [data-testid=\"customization-modal\"]').first()\nExpected: visible\nTimeout: 3000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 3000ms\u001b[22m\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal, [data-testid=\"customization-modal\"]').first()\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[role=\"dialog\"], .modal, [data-testid=\"customization-modal\"]').first()\nExpected: visible\nTimeout: 3000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 3000ms\u001b[22m\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal, [data-testid=\"customization-modal\"]').first()\u001b[22m\n\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\05-dashboard.spec.ts:99:25",
+                        "location": {
+                          "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\05-dashboard.spec.ts",
+                          "column": 25,
+                          "line": 99
+                        },
+                        "snippet": "\u001b[0m \u001b[90m  97 |\u001b[39m     \u001b[90m// Verify modal opens\u001b[39m\n \u001b[90m  98 |\u001b[39m     \u001b[36mconst\u001b[39m modal \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[role=\"dialog\"], .modal, [data-testid=\"customization-modal\"]'\u001b[39m)\u001b[33m.\u001b[39mfirst()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m  99 |\u001b[39m     \u001b[36mawait\u001b[39m expect(modal)\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m3000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 100 |\u001b[39m\n \u001b[90m 101 |\u001b[39m     \u001b[90m// Verify checkboxes are present\u001b[39m\n \u001b[90m 102 |\u001b[39m     \u001b[36mconst\u001b[39m checkboxes \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'input[type=\"checkbox\"]'\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\05-dashboard.spec.ts",
+                            "column": 25,
+                            "line": 99
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[role=\"dialog\"], .modal, [data-testid=\"customization-modal\"]').first()\nExpected: visible\nTimeout: 3000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 3000ms\u001b[22m\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal, [data-testid=\"customization-modal\"]').first()\u001b[22m\n\n\n   97 |     // Verify modal opens\n   98 |     const modal = page.locator('[role=\"dialog\"], .modal, [data-testid=\"customization-modal\"]').first();\n>  99 |     await expect(modal).toBeVisible({ timeout: 3000 });\n      |                         ^\n  100 |\n  101 |     // Verify checkboxes are present\n  102 |     const checkboxes = page.locator('input[type=\"checkbox\"]');\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\05-dashboard.spec.ts:99:25"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T02:24:28.387Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\05-dashboard-Dashboard-Pag-fbaa1-ashboard-button-opens-modal-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\05-dashboard-Dashboard-Pag-fbaa1-ashboard-button-opens-modal-chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\05-dashboard-Dashboard-Pag-fbaa1-ashboard-button-opens-modal-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\05-dashboard.spec.ts",
+                        "column": 25,
+                        "line": 99
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "15664880665903ff2434-cdf96f879f6d135800e2",
+              "file": "05-dashboard.spec.ts",
+              "line": 89,
+              "column": 7
+            },
+            {
+              "title": "TC-DASH-005: Verify widget customization modal displays checkboxes with descriptions",
+              "ok": false,
+              "tags": [
+                "p1",
+                "dashboard"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 9,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 9184,
+                      "error": {
+                        "message": "TimeoutError: page.waitForSelector: Timeout 3000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal, [data-testid=\"customization-modal\"]') to be visible\u001b[22m\n",
+                        "stack": "TimeoutError: page.waitForSelector: Timeout 3000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal, [data-testid=\"customization-modal\"]') to be visible\u001b[22m\n\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\05-dashboard.spec.ts:118:16",
+                        "location": {
+                          "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\05-dashboard.spec.ts",
+                          "column": 16,
+                          "line": 118
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 116 |\u001b[39m\n \u001b[90m 117 |\u001b[39m     \u001b[90m// Wait for modal\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 118 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForSelector(\u001b[32m'[role=\"dialog\"], .modal, [data-testid=\"customization-modal\"]'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m3000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 119 |\u001b[39m\n \u001b[90m 120 |\u001b[39m     \u001b[90m// Verify checkboxes exist\u001b[39m\n \u001b[90m 121 |\u001b[39m     \u001b[36mconst\u001b[39m checkboxes \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'input[type=\"checkbox\"]'\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\05-dashboard.spec.ts",
+                            "column": 16,
+                            "line": 118
+                          },
+                          "message": "TimeoutError: page.waitForSelector: Timeout 3000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal, [data-testid=\"customization-modal\"]') to be visible\u001b[22m\n\n\n  116 |\n  117 |     // Wait for modal\n> 118 |     await page.waitForSelector('[role=\"dialog\"], .modal, [data-testid=\"customization-modal\"]', { timeout: 3000 });\n      |                ^\n  119 |\n  120 |     // Verify checkboxes exist\n  121 |     const checkboxes = page.locator('input[type=\"checkbox\"]');\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\05-dashboard.spec.ts:118:16"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T02:24:28.527Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\05-dashboard-Dashboard-Pag-c044b-heckboxes-with-descriptions-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\05-dashboard-Dashboard-Pag-c044b-heckboxes-with-descriptions-chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\05-dashboard-Dashboard-Pag-c044b-heckboxes-with-descriptions-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\05-dashboard.spec.ts",
+                        "column": 16,
+                        "line": 118
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "15664880665903ff2434-3063021340e5efc5e12d",
+              "file": "05-dashboard.spec.ts",
+              "line": 110,
+              "column": 7
+            },
+            {
+              "title": "TC-DASH-006: Verify widget containers exist",
+              "ok": true,
+              "tags": [
+                "p1",
+                "dashboard"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 10,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2799,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T02:24:35.480Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "15664880665903ff2434-f432117d547c4435b065",
+              "file": "05-dashboard.spec.ts",
+              "line": 141,
+              "column": 7
+            },
+            {
+              "title": "TC-DASH-007: Verify modular grid layout with different widget sizes",
+              "ok": false,
+              "tags": [
+                "p1",
+                "dashboard"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 11,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 2885,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m3\u001b[39m\nReceived:    \u001b[31m0\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m3\u001b[39m\nReceived:    \u001b[31m0\u001b[39m\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\05-dashboard.spec.ts:172:25",
+                        "location": {
+                          "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\05-dashboard.spec.ts",
+                          "column": 25,
+                          "line": 172
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 170 |\u001b[39m     \u001b[36mconst\u001b[39m widgetCount \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid^=\"widget-\"], .widget, .dashboard-widget'\u001b[39m)\u001b[33m.\u001b[39mcount()\u001b[33m;\u001b[39m\n \u001b[90m 171 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 172 |\u001b[39m     expect(widgetCount)\u001b[33m.\u001b[39mtoBeGreaterThanOrEqual(\u001b[35m3\u001b[39m)\u001b[33m;\u001b[39m \u001b[90m// At least 3 widgets visible\u001b[39m\n \u001b[90m     |\u001b[39m                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 173 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 174 |\u001b[39m\n \u001b[90m 175 |\u001b[39m   \u001b[90m/**\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\05-dashboard.spec.ts",
+                            "column": 25,
+                            "line": 172
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m3\u001b[39m\nReceived:    \u001b[31m0\u001b[39m\n\n  170 |     const widgetCount = await page.locator('[data-testid^=\"widget-\"], .widget, .dashboard-widget').count();\n  171 |\n> 172 |     expect(widgetCount).toBeGreaterThanOrEqual(3); // At least 3 widgets visible\n      |                         ^\n  173 |   });\n  174 |\n  175 |   /**\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\05-dashboard.spec.ts:172:25"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T02:24:38.847Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\05-dashboard-Dashboard-Pag-75674-with-different-widget-sizes-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\05-dashboard-Dashboard-Pag-75674-with-different-widget-sizes-chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\05-dashboard-Dashboard-Pag-75674-with-different-widget-sizes-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\05-dashboard.spec.ts",
+                        "column": 25,
+                        "line": 172
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "15664880665903ff2434-13297a6abfcf18cc9189",
+              "file": "05-dashboard.spec.ts",
+              "line": 161,
+              "column": 7
+            },
+            {
+              "title": "TC-DASH-008: Verify drag-and-drop widget reordering",
+              "ok": true,
+              "tags": [
+                "p1",
+                "dashboard"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "location": {
+                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\05-dashboard.spec.ts",
+                        "line": 178,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T02:24:38.443Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "15664880665903ff2434-95a365407e1e972f1bb6",
+              "file": "05-dashboard.spec.ts",
+              "line": 178,
+              "column": 8
             }
           ]
         }
@@ -2684,11 +1451,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-11-19T13:51:54.174Z",
-    "duration": 91428.872,
-    "expected": 26,
-    "skipped": 16,
-    "unexpected": 9,
+    "startTime": "2025-11-20T02:23:17.731Z",
+    "duration": 84308.784,
+    "expected": 9,
+    "skipped": 2,
+    "unexpected": 11,
     "flaky": 0
   }
 }

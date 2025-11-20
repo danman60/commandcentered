@@ -573,7 +573,7 @@ export default function GearPage() {
       {/* Create Kit Modal */}
       {showCreateKitModal && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
-          <div className="bg-slate-900 border-2 border-purple-500/30 rounded-xl w-[700px] max-h-[90vh] overflow-y-auto shadow-2xl">
+          <div role="dialog" data-testid="kit-modal" className="bg-slate-900 border-2 border-purple-500/30 rounded-xl w-[700px] max-h-[90vh] overflow-y-auto shadow-2xl">
             <div className="px-6 py-4 border-b border-purple-500/20 flex justify-between items-center">
               <h2 className="text-xl font-bold text-white">Create New Kit</h2>
               <button

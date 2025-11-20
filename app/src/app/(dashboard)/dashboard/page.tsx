@@ -135,6 +135,7 @@ export default function DashboardPage() {
               variant="secondary"
               size="medium"
               onClick={() => setIsCustomizeOpen(true)}
+              data-testid="customize-dashboard"
             >
               <Settings className="w-4 h-4" />
               Customize
@@ -158,7 +159,7 @@ export default function DashboardPage() {
       >
         {/* Widget 1: Overview Stats */}
         {getWidgetVisibility('overview_stats') && (
-          <div key="overview_stats" className="overflow-hidden">
+          <div key="overview_stats" data-testid="widget-overview-stats" className="overflow-hidden">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 h-full">
               <Card padding="medium" hover="glow" className="overflow-hidden">
                 <div className="flex items-center justify-between">
@@ -221,7 +222,7 @@ export default function DashboardPage() {
 
         {/* Widget 2: Event Pipeline */}
         {getWidgetVisibility('event_pipeline') && (
-          <div key="event_pipeline" className="overflow-hidden h-full">
+          <div key="event_pipeline" data-testid="widget-event-pipeline" className="overflow-hidden h-full">
             <Card padding="large" hover="glow" className="h-full overflow-hidden">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-white">Event Pipeline</h3>
@@ -245,7 +246,7 @@ export default function DashboardPage() {
 
         {/* Widget 3: Revenue Stats */}
         {getWidgetVisibility('revenue_stats') && (
-          <div key="revenue_stats">
+          <div key="revenue_stats" data-testid="widget-revenue-stats">
             <Card padding="large" hover="glow" className="h-full">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-white">Revenue Overview</h3>
@@ -305,7 +306,7 @@ export default function DashboardPage() {
 
         {/* Widget 4: Upcoming Events */}
         {getWidgetVisibility('upcoming_events') && (
-          <div key="upcoming_events">
+          <div key="upcoming_events" data-testid="widget-upcoming-events">
             <Card padding="large" hover="glow" className="h-full">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-white">Upcoming Events</h3>
@@ -346,7 +347,7 @@ export default function DashboardPage() {
 
         {/* Widget 5: Critical Alerts */}
         {getWidgetVisibility('critical_alerts') && (
-          <div key="critical_alerts">
+          <div key="critical_alerts" data-testid="widget-critical-alerts">
             <Card padding="large" hover="glow" className="h-full">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-white">Critical Alerts</h3>
@@ -387,7 +388,7 @@ export default function DashboardPage() {
 
         {/* Widget 6: Recent Activity */}
         {getWidgetVisibility('recent_activity') && (
-          <div key="recent_activity">
+          <div key="recent_activity" data-testid="widget-recent-activity">
             <Card padding="large" hover="glow" className="h-full">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-white">Recent Activity</h3>
@@ -435,6 +436,7 @@ export default function DashboardPage() {
           title="Customize Dashboard"
           isOpen={isCustomizeOpen}
           onClose={() => setIsCustomizeOpen(false)}
+          data-testid="customization-modal"
         >
           <div className="space-y-4">
             <p className="text-gray-400 text-sm">
