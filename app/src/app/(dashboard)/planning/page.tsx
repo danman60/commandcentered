@@ -763,6 +763,77 @@ function EventDetailModal({ eventId, isOpen, onClose }: { eventId: string; isOpe
             )}
           </div>
 
+          {/* Hotel Details */}
+          {event.hasHotel && (
+            <div className="bg-slate-800/50 border border-slate-700/50 rounded-lg p-4">
+              <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
+                <span className="text-xl">🏨</span>
+                Hotel Information
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {event.hotelName && (
+                  <div>
+                    <div className="text-sm font-semibold text-slate-400 mb-1">Hotel Name</div>
+                    <div className="text-white">{event.hotelName}</div>
+                  </div>
+                )}
+                {event.hotelAddress && (
+                  <div>
+                    <div className="text-sm font-semibold text-slate-400 mb-1">Address</div>
+                    <div className="text-white">{event.hotelAddress}</div>
+                  </div>
+                )}
+                {event.hotelCheckInDate && (
+                  <div>
+                    <div className="text-sm font-semibold text-slate-400 mb-1">Check-in</div>
+                    <div className="text-green-400">{new Date(event.hotelCheckInDate).toLocaleString()}</div>
+                  </div>
+                )}
+                {event.hotelCheckOutDate && (
+                  <div>
+                    <div className="text-sm font-semibold text-slate-400 mb-1">Check-out</div>
+                    <div className="text-orange-400">{new Date(event.hotelCheckOutDate).toLocaleString()}</div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Parking & Logistics */}
+          {event.parkingInstructions && (
+            <div className="bg-slate-800/50 border border-slate-700/50 rounded-lg p-4">
+              <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
+                <span className="text-xl">🚗</span>
+                Parking Instructions
+              </h3>
+              <div className="text-slate-300 text-sm leading-relaxed">{event.parkingInstructions}</div>
+            </div>
+          )}
+
+          {/* Cancellation Info */}
+          {(event.cancellationReason || event.cancellationPenalty) && (
+            <div className="bg-red-900/20 border border-red-800/30 rounded-lg p-4">
+              <h3 className="text-lg font-semibold text-red-400 mb-3 flex items-center gap-2">
+                <span className="text-xl">⚠️</span>
+                Cancellation Information
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {event.cancellationReason && (
+                  <div>
+                    <div className="text-sm font-semibold text-slate-400 mb-1">Reason</div>
+                    <div className="text-white">{event.cancellationReason}</div>
+                  </div>
+                )}
+                {event.cancellationPenalty && (
+                  <div>
+                    <div className="text-sm font-semibold text-slate-400 mb-1">Penalty</div>
+                    <div className="text-red-400 font-bold">${Number(event.cancellationPenalty).toFixed(2)}</div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
           {/* Shift Builder */}
           <div>
             <div className="flex justify-between items-center mb-4">

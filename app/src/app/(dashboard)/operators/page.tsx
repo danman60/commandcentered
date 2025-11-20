@@ -71,6 +71,10 @@ export default function OperatorsPage() {
       availability: op.availability || [],
       bio: op.bio || null,
       portfolioUrl: op.portfolioUrl || null,
+      hasVehicle: op.hasVehicle || false,
+      vehicleDescription: op.vehicleDescription || null,
+      homeAddress: op.homeAddress || null,
+      acceptsFlatRate: op.acceptsFlatRate || false,
     };
   }) || [];
 
@@ -699,6 +703,43 @@ export default function OperatorsPage() {
                     )}
                   </div>
                 </div>
+
+                {/* Travel & Logistics */}
+                {(operator.hasVehicle || operator.vehicleDescription || operator.homeAddress || operator.acceptsFlatRate) && (
+                  <div>
+                    <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
+                      <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+                      Travel & Logistics
+                    </h3>
+                    <div className="space-y-3">
+                      {operator.hasVehicle && (
+                        <div className="bg-slate-900/50 border border-slate-700/50 rounded-lg p-4">
+                          <div className="flex items-center gap-2 text-green-400 mb-2">
+                            <span className="text-xl">🚗</span>
+                            <span className="font-semibold">Has Vehicle</span>
+                          </div>
+                          {operator.vehicleDescription && (
+                            <p className="text-sm text-slate-300">{operator.vehicleDescription}</p>
+                          )}
+                        </div>
+                      )}
+                      {operator.homeAddress && (
+                        <div className="bg-slate-900/50 border border-slate-700/50 rounded-lg p-4">
+                          <div className="text-xs text-slate-400 mb-1">Home Base</div>
+                          <div className="text-white text-sm">{operator.homeAddress}</div>
+                        </div>
+                      )}
+                      {operator.acceptsFlatRate && (
+                        <div className="bg-slate-900/50 border border-slate-700/50 rounded-lg p-4">
+                          <div className="flex items-center gap-2 text-lime-400">
+                            <span className="text-xl">💵</span>
+                            <span className="font-semibold">Accepts Flat Rate</span>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
 
                 {/* Performance Metrics */}
                 <div>
