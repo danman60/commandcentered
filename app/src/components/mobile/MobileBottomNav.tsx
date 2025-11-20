@@ -60,7 +60,7 @@ export function MobileBottomNav() {
   ];
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-lg border-t border-green-500/20 z-50 md:hidden">
+    <div className="fixed bottom-0 left-0 right-0 tactical-glass border-t tactical-border z-50 md:hidden">
       <div className="flex items-center justify-around px-2 py-2 safe-area-inset-bottom">
         {navItems.map((item) => {
           const isActive = pathname === item.path;
@@ -72,11 +72,15 @@ export function MobileBottomNav() {
               onClick={() => router.push(item.path)}
               className={`flex flex-col items-center justify-center min-w-[60px] py-2 px-3 rounded-lg transition-all ${
                 isActive
-                  ? `bg-green-500/20 ${item.activeColor}`
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+                  ? `tactical-button-primary text-white`
+                  : 'text-slate-400 hover:text-green-400 hover:bg-green-500/10 tactical-button'
               }`}
+              style={isActive ? { boxShadow: '0 0 20px rgba(16, 185, 129, 0.4), 0 0 40px rgba(16, 185, 129, 0.2)' } : {}}
             >
-              <Icon className={`w-5 h-5 mb-1 ${isActive ? item.activeColor : ''}`} />
+              <Icon
+                className={`w-5 h-5 mb-1`}
+                style={isActive ? { filter: 'drop-shadow(0 0 4px rgba(255, 255, 255, 0.6))' } : {}}
+              />
               <span className="text-xs font-medium truncate w-full text-center">
                 {item.name}
               </span>

@@ -87,15 +87,15 @@ export function RevenueSummaryCards({ leads }: RevenueSummaryCardsProps) {
         return (
           <div
             key={card.label}
-            className={`${card.bgColor} border ${card.borderColor} rounded-lg p-4 transition-all hover:scale-105`}
+            className="tactical-card rounded-lg p-4 transition-all hover:scale-105 group"
           >
             <div className="flex items-center justify-between mb-2">
-              <div className={`p-2 rounded-lg bg-gradient-to-br ${card.color}`}>
-                <Icon className="w-5 h-5 text-white" />
+              <div className={`p-2 rounded-lg bg-gradient-to-br ${card.color} tactical-glow-intense group-hover:scale-110 transition-transform`}>
+                <Icon className="w-5 h-5 text-white" style={{ filter: 'drop-shadow(0 0 4px rgba(255, 255, 255, 0.8))' }} />
               </div>
             </div>
-            <div className="text-2xl font-bold text-white mb-1">{card.value}</div>
-            <div className="text-sm text-gray-400">{card.label}</div>
+            <div className="text-2xl font-bold tactical-text-glow mb-1">{card.value}</div>
+            <div className="text-sm text-slate-300">{card.label}</div>
           </div>
         );
       })}

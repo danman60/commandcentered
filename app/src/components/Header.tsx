@@ -38,15 +38,16 @@ export function Header({ title, subtitle }: HeaderProps) {
   }, [isMenuOpen])
 
   return (
-    <header className="bg-gradient-to-r from-[rgba(6,182,212,0.15)] to-[rgba(168,85,247,0.15)] border-b border-[rgba(6,182,212,0.3)] px-8 py-6">
-      <div className="flex items-center justify-between">
+    <header className="tactical-glass border-b tactical-border px-8 py-6 relative overflow-hidden">
+      <div className="tactical-scanline absolute inset-0 pointer-events-none opacity-30" />
+      <div className="flex items-center justify-between relative z-10">
         {/* Left side - Page title */}
         <div className="flex items-center gap-4">
-          <h1 className="text-[28px] font-bold bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent leading-tight">
+          <h1 className="text-[28px] font-bold tactical-heading">
             {title}
           </h1>
           {subtitle && (
-            <p className="text-sm text-slate-400 ml-4">
+            <p className="text-sm text-slate-300 ml-4">
               {subtitle}
             </p>
           )}
@@ -57,14 +58,14 @@ export function Header({ title, subtitle }: HeaderProps) {
           {/* Global Search Bar */}
           <div className="relative">
             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-              <Search className="w-4 h-4 text-slate-400" />
+              <Search className="w-4 h-4 text-green-400" style={{ filter: 'drop-shadow(0 0 4px rgba(16, 185, 129, 0.6))' }} />
             </div>
             <input
               type="text"
               placeholder="Search events, operators, gear..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-80 pl-10 pr-4 py-2.5 bg-[rgba(71,85,105,0.3)] border border-[rgba(71,85,105,0.5)] rounded-lg text-sm text-slate-300 placeholder-slate-500 focus:outline-none focus:border-green-400 focus:ring-1 focus:ring-green-400 transition-colors"
+              className="w-80 pl-10 pr-4 py-2.5 tactical-glass border tactical-border rounded-lg text-sm text-slate-200 placeholder-slate-400 focus:outline-none focus:tactical-border-intense transition-all"
             />
           </div>
 
@@ -73,11 +74,11 @@ export function Header({ title, subtitle }: HeaderProps) {
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className={cn(
-                "flex items-center gap-2 px-4 py-2.5 bg-[rgba(71,85,105,0.3)] border border-[rgba(71,85,105,0.5)] rounded-lg text-sm font-medium text-slate-300 hover:bg-[rgba(71,85,105,0.5)] transition-all",
-                isMenuOpen && "bg-[rgba(71,85,105,0.5)]"
+                "tactical-button flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-200 transition-all",
+                isMenuOpen && "tactical-border-intense"
               )}
             >
-              <User className="w-4 h-4" />
+              <User className="w-4 h-4" style={{ filter: 'drop-shadow(0 0 4px rgba(16, 185, 129, 0.6))' }} />
               <span>Account</span>
               <ChevronDown className={cn(
                 "w-4 h-4 transition-transform",
@@ -87,25 +88,25 @@ export function Header({ title, subtitle }: HeaderProps) {
 
             {/* Dropdown Menu */}
             {isMenuOpen && (
-              <div className="absolute right-0 mt-2 w-56 bg-slate-800 border border-slate-600 rounded-lg shadow-lg overflow-hidden z-50">
+              <div className="absolute right-0 mt-2 w-56 tactical-card rounded-lg overflow-hidden z-50 animate-slide-up">
                 <div className="py-1">
                   <button
                     onClick={() => {
                       setIsMenuOpen(false)
                       router.push('/dashboard/settings')
                     }}
-                    className="flex items-center gap-3 w-full px-4 py-3 text-sm text-slate-300 hover:bg-slate-700 transition-colors"
+                    className="flex items-center gap-3 w-full px-4 py-3 text-sm text-slate-200 hover:bg-green-500/10 hover:text-green-400 transition-colors"
                   >
                     <Settings className="w-4 h-4" />
                     <span>Settings</span>
                   </button>
-                  <div className="border-t border-slate-700"></div>
+                  <div className="border-t border-green-500/20"></div>
                   <button
                     onClick={() => {
                       setIsMenuOpen(false)
                       handleLogout()
                     }}
-                    className="flex items-center gap-3 w-full px-4 py-3 text-sm text-red-400 hover:bg-slate-700 transition-colors"
+                    className="flex items-center gap-3 w-full px-4 py-3 text-sm text-red-400 hover:bg-red-500/10 transition-colors"
                   >
                     <LogOut className="w-4 h-4" />
                     <span>Logout</span>

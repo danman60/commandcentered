@@ -76,19 +76,20 @@
   --radius-xl: 16px;
   --radius-full: 9999px;
 
-  /* Shadows */
-  --shadow-button: 0 4px 12px rgba(6, 182, 212, 0.3);
-  --shadow-button-hover: 0 6px 16px rgba(6, 182, 212, 0.4);
-  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.3);
-  --shadow-card-hover: 0 4px 16px rgba(6, 182, 212, 0.15);
-  --shadow-sidebar: 4px 0 32px rgba(6, 182, 212, 0.15);
-  --shadow-modal: 0 20px 60px rgba(0, 0, 0, 0.5);
+  /* Shadows - Tactical Enhanced */
+  --shadow-button: 0 4px 20px rgba(16, 185, 129, 0.4), 0 0 30px rgba(16, 185, 129, 0.2);
+  --shadow-button-hover: 0 6px 28px rgba(16, 185, 129, 0.6), 0 0 40px rgba(16, 185, 129, 0.3);
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.4), 0 0 20px rgba(16, 185, 129, 0.1);
+  --shadow-card-hover: 0 4px 24px rgba(16, 185, 129, 0.3), 0 0 40px rgba(16, 185, 129, 0.15);
+  --shadow-sidebar: 4px 0 32px rgba(16, 185, 129, 0.2);
+  --shadow-modal: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 100px rgba(16, 185, 129, 0.2);
 
-  /* Text Shadows (Glow Effects) - Tactical Green */
-  --glow-active: 0 0 12px rgba(16, 185, 129, 0.6), 0 0 24px rgba(16, 185, 129, 0.15);
-  --glow-hover: 0 0 10px rgba(16, 185, 129, 0.45);
-  --glow-text: 0 0 8px rgba(52, 211, 153, 0.5);
-  --glow-border: 0 0 8px rgba(16, 185, 129, 0.4);
+  /* Text Shadows (Glow Effects) - Tactical Green ENHANCED */
+  --glow-active: 0 0 20px rgba(16, 185, 129, 0.8), 0 0 40px rgba(16, 185, 129, 0.4), 0 0 60px rgba(16, 185, 129, 0.2);
+  --glow-hover: 0 0 15px rgba(16, 185, 129, 0.6), 0 0 30px rgba(16, 185, 129, 0.3);
+  --glow-text: 0 0 12px rgba(52, 211, 153, 0.7), 0 0 24px rgba(52, 211, 153, 0.3);
+  --glow-border: 0 0 15px rgba(16, 185, 129, 0.6), 0 0 30px rgba(16, 185, 129, 0.3);
+  --glow-intense: 0 0 25px rgba(16, 185, 129, 0.9), 0 0 50px rgba(16, 185, 129, 0.5), 0 0 75px rgba(16, 185, 129, 0.3);
 
   /* Backdrop Effects */
   --backdrop-blur: blur(10px);
@@ -166,10 +167,27 @@
 }
 
 body {
-  background: linear-gradient(135deg, var(--slate-800) 0%, var(--slate-700) 100%);
+  background: radial-gradient(ellipse at top, rgba(16, 185, 129, 0.08) 0%, transparent 50%),
+              radial-gradient(ellipse at bottom, rgba(16, 185, 129, 0.05) 0%, transparent 50%),
+              linear-gradient(135deg, #0a0f1a 0%, #0f172a 50%, #0a0f1a 100%);
   color: var(--slate-300);
   font-family: var(--font-sans);
   min-height: 100vh;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    linear-gradient(90deg, transparent 0%, rgba(16, 185, 129, 0.03) 50%, transparent 100%),
+    repeating-linear-gradient(0deg, transparent 0px, rgba(16, 185, 129, 0.02) 1px, transparent 2px, transparent 4px);
+  pointer-events: none;
+  z-index: 0;
 }
 
 /* Scrollbar Styling */
@@ -228,4 +246,162 @@ body {
     min-height: 44px;
     min-width: 44px;
   }
+}
+
+/* Tactical UI Utility Classes */
+.tactical-glow {
+  box-shadow: var(--glow-active);
+  text-shadow: var(--glow-text);
+}
+
+.tactical-glow-hover:hover {
+  box-shadow: var(--glow-hover);
+  text-shadow: var(--glow-text);
+}
+
+.tactical-glow-intense {
+  box-shadow: var(--glow-intense);
+  text-shadow: var(--glow-text);
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.tactical-border {
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.2), inset 0 0 15px rgba(16, 185, 129, 0.05);
+}
+
+.tactical-border-intense {
+  border: 1px solid rgba(16, 185, 129, 0.6);
+  box-shadow: 0 0 25px rgba(16, 185, 129, 0.4), inset 0 0 20px rgba(16, 185, 129, 0.1);
+}
+
+.tactical-glass {
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4), 0 0 20px rgba(16, 185, 129, 0.1);
+}
+
+.tactical-card {
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(16, 185, 129, 0.15);
+  transition: all 0.3s ease;
+}
+
+.tactical-card:hover {
+  border-color: rgba(16, 185, 129, 0.5);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 30px rgba(16, 185, 129, 0.3);
+  transform: translateY(-2px);
+}
+
+.tactical-button {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(16, 185, 129, 0.1) 100%);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3), 0 0 30px rgba(16, 185, 129, 0.15);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.tactical-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent 0%, rgba(16, 185, 129, 0.3) 50%, transparent 100%);
+  transition: left 0.5s ease;
+}
+
+.tactical-button:hover::before {
+  left: 100%;
+}
+
+.tactical-button:hover {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.3) 0%, rgba(16, 185, 129, 0.2) 100%);
+  border-color: rgba(16, 185, 129, 0.6);
+  box-shadow: 0 6px 28px rgba(16, 185, 129, 0.5), 0 0 40px rgba(16, 185, 129, 0.25);
+  transform: translateY(-2px);
+}
+
+.tactical-button-primary {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  border: 1px solid rgba(16, 185, 129, 0.6);
+  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4), 0 0 30px rgba(16, 185, 129, 0.2);
+  color: #fff;
+  font-weight: 600;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease;
+}
+
+.tactical-button-primary:hover {
+  background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+  box-shadow: 0 6px 28px rgba(16, 185, 129, 0.6), 0 0 40px rgba(16, 185, 129, 0.3);
+  transform: translateY(-2px) scale(1.02);
+}
+
+.tactical-grid-overlay {
+  position: relative;
+}
+
+.tactical-grid-overlay::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image:
+    linear-gradient(rgba(16, 185, 129, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(16, 185, 129, 0.03) 1px, transparent 1px);
+  background-size: 20px 20px;
+  pointer-events: none;
+}
+
+.tactical-scanline {
+  position: relative;
+  overflow: hidden;
+}
+
+.tactical-scanline::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, rgba(16, 185, 129, 0.6) 50%, transparent 100%);
+  animation: scan 3s linear infinite;
+}
+
+@keyframes scan {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(2000%);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.6), 0 0 40px rgba(16, 185, 129, 0.3), 0 0 60px rgba(16, 185, 129, 0.15);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(16, 185, 129, 0.8), 0 0 60px rgba(16, 185, 129, 0.4), 0 0 90px rgba(16, 185, 129, 0.2);
+  }
+}
+
+.tactical-text-glow {
+  color: #34d399;
+  text-shadow: 0 0 10px rgba(52, 211, 153, 0.6), 0 0 20px rgba(52, 211, 153, 0.3);
+}
+
+.tactical-heading {
+  color: #34d399;
+  text-shadow: 0 0 15px rgba(52, 211, 153, 0.7), 0 0 30px rgba(52, 211, 153, 0.3);
+  font-weight: 700;
+  letter-spacing: 0.5px;
 }
