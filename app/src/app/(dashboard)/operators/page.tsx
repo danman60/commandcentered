@@ -16,7 +16,7 @@ interface OperatorFormData {
 }
 
 export default function OperatorsPage() {
-  const [activeView, setActiveView] = useState<ViewMode>('calendar');
+  const [activeView, setActiveView] = useState<ViewMode>('card');
   const [searchQuery, setSearchQuery] = useState('');
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showDetailModal, setShowDetailModal] = useState(false);

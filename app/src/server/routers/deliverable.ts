@@ -95,6 +95,7 @@ export const deliverableRouter = router({
         assignedEditorId: z.string().uuid().optional().nullable(),
         priority: z.enum(['LOW', 'NORMAL', 'HIGH', 'URGENT', 'CRITICAL']).optional(),
         notes: z.string().optional().nullable(),
+        completionPercentage: z.number().min(0).max(100).optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {

@@ -126,6 +126,9 @@ export default function DeliverablesPage() {
                 <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300 cursor-pointer hover:text-green-400">
                   Status ⇅
                 </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300 cursor-pointer hover:text-green-400">
+                  Completion % ⇅
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -189,12 +192,18 @@ export default function DeliverablesPage() {
                       {deliverable.status?.replace('_', ' ')}
                     </span>
                   </td>
+                  <td className="px-6 py-4" onClick={(e) => e.stopPropagation()}>
+                    <CompletionSlider
+                      deliverableId={deliverable.id}
+                      initialValue={deliverable.completionPercentage || 0}
+                    />
+                  </td>
                 </tr>
               ))}
 
               {!deliverables || deliverables.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="px-6 py-12 text-center text-slate-500">
+                  <td colSpan={7} className="px-6 py-12 text-center text-slate-500">
                     No deliverables found. Create one to get started.
                   </td>
                 </tr>
@@ -370,6 +379,51 @@ function NewDeliverableModal({ isOpen, onClose }: { isOpen: boolean; onClose: ()
           </div>
         </form>
       </div>
+    </div>
+  );
+}
+
+// Completion Slider Component
+function CompletionSlider({ deliverableId, initialValue }: { deliverableId: string; initialValue: number }) {
+  const [value, setValue] = useState(initialValue);
+  const updateDeliverable = trpc.deliverable.update.useMutation();
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = parseInt(e.target.value);
+    setValue(newValue);
+
+    // Update database with debounced call
+    updateDeliverable.mutate({
+      id: deliverableId,
+      completionPercentage: newValue,
+    });
+  };
+
+  const getProgressColor = (percentage: number) => {
+    if (percentage === 100) return 'text-green-400';
+    if (percentage >= 75) return 'text-lime-400';
+    if (percentage >= 50) return 'text-yellow-400';
+    if (percentage >= 25) return 'text-orange-400';
+    return 'text-red-400';
+  };
+
+  return (
+    <div className="flex items-center gap-3 min-w-[180px]">
+      <input
+        type="range"
+        min="0"
+        max="100"
+        step="5"
+        value={value}
+        onChange={handleChange}
+        className="flex-1 h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-green-500"
+        style={{
+          background: `linear-gradient(to right, rgb(34, 197, 94) 0%, rgb(34, 197, 94) ${value}%, rgb(51, 65, 85) ${value}%, rgb(51, 65, 85) 100%)`
+        }}
+      />
+      <span className={`text-sm font-bold min-w-[45px] text-right ${getProgressColor(value)}`}>
+        {value}%
+      </span>
     </div>
   );
 }

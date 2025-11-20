@@ -903,9 +903,10 @@ model Deliverable {
   completedAssets  Int               @default(0) @map("completed_assets")
   assignedEditorId String?           @map("assigned_editor_id") @db.Uuid
   assignedEditor   Editor?           @relation(fields: [assignedEditorId], references: [id], onDelete: SetNull)
-  status           DeliverableStatus @default(NOT_STARTED)
-  priority         Priority          @default(NORMAL)
-  notes            String?           @db.Text
+  status              DeliverableStatus @default(NOT_STARTED)
+  priority            Priority          @default(NORMAL)
+  notes               String?           @db.Text
+  completionPercentage Int              @default(0) @map("completion_percentage")
 
   // Relations
   assets    DeliverableAsset[]
