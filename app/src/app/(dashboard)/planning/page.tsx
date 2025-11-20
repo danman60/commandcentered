@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { trpc } from '@/lib/trpc/client';
 import { DndContext, DragEndEvent, DragOverlay, useDraggable, useDroppable } from '@dnd-kit/core';
+import { useIsMobile } from '@/hooks/useMediaQuery';
 
 type DragItem = {
   type: 'operator' | 'kit';
@@ -167,6 +168,7 @@ function DroppableCalendarDay({
 }
 
 export default function PlanningPage() {
+  const isMobile = useIsMobile();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
   const [isNewEventModalOpen, setIsNewEventModalOpen] = useState(false);
@@ -366,8 +368,9 @@ export default function PlanningPage() {
     >
       <div className="flex flex-col h-screen bg-gradient-to-br from-slate-900 to-slate-800">
       {/* Top Bar */}
-      <div className="flex-shrink-0 bg-gradient-to-r from-green-500/10 to-purple-500/10 border-b border-green-500/30 px-9 py-4 shadow-xl">
-        <div className="flex justify-between items-center">
+      <div className={`flex-shrink-0 bg-gradient-to-r from-green-500/10 to-purple-500/10 border-b border-green-500/30 shadow-xl ${isMobile ? 'px-4 py-3' : 'px-9 py-4'}`}>
+        <div className={`flex ${isMobile ? 'flex-col gap-3' : 'justify-between items-center'}`}>
+          {!isMobile && (
           <div>
             <h1 className="text-3xl font-bold bg-gradient-to-r from-green-400 to-purple-500 bg-clip-text text-transparent">
               SCHEDULING COMMAND CENTER
@@ -376,35 +379,46 @@ export default function PlanningPage() {
               Drag operators & kits to calendar • 3-Panel Layout
             </p>
           </div>
-          <div className="flex gap-3 items-center">
+          )}
+          <div className={`flex ${isMobile ? 'justify-between' : 'gap-3'} items-center`}>
             <button
               onClick={goToPreviousMonth}
-              className="px-5 py-3 bg-slate-700/30 hover:bg-slate-700/50 border border-slate-600/50 rounded-lg text-slate-300 font-semibold transition-all hover:-translate-y-1 hover:shadow-lg hover:shadow-green-500/20"
+              className={`${isMobile ? 'px-3 py-2 text-xs' : 'px-5 py-3'} bg-slate-700/30 hover:bg-slate-700/50 border border-slate-600/50 rounded-lg text-slate-300 font-semibold transition-all hover:-translate-y-1 hover:shadow-lg hover:shadow-green-500/20`}
             >
-              ◀ Prev
+              ◀ {isMobile ? '' : 'Prev'}
             </button>
-            <h2 className="px-5 py-3 bg-slate-700/30 border border-slate-600/50 rounded-lg text-slate-300 font-semibold">
-              {getMonthName()}
+            <h2 className={`${isMobile ? 'px-3 py-2 text-sm' : 'px-5 py-3'} bg-slate-700/30 border border-slate-600/50 rounded-lg text-slate-300 font-semibold`}>
+              {isMobile ? getMonthName().split(' ')[0] : getMonthName()}
             </h2>
             <button
               onClick={goToNextMonth}
-              className="px-5 py-3 bg-slate-700/30 hover:bg-slate-700/50 border border-slate-600/50 rounded-lg text-slate-300 font-semibold transition-all hover:-translate-y-1 hover:shadow-lg hover:shadow-green-500/20"
+              className={`${isMobile ? 'px-3 py-2 text-xs' : 'px-5 py-3'} bg-slate-700/30 hover:bg-slate-700/50 border border-slate-600/50 rounded-lg text-slate-300 font-semibold transition-all hover:-translate-y-1 hover:shadow-lg hover:shadow-green-500/20`}
             >
-              Next ▶
+              {isMobile ? '' : 'Next'} ▶
             </button>
+            {isMobile ? (
+              <button
+                onClick={() => setIsNewEventModalOpen(true)}
+                className="px-3 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold rounded-lg shadow-lg text-sm"
+              >
+                + Event
+              </button>
+            ) : (
             <button
               onClick={() => setIsNewEventModalOpen(true)}
               className="px-5 py-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-400 hover:to-green-500 text-white font-semibold rounded-lg shadow-lg shadow-green-500/30 transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-green-500/50"
             >
               + NEW EVENT
             </button>
+            )}
           </div>
         </div>
       </div>
 
       {/* 3-Panel Layout */}
       <div className="flex-1 flex overflow-hidden">
-        {/* Operators Panel */}
+        {/* Operators Panel - Hidden on mobile */}
+        {!isMobile && (
         <div data-testid="operators-panel" className="w-1/5 min-w-[240px] bg-slate-900/60 backdrop-blur-md border-r border-green-500/20 flex flex-col">
           <div className="flex-shrink-0 px-5 py-4 bg-slate-950/80 border-b border-green-500/20 flex justify-between items-center">
             <h3 className="text-base font-semibold text-slate-200">Operators</h3>
@@ -427,9 +441,10 @@ export default function PlanningPage() {
             ))}
           </div>
         </div>
+        )}
 
         {/* Calendar Panel */}
-        <div className="flex-1 bg-slate-900/60 backdrop-blur-md border-r border-green-500/20 flex flex-col min-w-[600px]">
+        <div className={`flex-1 bg-slate-900/60 backdrop-blur-md border-r border-green-500/20 flex flex-col ${!isMobile ? 'min-w-[600px]' : ''}`}>
           <div className="flex-shrink-0 px-5 py-4 bg-slate-950/80 border-b border-green-500/20">
             <span className="text-base font-semibold text-slate-200">
               {getMonthName()} Calendar
@@ -471,7 +486,8 @@ export default function PlanningPage() {
           </div>
         </div>
 
-        {/* Kits Panel */}
+        {/* Kits Panel - Hidden on mobile */}
+        {!isMobile && (
         <div data-testid="kits-panel" className="w-1/5 min-w-[240px] bg-slate-900/60 backdrop-blur-md border-r border-purple-500/20 flex flex-col">
           <div className="flex-shrink-0 px-5 py-4 bg-slate-950/80 border-b border-purple-500/20 flex justify-between items-center">
             <h3 className="text-base font-semibold text-slate-200">Kits</h3>
@@ -493,6 +509,7 @@ export default function PlanningPage() {
             ))}
           </div>
         </div>
+        )}
       </div>
 
       {/* Modals */}

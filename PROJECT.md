@@ -31,4 +31,5 @@ CommandCentered/
 
 ## Development
 
-[To be defined]
+**Production URL:** https://commandcentered.vercel.app/dashboard
+**Repository:** https://github.com/danman60/commandcentered.git
