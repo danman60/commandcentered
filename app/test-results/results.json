@@ -157,7 +157,7 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "failed",
-                      "duration": 7448,
+                      "duration": 7053,
                       "error": {
                         "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[role=\"dialog\"], .modal, [data-testid=\"kit-modal\"]').first()\nExpected: visible\nTimeout: 3000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 3000ms\u001b[22m\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal, [data-testid=\"kit-modal\"]').first()\u001b[22m\n",
                         "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[role=\"dialog\"], .modal, [data-testid=\"kit-modal\"]').first()\nExpected: visible\nTimeout: 3000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 3000ms\u001b[22m\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal, [data-testid=\"kit-modal\"]').first()\u001b[22m\n\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts:37:25",
@@ -181,7 +181,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T02:23:18.999Z",
+                      "startTime": "2025-11-20T02:37:50.467Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -234,7 +234,7 @@
                       "workerIndex": 1,
                       "parallelIndex": 1,
                       "status": "failed",
-                      "duration": 13759,
+                      "duration": 15125,
                       "error": {
                         "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal') to be visible\u001b[22m\n",
                         "stack": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal') to be visible\u001b[22m\n\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts:61:16",
@@ -258,7 +258,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T02:23:19.018Z",
+                      "startTime": "2025-11-20T02:37:50.495Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -311,7 +311,7 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "failed",
-                      "duration": 13731,
+                      "duration": 13930,
                       "error": {
                         "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal') to be visible\u001b[22m\n",
                         "stack": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal') to be visible\u001b[22m\n\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts:92:16",
@@ -335,7 +335,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T02:23:27.671Z",
+                      "startTime": "2025-11-20T02:37:58.901Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -388,7 +388,7 @@
                       "workerIndex": 3,
                       "parallelIndex": 1,
                       "status": "failed",
-                      "duration": 13556,
+                      "duration": 14106,
                       "error": {
                         "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal') to be visible\u001b[22m\n",
                         "stack": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal') to be visible\u001b[22m\n\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts:121:16",
@@ -412,7 +412,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T02:23:33.983Z",
+                      "startTime": "2025-11-20T02:38:06.951Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -465,7 +465,7 @@
                       "workerIndex": 4,
                       "parallelIndex": 0,
                       "status": "failed",
-                      "duration": 14243,
+                      "duration": 13520,
                       "error": {
                         "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal') to be visible\u001b[22m\n",
                         "stack": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal') to be visible\u001b[22m\n\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts:165:16",
@@ -489,7 +489,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T02:23:42.624Z",
+                      "startTime": "2025-11-20T02:38:14.036Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -542,7 +542,7 @@
                       "workerIndex": 5,
                       "parallelIndex": 1,
                       "status": "failed",
-                      "duration": 14059,
+                      "duration": 13863,
                       "error": {
                         "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal') to be visible\u001b[22m\n",
                         "stack": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal') to be visible\u001b[22m\n\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts:196:16",
@@ -566,7 +566,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T02:23:48.720Z",
+                      "startTime": "2025-11-20T02:38:22.332Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -619,7 +619,7 @@
                       "workerIndex": 6,
                       "parallelIndex": 0,
                       "status": "failed",
-                      "duration": 13609,
+                      "duration": 14654,
                       "error": {
                         "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal') to be visible\u001b[22m\n",
                         "stack": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal') to be visible\u001b[22m\n\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts:241:16",
@@ -643,7 +643,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T02:23:58.061Z",
+                      "startTime": "2025-11-20T02:38:28.765Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -679,7 +679,7 @@
             },
             {
               "title": "TC-KIT-008: Verify quick stats update in real-time",
-              "ok": false,
+              "ok": true,
               "tags": [
                 "p1",
                 "kit-creation"
@@ -695,58 +695,18 @@
                     {
                       "workerIndex": 7,
                       "parallelIndex": 1,
-                      "status": "failed",
-                      "duration": 13620,
-                      "error": {
-                        "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal') to be visible\u001b[22m\n",
-                        "stack": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal') to be visible\u001b[22m\n\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts:265:16",
-                        "location": {
-                          "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts",
-                          "column": 16,
-                          "line": 265
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 263 |\u001b[39m     \u001b[36mawait\u001b[39m createButton\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m 264 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 265 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForSelector(\u001b[32m'[role=\"dialog\"], .modal'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 266 |\u001b[39m\n \u001b[90m 267 |\u001b[39m     \u001b[90m// Navigate to Select Gear step\u001b[39m\n \u001b[90m 268 |\u001b[39m     \u001b[36mconst\u001b[39m nextButton \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'button:has-text(\"Next\")'\u001b[39m)\u001b[33m.\u001b[39mfirst()\u001b[33m;\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts",
-                            "column": 16,
-                            "line": 265
-                          },
-                          "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal') to be visible\u001b[22m\n\n\n  263 |     await createButton.click();\n  264 |\n> 265 |     await page.waitForSelector('[role=\"dialog\"], .modal');\n      |                ^\n  266 |\n  267 |     // Navigate to Select Gear step\n  268 |     const nextButton = page.locator('button:has-text(\"Next\")').first();\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts:265:16"
-                        }
-                      ],
+                      "status": "passed",
+                      "duration": 5855,
+                      "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T02:24:04.005Z",
+                      "startTime": "2025-11-20T02:38:37.560Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\03-kit-creation-modal-Kit--88d8b-k-stats-update-in-real-time-chromium\\test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\03-kit-creation-modal-Kit--88d8b-k-stats-update-in-real-time-chromium\\video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\03-kit-creation-modal-Kit--88d8b-k-stats-update-in-real-time-chromium\\error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts",
-                        "column": 16,
-                        "line": 265
-                      }
+                      "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 }
               ],
               "id": "b92f4ed6ca32be6d9356-df45b292cc697f736f30",
@@ -787,15 +747,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 8,
-                      "parallelIndex": 0,
+                      "workerIndex": 7,
+                      "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 3141,
+                      "duration": 2991,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T02:24:12.918Z",
+                      "startTime": "2025-11-20T02:38:43.577Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -827,12 +787,12 @@
                       "workerIndex": 8,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2820,
+                      "duration": 2885,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T02:24:16.177Z",
+                      "startTime": "2025-11-20T02:38:44.897Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -878,7 +838,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T02:24:17.824Z",
+                      "startTime": "2025-11-20T02:38:46.599Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -907,15 +867,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 9,
+                      "workerIndex": 7,
                       "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 2755,
+                      "duration": 2890,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T02:24:18.921Z",
+                      "startTime": "2025-11-20T02:38:46.600Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -947,12 +907,12 @@
                       "workerIndex": 8,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2606,
+                      "duration": 2721,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T02:24:19.018Z",
+                      "startTime": "2025-11-20T02:38:47.932Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -981,15 +941,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 8,
-                      "parallelIndex": 0,
+                      "workerIndex": 7,
+                      "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 3399,
+                      "duration": 3487,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T02:24:21.647Z",
+                      "startTime": "2025-11-20T02:38:49.512Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1035,15 +995,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 9,
-                      "parallelIndex": 1,
+                      "workerIndex": 8,
+                      "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2723,
+                      "duration": 3542,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T02:24:21.879Z",
+                      "startTime": "2025-11-20T02:38:50.682Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1072,15 +1032,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 9,
+                      "workerIndex": 7,
                       "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 3866,
+                      "duration": 2196,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T02:24:24.626Z",
+                      "startTime": "2025-11-20T02:38:53.021Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1112,12 +1072,12 @@
                       "workerIndex": 8,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3291,
+                      "duration": 5581,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T02:24:25.074Z",
+                      "startTime": "2025-11-20T02:38:54.248Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1146,10 +1106,10 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 8,
-                      "parallelIndex": 0,
+                      "workerIndex": 7,
+                      "parallelIndex": 1,
                       "status": "failed",
-                      "duration": 5960,
+                      "duration": 8015,
                       "error": {
                         "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[role=\"dialog\"], .modal, [data-testid=\"customization-modal\"]').first()\nExpected: visible\nTimeout: 3000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 3000ms\u001b[22m\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal, [data-testid=\"customization-modal\"]').first()\u001b[22m\n",
                         "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[role=\"dialog\"], .modal, [data-testid=\"customization-modal\"]').first()\nExpected: visible\nTimeout: 3000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 3000ms\u001b[22m\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal, [data-testid=\"customization-modal\"]').first()\u001b[22m\n\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\05-dashboard.spec.ts:99:25",
@@ -1173,7 +1133,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T02:24:28.387Z",
+                      "startTime": "2025-11-20T02:38:55.238Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -1223,10 +1183,10 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 9,
-                      "parallelIndex": 1,
+                      "workerIndex": 8,
+                      "parallelIndex": 0,
                       "status": "failed",
-                      "duration": 9184,
+                      "duration": 5672,
                       "error": {
                         "message": "TimeoutError: page.waitForSelector: Timeout 3000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal, [data-testid=\"customization-modal\"]') to be visible\u001b[22m\n",
                         "stack": "TimeoutError: page.waitForSelector: Timeout 3000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[role=\"dialog\"], .modal, [data-testid=\"customization-modal\"]') to be visible\u001b[22m\n\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\05-dashboard.spec.ts:118:16",
@@ -1250,7 +1210,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T02:24:28.527Z",
+                      "startTime": "2025-11-20T02:38:59.857Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -1300,15 +1260,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 10,
-                      "parallelIndex": 0,
+                      "workerIndex": 9,
+                      "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 2799,
+                      "duration": 2527,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T02:24:35.480Z",
+                      "startTime": "2025-11-20T02:39:04.356Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1323,7 +1283,7 @@
             },
             {
               "title": "TC-DASH-007: Verify modular grid layout with different widget sizes",
-              "ok": false,
+              "ok": true,
               "tags": [
                 "p1",
                 "dashboard"
@@ -1337,60 +1297,20 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 11,
-                      "parallelIndex": 1,
-                      "status": "failed",
-                      "duration": 2885,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m3\u001b[39m\nReceived:    \u001b[31m0\u001b[39m",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m3\u001b[39m\nReceived:    \u001b[31m0\u001b[39m\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\05-dashboard.spec.ts:172:25",
-                        "location": {
-                          "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\05-dashboard.spec.ts",
-                          "column": 25,
-                          "line": 172
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 170 |\u001b[39m     \u001b[36mconst\u001b[39m widgetCount \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid^=\"widget-\"], .widget, .dashboard-widget'\u001b[39m)\u001b[33m.\u001b[39mcount()\u001b[33m;\u001b[39m\n \u001b[90m 171 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 172 |\u001b[39m     expect(widgetCount)\u001b[33m.\u001b[39mtoBeGreaterThanOrEqual(\u001b[35m3\u001b[39m)\u001b[33m;\u001b[39m \u001b[90m// At least 3 widgets visible\u001b[39m\n \u001b[90m     |\u001b[39m                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 173 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 174 |\u001b[39m\n \u001b[90m 175 |\u001b[39m   \u001b[90m/**\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\05-dashboard.spec.ts",
-                            "column": 25,
-                            "line": 172
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m3\u001b[39m\nReceived:    \u001b[31m0\u001b[39m\n\n  170 |     const widgetCount = await page.locator('[data-testid^=\"widget-\"], .widget, .dashboard-widget').count();\n  171 |\n> 172 |     expect(widgetCount).toBeGreaterThanOrEqual(3); // At least 3 widgets visible\n      |                         ^\n  173 |   });\n  174 |\n  175 |   /**\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\05-dashboard.spec.ts:172:25"
-                        }
-                      ],
+                      "workerIndex": 10,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2335,
+                      "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T02:24:38.847Z",
+                      "startTime": "2025-11-20T02:39:06.735Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\05-dashboard-Dashboard-Pag-75674-with-different-widget-sizes-chromium\\test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\05-dashboard-Dashboard-Pag-75674-with-different-widget-sizes-chromium\\video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\05-dashboard-Dashboard-Pag-75674-with-different-widget-sizes-chromium\\error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\05-dashboard.spec.ts",
-                        "column": 25,
-                        "line": 172
-                      }
+                      "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 }
               ],
               "id": "15664880665903ff2434-13297a6abfcf18cc9189",
@@ -1431,7 +1351,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T02:24:38.443Z",
+                      "startTime": "2025-11-20T02:39:07.006Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1451,11 +1371,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-11-20T02:23:17.731Z",
-    "duration": 84308.784,
-    "expected": 9,
+    "startTime": "2025-11-20T02:37:49.411Z",
+    "duration": 79973.501,
+    "expected": 11,
     "skipped": 2,
-    "unexpected": 11,
+    "unexpected": 9,
     "flaky": 0
   }
 }

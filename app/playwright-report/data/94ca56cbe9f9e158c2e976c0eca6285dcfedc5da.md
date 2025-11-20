@@ -1,7 +1,7 @@
 # Page snapshot
 
 ```yaml
-- generic [active] [ref=e1]:
+- generic [ref=e1]:
   - generic [ref=e2]:
     - generic [ref=e3]:
       - heading "CommandCentered" [level=1] [ref=e5]
@@ -55,10 +55,10 @@
         - generic [ref=e33]:
           - generic [ref=e34]:
             - heading "Dashboard" [level=1] [ref=e35]
-            - generic [ref=e36]: Good evening, Commander
+            - generic [ref=e36]: Good morning, Commander
           - generic [ref=e37]:
             - button "➕ New Event" [ref=e38]
-            - button "Customize" [ref=e39]:
+            - button "Customize" [active] [ref=e39]:
               - img [ref=e40]
               - text: Customize
         - generic [ref=e43]:
@@ -200,6 +200,33 @@
                   - generic [ref=e256]:
                     - paragraph [ref=e257]: 11/19/2025
                     - text: BOOKED
-  - generic [ref=e259]: "Build: 8209e48 | 11/19/2025, 17:35 EST"
+  - generic [ref=e259]: "Build: 9ec4ae3 | 11/19/2025, 21:37 EST"
   - alert [ref=e260]
+  - generic [ref=e263]:
+    - generic [ref=e264]:
+      - heading "Customize Dashboard" [level=2] [ref=e265]
+      - button "Close modal" [ref=e266]:
+        - img [ref=e267]
+    - generic [ref=e271]:
+      - paragraph [ref=e272]: Toggle widgets on or off, then drag and resize them to customize your dashboard layout.
+      - generic [ref=e273]:
+        - generic [ref=e274] [cursor=pointer]:
+          - checkbox "Overview Stats" [checked] [ref=e275]
+          - generic [ref=e276]: Overview Stats
+        - generic [ref=e277] [cursor=pointer]:
+          - checkbox "Event Pipeline" [checked] [ref=e278]
+          - generic [ref=e279]: Event Pipeline
+        - generic [ref=e280] [cursor=pointer]:
+          - checkbox "Revenue Overview" [checked] [ref=e281]
+          - generic [ref=e282]: Revenue Overview
+        - generic [ref=e283] [cursor=pointer]:
+          - checkbox "Upcoming Events" [checked] [ref=e284]
+          - generic [ref=e285]: Upcoming Events
+        - generic [ref=e286] [cursor=pointer]:
+          - checkbox "Critical Alerts" [checked] [ref=e287]
+          - generic [ref=e288]: Critical Alerts
+        - generic [ref=e289] [cursor=pointer]:
+          - checkbox "Recent Activity" [checked] [ref=e290]
+          - generic [ref=e291]: Recent Activity
+      - button "Done" [ref=e293]
 ```

@@ -11,6 +11,7 @@ export interface ModalProps {
   title?: string;
   children: ReactNode;
   className?: string;
+  'data-testid'?: string;
 }
 
 /**
@@ -31,7 +32,7 @@ export interface ModalProps {
  *   <YourContent />
  * </Modal>
  */
-export function Modal({ isOpen, onClose, title, children, className }: ModalProps) {
+export function Modal({ isOpen, onClose, title, children, className, 'data-testid': dataTestId }: ModalProps) {
   // Handle Escape key
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -69,6 +70,8 @@ export function Modal({ isOpen, onClose, title, children, className }: ModalProp
 
       {/* Modal Container */}
       <div
+        role="dialog"
+        data-testid={dataTestId}
         className={cn(
           'relative w-[80%] max-w-[1200px] max-h-[90vh] flex flex-col',
           'bg-gradient-to-br from-slate-900/95 to-slate-800/95',
