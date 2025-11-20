@@ -1,0 +1,216 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]:
+      - heading "CommandCentered" [level=1] [ref=e5]
+      - navigation [ref=e6]:
+        - link "📊 Dashboard" [ref=e7] [cursor=pointer]:
+          - /url: /dashboard
+          - generic [ref=e8]: 📊
+          - text: Dashboard
+        - link "📅 Planning" [ref=e9] [cursor=pointer]:
+          - /url: /planning
+          - generic [ref=e10]: 📅
+          - text: Planning
+        - link "⚡ Pipeline" [ref=e11] [cursor=pointer]:
+          - /url: /pipeline
+          - generic [ref=e12]: ⚡
+          - text: Pipeline
+        - link "🎥 Gear Inventory" [ref=e13] [cursor=pointer]:
+          - /url: /gear
+          - generic [ref=e14]: 🎥
+          - text: Gear Inventory
+        - link "👥 Operators" [ref=e15] [cursor=pointer]:
+          - /url: /operators
+          - generic [ref=e16]: 👥
+          - text: Operators
+        - link "📦 Deliverables" [ref=e17] [cursor=pointer]:
+          - /url: /deliverables
+          - generic [ref=e18]: 📦
+          - text: Deliverables
+        - link "💬 Communications" [ref=e19] [cursor=pointer]:
+          - /url: /communications
+          - generic [ref=e20]: 💬
+          - text: Communications
+        - link "📁 Files & Assets" [ref=e21] [cursor=pointer]:
+          - /url: /files
+          - generic [ref=e22]: 📁
+          - text: Files & Assets
+        - link "📈 Reports" [ref=e23] [cursor=pointer]:
+          - /url: /reports
+          - generic [ref=e24]: 📈
+          - text: Reports
+        - link "👤 Operator Portal" [ref=e25] [cursor=pointer]:
+          - /url: /operator-portal
+          - generic [ref=e26]: 👤
+          - text: Operator Portal
+        - link "🔧 Settings" [ref=e27] [cursor=pointer]:
+          - /url: /settings
+          - generic [ref=e28]: 🔧
+          - text: Settings
+    - main [ref=e30]:
+      - generic [ref=e31]:
+        - generic [ref=e33]:
+          - generic [ref=e34]:
+            - generic [ref=e35]: 🎥
+            - heading "Gear" [level=1] [ref=e36]
+          - generic [ref=e37]:
+            - button "📊 Export Inventory" [ref=e38]
+            - button "➕ Add Kit" [active] [ref=e39]
+        - generic [ref=e40]:
+          - generic [ref=e41]:
+            - button "INVENTORY" [ref=e42]
+            - button "CALENDAR" [ref=e43]
+            - button "MAINTENANCE" [ref=e44]
+            - button "KITS" [ref=e45]
+          - generic [ref=e46]:
+            - heading "Gear Kits" [level=2] [ref=e47]
+            - generic [ref=e48]:
+              - generic [ref=e49]:
+                - generic [ref=e50]:
+                  - heading "Competition Package Pro" [level=3] [ref=e51]
+                  - generic [ref=e52]: Active
+                - paragraph [ref=e53]: Full competition setup with dual cameras, premium lenses, wireless audio, gimbal stabilizer
+                - generic [ref=e54]: 8 items in kit
+              - generic [ref=e55]:
+                - generic [ref=e56]:
+                  - heading "Recital Package Standard" [level=3] [ref=e57]
+                  - generic [ref=e58]: Active
+                - paragraph [ref=e59]: Dual camera setup with lighting for indoor recital coverage
+                - generic [ref=e60]: 8 items in kit
+              - generic [ref=e61]:
+                - generic [ref=e62]:
+                  - heading "Small Event Package" [level=3] [ref=e63]
+                  - generic [ref=e64]: Active
+                - paragraph [ref=e65]: Compact single-camera package for smaller venues and showcases
+                - generic [ref=e66]: 7 items in kit
+        - dialog [ref=e68]:
+          - generic [ref=e69]:
+            - heading "Create New Kit" [level=2] [ref=e70]
+            - button "×" [ref=e71]
+          - generic [ref=e72]:
+            - generic [ref=e73]:
+              - generic [ref=e74]: Kit Name
+              - textbox "e.g., Wedding Package A" [ref=e75]
+            - generic [ref=e76]:
+              - generic [ref=e77]: Description
+              - textbox "Optional description..." [ref=e78]
+            - generic [ref=e79]:
+              - generic [ref=e80]: Select Gear Items (0 selected)
+              - generic [ref=e82]:
+                - generic [ref=e83] [cursor=pointer]:
+                  - checkbox "Aputure 300D II LED LIGHTING AVAILABLE" [ref=e84]
+                  - generic [ref=e85]:
+                    - generic [ref=e86]: Aputure 300D II LED
+                    - generic [ref=e87]: LIGHTING
+                  - generic [ref=e88]: AVAILABLE
+                - generic [ref=e89] [cursor=pointer]:
+                  - checkbox "Atomos Shinobi 7\" Monitor MONITORS AVAILABLE" [ref=e90]
+                  - generic [ref=e91]:
+                    - generic [ref=e92]: Atomos Shinobi 7" Monitor
+                    - generic [ref=e93]: MONITORS
+                  - generic [ref=e94]: AVAILABLE
+                - generic [ref=e95] [cursor=pointer]:
+                  - checkbox "Battery Pack Sony NP-FZ100 (4x) ACCESSORIES AVAILABLE" [ref=e96]
+                  - generic [ref=e97]:
+                    - generic [ref=e98]: Battery Pack Sony NP-FZ100 (4x)
+                    - generic [ref=e99]: ACCESSORIES
+                  - generic [ref=e100]: AVAILABLE
+                - generic [ref=e101] [cursor=pointer]:
+                  - checkbox "Canon 24-105mm f/4L LENS AVAILABLE" [ref=e102]
+                  - generic [ref=e103]:
+                    - generic [ref=e104]: Canon 24-105mm f/4L
+                    - generic [ref=e105]: LENS
+                  - generic [ref=e106]: AVAILABLE
+                - generic [ref=e107] [cursor=pointer]:
+                  - checkbox "Canon C70 Cinema Camera CAMERA AVAILABLE" [ref=e108]
+                  - generic [ref=e109]:
+                    - generic [ref=e110]: Canon C70 Cinema Camera
+                    - generic [ref=e111]: CAMERA
+                  - generic [ref=e112]: AVAILABLE
+                - generic [ref=e113] [cursor=pointer]:
+                  - checkbox "DJI Ronin S Gimbal STABILIZERS AVAILABLE" [ref=e114]
+                  - generic [ref=e115]:
+                    - generic [ref=e116]: DJI Ronin S Gimbal
+                    - generic [ref=e117]: STABILIZERS
+                  - generic [ref=e118]: AVAILABLE
+                - generic [ref=e119] [cursor=pointer]:
+                  - checkbox "Godox SL60W LED LIGHTING AVAILABLE" [ref=e120]
+                  - generic [ref=e121]:
+                    - generic [ref=e122]: Godox SL60W LED
+                    - generic [ref=e123]: LIGHTING
+                  - generic [ref=e124]: AVAILABLE
+                - generic [ref=e125] [cursor=pointer]:
+                  - checkbox "HDMI Cables (5x 15ft) CABLE AVAILABLE" [ref=e126]
+                  - generic [ref=e127]:
+                    - generic [ref=e128]: HDMI Cables (5x 15ft)
+                    - generic [ref=e129]: CABLE
+                  - generic [ref=e130]: AVAILABLE
+                - generic [ref=e131] [cursor=pointer]:
+                  - checkbox "Manfrotto Tripod 502AH STABILIZERS AVAILABLE" [ref=e132]
+                  - generic [ref=e133]:
+                    - generic [ref=e134]: Manfrotto Tripod 502AH
+                    - generic [ref=e135]: STABILIZERS
+                  - generic [ref=e136]: AVAILABLE
+                - generic [ref=e137] [cursor=pointer]:
+                  - checkbox "Pelican 1510 Case ACCESSORIES AVAILABLE" [ref=e138]
+                  - generic [ref=e139]:
+                    - generic [ref=e140]: Pelican 1510 Case
+                    - generic [ref=e141]: ACCESSORIES
+                  - generic [ref=e142]: AVAILABLE
+                - generic [ref=e143] [cursor=pointer]:
+                  - checkbox "Rode Wireless GO II Dual AUDIO AVAILABLE" [ref=e144]
+                  - generic [ref=e145]:
+                    - generic [ref=e146]: Rode Wireless GO II Dual
+                    - generic [ref=e147]: AUDIO
+                  - generic [ref=e148]: AVAILABLE
+                - generic [ref=e149] [cursor=pointer]:
+                  - checkbox "Sony 24-70mm f/2.8 GM LENS AVAILABLE" [ref=e150]
+                  - generic [ref=e151]:
+                    - generic [ref=e152]: Sony 24-70mm f/2.8 GM
+                    - generic [ref=e153]: LENS
+                  - generic [ref=e154]: AVAILABLE
+                - generic [ref=e155] [cursor=pointer]:
+                  - checkbox "Sony 70-200mm f/2.8 GM LENS AVAILABLE" [ref=e156]
+                  - generic [ref=e157]:
+                    - generic [ref=e158]: Sony 70-200mm f/2.8 GM
+                    - generic [ref=e159]: LENS
+                  - generic [ref=e160]: AVAILABLE
+                - generic [ref=e161] [cursor=pointer]:
+                  - checkbox "Sony A7 III Body CAMERA AVAILABLE" [ref=e162]
+                  - generic [ref=e163]:
+                    - generic [ref=e164]: Sony A7 III Body
+                    - generic [ref=e165]: CAMERA
+                  - generic [ref=e166]: AVAILABLE
+                - generic [ref=e167] [cursor=pointer]:
+                  - checkbox "Sony A7S III Body CAMERA AVAILABLE" [ref=e168]
+                  - generic [ref=e169]:
+                    - generic [ref=e170]: Sony A7S III Body
+                    - generic [ref=e171]: CAMERA
+                  - generic [ref=e172]: AVAILABLE
+                - generic [ref=e173] [cursor=pointer]:
+                  - checkbox "Test Camera - Workflow Check CAMERA AVAILABLE" [ref=e174]
+                  - generic [ref=e175]:
+                    - generic [ref=e176]: Test Camera - Workflow Check
+                    - generic [ref=e177]: CAMERA
+                  - generic [ref=e178]: AVAILABLE
+                - generic [ref=e179] [cursor=pointer]:
+                  - checkbox "XLR Cables (4x 25ft) CABLE AVAILABLE" [ref=e180]
+                  - generic [ref=e181]:
+                    - generic [ref=e182]: XLR Cables (4x 25ft)
+                    - generic [ref=e183]: CABLE
+                  - generic [ref=e184]: AVAILABLE
+                - generic [ref=e185] [cursor=pointer]:
+                  - checkbox "Zoom H6 Audio Recorder AUDIO AVAILABLE" [ref=e186]
+                  - generic [ref=e187]:
+                    - generic [ref=e188]: Zoom H6 Audio Recorder
+                    - generic [ref=e189]: AUDIO
+                  - generic [ref=e190]: AVAILABLE
+            - generic [ref=e191]:
+              - button "Cancel" [ref=e192]
+              - button "Create Kit" [ref=e193]
+  - generic [ref=e194]: "Build: 8bd9941 | 11/19/2025, 23:30 EST"
+  - alert [ref=e195]
+```

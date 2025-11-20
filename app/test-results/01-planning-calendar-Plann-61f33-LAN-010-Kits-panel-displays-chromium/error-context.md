@@ -58,13 +58,13 @@
             - paragraph [ref=e36]: Drag operators & kits to calendar • 3-Panel Layout
           - generic [ref=e37]:
             - button "◀ Prev" [ref=e38]
-            - button "November 2025" [ref=e39]
+            - heading "November 2025" [level=2] [ref=e39]
             - button "Next ▶" [ref=e40]
             - button "+ NEW EVENT" [ref=e41]
         - generic [ref=e42]:
           - generic [ref=e43]:
             - generic [ref=e44]:
-              - generic [ref=e45]: Operators
+              - heading "Operators" [level=3] [ref=e45]
               - generic [ref=e46]:
                 - button "↕" [ref=e47]
                 - button "+" [ref=e48]
@@ -87,7 +87,7 @@
                 - generic [ref=e68]: Available Full Day
           - generic [ref=e70]:
             - generic [ref=e72]: November 2025 Calendar
-            - generic [ref=e74]:
+            - grid [ref=e74]:
               - generic [ref=e75]: Sun
               - generic [ref=e76]: Mon
               - generic [ref=e77]: Tue
@@ -143,7 +143,7 @@
               - generic [ref=e171] [cursor=pointer]: "6"
           - generic [ref=e172]:
             - generic [ref=e173]:
-              - generic [ref=e174]: Kits
+              - heading "Kits" [level=3] [ref=e174]
               - generic [ref=e175]:
                 - button "🔍" [ref=e176]
                 - button "+" [ref=e177]
@@ -164,6 +164,6 @@
                 - generic [ref=e192]: 7 items
                 - generic [ref=e193]: ✓ Available
       - status [ref=e194]
-  - generic [ref=e195]: "Build: b7bde7e | 11/19/2025, 21:45 EST"
+  - generic [ref=e195]: "Build: 8bd9941 | 11/19/2025, 23:30 EST"
   - alert [ref=e196]
 ```

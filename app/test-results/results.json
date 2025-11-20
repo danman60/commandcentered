@@ -140,7 +140,7 @@
           "specs": [
             {
               "title": "TC-PLAN-001: Month calendar loads with current month",
-              "ok": false,
+              "ok": true,
               "tags": [
                 "p0",
                 "critical",
@@ -157,58 +157,18 @@
                     {
                       "workerIndex": 0,
                       "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 7998,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('h1, h2, h3').filter({ hasText: /November.*2025|2025.*November/i }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1, h2, h3').filter({ hasText: /November.*2025|2025.*November/i }).first()\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('h1, h2, h3').filter({ hasText: /November.*2025|2025.*November/i }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1, h2, h3').filter({ hasText: /November.*2025|2025.*November/i }).first()\u001b[22m\n\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts:26:26",
-                        "location": {
-                          "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts",
-                          "column": 26,
-                          "line": 26
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 24 |\u001b[39m     })\u001b[33m.\u001b[39mfirst()\u001b[33m;\u001b[39m\n \u001b[90m 25 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 26 |\u001b[39m     \u001b[36mawait\u001b[39m expect(header)\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m5000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                          \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 27 |\u001b[39m\n \u001b[90m 28 |\u001b[39m     \u001b[36mconst\u001b[39m calendar \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"calendar-grid\"], .calendar-grid, .fc-view, [role=\"grid\"]'\u001b[39m)\u001b[33m.\u001b[39mfirst()\u001b[33m;\u001b[39m\n \u001b[90m 29 |\u001b[39m     \u001b[36mawait\u001b[39m expect(calendar)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts",
-                            "column": 26,
-                            "line": 26
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('h1, h2, h3').filter({ hasText: /November.*2025|2025.*November/i }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1, h2, h3').filter({ hasText: /November.*2025|2025.*November/i }).first()\u001b[22m\n\n\n  24 |     }).first();\n  25 |\n> 26 |     await expect(header).toBeVisible({ timeout: 5000 });\n     |                          ^\n  27 |\n  28 |     const calendar = page.locator('[data-testid=\"calendar-grid\"], .calendar-grid, .fc-view, [role=\"grid\"]').first();\n  29 |     await expect(calendar).toBeVisible();\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts:26:26"
-                        }
-                      ],
+                      "status": "passed",
+                      "duration": 3024,
+                      "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T04:07:48.297Z",
+                      "startTime": "2025-11-20T04:50:53.987Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\01-planning-calendar-Plann-760c7-ar-loads-with-current-month-chromium\\test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\01-planning-calendar-Plann-760c7-ar-loads-with-current-month-chromium\\video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\01-planning-calendar-Plann-760c7-ar-loads-with-current-month-chromium\\error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts",
-                        "column": 26,
-                        "line": 26
-                      }
+                      "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 }
               ],
               "id": "fe09c7215427b20c6391-08177729a5fe0a8408d9",
@@ -218,7 +178,7 @@
             },
             {
               "title": "TC-PLAN-002: 3-panel layout renders",
-              "ok": false,
+              "ok": true,
               "tags": [
                 "p0",
                 "critical",
@@ -235,58 +195,18 @@
                     {
                       "workerIndex": 1,
                       "parallelIndex": 1,
-                      "status": "failed",
-                      "duration": 7977,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"operators-panel\"]').or(locator('h2, h3').filter({ hasText: /operators/i }).locator('..').locator('..').first())\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"operators-panel\"]').or(locator('h2, h3').filter({ hasText: /operators/i }).locator('..').locator('..').first())\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"operators-panel\"]').or(locator('h2, h3').filter({ hasText: /operators/i }).locator('..').locator('..').first())\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"operators-panel\"]').or(locator('h2, h3').filter({ hasText: /operators/i }).locator('..').locator('..').first())\u001b[22m\n\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts:36:34",
-                        "location": {
-                          "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts",
-                          "column": 34,
-                          "line": 36
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 34 |\u001b[39m       page\u001b[33m.\u001b[39mlocator(\u001b[32m'h2, h3'\u001b[39m)\u001b[33m.\u001b[39mfilter({ hasText\u001b[33m:\u001b[39m \u001b[35m/operators/i\u001b[39m })\u001b[33m.\u001b[39mlocator(\u001b[32m'..'\u001b[39m)\u001b[33m.\u001b[39mlocator(\u001b[32m'..'\u001b[39m)\u001b[33m.\u001b[39mfirst()\n \u001b[90m 35 |\u001b[39m     )\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 36 |\u001b[39m     \u001b[36mawait\u001b[39m expect(operatorsPanel)\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m5000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 37 |\u001b[39m\n \u001b[90m 38 |\u001b[39m     \u001b[36mconst\u001b[39m kitsPanel \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"kits-panel\"]'\u001b[39m)\u001b[33m.\u001b[39mor(\n \u001b[90m 39 |\u001b[39m       page\u001b[33m.\u001b[39mlocator(\u001b[32m'h2, h3'\u001b[39m)\u001b[33m.\u001b[39mfilter({ hasText\u001b[33m:\u001b[39m \u001b[35m/kits/i\u001b[39m })\u001b[33m.\u001b[39mlocator(\u001b[32m'..'\u001b[39m)\u001b[33m.\u001b[39mlocator(\u001b[32m'..'\u001b[39m)\u001b[33m.\u001b[39mfirst()\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts",
-                            "column": 34,
-                            "line": 36
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"operators-panel\"]').or(locator('h2, h3').filter({ hasText: /operators/i }).locator('..').locator('..').first())\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"operators-panel\"]').or(locator('h2, h3').filter({ hasText: /operators/i }).locator('..').locator('..').first())\u001b[22m\n\n\n  34 |       page.locator('h2, h3').filter({ hasText: /operators/i }).locator('..').locator('..').first()\n  35 |     );\n> 36 |     await expect(operatorsPanel).toBeVisible({ timeout: 5000 });\n     |                                  ^\n  37 |\n  38 |     const kitsPanel = page.locator('[data-testid=\"kits-panel\"]').or(\n  39 |       page.locator('h2, h3').filter({ hasText: /kits/i }).locator('..').locator('..').first()\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts:36:34"
-                        }
-                      ],
+                      "status": "passed",
+                      "duration": 2928,
+                      "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T04:07:48.292Z",
+                      "startTime": "2025-11-20T04:50:53.996Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\01-planning-calendar-Plann-a4076--002-3-panel-layout-renders-chromium\\test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\01-planning-calendar-Plann-a4076--002-3-panel-layout-renders-chromium\\video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\01-planning-calendar-Plann-a4076--002-3-panel-layout-renders-chromium\\error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts",
-                        "column": 34,
-                        "line": 36
-                      }
+                      "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 }
               ],
               "id": "fe09c7215427b20c6391-b655745f14c8c3784cd8",
@@ -296,7 +216,7 @@
             },
             {
               "title": "TC-PLAN-003: Month navigation works",
-              "ok": false,
+              "ok": true,
               "tags": [
                 "p0",
                 "critical",
@@ -311,60 +231,20 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 1,
                       "parallelIndex": 1,
-                      "status": "failed",
-                      "duration": 13072,
-                      "error": {
-                        "message": "TimeoutError: locator.textContent: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('h1, h2, h3').filter({ hasText: /january|february|march|april|may|june|july|august|september|october|november|december/i }).first()\u001b[22m\n",
-                        "stack": "TimeoutError: locator.textContent: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('h1, h2, h3').filter({ hasText: /january|february|march|april|may|june|july|august|september|october|november|december/i }).first()\u001b[22m\n\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts:51:44",
-                        "location": {
-                          "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts",
-                          "column": 44,
-                          "line": 51
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 49 |\u001b[39m       hasText\u001b[33m:\u001b[39m \u001b[35m/january|february|march|april|may|june|july|august|september|october|november|december/i\u001b[39m\n \u001b[90m 50 |\u001b[39m     })\u001b[33m.\u001b[39mfirst()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 51 |\u001b[39m     \u001b[36mconst\u001b[39m initialMonth \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m monthHeader\u001b[33m.\u001b[39mtextContent()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 52 |\u001b[39m\n \u001b[90m 53 |\u001b[39m     \u001b[36mconst\u001b[39m nextButton \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'button'\u001b[39m)\u001b[33m.\u001b[39mfilter({ hasText\u001b[33m:\u001b[39m \u001b[35m/next|�|:|�/i\u001b[39m })\u001b[33m.\u001b[39mor(\n \u001b[90m 54 |\u001b[39m       page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"next-month\"], [aria-label*=\"next\" i]'\u001b[39m)\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts",
-                            "column": 44,
-                            "line": 51
-                          },
-                          "message": "TimeoutError: locator.textContent: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('h1, h2, h3').filter({ hasText: /january|february|march|april|may|june|july|august|september|october|november|december/i }).first()\u001b[22m\n\n\n  49 |       hasText: /january|february|march|april|may|june|july|august|september|october|november|december/i\n  50 |     }).first();\n> 51 |     const initialMonth = await monthHeader.textContent();\n     |                                            ^\n  52 |\n  53 |     const nextButton = page.locator('button').filter({ hasText: /next|�|:|�/i }).or(\n  54 |       page.locator('[data-testid=\"next-month\"], [aria-label*=\"next\" i]')\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts:51:44"
-                        }
-                      ],
+                      "status": "passed",
+                      "duration": 4905,
+                      "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T04:07:57.624Z",
+                      "startTime": "2025-11-20T04:50:57.104Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\01-planning-calendar-Plann-ceea4--003-Month-navigation-works-chromium\\test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\01-planning-calendar-Plann-ceea4--003-Month-navigation-works-chromium\\video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\01-planning-calendar-Plann-ceea4--003-Month-navigation-works-chromium\\error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts",
-                        "column": 44,
-                        "line": 51
-                      }
+                      "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 }
               ],
               "id": "fe09c7215427b20c6391-5e0482d50d5ab5225664",
@@ -389,15 +269,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 3,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2494,
+                      "duration": 2216,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T04:07:57.616Z",
+                      "startTime": "2025-11-20T04:50:57.209Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -427,15 +307,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 3,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2230,
+                      "duration": 2339,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T04:08:00.280Z",
+                      "startTime": "2025-11-20T04:50:59.449Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -465,15 +345,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 3,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2194,
+                      "duration": 2451,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T04:08:02.534Z",
+                      "startTime": "2025-11-20T04:51:01.817Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -503,15 +383,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 3,
-                      "parallelIndex": 0,
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 2161,
+                      "duration": 2423,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T04:08:04.753Z",
+                      "startTime": "2025-11-20T04:51:02.036Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -541,15 +421,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 3,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2181,
+                      "duration": 2294,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T04:08:06.933Z",
+                      "startTime": "2025-11-20T04:51:04.293Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -579,34 +459,34 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 3,
-                      "parallelIndex": 0,
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
                       "status": "failed",
-                      "duration": 7746,
+                      "duration": 2423,
                       "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"operators-panel\"]').or(locator('h2, h3').filter({ hasText: /operators/i }).locator('..').locator('..').first())\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"operators-panel\"]').or(locator('h2, h3').filter({ hasText: /operators/i }).locator('..').locator('..').first())\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"operators-panel\"]').or(locator('h2, h3').filter({ hasText: /operators/i }).locator('..').locator('..').first())\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"operators-panel\"]').or(locator('h2, h3').filter({ hasText: /operators/i }).locator('..').locator('..').first())\u001b[22m\n\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts:172:34",
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts:179:19",
                         "location": {
                           "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts",
-                          "column": 34,
-                          "line": 172
+                          "column": 19,
+                          "line": 179
                         },
-                        "snippet": "\u001b[0m \u001b[90m 170 |\u001b[39m     )\u001b[33m;\u001b[39m\n \u001b[90m 171 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 172 |\u001b[39m     \u001b[36mawait\u001b[39m expect(operatorsPanel)\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m5000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 173 |\u001b[39m\n \u001b[90m 174 |\u001b[39m     \u001b[36mconst\u001b[39m operatorItems \u001b[33m=\u001b[39m operatorsPanel\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"operator-item\"]'\u001b[39m)\u001b[33m.\u001b[39mor(\n \u001b[90m 175 |\u001b[39m       operatorsPanel\u001b[33m.\u001b[39mlocator(\u001b[32m'.operator, .operator-item, [role=\"listitem\"]'\u001b[39m)\u001b[0m"
+                        "snippet": "\u001b[0m \u001b[90m 177 |\u001b[39m\n \u001b[90m 178 |\u001b[39m     \u001b[36mconst\u001b[39m count \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m operatorItems\u001b[33m.\u001b[39mcount()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 179 |\u001b[39m     expect(count)\u001b[33m.\u001b[39mtoBeGreaterThan(\u001b[35m0\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 180 |\u001b[39m     \u001b[36mawait\u001b[39m expect(operatorItems\u001b[33m.\u001b[39mfirst())\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 181 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 182 |\u001b[39m\u001b[0m"
                       },
                       "errors": [
                         {
                           "location": {
                             "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts",
-                            "column": 34,
-                            "line": 172
+                            "column": 19,
+                            "line": 179
                           },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"operators-panel\"]').or(locator('h2, h3').filter({ hasText: /operators/i }).locator('..').locator('..').first())\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"operators-panel\"]').or(locator('h2, h3').filter({ hasText: /operators/i }).locator('..').locator('..').first())\u001b[22m\n\n\n  170 |     );\n  171 |\n> 172 |     await expect(operatorsPanel).toBeVisible({ timeout: 5000 });\n      |                                  ^\n  173 |\n  174 |     const operatorItems = operatorsPanel.locator('[data-testid=\"operator-item\"]').or(\n  175 |       operatorsPanel.locator('.operator, .operator-item, [role=\"listitem\"]')\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts:172:34"
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n\n  177 |\n  178 |     const count = await operatorItems.count();\n> 179 |     expect(count).toBeGreaterThan(0);\n      |                   ^\n  180 |     await expect(operatorItems.first()).toBeVisible();\n  181 |   });\n  182 |\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts:179:19"
                         }
                       ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T04:08:09.134Z",
+                      "startTime": "2025-11-20T04:51:04.482Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -627,8 +507,8 @@
                       ],
                       "errorLocation": {
                         "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts",
-                        "column": 34,
-                        "line": 172
+                        "column": 19,
+                        "line": 179
                       }
                     }
                   ],
@@ -657,34 +537,34 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 4,
-                      "parallelIndex": 1,
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
                       "status": "failed",
-                      "duration": 7719,
+                      "duration": 2466,
                       "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"kits-panel\"]').or(locator('h2, h3').filter({ hasText: /kits/i }).locator('..').locator('..').first())\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"kits-panel\"]').or(locator('h2, h3').filter({ hasText: /kits/i }).locator('..').locator('..').first())\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"kits-panel\"]').or(locator('h2, h3').filter({ hasText: /kits/i }).locator('..').locator('..').first())\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"kits-panel\"]').or(locator('h2, h3').filter({ hasText: /kits/i }).locator('..').locator('..').first())\u001b[22m\n\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts:188:29",
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts:195:19",
                         "location": {
                           "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts",
-                          "column": 29,
-                          "line": 188
+                          "column": 19,
+                          "line": 195
                         },
-                        "snippet": "\u001b[0m \u001b[90m 186 |\u001b[39m     )\u001b[33m;\u001b[39m\n \u001b[90m 187 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 188 |\u001b[39m     \u001b[36mawait\u001b[39m expect(kitsPanel)\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m5000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 189 |\u001b[39m\n \u001b[90m 190 |\u001b[39m     \u001b[36mconst\u001b[39m kitItems \u001b[33m=\u001b[39m kitsPanel\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"kit-item\"]'\u001b[39m)\u001b[33m.\u001b[39mor(\n \u001b[90m 191 |\u001b[39m       kitsPanel\u001b[33m.\u001b[39mlocator(\u001b[32m'.kit, .kit-item, [role=\"listitem\"]'\u001b[39m)\u001b[0m"
+                        "snippet": "\u001b[0m \u001b[90m 193 |\u001b[39m\n \u001b[90m 194 |\u001b[39m     \u001b[36mconst\u001b[39m count \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m kitItems\u001b[33m.\u001b[39mcount()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 195 |\u001b[39m     expect(count)\u001b[33m.\u001b[39mtoBeGreaterThan(\u001b[35m0\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 196 |\u001b[39m\n \u001b[90m 197 |\u001b[39m     \u001b[36mconst\u001b[39m firstKit \u001b[33m=\u001b[39m kitItems\u001b[33m.\u001b[39mfirst()\u001b[33m;\u001b[39m\n \u001b[90m 198 |\u001b[39m     \u001b[36mawait\u001b[39m expect(firstKit)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\u001b[0m"
                       },
                       "errors": [
                         {
                           "location": {
                             "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts",
-                            "column": 29,
-                            "line": 188
+                            "column": 19,
+                            "line": 195
                           },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"kits-panel\"]').or(locator('h2, h3').filter({ hasText: /kits/i }).locator('..').locator('..').first())\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"kits-panel\"]').or(locator('h2, h3').filter({ hasText: /kits/i }).locator('..').locator('..').first())\u001b[22m\n\n\n  186 |     );\n  187 |\n> 188 |     await expect(kitsPanel).toBeVisible({ timeout: 5000 });\n      |                             ^\n  189 |\n  190 |     const kitItems = kitsPanel.locator('[data-testid=\"kit-item\"]').or(\n  191 |       kitsPanel.locator('.kit, .kit-item, [role=\"listitem\"]')\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts:188:29"
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n\n  193 |\n  194 |     const count = await kitItems.count();\n> 195 |     expect(count).toBeGreaterThan(0);\n      |                   ^\n  196 |\n  197 |     const firstKit = kitItems.first();\n  198 |     await expect(firstKit).toBeVisible();\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts:195:19"
                         }
                       ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T04:08:11.925Z",
+                      "startTime": "2025-11-20T04:51:06.614Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -705,8 +585,8 @@
                       ],
                       "errorLocation": {
                         "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\01-planning-calendar.spec.ts",
-                        "column": 29,
-                        "line": 188
+                        "column": 19,
+                        "line": 195
                       }
                     }
                   ],
@@ -735,15 +615,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 5,
-                      "parallelIndex": 0,
+                      "workerIndex": 2,
+                      "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 2326,
+                      "duration": 2380,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T04:08:17.982Z",
+                      "startTime": "2025-11-20T04:51:08.294Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -773,15 +653,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 6,
-                      "parallelIndex": 1,
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2349,
+                      "duration": 2361,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T04:08:20.918Z",
+                      "startTime": "2025-11-20T04:51:10.310Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -828,15 +708,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 5,
-                      "parallelIndex": 0,
+                      "workerIndex": 2,
+                      "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 3055,
+                      "duration": 2351,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T04:08:20.437Z",
+                      "startTime": "2025-11-20T04:51:10.824Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -866,15 +746,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 6,
-                      "parallelIndex": 1,
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2464,
+                      "duration": 2334,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T04:08:23.429Z",
+                      "startTime": "2025-11-20T04:51:12.806Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -904,15 +784,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 5,
-                      "parallelIndex": 0,
+                      "workerIndex": 2,
+                      "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 2219,
+                      "duration": 2343,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T04:08:23.518Z",
+                      "startTime": "2025-11-20T04:51:13.202Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -942,15 +822,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 5,
+                      "workerIndex": 3,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2678,
+                      "duration": 2335,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T04:08:25.765Z",
+                      "startTime": "2025-11-20T04:51:15.163Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -980,15 +860,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 6,
+                      "workerIndex": 2,
                       "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 2625,
+                      "duration": 2326,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T04:08:25.917Z",
+                      "startTime": "2025-11-20T04:51:15.571Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1018,15 +898,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 5,
+                      "workerIndex": 3,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2226,
+                      "duration": 2313,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T04:08:28.480Z",
+                      "startTime": "2025-11-20T04:51:17.526Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1056,15 +936,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 6,
+                      "workerIndex": 2,
                       "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 2359,
+                      "duration": 2506,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T04:08:28.571Z",
+                      "startTime": "2025-11-20T04:51:17.917Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1094,15 +974,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 5,
+                      "workerIndex": 3,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2219,
+                      "duration": 2416,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T04:08:30.726Z",
+                      "startTime": "2025-11-20T04:51:19.871Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1132,15 +1012,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 6,
+                      "workerIndex": 2,
                       "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 2218,
+                      "duration": 2462,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T04:08:30.950Z",
+                      "startTime": "2025-11-20T04:51:20.443Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1170,15 +1050,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 5,
+                      "workerIndex": 3,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2486,
+                      "duration": 2307,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T04:08:32.966Z",
+                      "startTime": "2025-11-20T04:51:22.306Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1190,6 +1070,1049 @@
               "file": "02-event-detail-modal.spec.ts",
               "line": 328,
               "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "03-kit-creation-modal.spec.ts",
+      "file": "03-kit-creation-modal.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Kit Creation Modal @p1 @kit-creation",
+          "file": "03-kit-creation-modal.spec.ts",
+          "line": 9,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-KIT-001: Verify kit creation modal opens at 80% screen width",
+              "ok": false,
+              "tags": [
+                "p1",
+                "kit-creation"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 3106,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m70\u001b[39m\nReceived:   \u001b[31m36.45833333333333\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m70\u001b[39m\nReceived:   \u001b[31m36.45833333333333\u001b[39m\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts:45:31",
+                        "location": {
+                          "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts",
+                          "column": 31,
+                          "line": 45
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 43 |\u001b[39m     \u001b[36mif\u001b[39m (modalBox \u001b[33m&&\u001b[39m viewportSize) {\n \u001b[90m 44 |\u001b[39m       \u001b[36mconst\u001b[39m widthPercentage \u001b[33m=\u001b[39m (modalBox\u001b[33m.\u001b[39mwidth \u001b[33m/\u001b[39m viewportSize\u001b[33m.\u001b[39mwidth) \u001b[33m*\u001b[39m \u001b[35m100\u001b[39m\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 45 |\u001b[39m       expect(widthPercentage)\u001b[33m.\u001b[39mtoBeGreaterThan(\u001b[35m70\u001b[39m)\u001b[33m;\u001b[39m \u001b[90m// At least 70% (allowing some margin)\u001b[39m\n \u001b[90m    |\u001b[39m                               \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 46 |\u001b[39m       expect(widthPercentage)\u001b[33m.\u001b[39mtoBeLessThan(\u001b[35m90\u001b[39m)\u001b[33m;\u001b[39m \u001b[90m// At most 90%\u001b[39m\n \u001b[90m 47 |\u001b[39m     }\n \u001b[90m 48 |\u001b[39m   })\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts",
+                            "column": 31,
+                            "line": 45
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m70\u001b[39m\nReceived:   \u001b[31m36.45833333333333\u001b[39m\n\n  43 |     if (modalBox && viewportSize) {\n  44 |       const widthPercentage = (modalBox.width / viewportSize.width) * 100;\n> 45 |       expect(widthPercentage).toBeGreaterThan(70); // At least 70% (allowing some margin)\n     |                               ^\n  46 |       expect(widthPercentage).toBeLessThan(90); // At most 90%\n  47 |     }\n  48 |   });\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts:45:31"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:51:22.936Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\03-kit-creation-modal-Kit--298d2-al-opens-at-80-screen-width-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\03-kit-creation-modal-Kit--298d2-al-opens-at-80-screen-width-chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\03-kit-creation-modal-Kit--298d2-al-opens-at-80-screen-width-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts",
+                        "column": 31,
+                        "line": 45
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "b92f4ed6ca32be6d9356-dbe46f2419cccafc9292",
+              "file": "03-kit-creation-modal.spec.ts",
+              "line": 27,
+              "column": 7
+            },
+            {
+              "title": "TC-KIT-002: Verify step indicator shows 3 steps with Step 1 active",
+              "ok": false,
+              "tags": [
+                "p1",
+                "kit-creation"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 8185,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=\"Kit Info\"').or(locator('[data-testid=\"step-kit-info\"]')).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=\"Kit Info\"').or(locator('[data-testid=\"step-kit-info\"]')).first()\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=\"Kit Info\"').or(locator('[data-testid=\"step-kit-info\"]')).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=\"Kit Info\"').or(locator('[data-testid=\"step-kit-info\"]')).first()\u001b[22m\n\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts:70:34",
+                        "location": {
+                          "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts",
+                          "column": 34,
+                          "line": 70
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 68 |\u001b[39m         page\u001b[33m.\u001b[39mlocator(\u001b[32m`[data-testid=\"step-${stepName.toLowerCase().replace(/\\s+/g, '-')}\"]`\u001b[39m)\n \u001b[90m 69 |\u001b[39m       )\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 70 |\u001b[39m       \u001b[36mawait\u001b[39m expect(step\u001b[33m.\u001b[39mfirst())\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m5000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 71 |\u001b[39m     }\n \u001b[90m 72 |\u001b[39m\n \u001b[90m 73 |\u001b[39m     \u001b[90m// Verify Step 1 is active (might have active class or aria-current)\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts",
+                            "column": 34,
+                            "line": 70
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=\"Kit Info\"').or(locator('[data-testid=\"step-kit-info\"]')).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=\"Kit Info\"').or(locator('[data-testid=\"step-kit-info\"]')).first()\u001b[22m\n\n\n  68 |         page.locator(`[data-testid=\"step-${stepName.toLowerCase().replace(/\\s+/g, '-')}\"]`)\n  69 |       );\n> 70 |       await expect(step.first()).toBeVisible({ timeout: 5000 });\n     |                                  ^\n  71 |     }\n  72 |\n  73 |     // Verify Step 1 is active (might have active class or aria-current)\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts:70:34"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:51:24.635Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\03-kit-creation-modal-Kit--43f60--3-steps-with-Step-1-active-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\03-kit-creation-modal-Kit--43f60--3-steps-with-Step-1-active-chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\03-kit-creation-modal-Kit--43f60--3-steps-with-Step-1-active-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts",
+                        "column": 34,
+                        "line": 70
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "b92f4ed6ca32be6d9356-00fba467bc826579cced",
+              "file": "03-kit-creation-modal.spec.ts",
+              "line": 54,
+              "column": 7
+            },
+            {
+              "title": "TC-KIT-003: Verify event-type suggestions banner appears",
+              "ok": true,
+              "tags": [
+                "p1",
+                "kit-creation"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3019,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:51:27.232Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b92f4ed6ca32be6d9356-828776f1b3fe6ecca5c0",
+              "file": "03-kit-creation-modal.spec.ts",
+              "line": 85,
+              "column": 7
+            },
+            {
+              "title": "TC-KIT-004: Verify 9 gear category tabs are visible",
+              "ok": false,
+              "tags": [
+                "p1",
+                "kit-creation"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 3065,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m6\u001b[39m\nReceived:    \u001b[31m0\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m6\u001b[39m\nReceived:    \u001b[31m0\u001b[39m\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts:152:31",
+                        "location": {
+                          "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts",
+                          "column": 31,
+                          "line": 152
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 150 |\u001b[39m\n \u001b[90m 151 |\u001b[39m     \u001b[90m// Verify at least 6 categories are visible (some might be collapsed or in dropdown)\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 152 |\u001b[39m     expect(visibleCategories)\u001b[33m.\u001b[39mtoBeGreaterThanOrEqual(\u001b[35m6\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                               \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 153 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 154 |\u001b[39m\n \u001b[90m 155 |\u001b[39m   \u001b[90m/**\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts",
+                            "column": 31,
+                            "line": 152
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m6\u001b[39m\nReceived:    \u001b[31m0\u001b[39m\n\n  150 |\n  151 |     // Verify at least 6 categories are visible (some might be collapsed or in dropdown)\n> 152 |     expect(visibleCategories).toBeGreaterThanOrEqual(6);\n      |                               ^\n  153 |   });\n  154 |\n  155 |   /**\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts:152:31"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:51:30.380Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\03-kit-creation-modal-Kit--f517e-r-category-tabs-are-visible-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\03-kit-creation-modal-Kit--f517e-r-category-tabs-are-visible-chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\03-kit-creation-modal-Kit--f517e-r-category-tabs-are-visible-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\03-kit-creation-modal.spec.ts",
+                        "column": 31,
+                        "line": 152
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "b92f4ed6ca32be6d9356-ca28b3d7b07fe1dbf1e1",
+              "file": "03-kit-creation-modal.spec.ts",
+              "line": 114,
+              "column": 7
+            },
+            {
+              "title": "TC-KIT-005: Verify gear checkboxes display with availability status",
+              "ok": true,
+              "tags": [
+                "p1",
+                "kit-creation"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3031,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:51:34.062Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b92f4ed6ca32be6d9356-f086c2933eedd07a5ddd",
+              "file": "03-kit-creation-modal.spec.ts",
+              "line": 158,
+              "column": 7
+            },
+            {
+              "title": "TC-KIT-006: Verify dependency reminders suggest but allow proceeding",
+              "ok": true,
+              "tags": [
+                "p1",
+                "kit-creation"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3525,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:51:34.694Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b92f4ed6ca32be6d9356-c6d6b475f827cd9e2d36",
+              "file": "03-kit-creation-modal.spec.ts",
+              "line": 189,
+              "column": 7
+            },
+            {
+              "title": "TC-KIT-007: Verify Link to Event checkbox assigns kit immediately",
+              "ok": true,
+              "tags": [
+                "p1",
+                "kit-creation"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2843,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:51:37.232Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b92f4ed6ca32be6d9356-24a37b202cd634c62e35",
+              "file": "03-kit-creation-modal.spec.ts",
+              "line": 234,
+              "column": 7
+            },
+            {
+              "title": "TC-KIT-008: Verify quick stats update in real-time",
+              "ok": true,
+              "tags": [
+                "p1",
+                "kit-creation"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3331,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:51:38.387Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b92f4ed6ca32be6d9356-df45b292cc697f736f30",
+              "file": "03-kit-creation-modal.spec.ts",
+              "line": 258,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "04-gear-inventory.spec.ts",
+      "file": "04-gear-inventory.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Gear Inventory Page @p1 @gear",
+          "file": "04-gear-inventory.spec.ts",
+          "line": 9,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-GEAR-001: Verify gear table displays items with status",
+              "ok": true,
+              "tags": [
+                "p1",
+                "gear"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3008,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:51:40.102Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "86369bec4f8681257407-34dc4c084fb6fd03713d",
+              "file": "04-gear-inventory.spec.ts",
+              "line": 20,
+              "column": 7
+            },
+            {
+              "title": "TC-GEAR-002: Verify Category column displays gear categories",
+              "ok": true,
+              "tags": [
+                "p1",
+                "gear"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2805,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:51:41.744Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "86369bec4f8681257407-fd963987419a5369aaa7",
+              "file": "04-gear-inventory.spec.ts",
+              "line": 45,
+              "column": 7
+            },
+            {
+              "title": "TC-GEAR-003: Verify search filters gear table",
+              "ok": true,
+              "tags": [
+                "p1",
+                "gear"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "location": {
+                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\04-gear-inventory.spec.ts",
+                        "line": 85,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:51:43.136Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "86369bec4f8681257407-30eaee0955b628292cd4",
+              "file": "04-gear-inventory.spec.ts",
+              "line": 85,
+              "column": 8
+            },
+            {
+              "title": "TC-GEAR-004: Verify status filter applies correctly",
+              "ok": true,
+              "tags": [
+                "p1",
+                "gear"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2192,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:51:43.137Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "86369bec4f8681257407-efc49a4942262d276954",
+              "file": "04-gear-inventory.spec.ts",
+              "line": 115,
+              "column": 7
+            },
+            {
+              "title": "TC-GEAR-005: Verify dependency tooltips on hover",
+              "ok": true,
+              "tags": [
+                "p1",
+                "gear"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2113,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:51:44.586Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "86369bec4f8681257407-14dd0a2b2655891532f9",
+              "file": "04-gear-inventory.spec.ts",
+              "line": 153,
+              "column": 7
+            },
+            {
+              "title": "TC-GEAR-006: Verify current event links are clickable",
+              "ok": true,
+              "tags": [
+                "p1",
+                "gear"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2573,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:51:45.355Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "86369bec4f8681257407-0c1a5363def823ce310c",
+              "file": "04-gear-inventory.spec.ts",
+              "line": 180,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "05-dashboard.spec.ts",
+      "file": "05-dashboard.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Dashboard Page @p1 @dashboard",
+          "file": "05-dashboard.spec.ts",
+          "line": 9,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-DASH-001: Verify 6 widget types render correctly",
+              "ok": true,
+              "tags": [
+                "p1",
+                "dashboard"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2340,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:51:46.721Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "15664880665903ff2434-d846422c9b7434bdde49",
+              "file": "05-dashboard.spec.ts",
+              "line": 20,
+              "column": 7
+            },
+            {
+              "title": "TC-DASH-002: Verify Event Pipeline widget displays",
+              "ok": true,
+              "tags": [
+                "p1",
+                "dashboard"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2410,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:51:47.952Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "15664880665903ff2434-310f1afa8134fe6b32c4",
+              "file": "05-dashboard.spec.ts",
+              "line": 61,
+              "column": 7
+            },
+            {
+              "title": "TC-DASH-003: Verify Revenue Overview widget exists",
+              "ok": true,
+              "tags": [
+                "p1",
+                "dashboard"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2318,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:51:49.082Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "15664880665903ff2434-7d892ff070235424e803",
+              "file": "05-dashboard.spec.ts",
+              "line": 75,
+              "column": 7
+            },
+            {
+              "title": "TC-DASH-004: Verify Customize Dashboard button opens modal",
+              "ok": true,
+              "tags": [
+                "p1",
+                "dashboard"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2617,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:51:50.383Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "15664880665903ff2434-cdf96f879f6d135800e2",
+              "file": "05-dashboard.spec.ts",
+              "line": 89,
+              "column": 7
+            },
+            {
+              "title": "TC-DASH-005: Verify widget customization modal displays checkboxes with descriptions",
+              "ok": false,
+              "tags": [
+                "p1",
+                "dashboard"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 2722,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mnot\u001b[2m.\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: not \u001b[32mtrue\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mnot\u001b[2m.\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: not \u001b[32mtrue\u001b[39m\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\05-dashboard.spec.ts:134:26",
+                        "location": {
+                          "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\05-dashboard.spec.ts",
+                          "column": 26,
+                          "line": 134
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 132 |\u001b[39m     \u001b[36mawait\u001b[39m firstCheckbox\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m 133 |\u001b[39m     \u001b[36mconst\u001b[39m newState \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m firstCheckbox\u001b[33m.\u001b[39misChecked()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 134 |\u001b[39m     expect(newState)\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoBe(initialState)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                          \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 135 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 136 |\u001b[39m\n \u001b[90m 137 |\u001b[39m   \u001b[90m/**\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\05-dashboard.spec.ts",
+                            "column": 26,
+                            "line": 134
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mnot\u001b[2m.\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: not \u001b[32mtrue\u001b[39m\n\n  132 |     await firstCheckbox.click();\n  133 |     const newState = await firstCheckbox.isChecked();\n> 134 |     expect(newState).not.toBe(initialState);\n      |                          ^\n  135 |   });\n  136 |\n  137 |   /**\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\05-dashboard.spec.ts:134:26"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:51:51.421Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\05-dashboard-Dashboard-Pag-c044b-heckboxes-with-descriptions-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\05-dashboard-Dashboard-Pag-c044b-heckboxes-with-descriptions-chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\05-dashboard-Dashboard-Pag-c044b-heckboxes-with-descriptions-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\05-dashboard.spec.ts",
+                        "column": 26,
+                        "line": 134
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "15664880665903ff2434-3063021340e5efc5e12d",
+              "file": "05-dashboard.spec.ts",
+              "line": 110,
+              "column": 7
+            },
+            {
+              "title": "TC-DASH-006: Verify widget containers exist",
+              "ok": true,
+              "tags": [
+                "p1",
+                "dashboard"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2388,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:51:53.022Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "15664880665903ff2434-f432117d547c4435b065",
+              "file": "05-dashboard.spec.ts",
+              "line": 141,
+              "column": 7
+            },
+            {
+              "title": "TC-DASH-007: Verify modular grid layout with different widget sizes",
+              "ok": true,
+              "tags": [
+                "p1",
+                "dashboard"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2906,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:51:55.253Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "15664880665903ff2434-13297a6abfcf18cc9189",
+              "file": "05-dashboard.spec.ts",
+              "line": 161,
+              "column": 7
+            },
+            {
+              "title": "TC-DASH-008: Verify drag-and-drop widget reordering",
+              "ok": true,
+              "tags": [
+                "p1",
+                "dashboard"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "location": {
+                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\05-dashboard.spec.ts",
+                        "line": 178,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:51:55.430Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "15664880665903ff2434-95a365407e1e972f1bb6",
+              "file": "05-dashboard.spec.ts",
+              "line": 178,
+              "column": 8
             }
           ]
         }
@@ -1225,15 +2148,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 6,
-                      "parallelIndex": 1,
+                      "workerIndex": 5,
+                      "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2112,
+                      "duration": 2649,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T04:08:33.192Z",
+                      "startTime": "2025-11-20T04:51:55.438Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1263,15 +2186,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 6,
-                      "parallelIndex": 1,
+                      "workerIndex": 5,
+                      "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2214,
+                      "duration": 2145,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T04:08:35.329Z",
+                      "startTime": "2025-11-20T04:51:58.109Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1301,15 +2224,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 5,
-                      "parallelIndex": 0,
+                      "workerIndex": 7,
+                      "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 2158,
+                      "duration": 2188,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T04:08:35.481Z",
+                      "startTime": "2025-11-20T04:51:58.324Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1339,15 +2262,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 6,
-                      "parallelIndex": 1,
+                      "workerIndex": 5,
+                      "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2161,
+                      "duration": 2140,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T04:08:37.561Z",
+                      "startTime": "2025-11-20T04:52:00.273Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1377,15 +2300,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 5,
-                      "parallelIndex": 0,
+                      "workerIndex": 7,
+                      "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 2165,
+                      "duration": 2449,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T04:08:37.663Z",
+                      "startTime": "2025-11-20T04:52:00.532Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1415,15 +2338,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 6,
-                      "parallelIndex": 1,
+                      "workerIndex": 5,
+                      "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2277,
+                      "duration": 2103,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T04:08:39.741Z",
+                      "startTime": "2025-11-20T04:52:02.432Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1453,15 +2376,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 5,
-                      "parallelIndex": 0,
+                      "workerIndex": 7,
+                      "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 2204,
+                      "duration": 2225,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T04:08:39.852Z",
+                      "startTime": "2025-11-20T04:52:03.009Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1491,15 +2414,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 6,
-                      "parallelIndex": 1,
+                      "workerIndex": 5,
+                      "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2235,
+                      "duration": 2189,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T04:08:42.040Z",
+                      "startTime": "2025-11-20T04:52:04.552Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1529,15 +2452,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 5,
-                      "parallelIndex": 0,
+                      "workerIndex": 7,
+                      "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 2122,
+                      "duration": 2151,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T04:08:42.074Z",
+                      "startTime": "2025-11-20T04:52:05.262Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1570,12 +2493,12 @@
                       "workerIndex": 5,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2135,
+                      "duration": 2246,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-20T04:08:44.219Z",
+                      "startTime": "2025-11-20T04:52:06.764Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1591,15 +2514,1442 @@
           ]
         }
       ]
+    },
+    {
+      "title": "integration-workflows.spec.ts",
+      "file": "integration-workflows.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Integration Workflows @p0 @critical @integration",
+          "file": "integration-workflows.spec.ts",
+          "line": 9,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-INTEG-001: Event creation to completion workflow",
+              "ok": true,
+              "tags": [
+                "p0",
+                "critical",
+                "integration"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2901,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:52:07.442Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "082d3ea7e44599e426a2-c4300c53d570f00cdac9",
+              "file": "integration-workflows.spec.ts",
+              "line": 14,
+              "column": 7
+            },
+            {
+              "title": "TC-INTEG-002: Conflict detection and resolution workflow",
+              "ok": true,
+              "tags": [
+                "p0",
+                "critical",
+                "integration"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "location": {
+                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\integration-workflows.spec.ts",
+                        "line": 105,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:52:09.028Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "082d3ea7e44599e426a2-7ea94b696504bbb2a215",
+              "file": "integration-workflows.spec.ts",
+              "line": 105,
+              "column": 8
+            },
+            {
+              "title": "TC-INTEG-003: Kit creation to event assignment workflow",
+              "ok": true,
+              "tags": [
+                "p0",
+                "critical",
+                "integration"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "location": {
+                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\integration-workflows.spec.ts",
+                        "line": 120,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:52:09.029Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "082d3ea7e44599e426a2-48535040e7469f035e92",
+              "file": "integration-workflows.spec.ts",
+              "line": 120,
+              "column": 8
+            },
+            {
+              "title": "TC-INTEG-004: Pipeline to proposal to event conversion",
+              "ok": true,
+              "tags": [
+                "p0",
+                "critical",
+                "integration"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "location": {
+                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\integration-workflows.spec.ts",
+                        "line": 134,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:52:09.029Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "082d3ea7e44599e426a2-85bad2a8d1c1f6904234",
+              "file": "integration-workflows.spec.ts",
+              "line": 134,
+              "column": 8
+            },
+            {
+              "title": "TC-INTEG-005: Communication lifecycle workflow",
+              "ok": true,
+              "tags": [
+                "p0",
+                "critical",
+                "integration"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2349,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:52:09.032Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "082d3ea7e44599e426a2-2bb99530f06cf8ce9f3b",
+              "file": "integration-workflows.spec.ts",
+              "line": 149,
+              "column": 7
+            },
+            {
+              "title": "TC-INTEG-006: Multi-tenant data isolation",
+              "ok": true,
+              "tags": [
+                "p0",
+                "critical",
+                "integration"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "location": {
+                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\integration-workflows.spec.ts",
+                        "line": 186,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:52:10.367Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "082d3ea7e44599e426a2-fb5609890b93832d33fe",
+              "file": "integration-workflows.spec.ts",
+              "line": 186,
+              "column": 8
+            },
+            {
+              "title": "TC-INTEG-007: Dashboard customization persistence",
+              "ok": false,
+              "tags": [
+                "p0",
+                "critical",
+                "integration"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 4874,
+                      "error": {
+                        "message": "Error: locator.check: Clicking the checkbox did not change its state\nCall log:\n\u001b[2m  - waiting for locator('[role=\"dialog\"]').first().locator('input[type=\"checkbox\"]').first()\u001b[22m\n\u001b[2m    - locator resolved to <input type=\"checkbox\" class=\"w-4 h-4 rounded border-slate-600 bg-slate-700 text-green-600 focus:ring-green-500 focus:ring-offset-slate-900\"/>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - performing click action\u001b[22m\n\u001b[2m    - click action done\u001b[22m\n\u001b[2m    - waiting for scheduled navigations to finish\u001b[22m\n\u001b[2m    - navigations have finished\u001b[22m\n",
+                        "stack": "Error: locator.check: Clicking the checkbox did not change its state\nCall log:\n\u001b[2m  - waiting for locator('[role=\"dialog\"]').first().locator('input[type=\"checkbox\"]').first()\u001b[22m\n\u001b[2m    - locator resolved to <input type=\"checkbox\" class=\"w-4 h-4 rounded border-slate-600 bg-slate-700 text-green-600 focus:ring-green-500 focus:ring-offset-slate-900\"/>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - performing click action\u001b[22m\n\u001b[2m    - click action done\u001b[22m\n\u001b[2m    - waiting for scheduled navigations to finish\u001b[22m\n\u001b[2m    - navigations have finished\u001b[22m\n\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\integration-workflows.spec.ts:232:33",
+                        "location": {
+                          "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\integration-workflows.spec.ts",
+                          "column": 33,
+                          "line": 232
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 230 |\u001b[39m             \u001b[36mawait\u001b[39m firstCheckbox\u001b[33m.\u001b[39muncheck()\u001b[33m;\u001b[39m\n \u001b[90m 231 |\u001b[39m           } \u001b[36melse\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 232 |\u001b[39m             \u001b[36mawait\u001b[39m firstCheckbox\u001b[33m.\u001b[39mcheck()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                 \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 233 |\u001b[39m           }\n \u001b[90m 234 |\u001b[39m\n \u001b[90m 235 |\u001b[39m           \u001b[90m// Save changes\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\integration-workflows.spec.ts",
+                            "column": 33,
+                            "line": 232
+                          },
+                          "message": "Error: locator.check: Clicking the checkbox did not change its state\nCall log:\n\u001b[2m  - waiting for locator('[role=\"dialog\"]').first().locator('input[type=\"checkbox\"]').first()\u001b[22m\n\u001b[2m    - locator resolved to <input type=\"checkbox\" class=\"w-4 h-4 rounded border-slate-600 bg-slate-700 text-green-600 focus:ring-green-500 focus:ring-offset-slate-900\"/>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - performing click action\u001b[22m\n\u001b[2m    - click action done\u001b[22m\n\u001b[2m    - waiting for scheduled navigations to finish\u001b[22m\n\u001b[2m    - navigations have finished\u001b[22m\n\n\n  230 |             await firstCheckbox.uncheck();\n  231 |           } else {\n> 232 |             await firstCheckbox.check();\n      |                                 ^\n  233 |           }\n  234 |\n  235 |           // Save changes\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\integration-workflows.spec.ts:232:33"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:52:10.362Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\integration-workflows-Inte-49aa1-d-customization-persistence-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\integration-workflows-Inte-49aa1-d-customization-persistence-chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\integration-workflows-Inte-49aa1-d-customization-persistence-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\integration-workflows.spec.ts",
+                        "column": 33,
+                        "line": 232
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "082d3ea7e44599e426a2-158f9f873f79a35eb680",
+              "file": "integration-workflows.spec.ts",
+              "line": 202,
+              "column": 7
+            },
+            {
+              "title": "TC-INTEG-008: Operator availability to assignment workflow",
+              "ok": true,
+              "tags": [
+                "p0",
+                "critical",
+                "integration"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "location": {
+                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\integration-workflows.spec.ts",
+                        "line": 266,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:52:11.398Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "082d3ea7e44599e426a2-0d31c6575011c36fac74",
+              "file": "integration-workflows.spec.ts",
+              "line": 266,
+              "column": 8
+            }
+          ]
+        },
+        {
+          "title": "Navigation Tests @smoke",
+          "file": "integration-workflows.spec.ts",
+          "line": 283,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Navigate to Dashboard page",
+              "ok": false,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 3494,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeFalsy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mtrue\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeFalsy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mtrue\u001b[39m\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\integration-workflows.spec.ts:310:24",
+                        "location": {
+                          "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\integration-workflows.spec.ts",
+                          "column": 24,
+                          "line": 310
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 308 |\u001b[39m       \u001b[90m// Verify no critical errors\u001b[39m\n \u001b[90m 309 |\u001b[39m       \u001b[36mconst\u001b[39m hasError \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=/error|something went wrong|404|500/i'\u001b[39m)\u001b[33m.\u001b[39mcount() \u001b[33m>\u001b[39m \u001b[35m0\u001b[39m\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 310 |\u001b[39m       expect(hasError)\u001b[33m.\u001b[39mtoBeFalsy()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 311 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 312 |\u001b[39m   }\n \u001b[90m 313 |\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\integration-workflows.spec.ts",
+                            "column": 24,
+                            "line": 310
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeFalsy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mtrue\u001b[39m\n\n  308 |       // Verify no critical errors\n  309 |       const hasError = await page.locator('text=/error|something went wrong|404|500/i').count() > 0;\n> 310 |       expect(hasError).toBeFalsy();\n      |                        ^\n  311 |     });\n  312 |   }\n  313 |\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\integration-workflows.spec.ts:310:24"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:52:11.398Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\integration-workflows-Navi-2017e--Navigate-to-Dashboard-page-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\integration-workflows-Navi-2017e--Navigate-to-Dashboard-page-chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\integration-workflows-Navi-2017e--Navigate-to-Dashboard-page-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\integration-workflows.spec.ts",
+                        "column": 24,
+                        "line": 310
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "082d3ea7e44599e426a2-8e8b2596ccbcf2c76266",
+              "file": "integration-workflows.spec.ts",
+              "line": 298,
+              "column": 9
+            },
+            {
+              "title": "Navigate to Planning page",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2334,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:52:16.081Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "082d3ea7e44599e426a2-afb6619c3270024e99ab",
+              "file": "integration-workflows.spec.ts",
+              "line": 298,
+              "column": 9
+            },
+            {
+              "title": "Navigate to Pipeline page",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 9,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2378,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:52:16.441Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "082d3ea7e44599e426a2-bef2f40698bb2847e18d",
+              "file": "integration-workflows.spec.ts",
+              "line": 298,
+              "column": 9
+            },
+            {
+              "title": "Navigate to Gear Inventory page",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2358,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:52:18.530Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "082d3ea7e44599e426a2-ab9f7a938bc693bda5a4",
+              "file": "integration-workflows.spec.ts",
+              "line": 298,
+              "column": 9
+            },
+            {
+              "title": "Navigate to Operators page",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 9,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2277,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:52:18.944Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "082d3ea7e44599e426a2-a8dcf585a1c5cf34cdb8",
+              "file": "integration-workflows.spec.ts",
+              "line": 298,
+              "column": 9
+            },
+            {
+              "title": "Navigate to Deliverables page",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2431,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:52:20.908Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "082d3ea7e44599e426a2-dea968f20be93b6c044e",
+              "file": "integration-workflows.spec.ts",
+              "line": 298,
+              "column": 9
+            },
+            {
+              "title": "Navigate to Communications page",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 9,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2102,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:52:21.242Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "082d3ea7e44599e426a2-a69b3870e1966da6bc98",
+              "file": "integration-workflows.spec.ts",
+              "line": 298,
+              "column": 9
+            },
+            {
+              "title": "Navigate to Files & Assets page",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2228,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:52:23.363Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "082d3ea7e44599e426a2-60411e0c7c6f07ba9c16",
+              "file": "integration-workflows.spec.ts",
+              "line": 298,
+              "column": 9
+            },
+            {
+              "title": "Navigate to Reports page",
+              "ok": false,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 9,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 2695,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeFalsy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mtrue\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeFalsy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mtrue\u001b[39m\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\integration-workflows.spec.ts:310:24",
+                        "location": {
+                          "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\integration-workflows.spec.ts",
+                          "column": 24,
+                          "line": 310
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 308 |\u001b[39m       \u001b[90m// Verify no critical errors\u001b[39m\n \u001b[90m 309 |\u001b[39m       \u001b[36mconst\u001b[39m hasError \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=/error|something went wrong|404|500/i'\u001b[39m)\u001b[33m.\u001b[39mcount() \u001b[33m>\u001b[39m \u001b[35m0\u001b[39m\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 310 |\u001b[39m       expect(hasError)\u001b[33m.\u001b[39mtoBeFalsy()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 311 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 312 |\u001b[39m   }\n \u001b[90m 313 |\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\integration-workflows.spec.ts",
+                            "column": 24,
+                            "line": 310
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeFalsy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mtrue\u001b[39m\n\n  308 |       // Verify no critical errors\n  309 |       const hasError = await page.locator('text=/error|something went wrong|404|500/i').count() > 0;\n> 310 |       expect(hasError).toBeFalsy();\n      |                        ^\n  311 |     });\n  312 |   }\n  313 |\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\integration-workflows.spec.ts:310:24"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:52:23.372Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\integration-workflows-Navi-07591-ke-Navigate-to-Reports-page-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\integration-workflows-Navi-07591-ke-Navigate-to-Reports-page-chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\integration-workflows-Navi-07591-ke-Navigate-to-Reports-page-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\integration-workflows.spec.ts",
+                        "column": 24,
+                        "line": 310
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "082d3ea7e44599e426a2-13c696154150e87eea61",
+              "file": "integration-workflows.spec.ts",
+              "line": 298,
+              "column": 9
+            },
+            {
+              "title": "Navigate to Settings page",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2559,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:52:25.624Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "082d3ea7e44599e426a2-a33433d4e48e35ff6613",
+              "file": "integration-workflows.spec.ts",
+              "line": 298,
+              "column": 9
+            },
+            {
+              "title": "Verify all navigation links functional",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 10,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3068,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:52:27.288Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "082d3ea7e44599e426a2-88c49c8f9aa67e994e6a",
+              "file": "integration-workflows.spec.ts",
+              "line": 314,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "performance.spec.ts",
+      "file": "performance.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Performance Tests @p2 @performance",
+          "file": "performance.spec.ts",
+          "line": 9,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-PERF-001: Dashboard loads in under 2 seconds",
+              "ok": true,
+              "tags": [
+                "p2",
+                "performance"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 749,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "Dashboard load time: 406ms\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:52:28.209Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b15d6361b2fc38288977-d0d08d2c6f85f772a84b",
+              "file": "performance.spec.ts",
+              "line": 13,
+              "column": 7
+            },
+            {
+              "title": "TC-PERF-001: Planning page loads in under 2 seconds",
+              "ok": true,
+              "tags": [
+                "p2",
+                "performance"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 902,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "Planning page load time: 424ms\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:52:28.997Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b15d6361b2fc38288977-4876745743f4c987e55c",
+              "file": "performance.spec.ts",
+              "line": 25,
+              "column": 7
+            },
+            {
+              "title": "TC-PERF-001: Pipeline page loads in under 2 seconds",
+              "ok": true,
+              "tags": [
+                "p2",
+                "performance"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 676,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "Pipeline page load time: 415ms\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:52:29.917Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b15d6361b2fc38288977-facd39705d4dd83c1eaf",
+              "file": "performance.spec.ts",
+              "line": 37,
+              "column": 7
+            },
+            {
+              "title": "TC-PERF-002: Dashboard time to interactive under 3 seconds",
+              "ok": true,
+              "tags": [
+                "p2",
+                "performance"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 10,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2269,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "Dashboard time to interactive: 2024ms\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:52:30.494Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b15d6361b2fc38288977-de929984e617a7d6d49a",
+              "file": "performance.spec.ts",
+              "line": 52,
+              "column": 7
+            },
+            {
+              "title": "TC-PERF-002: Planning page time to interactive under 3 seconds",
+              "ok": true,
+              "tags": [
+                "p2",
+                "performance"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2653,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "Planning page time to interactive: 2302ms\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:52:30.610Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b15d6361b2fc38288977-65adc2ee531782ff75f3",
+              "file": "performance.spec.ts",
+              "line": 70,
+              "column": 7
+            },
+            {
+              "title": "TC-PERF-003: Calendar renders quickly with multiple events",
+              "ok": true,
+              "tags": [
+                "p2",
+                "performance"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 10,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2760,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "Calendar render time: 210ms\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:52:32.785Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b15d6361b2fc38288977-24c1904b38c396558255",
+              "file": "performance.spec.ts",
+              "line": 91,
+              "column": 7
+            },
+            {
+              "title": "TC-PERF-004: Gear table sorts quickly",
+              "ok": true,
+              "tags": [
+                "p2",
+                "performance"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2620,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "No sortable columns found - test skipped\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:52:33.281Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b15d6361b2fc38288977-f146faa60660f56c602d",
+              "file": "performance.spec.ts",
+              "line": 119,
+              "column": 7
+            },
+            {
+              "title": "TC-PERF-004: Pipeline table sorts quickly",
+              "ok": true,
+              "tags": [
+                "p2",
+                "performance"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 10,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2708,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "Pipeline table sort time: 101ms\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:52:35.563Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b15d6361b2fc38288977-6b2840f9d2e47a0e6af9",
+              "file": "performance.spec.ts",
+              "line": 142,
+              "column": 7
+            },
+            {
+              "title": "TC-PERF-005: Gear search filters quickly",
+              "ok": false,
+              "tags": [
+                "p2",
+                "performance"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 7553,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('input[type=\"search\"], input[placeholder*=\"Search\" i]').first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('input[type=\"search\"], input[placeholder*=\"Search\" i]').first()\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('input[type=\"search\"], input[placeholder*=\"Search\" i]').first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('input[type=\"search\"], input[placeholder*=\"Search\" i]').first()\u001b[22m\n\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\performance.spec.ts:180:31",
+                        "location": {
+                          "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\performance.spec.ts",
+                          "column": 31,
+                          "line": 180
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 178 |\u001b[39m     \u001b[36mconst\u001b[39m searchInput \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'input[type=\"search\"], input[placeholder*=\"Search\" i]'\u001b[39m)\u001b[33m.\u001b[39mfirst()\u001b[33m;\u001b[39m\n \u001b[90m 179 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 180 |\u001b[39m     \u001b[36mawait\u001b[39m expect(searchInput)\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m5000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                               \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 181 |\u001b[39m\n \u001b[90m 182 |\u001b[39m     \u001b[36mconst\u001b[39m startTime \u001b[33m=\u001b[39m \u001b[33mDate\u001b[39m\u001b[33m.\u001b[39mnow()\u001b[33m;\u001b[39m\n \u001b[90m 183 |\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\performance.spec.ts",
+                            "column": 31,
+                            "line": 180
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('input[type=\"search\"], input[placeholder*=\"Search\" i]').first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('input[type=\"search\"], input[placeholder*=\"Search\" i]').first()\u001b[22m\n\n\n  178 |     const searchInput = page.locator('input[type=\"search\"], input[placeholder*=\"Search\" i]').first();\n  179 |\n> 180 |     await expect(searchInput).toBeVisible({ timeout: 5000 });\n      |                               ^\n  181 |\n  182 |     const startTime = Date.now();\n  183 |\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\performance.spec.ts:180:31"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:52:35.919Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\performance-Performance-Te-80e1b-Gear-search-filters-quickly-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\performance-Performance-Te-80e1b-Gear-search-filters-quickly-chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\performance-Performance-Te-80e1b-Gear-search-filters-quickly-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\performance.spec.ts",
+                        "column": 31,
+                        "line": 180
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "b15d6361b2fc38288977-c666a84527983593c46a",
+              "file": "performance.spec.ts",
+              "line": 173,
+              "column": 7
+            },
+            {
+              "title": "TC-PERF-005: Pipeline search filters quickly",
+              "ok": true,
+              "tags": [
+                "p2",
+                "performance"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 10,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2689,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "Pipeline search filter time: 397ms\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:52:38.288Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b15d6361b2fc38288977-f46e5437e474f774e7dc",
+              "file": "performance.spec.ts",
+              "line": 198,
+              "column": 7
+            },
+            {
+              "title": "PERF-EXTRA: Measure all page load times",
+              "ok": true,
+              "tags": [
+                "p2",
+                "performance"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 10,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2077,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "Dashboard: 417ms\n"
+                        },
+                        {
+                          "text": "Planning: 170ms\n"
+                        },
+                        {
+                          "text": "Pipeline: 208ms\n"
+                        },
+                        {
+                          "text": "Gear: 188ms\n"
+                        },
+                        {
+                          "text": "Operators: 138ms\n"
+                        },
+                        {
+                          "text": "Deliverables: 162ms\n"
+                        },
+                        {
+                          "text": "Communications: 162ms\n"
+                        },
+                        {
+                          "text": "Files: 140ms\n"
+                        },
+                        {
+                          "text": "Reports: 148ms\n"
+                        },
+                        {
+                          "text": "Settings: 129ms\n"
+                        },
+                        {
+                          "text": "Average load time: 186ms\n"
+                        },
+                        {
+                          "text": "Slowest page: Dashboard (417ms)\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-20T04:52:40.999Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b15d6361b2fc38288977-760044f57a9d10b37045",
+              "file": "performance.spec.ts",
+              "line": 220,
+              "column": 7
+            }
+          ]
+        }
+      ]
     }
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-11-20T04:07:47.206Z",
-    "duration": 59271.16499999999,
-    "expected": 27,
-    "skipped": 0,
-    "unexpected": 5,
+    "startTime": "2025-11-20T04:50:52.887Z",
+    "duration": 110776.831,
+    "expected": 67,
+    "skipped": 7,
+    "unexpected": 10,
     "flaky": 0
   }
 }

@@ -91,6 +91,7 @@ function DroppableCalendarDay({
   isCurrentMonth,
   isToday,
   getEventStatusColor,
+  getEventStatusShadow,
   getOperatorInitials,
   onEventClick,
 }: {
@@ -99,6 +100,7 @@ function DroppableCalendarDay({
   isCurrentMonth: boolean;
   isToday: boolean;
   getEventStatusColor: (status: string) => string;
+  getEventStatusShadow: (status: string) => string;
   getOperatorInitials: (operator: any) => string;
   onEventClick: (eventId: string) => void;
 }) {
@@ -137,7 +139,7 @@ function DroppableCalendarDay({
               e.stopPropagation();
               onEventClick(event.id);
             }}
-            className={`${getEventStatusColor(event.status)} rounded px-2 py-1.5 text-xs cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-lg shadow-md`}
+            className={`${getEventStatusColor(event.status)} ${getEventStatusShadow(event.status)} rounded px-2 py-1.5 text-xs cursor-pointer transition-all hover:-translate-y-0.5 hover:translate-x-0.5 shadow-md`}
           >
             <div className="font-bold mb-1 text-white truncate">
               {event.client?.companyName || event.eventName}
@@ -258,13 +260,27 @@ export default function PlanningPage() {
     switch (status) {
       case 'BOOKED':
       case 'CONFIRMED':
-        return 'bg-gradient-to-br from-green-500 to-green-600';
+        return 'bg-gradient-to-br from-green-500 to-green-600 border-l-4 border-green-400';
       case 'TENTATIVE':
-        return 'bg-gradient-to-br from-orange-400 to-orange-500';
+        return 'bg-gradient-to-br from-orange-400 to-orange-500 border-l-4 border-orange-300';
       case 'IN_PROGRESS':
-        return 'bg-gradient-to-br from-blue-500 to-blue-600';
+        return 'bg-gradient-to-br from-blue-500 to-blue-600 border-l-4 border-blue-400';
       default:
-        return 'bg-gradient-to-br from-green-500 to-green-600';
+        return 'bg-gradient-to-br from-green-500 to-green-600 border-l-4 border-green-400';
+    }
+  };
+
+  const getEventStatusShadow = (status: string) => {
+    switch (status) {
+      case 'BOOKED':
+      case 'CONFIRMED':
+        return 'hover:shadow-[0_4px_12px_rgba(34,197,94,0.4)]';
+      case 'TENTATIVE':
+        return 'hover:shadow-[0_4px_12px_rgba(251,146,60,0.4)]';
+      case 'IN_PROGRESS':
+        return 'hover:shadow-[0_4px_12px_rgba(59,130,246,0.4)]';
+      default:
+        return 'hover:shadow-[0_4px_12px_rgba(34,197,94,0.4)]';
     }
   };
 
@@ -363,7 +379,7 @@ export default function PlanningPage() {
           <div className="flex gap-3 items-center">
             <button
               onClick={goToPreviousMonth}
-              className="px-5 py-3 bg-slate-700/30 hover:bg-slate-700/50 border border-slate-600/50 rounded-lg text-slate-300 font-semibold transition-all"
+              className="px-5 py-3 bg-slate-700/30 hover:bg-slate-700/50 border border-slate-600/50 rounded-lg text-slate-300 font-semibold transition-all hover:-translate-y-1 hover:shadow-lg hover:shadow-green-500/20"
             >
               ◀ Prev
             </button>
@@ -372,13 +388,13 @@ export default function PlanningPage() {
             </h2>
             <button
               onClick={goToNextMonth}
-              className="px-5 py-3 bg-slate-700/30 hover:bg-slate-700/50 border border-slate-600/50 rounded-lg text-slate-300 font-semibold transition-all"
+              className="px-5 py-3 bg-slate-700/30 hover:bg-slate-700/50 border border-slate-600/50 rounded-lg text-slate-300 font-semibold transition-all hover:-translate-y-1 hover:shadow-lg hover:shadow-green-500/20"
             >
               Next ▶
             </button>
             <button
               onClick={() => setIsNewEventModalOpen(true)}
-              className="px-5 py-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-400 hover:to-green-500 text-white font-semibold rounded-lg shadow-lg shadow-green-500/30 transition-all hover:-translate-y-0.5"
+              className="px-5 py-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-400 hover:to-green-500 text-white font-semibold rounded-lg shadow-lg shadow-green-500/30 transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-green-500/50"
             >
               + NEW EVENT
             </button>
@@ -445,6 +461,7 @@ export default function PlanningPage() {
                     isCurrentMonth={isCurrentMonthDay}
                     isToday={isTodayDay}
                     getEventStatusColor={getEventStatusColor}
+                    getEventStatusShadow={getEventStatusShadow}
                     getOperatorInitials={getOperatorInitials}
                     onEventClick={(eventId) => setSelectedEventId(eventId)}
                   />

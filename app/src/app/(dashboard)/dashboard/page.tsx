@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Modal } from '@/components/ui/Modal';
@@ -15,6 +16,7 @@ import {
   MessageSquare,
   Clock,
   Settings,
+  ExternalLink,
 } from 'lucide-react';
 import { Responsive, WidthProvider, Layout } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
@@ -40,6 +42,7 @@ const WIDGET_CONFIGS: WidgetConfig[] = [
 ];
 
 export default function DashboardPage() {
+  const router = useRouter();
   const [isCustomizeOpen, setIsCustomizeOpen] = useState(false);
 
   // Fetch all dashboard data
@@ -161,10 +164,18 @@ export default function DashboardPage() {
         {getWidgetVisibility('overview_stats') && (
           <div key="overview_stats" data-testid="widget-overview-stats" className="overflow-hidden">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 h-full">
-              <Card padding="medium" hover="glow" className="overflow-hidden">
+              <Card
+                padding="medium"
+                hover="glow"
+                className="overflow-hidden cursor-pointer transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-green-500/30"
+                onClick={() => router.push('/planning')}
+              >
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-400">Upcoming Events</p>
+                    <p className="text-sm font-medium text-gray-400 flex items-center gap-2">
+                      Upcoming Events
+                      <ExternalLink className="w-3 h-3 opacity-50" />
+                    </p>
                     <p className="text-3xl font-bold text-white mt-2">
                       {statsLoading ? '...' : stats?.upcomingEvents ?? 0}
                     </p>
@@ -175,10 +186,18 @@ export default function DashboardPage() {
                 </div>
               </Card>
 
-              <Card padding="medium" hover="glow" className="overflow-hidden">
+              <Card
+                padding="medium"
+                hover="glow"
+                className="overflow-hidden cursor-pointer transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-purple-500/30"
+                onClick={() => router.push('/operators')}
+              >
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-400">Active Operators</p>
+                    <p className="text-sm font-medium text-gray-400 flex items-center gap-2">
+                      Active Operators
+                      <ExternalLink className="w-3 h-3 opacity-50" />
+                    </p>
                     <p className="text-3xl font-bold text-white mt-2">
                       {statsLoading ? '...' : stats?.totalOperators ?? 0}
                     </p>
@@ -189,10 +208,18 @@ export default function DashboardPage() {
                 </div>
               </Card>
 
-              <Card padding="medium" hover="glow" className="overflow-hidden">
+              <Card
+                padding="medium"
+                hover="glow"
+                className="overflow-hidden cursor-pointer transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-green-500/30"
+                onClick={() => router.push('/gear')}
+              >
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-400">Gear Items</p>
+                    <p className="text-sm font-medium text-gray-400 flex items-center gap-2">
+                      Gear Items
+                      <ExternalLink className="w-3 h-3 opacity-50" />
+                    </p>
                     <p className="text-3xl font-bold text-white mt-2">
                       {statsLoading ? '...' : stats?.totalGear ?? 0}
                     </p>
@@ -203,10 +230,18 @@ export default function DashboardPage() {
                 </div>
               </Card>
 
-              <Card padding="medium" hover="glow" className="overflow-hidden">
+              <Card
+                padding="medium"
+                hover="glow"
+                className="overflow-hidden cursor-pointer transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-green-500/30"
+                onClick={() => router.push('/pipeline')}
+              >
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-400">Total Revenue</p>
+                    <p className="text-sm font-medium text-gray-400 flex items-center gap-2">
+                      Total Revenue
+                      <ExternalLink className="w-3 h-3 opacity-50" />
+                    </p>
                     <p className="text-3xl font-bold text-white mt-2">
                       {statsLoading ? '...' : `$${stats?.totalRevenue?.toLocaleString() ?? 0}`}
                     </p>
@@ -317,10 +352,17 @@ export default function DashboardPage() {
               ) : upcomingEvents && upcomingEvents.length > 0 ? (
                 <div className="space-y-3 max-h-80 overflow-y-auto">
                   {upcomingEvents.map((event) => (
-                    <div key={event.id} className="p-3 bg-slate-800/50 rounded-lg border border-slate-700">
+                    <div
+                      key={event.id}
+                      onClick={() => router.push('/planning')}
+                      className="p-3 bg-slate-800/50 rounded-lg border border-slate-700 cursor-pointer transition-all hover:border-green-500 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-green-500/20"
+                    >
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
-                          <h4 className="text-sm font-medium text-white">{event.eventName}</h4>
+                          <h4 className="text-sm font-medium text-white flex items-center gap-2">
+                            {event.eventName}
+                            <ExternalLink className="w-3 h-3 opacity-50" />
+                          </h4>
                           <p className="text-xs text-gray-400 mt-1">{event.clientName}</p>
                         </div>
                         <div className="text-right">
@@ -358,11 +400,18 @@ export default function DashboardPage() {
               ) : criticalAlerts && criticalAlerts.length > 0 ? (
                 <div className="space-y-3 max-h-80 overflow-y-auto">
                   {criticalAlerts.map((alert) => (
-                    <div key={alert.eventId} className="p-3 bg-red-900/20 rounded-lg border border-red-800/30">
+                    <div
+                      key={alert.eventId}
+                      onClick={() => router.push('/planning')}
+                      className="p-3 bg-red-900/20 rounded-lg border border-red-800/30 cursor-pointer transition-all hover:border-red-500 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-red-500/30"
+                    >
                       <div className="flex items-start gap-3">
                         <AlertTriangle className="w-4 h-4 text-red-400 mt-0.5 flex-shrink-0" />
                         <div className="flex-1">
-                          <h4 className="text-sm font-medium text-white">{alert.eventName}</h4>
+                          <h4 className="text-sm font-medium text-white flex items-center gap-2">
+                            {alert.eventName}
+                            <ExternalLink className="w-3 h-3 opacity-50" />
+                          </h4>
                           <p className="text-xs text-gray-400 mt-1">
                             {new Date(alert.loadInTime).toLocaleDateString()}
                           </p>
@@ -399,14 +448,21 @@ export default function DashboardPage() {
               ) : recentActivity && recentActivity.length > 0 ? (
                 <div className="space-y-3">
                   {recentActivity.map((activity, idx) => (
-                    <div key={idx} className="flex items-start gap-4 p-3 bg-slate-800/50 rounded-lg">
+                    <div
+                      key={idx}
+                      onClick={() => router.push('/planning')}
+                      className="flex items-start gap-4 p-3 bg-slate-800/50 rounded-lg cursor-pointer transition-all hover:border hover:border-purple-500 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-purple-500/20"
+                    >
                       <div className="p-2 bg-purple-600/20 rounded-lg flex-shrink-0">
                         <MessageSquare className="w-4 h-4 text-purple-400" />
                       </div>
                       <div className="flex-1">
                         <div className="flex items-start justify-between">
                           <div>
-                            <h4 className="text-sm font-medium text-white">{activity.data.eventName}</h4>
+                            <h4 className="text-sm font-medium text-white flex items-center gap-2">
+                              {activity.data.eventName}
+                              <ExternalLink className="w-3 h-3 opacity-50" />
+                            </h4>
                             <p className="text-xs text-gray-400 mt-1">Event {activity.type === 'event_created' ? 'created' : 'updated'}</p>
                           </div>
                           <div className="text-right">
