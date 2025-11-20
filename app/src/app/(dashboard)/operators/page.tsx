@@ -69,6 +69,8 @@ export default function OperatorsPage() {
       availabilityStatus,
       available,
       availability: op.availability || [],
+      bio: op.bio || null,
+      portfolioUrl: op.portfolioUrl || null,
     };
   }) || [];
 
@@ -624,6 +626,40 @@ export default function OperatorsPage() {
                     </div>
                   </div>
                 </div>
+
+                {/* Bio & Portfolio */}
+                {(operator.bio || operator.portfolioUrl) && (
+                  <div>
+                    <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
+                      <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+                      Bio & Portfolio
+                    </h3>
+                    <div className="space-y-4">
+                      {operator.bio && (
+                        <div className="bg-slate-900/50 border border-slate-700/50 rounded-lg p-4">
+                          <p className="text-xs text-slate-400 mb-2">Biography</p>
+                          <p className="text-white text-sm leading-relaxed">{operator.bio}</p>
+                        </div>
+                      )}
+                      {operator.portfolioUrl && (
+                        <div className="bg-slate-900/50 border border-slate-700/50 rounded-lg p-4">
+                          <p className="text-xs text-slate-400 mb-2">Portfolio</p>
+                          <a
+                            href={operator.portfolioUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-green-400 hover:text-green-300 underline text-sm flex items-center gap-2"
+                          >
+                            {operator.portfolioUrl}
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                            </svg>
+                          </a>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
 
                 {/* Skills & Certifications */}
                 {operator.skills.length > 0 && (

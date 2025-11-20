@@ -31,6 +31,23 @@ export default function DeliverablesPage() {
     }
   };
 
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
+      case 'CRITICAL':
+        return 'bg-red-600 text-white animate-pulse';
+      case 'URGENT':
+        return 'bg-red-500 text-white';
+      case 'HIGH':
+        return 'bg-orange-500 text-white';
+      case 'NORMAL':
+        return 'bg-green-600 text-white';
+      case 'LOW':
+        return 'bg-slate-600 text-slate-200';
+      default:
+        return 'bg-gray-600 text-white';
+    }
+  };
+
   const formatDate = (date: Date | string | null) => {
     if (!date) return 'N/A';
     return new Date(date).toLocaleDateString();
@@ -121,7 +138,13 @@ export default function DeliverablesPage() {
                   Assigned Editor ⇅
                 </th>
                 <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300 cursor-pointer hover:text-green-400">
+                  Assets ⇅
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300 cursor-pointer hover:text-green-400">
                   Due Date ⇅
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300 cursor-pointer hover:text-green-400">
+                  Priority ⇅
                 </th>
                 <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300 cursor-pointer hover:text-green-400">
                   Status ⇅
@@ -184,8 +207,20 @@ export default function DeliverablesPage() {
                       {deliverable.assignedEditor?.firstName} {deliverable.assignedEditor?.lastName || 'Unassigned'}
                     </div>
                   </td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-2">
+                      <span className="text-green-400 font-bold">{deliverable.completedAssets || 0}</span>
+                      <span className="text-slate-500">/</span>
+                      <span className="text-slate-300">{deliverable.totalAssets || 0}</span>
+                    </div>
+                  </td>
                   <td className="px-6 py-4 text-slate-300">
                     {formatDate(deliverable.dueDate)}
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getPriorityColor(deliverable.priority || 'NORMAL')}`}>
+                      {deliverable.priority || 'NORMAL'}
+                    </span>
                   </td>
                   <td className="px-6 py-4">
                     <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(deliverable.status)}`}>
@@ -203,7 +238,7 @@ export default function DeliverablesPage() {
 
               {!deliverables || deliverables.length === 0 && (
                 <tr>
-                  <td colSpan={7} className="px-6 py-12 text-center text-slate-500">
+                  <td colSpan={9} className="px-6 py-12 text-center text-slate-500">
                     No deliverables found. Create one to get started.
                   </td>
                 </tr>

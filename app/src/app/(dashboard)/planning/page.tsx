@@ -749,6 +749,18 @@ function EventDetailModal({ eventId, isOpen, onClose }: { eventId: string; isOpe
               <div className="text-sm font-semibold text-slate-400 mb-1">Status</div>
               <div className="text-white">{event.status}</div>
             </div>
+            {event.revenueAmount && (
+              <div>
+                <div className="text-sm font-semibold text-slate-400 mb-1">Expected Revenue</div>
+                <div className="text-green-400 font-bold">${Number(event.revenueAmount).toFixed(2)}</div>
+              </div>
+            )}
+            {event.actualRevenue && (
+              <div>
+                <div className="text-sm font-semibold text-slate-400 mb-1">Actual Revenue</div>
+                <div className="text-lime-400 font-bold">${Number(event.actualRevenue).toFixed(2)}</div>
+              </div>
+            )}
           </div>
 
           {/* Shift Builder */}
