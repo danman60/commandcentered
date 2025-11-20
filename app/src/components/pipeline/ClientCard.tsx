@@ -49,7 +49,7 @@ export function ClientCard({
       return { icon: '📧', text: 'Email', color: 'bg-blue-500/20 text-blue-400 border-blue-500/30' };
     }
     if (method.includes('phone')) {
-      return { icon: '📱', text: 'Phone', color: 'bg-purple-500/20 text-purple-400 border-purple-500/30' };
+      return { icon: '📱', text: 'Phone', color: 'bg-green-500/20 text-green-400 border-green-500/30' };
     }
     if (method.includes('person') || method.includes('in-person')) {
       return { icon: '🤝', text: 'In-person', color: 'bg-green-500/20 text-green-400 border-green-500/30' };
@@ -73,7 +73,7 @@ export function ClientCard({
     if (count <= 3) {
       return { text, color: 'bg-blue-500/20 text-blue-400 border-blue-500/30' };
     }
-    return { text, color: 'bg-purple-500/20 text-purple-400 border-purple-500/30' };
+    return { text, color: 'bg-green-500/20 text-green-400 border-green-500/30' };
   };
 
   const productCount = getProductCount();
@@ -96,7 +96,7 @@ export function ClientCard({
       return { text: formatted, color: 'bg-blue-500/20 text-blue-400 border-blue-500/30' };
     }
     if (total < 30000) {
-      return { text: formatted, color: 'bg-purple-500/20 text-purple-400 border-purple-500/30' };
+      return { text: formatted, color: 'bg-green-500/20 text-green-400 border-green-500/30' };
     }
     return { text: formatted, color: 'bg-green-500/20 text-green-400 border-green-500/30' };
   };
@@ -147,7 +147,7 @@ export function ClientCard({
       return { icon: '🌐', text: lead.source, color: 'bg-blue-500/20 text-blue-400 border-blue-500/30' };
     }
     if (source.includes('event') || source.includes('conference') || source.includes('trade show')) {
-      return { icon: '🎪', text: lead.source, color: 'bg-purple-500/20 text-purple-400 border-purple-500/30' };
+      return { icon: '🎪', text: lead.source, color: 'bg-green-500/20 text-green-400 border-green-500/30' };
     }
     if (source.includes('cold') || source.includes('outreach') || source.includes('prospecting')) {
       return { icon: '📞', text: lead.source, color: 'bg-orange-500/20 text-orange-400 border-orange-500/30' };

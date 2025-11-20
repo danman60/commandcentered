@@ -28,7 +28,7 @@ const PIPELINE_STAGES = [
   { id: 'NEW', label: 'New', color: 'bg-gray-600' },
   { id: 'CONTACTED', label: 'Contacted', color: 'bg-blue-600' },
   { id: 'QUALIFIED', label: 'Qualified', color: 'bg-green-600' },
-  { id: 'PROPOSAL_SENT', label: 'Proposal Sent', color: 'bg-purple-600' },
+  { id: 'PROPOSAL_SENT', label: 'Proposal Sent', color: 'bg-green-600' },
   { id: 'ENGAGED', label: 'Engaged', color: 'bg-yellow-600' },
   { id: 'CONVERTED', label: 'Converted', color: 'bg-green-600' },
 ] as const;
@@ -437,15 +437,15 @@ export default function PipelinePage() {
   return (
     <div className="p-8">
       {/* Header */}
-      <div className="bg-gradient-to-r from-green-500/10 to-purple-500/10 border-b border-green-500/30 -mx-8 px-8 py-6 mb-6">
+      <div className="bg-gradient-to-r from-green-500/10 to-green-500/10 border-b border-green-500/30 -mx-8 px-8 py-6 mb-6">
         <div className="flex items-center justify-between">
           <div>
             <div className="flex items-center gap-4">
               <h1 className="text-3xl font-bold text-white">Pipeline</h1>
               {allLeads && allLeads.length > 0 && (
-                <div className="px-4 py-2 bg-gradient-to-r from-green-500/20 to-purple-500/20 border border-green-500/30 rounded-lg">
+                <div className="px-4 py-2 bg-gradient-to-r from-green-500/20 to-green-500/20 border border-green-500/30 rounded-lg">
                   <div className="text-xs text-gray-400 uppercase font-semibold">Total Value</div>
-                  <div className="text-2xl font-bold bg-gradient-to-r from-green-400 to-purple-400 bg-clip-text text-transparent">
+                  <div className="text-2xl font-bold bg-gradient-to-r from-green-400 to-green-400 bg-clip-text text-transparent">
                     ${totalPipelineValue.toLocaleString()}
                   </div>
                 </div>
@@ -729,7 +729,7 @@ export default function PipelinePage() {
                 <span className="text-sm text-gray-500">|</span>
                 <span className="text-xs text-gray-500">Active filters:</span>
                 {quickFilter && (
-                  <div className="flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-green-500/10 to-purple-500/10 border border-green-500/30 rounded text-xs text-green-400">
+                  <div className="flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-green-500/10 to-green-500/10 border border-green-500/30 rounded text-xs text-green-400">
                     <span>
                       Quick:{' '}
                       {quickFilter === 'needsFollowUp' && 'Needs Follow-Up'}
@@ -761,7 +761,7 @@ export default function PipelinePage() {
                   </div>
                 )}
                 {productFilter && (
-                  <div className="flex items-center gap-1 px-2 py-1 bg-purple-500/10 border border-purple-500/30 rounded text-xs text-purple-400">
+                  <div className="flex items-center gap-1 px-2 py-1 bg-green-500/10 border border-green-500/30 rounded text-xs text-green-400">
                     <span>Product: {productFilter}</span>
                     <button
                       onClick={() => setProductFilter('')}
@@ -864,7 +864,7 @@ export default function PipelinePage() {
               onClick={() => setQuickFilter(quickFilter === 'noContact' ? '' : 'noContact')}
               className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
                 quickFilter === 'noContact'
-                  ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg shadow-purple-500/30'
+                  ? 'bg-gradient-to-r from-green-500 to-pink-500 text-white shadow-lg shadow-green-500/30'
                   : 'bg-slate-800 text-gray-400 hover:text-white hover:bg-slate-700 border border-slate-600'
               }`}
             >
@@ -1003,7 +1003,7 @@ export default function PipelinePage() {
                   </p>
                   <button
                     onClick={() => setIsNewLeadOpen(true)}
-                    className="px-4 py-2 bg-gradient-to-r from-green-500 to-purple-500 hover:from-green-600 hover:to-purple-600 text-white rounded-lg transition-colors shadow-lg shadow-green-500/30"
+                    className="px-4 py-2 bg-gradient-to-r from-green-500 to-green-500 hover:from-green-600 hover:to-green-600 text-white rounded-lg transition-colors shadow-lg shadow-green-500/30"
                   >
                     ➕ Add Your First Lead
                   </button>
@@ -1107,7 +1107,7 @@ export default function PipelinePage() {
                             </p>
                             <button
                               onClick={() => setIsNewLeadOpen(true)}
-                              className="px-4 py-2 bg-gradient-to-r from-green-500 to-purple-500 hover:from-green-600 hover:to-purple-600 text-white rounded-lg transition-colors shadow-lg shadow-green-500/30"
+                              className="px-4 py-2 bg-gradient-to-r from-green-500 to-green-500 hover:from-green-600 hover:to-green-600 text-white rounded-lg transition-colors shadow-lg shadow-green-500/30"
                             >
                               ➕ Add Your First Lead
                             </button>
@@ -1687,8 +1687,8 @@ function getStatusColor(status: string): string {
     NEW: 'bg-gray-600/20 text-gray-400',
     CONTACTED: 'bg-blue-600/20 text-blue-400',
     QUALIFIED: 'bg-green-600/20 text-green-400',
-    PROPOSAL_SENT: 'bg-purple-600/20 text-purple-400',
-    PROPOSAL_VIEWED: 'bg-purple-600/20 text-purple-400',
+    PROPOSAL_SENT: 'bg-green-600/20 text-green-400',
+    PROPOSAL_VIEWED: 'bg-green-600/20 text-green-400',
     ENGAGED: 'bg-yellow-600/20 text-yellow-400',
     PROPOSAL_SUBMITTED: 'bg-orange-600/20 text-orange-400',
     CONTRACT_SENT: 'bg-green-600/20 text-green-400',
@@ -1702,7 +1702,7 @@ function getProductStatusColor(status: string): string {
   const colors: Record<string, string> = {
     NOT_INTERESTED: 'bg-gray-600/20 text-gray-400',
     DISCUSSING: 'bg-blue-600/20 text-blue-400',
-    PROPOSAL: 'bg-purple-600/20 text-purple-400',
+    PROPOSAL: 'bg-green-600/20 text-green-400',
     WON: 'bg-green-600/20 text-green-400',
     LOST: 'bg-red-600/20 text-red-400',
   };

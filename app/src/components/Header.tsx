@@ -42,7 +42,7 @@ export function Header({ title, subtitle }: HeaderProps) {
       <div className="flex items-center justify-between">
         {/* Left side - Page title */}
         <div className="flex items-center gap-4">
-          <h1 className="text-[28px] font-bold bg-gradient-to-r from-green-600 to-purple-500 bg-clip-text text-transparent leading-tight">
+          <h1 className="text-[28px] font-bold bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent leading-tight">
             {title}
           </h1>
           {subtitle && (

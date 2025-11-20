@@ -154,11 +154,11 @@ export default function GearPage() {
   return (
     <div className="flex flex-col h-full bg-gray-900">
       {/* Header */}
-      <div className="bg-gradient-to-r from-green-500/10 to-purple-500/10 border-b border-green-500/30 px-8 py-6">
+      <div className="bg-gradient-to-r from-green-500/10 to-green-500/10 border-b border-green-500/30 px-8 py-6">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-4">
             <div className="text-4xl">🎥</div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-green-500 to-purple-600 bg-clip-text text-transparent">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-green-500 to-green-600 bg-clip-text text-transparent">
               Gear
             </h1>
           </div>
@@ -436,7 +436,7 @@ export default function GearPage() {
       {showCreateGearModal && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
           <div className="bg-slate-800 border border-slate-700 rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-            <div className="bg-gradient-to-r from-green-500/10 to-purple-500/10 border-b border-green-500/30 p-6">
+            <div className="bg-gradient-to-r from-green-500/10 to-green-500/10 border-b border-green-500/30 p-6">
               <h2 className="text-2xl font-bold text-slate-100">Add New Gear</h2>
             </div>
 
@@ -573,8 +573,8 @@ export default function GearPage() {
       {/* Create Kit Modal */}
       {showCreateKitModal && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
-          <div role="dialog" data-testid="kit-modal" className="bg-slate-900 border-2 border-purple-500/30 rounded-xl w-[700px] max-h-[90vh] overflow-y-auto shadow-2xl">
-            <div className="px-6 py-4 border-b border-purple-500/20 flex justify-between items-center">
+          <div role="dialog" data-testid="kit-modal" className="bg-slate-900 border-2 border-green-500/30 rounded-xl w-[700px] max-h-[90vh] overflow-y-auto shadow-2xl">
+            <div className="px-6 py-4 border-b border-green-500/20 flex justify-between items-center">
               <h2 className="text-xl font-bold text-white">Create New Kit</h2>
               <button
                 onClick={() => {
@@ -597,7 +597,7 @@ export default function GearPage() {
                   type="text"
                   value={kitFormData.name}
                   onChange={(e) => setKitFormData({ ...kitFormData, name: e.target.value })}
-                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-purple-500"
+                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500"
                   placeholder="e.g., Wedding Package A"
                   required
                 />
@@ -610,7 +610,7 @@ export default function GearPage() {
                 <textarea
                   value={kitFormData.description}
                   onChange={(e) => setKitFormData({ ...kitFormData, description: e.target.value })}
-                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-purple-500 min-h-[80px]"
+                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500 min-h-[80px]"
                   placeholder="Optional description..."
                 />
               </div>
@@ -631,7 +631,7 @@ export default function GearPage() {
                             type="checkbox"
                             checked={selectedGearIds.includes(item.id)}
                             onChange={() => toggleGear(item.id)}
-                            className="w-4 h-4 rounded border-slate-600 bg-slate-800 text-purple-500 focus:ring-purple-500"
+                            className="w-4 h-4 rounded border-slate-600 bg-slate-800 text-green-500 focus:ring-green-500"
                           />
                           <div className="flex-1">
                             <div className="text-white font-medium">{item.name}</div>
@@ -670,7 +670,7 @@ export default function GearPage() {
                 <button
                   type="submit"
                   disabled={createKit.isPending}
-                  className="flex-1 px-4 py-2 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-400 hover:to-purple-500 text-white font-semibold rounded-lg transition-all disabled:opacity-50"
+                  className="flex-1 px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 hover:from-purple-400 hover:to-green-500 text-white font-semibold rounded-lg transition-all disabled:opacity-50"
                 >
                   {createKit.isPending ? 'Creating...' : 'Create Kit'}
                 </button>

@@ -118,7 +118,7 @@ export default function DashboardPage() {
   return (
     <div className="p-8">
       {/* Header */}
-      <div className="bg-gradient-to-r from-green-500/10 to-purple-500/10 border-b border-green-500/30 -mx-8 px-8 py-6 mb-6">
+      <div className="bg-gradient-to-r from-green-500/10 to-green-500/10 border-b border-green-500/30 -mx-8 px-8 py-6 mb-6">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-white">Dashboard</h1>
@@ -189,7 +189,7 @@ export default function DashboardPage() {
               <Card
                 padding="medium"
                 hover="glow"
-                className="overflow-hidden cursor-pointer transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-purple-500/30"
+                className="overflow-hidden cursor-pointer transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-green-500/30"
                 onClick={() => router.push('/operators')}
               >
                 <div className="flex items-center justify-between">
@@ -202,8 +202,8 @@ export default function DashboardPage() {
                       {statsLoading ? '...' : stats?.totalOperators ?? 0}
                     </p>
                   </div>
-                  <div className="p-3 bg-purple-600/20 rounded-lg">
-                    <Users className="w-6 h-6 text-purple-400" />
+                  <div className="p-3 bg-green-600/20 rounded-lg">
+                    <Users className="w-6 h-6 text-green-400" />
                   </div>
                 </div>
               </Card>
@@ -271,7 +271,7 @@ export default function DashboardPage() {
                   <PipelineStage label="Tentative" count={pipeline?.TENTATIVE ?? 0} color="bg-orange-500" />
                   <PipelineStage label="Booked" count={pipeline?.BOOKED ?? 0} color="bg-green-500" />
                   <PipelineStage label="Confirmed" count={pipeline?.CONFIRMED ?? 0} color="bg-blue-500" />
-                  <PipelineStage label="In Progress" count={pipeline?.IN_PROGRESS ?? 0} color="bg-purple-500" />
+                  <PipelineStage label="In Progress" count={pipeline?.IN_PROGRESS ?? 0} color="bg-green-500" />
                   <PipelineStage label="Completed" count={pipeline?.COMPLETED ?? 0} color="bg-green-500" />
                 </div>
               )}
@@ -441,7 +441,7 @@ export default function DashboardPage() {
             <Card padding="large" hover="glow" className="h-full">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-white">Recent Activity</h3>
-                <Clock className="w-5 h-5 text-purple-400" />
+                <Clock className="w-5 h-5 text-green-400" />
               </div>
               {activityLoading ? (
                 <p className="text-gray-400">Loading...</p>
@@ -451,10 +451,10 @@ export default function DashboardPage() {
                     <div
                       key={idx}
                       onClick={() => router.push('/planning')}
-                      className="flex items-start gap-4 p-3 bg-slate-800/50 rounded-lg cursor-pointer transition-all hover:border hover:border-purple-500 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-purple-500/20"
+                      className="flex items-start gap-4 p-3 bg-slate-800/50 rounded-lg cursor-pointer transition-all hover:border hover:border-green-500 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-green-500/20"
                     >
-                      <div className="p-2 bg-purple-600/20 rounded-lg flex-shrink-0">
-                        <MessageSquare className="w-4 h-4 text-purple-400" />
+                      <div className="p-2 bg-green-600/20 rounded-lg flex-shrink-0">
+                        <MessageSquare className="w-4 h-4 text-green-400" />
                       </div>
                       <div className="flex-1">
                         <div className="flex items-start justify-between">
@@ -559,8 +559,8 @@ function getStatusColor(status: string): string {
     TENTATIVE: 'bg-orange-600/20 text-orange-400',
     BOOKED: 'bg-green-600/20 text-green-400',
     CONFIRMED: 'bg-blue-600/20 text-blue-400',
-    SCHEDULED: 'bg-purple-600/20 text-purple-400',
-    IN_PROGRESS: 'bg-purple-600/20 text-purple-400',
+    SCHEDULED: 'bg-green-600/20 text-green-400',
+    IN_PROGRESS: 'bg-green-600/20 text-green-400',
     COMPLETED: 'bg-green-600/20 text-green-400',
     CANCELLED: 'bg-red-600/20 text-red-400',
   };

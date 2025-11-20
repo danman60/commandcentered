@@ -68,7 +68,7 @@ export default function ReportsPage() {
   const eventsByType = useMemo(() => {
     if (!eventSummary) return [];
 
-    const colors = ['bg-green-500', 'bg-purple-500', 'bg-green-500', 'bg-orange-500', 'bg-pink-500', 'bg-blue-500'];
+    const colors = ['bg-green-500', 'bg-green-500', 'bg-green-500', 'bg-orange-500', 'bg-pink-500', 'bg-blue-500'];
 
     return eventSummary.map((event, index) => ({
       type: event.eventType,
@@ -139,11 +139,11 @@ export default function ReportsPage() {
   return (
     <div className="flex flex-col h-full bg-gray-900">
       {/* Header */}
-      <div className="bg-gradient-to-r from-green-500/10 to-purple-500/10 border-b border-green-500/30 px-8 py-6">
+      <div className="bg-gradient-to-r from-green-500/10 to-green-500/10 border-b border-green-500/30 px-8 py-6">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-4">
             <div className="text-4xl">📈</div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-green-500 to-purple-600 bg-clip-text text-transparent">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-green-500 to-green-600 bg-clip-text text-transparent">
               Reports
             </h1>
           </div>
@@ -318,7 +318,7 @@ export default function ReportsPage() {
                       {operatorHours.map((item) => (
                         <div key={item.name} className="flex flex-col items-center gap-2 flex-1">
                           <div
-                            className="w-full bg-gradient-to-t from-purple-500 to-purple-600 rounded-t flex items-center justify-center"
+                            className="w-full bg-gradient-to-t from-green-500 to-green-600 rounded-t flex items-center justify-center"
                             style={{ height: `${(item.hours / maxOperatorHours) * 100}%` }}
                           >
                             <span className="text-white font-bold text-xs">{Math.round(item.hours)}h</span>

@@ -66,9 +66,9 @@ export function RevenueSummaryCards({ leads }: RevenueSummaryCardsProps) {
       label: 'Projected Revenue',
       value: `$${metrics.projectedRevenue.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`,
       icon: BarChart3,
-      color: 'from-purple-500 to-pink-500',
-      bgColor: 'bg-purple-500/10',
-      borderColor: 'border-purple-500/30',
+      color: 'from-green-500 to-pink-500',
+      bgColor: 'bg-green-500/10',
+      borderColor: 'border-green-500/30',
     },
     {
       label: 'Avg Deal Size',

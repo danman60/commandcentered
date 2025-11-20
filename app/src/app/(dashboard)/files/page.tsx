@@ -156,11 +156,11 @@ export default function FilesPage() {
   return (
     <div className="flex flex-col h-full bg-gray-900">
       {/* Header */}
-      <div className="bg-gradient-to-r from-green-500/10 to-purple-500/10 border-b border-green-500/30 px-8 py-6">
+      <div className="bg-gradient-to-r from-green-500/10 to-green-500/10 border-b border-green-500/30 px-8 py-6">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-4">
             <div className="text-4xl">📄</div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-green-500 to-purple-600 bg-clip-text text-transparent">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-green-500 to-green-600 bg-clip-text text-transparent">
               Files & Assets
             </h1>
           </div>
@@ -644,7 +644,7 @@ export default function FilesPage() {
                   key={stream.id}
                   className="bg-slate-900/60 border border-slate-700/50 rounded-lg p-5 flex gap-5 items-center"
                 >
-                  <div className="w-48 h-28 bg-gradient-to-br from-green-500 to-purple-600 rounded-lg flex items-center justify-center text-5xl">
+                  <div className="w-48 h-28 bg-gradient-to-br from-green-500 to-green-600 rounded-lg flex items-center justify-center text-5xl">
                     🎥
                   </div>
                   <div className="flex-1">
@@ -700,11 +700,11 @@ export default function FilesPage() {
               {customServices.map((service) => (
                 <div
                   key={service.id}
-                  className="bg-slate-900/60 border border-purple-500/50 rounded-lg p-5 cursor-pointer hover:border-purple-500/80 hover:-translate-y-1 transition-all"
+                  className="bg-slate-900/60 border border-green-500/50 rounded-lg p-5 cursor-pointer hover:border-green-500/80 hover:-translate-y-1 transition-all"
                 >
                   <div className="flex justify-between items-start mb-3">
                     <h3 className="text-base font-bold text-slate-100">{service.name}</h3>
-                    <span className="text-xs bg-purple-500/20 text-purple-400 px-2 py-1 rounded">Custom</span>
+                    <span className="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded">Custom</span>
                   </div>
                   <p className="text-sm text-slate-400 mb-3 leading-relaxed">{service.description}</p>
                   <div className="text-2xl font-bold text-green-500">{service.price}</div>

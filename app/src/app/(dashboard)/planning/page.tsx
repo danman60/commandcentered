@@ -65,7 +65,7 @@ function DraggableKitCard({ kit }: { kit: any }) {
       ref={setNodeRef}
       {...listeners}
       {...attributes}
-      className={`bg-slate-800/60 border border-purple-500/20 rounded-lg p-3 hover:border-purple-500 hover:translate-x-1 transition-all cursor-move relative group ${
+      className={`bg-slate-800/60 border border-green-500/20 rounded-lg p-3 hover:border-green-500 hover:translate-x-1 transition-all cursor-move relative group ${
         isDragging ? 'opacity-50' : ''
       }`}
     >
@@ -368,11 +368,11 @@ export default function PlanningPage() {
     >
       <div className="flex flex-col h-screen bg-gradient-to-br from-slate-900 to-slate-800">
       {/* Top Bar */}
-      <div className={`flex-shrink-0 bg-gradient-to-r from-green-500/10 to-purple-500/10 border-b border-green-500/30 shadow-xl ${isMobile ? 'px-4 py-3' : 'px-9 py-4'}`}>
+      <div className={`flex-shrink-0 bg-gradient-to-r from-green-500/10 to-green-500/10 border-b border-green-500/30 shadow-xl ${isMobile ? 'px-4 py-3' : 'px-9 py-4'}`}>
         <div className={`flex ${isMobile ? 'flex-col gap-3' : 'justify-between items-center'}`}>
           {!isMobile && (
           <div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-green-400 to-purple-500 bg-clip-text text-transparent">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-green-400 to-green-500 bg-clip-text text-transparent">
               SCHEDULING COMMAND CENTER
             </h1>
             <p className="text-sm text-slate-400 mt-1">
@@ -488,16 +488,16 @@ export default function PlanningPage() {
 
         {/* Kits Panel - Hidden on mobile */}
         {!isMobile && (
-        <div data-testid="kits-panel" className="w-1/5 min-w-[240px] bg-slate-900/60 backdrop-blur-md border-r border-purple-500/20 flex flex-col">
-          <div className="flex-shrink-0 px-5 py-4 bg-slate-950/80 border-b border-purple-500/20 flex justify-between items-center">
+        <div data-testid="kits-panel" className="w-1/5 min-w-[240px] bg-slate-900/60 backdrop-blur-md border-r border-green-500/20 flex flex-col">
+          <div className="flex-shrink-0 px-5 py-4 bg-slate-950/80 border-b border-green-500/20 flex justify-between items-center">
             <h3 className="text-base font-semibold text-slate-200">Kits</h3>
             <div className="flex gap-2">
-              <button className="w-8 h-8 rounded-md bg-purple-500/10 border border-purple-500/20 text-purple-400 hover:bg-purple-500/20 hover:border-purple-500 transition-all text-sm">
+              <button className="w-8 h-8 rounded-md bg-green-500/10 border border-green-500/20 text-green-400 hover:bg-green-500/20 hover:border-green-500 transition-all text-sm">
                 🔍
               </button>
               <button
                 onClick={() => setIsKitModalOpen(true)}
-                className="w-8 h-8 rounded-md bg-purple-500/10 border border-purple-500/20 text-purple-400 hover:bg-purple-500/20 hover:border-purple-500 transition-all text-lg font-bold"
+                className="w-8 h-8 rounded-md bg-green-500/10 border border-green-500/20 text-green-400 hover:bg-green-500/20 hover:border-green-500 transition-all text-lg font-bold"
               >
                 +
               </button>
@@ -890,7 +890,7 @@ function EventDetailModal({ eventId, isOpen, onClose }: { eventId: string; isOpe
                       </div>
                       <button
                         onClick={() => setSelectedShiftId(shift.id)}
-                        className="px-3 py-1 bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 rounded text-sm font-semibold"
+                        className="px-3 py-1 bg-green-500/20 border border-green-500/30 text-green-400 hover:bg-green-500/30 rounded text-sm font-semibold"
                       >
                         Assign Operator
                       </button>
@@ -989,8 +989,8 @@ function KitCreationModal({ isOpen, onClose }: { isOpen: boolean; onClose: () =>
 
   return (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="bg-slate-900 border-2 border-purple-500/30 rounded-xl w-[700px] max-h-[90vh] overflow-y-auto shadow-2xl">
-        <div className="px-6 py-4 border-b border-purple-500/20 flex justify-between items-center">
+      <div className="bg-slate-900 border-2 border-green-500/30 rounded-xl w-[700px] max-h-[90vh] overflow-y-auto shadow-2xl">
+        <div className="px-6 py-4 border-b border-green-500/20 flex justify-between items-center">
           <h2 className="text-xl font-bold text-white">Create New Kit</h2>
           <button
             onClick={onClose}
@@ -1009,7 +1009,7 @@ function KitCreationModal({ isOpen, onClose }: { isOpen: boolean; onClose: () =>
               type="text"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-purple-500"
+              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500"
               placeholder="e.g., Wedding Package A"
               required
             />
@@ -1022,7 +1022,7 @@ function KitCreationModal({ isOpen, onClose }: { isOpen: boolean; onClose: () =>
             <textarea
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-purple-500 min-h-[80px]"
+              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500 min-h-[80px]"
               placeholder="Optional description..."
             />
           </div>
@@ -1043,7 +1043,7 @@ function KitCreationModal({ isOpen, onClose }: { isOpen: boolean; onClose: () =>
                         type="checkbox"
                         checked={selectedGearIds.includes(item.id)}
                         onChange={() => toggleGear(item.id)}
-                        className="w-4 h-4 rounded border-slate-600 bg-slate-800 text-purple-500 focus:ring-purple-500"
+                        className="w-4 h-4 rounded border-slate-600 bg-slate-800 text-green-500 focus:ring-green-500"
                       />
                       <div className="flex-1">
                         <div className="text-white font-medium">{item.name}</div>
@@ -1078,7 +1078,7 @@ function KitCreationModal({ isOpen, onClose }: { isOpen: boolean; onClose: () =>
             <button
               type="submit"
               disabled={createKit.isPending}
-              className="flex-1 px-4 py-2 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-400 hover:to-purple-500 text-white font-semibold rounded-lg transition-all disabled:opacity-50"
+              className="flex-1 px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-400 hover:to-green-500 text-white font-semibold rounded-lg transition-all disabled:opacity-50"
             >
               {createKit.isPending ? 'Creating...' : 'Create Kit'}
             </button>

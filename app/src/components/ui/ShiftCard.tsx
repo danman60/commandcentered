@@ -115,13 +115,13 @@ export function ShiftCard({
         <label className="text-xs font-medium text-slate-400 mb-1.5 block">Kit (Override)</label>
         {kitAssigned ? (
           <div className="flex items-center gap-2 px-3 py-2 rounded-md bg-slate-700/50 border border-slate-600">
-            <Package className="h-4 w-4 text-purple-400" />
+            <Package className="h-4 w-4 text-green-400" />
             <span className="text-sm text-white">{kitAssigned.kitName}</span>
           </div>
         ) : (
           <button
             onClick={onAssignKit}
-            className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-md border border-dashed border-slate-600 text-slate-400 hover:border-purple-500 hover:text-purple-400 transition-colors text-sm"
+            className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-md border border-dashed border-slate-600 text-slate-400 hover:border-green-500 hover:text-green-400 transition-colors text-sm"
           >
             <Package className="h-4 w-4" />
             <span>Assign Kit</span>

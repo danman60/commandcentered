@@ -56,12 +56,12 @@ export default function DeliverablesPage() {
   return (
     <div className="flex-1 flex flex-col overflow-hidden bg-slate-950">
       {/* Header */}
-      <div className="flex-shrink-0 bg-gradient-to-r from-green-500/10 to-purple-500/10 border-b border-green-500/30 px-8 py-6">
+      <div className="flex-shrink-0 bg-gradient-to-r from-green-500/10 to-green-500/10 border-b border-green-500/30 px-8 py-6">
         <div className="flex justify-between items-center">
           <div>
             <div className="flex items-center gap-4 mb-2">
               <span className="text-4xl">🎬</span>
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-green-400 to-purple-400 bg-clip-text text-transparent">
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-green-400 to-green-400 bg-clip-text text-transparent">
                 Deliverables
               </h1>
             </div>

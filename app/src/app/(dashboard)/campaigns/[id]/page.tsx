@@ -77,7 +77,7 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
   return (
     <div className="flex flex-col h-full bg-gray-50">
       {/* Header */}
-      <div className="bg-gradient-to-r from-green-500/10 to-purple-500/10 border-b border-green-500/30 px-8 py-6">
+      <div className="bg-gradient-to-r from-green-500/10 to-green-500/10 border-b border-green-500/30 px-8 py-6">
         <div className="flex justify-between items-center">
           <div>
             <Link
@@ -86,7 +86,7 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
             >
               ← Back to Campaigns
             </Link>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-green-500 to-purple-600 bg-clip-text text-transparent">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-green-500 to-green-600 bg-clip-text text-transparent">
               {campaign.name}
             </h1>
             <p className="text-sm text-slate-400 mt-1">

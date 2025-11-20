@@ -51,7 +51,7 @@ export function OperatorBadge({
       {/* Avatar */}
       <div
         className={cn(
-          'relative flex items-center justify-center rounded-full bg-gradient-to-br from-green-500 to-purple-600 text-white font-semibold overflow-hidden',
+          'relative flex items-center justify-center rounded-full bg-gradient-to-br from-green-500 to-green-600 text-white font-semibold overflow-hidden',
           config.avatar
         )}
       >
@@ -75,7 +75,7 @@ export function OperatorInitials({ firstName, lastName }: { firstName: string; l
   const initials = `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
 
   return (
-    <span className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-gradient-to-br from-green-500 to-purple-600 text-white text-xs font-bold">
+    <span className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-gradient-to-br from-green-500 to-green-600 text-white text-xs font-bold">
       {initials}
     </span>
   );
