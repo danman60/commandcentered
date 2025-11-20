@@ -27,7 +27,7 @@ import {
 const PIPELINE_STAGES = [
   { id: 'NEW', label: 'New', color: 'bg-gray-600' },
   { id: 'CONTACTED', label: 'Contacted', color: 'bg-blue-600' },
-  { id: 'QUALIFIED', label: 'Qualified', color: 'bg-cyan-600' },
+  { id: 'QUALIFIED', label: 'Qualified', color: 'bg-green-600' },
   { id: 'PROPOSAL_SENT', label: 'Proposal Sent', color: 'bg-purple-600' },
   { id: 'ENGAGED', label: 'Engaged', color: 'bg-yellow-600' },
   { id: 'CONVERTED', label: 'Converted', color: 'bg-green-600' },
@@ -437,15 +437,15 @@ export default function PipelinePage() {
   return (
     <div className="p-8">
       {/* Header */}
-      <div className="bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border-b border-cyan-500/30 -mx-8 px-8 py-6 mb-6">
+      <div className="bg-gradient-to-r from-green-500/10 to-purple-500/10 border-b border-green-500/30 -mx-8 px-8 py-6 mb-6">
         <div className="flex items-center justify-between">
           <div>
             <div className="flex items-center gap-4">
               <h1 className="text-3xl font-bold text-white">Pipeline</h1>
               {allLeads && allLeads.length > 0 && (
-                <div className="px-4 py-2 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 border border-cyan-500/30 rounded-lg">
+                <div className="px-4 py-2 bg-gradient-to-r from-green-500/20 to-purple-500/20 border border-green-500/30 rounded-lg">
                   <div className="text-xs text-gray-400 uppercase font-semibold">Total Value</div>
-                  <div className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                  <div className="text-2xl font-bold bg-gradient-to-r from-green-400 to-purple-400 bg-clip-text text-transparent">
                     ${totalPipelineValue.toLocaleString()}
                   </div>
                 </div>
@@ -460,7 +460,7 @@ export default function PipelinePage() {
                 onClick={() => setViewMode('kanban')}
                 className={`px-3 py-2 rounded flex items-center gap-2 transition-all ${
                   viewMode === 'kanban'
-                    ? 'bg-cyan-500 text-white shadow-lg shadow-cyan-500/30'
+                    ? 'bg-green-500 text-white shadow-lg shadow-green-500/30'
                     : 'text-gray-400 hover:text-white hover:bg-slate-700/50'
                 }`}
               >
@@ -471,7 +471,7 @@ export default function PipelinePage() {
                 onClick={() => setViewMode('card')}
                 className={`px-3 py-2 rounded flex items-center gap-2 transition-all ${
                   viewMode === 'card'
-                    ? 'bg-cyan-500 text-white shadow-lg shadow-cyan-500/30'
+                    ? 'bg-green-500 text-white shadow-lg shadow-green-500/30'
                     : 'text-gray-400 hover:text-white hover:bg-slate-700/50'
                 }`}
               >
@@ -482,7 +482,7 @@ export default function PipelinePage() {
                 onClick={() => setViewMode('table')}
                 className={`px-3 py-2 rounded flex items-center gap-2 transition-all ${
                   viewMode === 'table'
-                    ? 'bg-cyan-500 text-white shadow-lg shadow-cyan-500/30'
+                    ? 'bg-green-500 text-white shadow-lg shadow-green-500/30'
                     : 'text-gray-400 hover:text-white hover:bg-slate-700/50'
                 }`}
               >
@@ -621,13 +621,13 @@ export default function PipelinePage() {
               placeholder="Search leads by organization, contact, or email..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+              className="w-full pl-10 pr-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
             />
           </div>
           <select
             value={temperatureFilter}
             onChange={(e) => setTemperatureFilter(e.target.value)}
-            className="px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            className="px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-green-500"
           >
             <option value="">All Statuses</option>
             <option value="Hot Lead">Hot Leads</option>
@@ -637,7 +637,7 @@ export default function PipelinePage() {
           <select
             value={productFilter}
             onChange={(e) => setProductFilter(e.target.value)}
-            className="px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            className="px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-green-500"
           >
             <option value="">All Products</option>
             <option value="Studio Sage">Studio Sage</option>
@@ -648,7 +648,7 @@ export default function PipelinePage() {
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            className="px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-green-500"
           >
             <option value="">Sort by...</option>
             <option value="lastContacted">Last Contacted (Oldest)</option>
@@ -729,7 +729,7 @@ export default function PipelinePage() {
                 <span className="text-sm text-gray-500">|</span>
                 <span className="text-xs text-gray-500">Active filters:</span>
                 {quickFilter && (
-                  <div className="flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border border-cyan-500/30 rounded text-xs text-cyan-400">
+                  <div className="flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-green-500/10 to-purple-500/10 border border-green-500/30 rounded text-xs text-green-400">
                     <span>
                       Quick:{' '}
                       {quickFilter === 'needsFollowUp' && 'Needs Follow-Up'}
@@ -741,7 +741,7 @@ export default function PipelinePage() {
                     </span>
                     <button
                       onClick={() => setQuickFilter('')}
-                      className="hover:text-cyan-300"
+                      className="hover:text-green-300"
                       title="Clear quick filter"
                     >
                       ×
@@ -749,11 +749,11 @@ export default function PipelinePage() {
                   </div>
                 )}
                 {searchQuery && (
-                  <div className="flex items-center gap-1 px-2 py-1 bg-cyan-500/10 border border-cyan-500/30 rounded text-xs text-cyan-400">
+                  <div className="flex items-center gap-1 px-2 py-1 bg-green-500/10 border border-green-500/30 rounded text-xs text-green-400">
                     <span>Search: "{searchQuery}"</span>
                     <button
                       onClick={() => setSearchQuery('')}
-                      className="hover:text-cyan-300"
+                      className="hover:text-green-300"
                       title="Clear search"
                     >
                       ×
@@ -854,7 +854,7 @@ export default function PipelinePage() {
               onClick={() => setQuickFilter(quickFilter === 'highValue' ? '' : 'highValue')}
               className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
                 quickFilter === 'highValue'
-                  ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg shadow-cyan-500/30'
+                  ? 'bg-gradient-to-r from-green-500 to-blue-500 text-white shadow-lg shadow-green-500/30'
                   : 'bg-slate-800 text-gray-400 hover:text-white hover:bg-slate-700 border border-slate-600'
               }`}
             >
@@ -931,7 +931,7 @@ export default function PipelinePage() {
                           {lead.leadProducts.slice(0, 2).map((product) => (
                             <span
                               key={product.productName}
-                              className="text-xs px-2 py-1 bg-cyan-600/20 text-cyan-400 rounded"
+                              className="text-xs px-2 py-1 bg-green-600/20 text-green-400 rounded"
                             >
                               {product.productName}
                             </span>
@@ -989,7 +989,7 @@ export default function PipelinePage() {
                       setSortBy('');
                       setQuickFilter('');
                     }}
-                    className="px-4 py-2 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg transition-colors"
+                    className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors"
                   >
                     Clear All Filters
                   </button>
@@ -1003,7 +1003,7 @@ export default function PipelinePage() {
                   </p>
                   <button
                     onClick={() => setIsNewLeadOpen(true)}
-                    className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-600 hover:to-purple-600 text-white rounded-lg transition-colors shadow-lg shadow-cyan-500/30"
+                    className="px-4 py-2 bg-gradient-to-r from-green-500 to-purple-500 hover:from-green-600 hover:to-purple-600 text-white rounded-lg transition-colors shadow-lg shadow-green-500/30"
                   >
                     ➕ Add Your First Lead
                   </button>
@@ -1021,12 +1021,12 @@ export default function PipelinePage() {
             <table className="w-full">
               <thead className="bg-slate-800/80 border-b border-slate-700">
                 <tr>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-cyan-400 uppercase">Organization</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-cyan-400 uppercase">Contact</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-cyan-400 uppercase">Email</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-cyan-400 uppercase">Phone</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-cyan-400 uppercase">Products</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-cyan-400 uppercase">Status</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-green-400 uppercase">Organization</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-green-400 uppercase">Contact</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-green-400 uppercase">Email</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-green-400 uppercase">Phone</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-green-400 uppercase">Products</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-green-400 uppercase">Status</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-700">
@@ -1034,7 +1034,7 @@ export default function PipelinePage() {
                   <tr
                     key={lead.id}
                     onClick={() => setSelectedLeadId(lead.id)}
-                    className="hover:bg-cyan-500/5 cursor-pointer transition-colors"
+                    className="hover:bg-green-500/5 cursor-pointer transition-colors"
                   >
                     <td className="px-4 py-3 text-white font-medium">{lead.organization}</td>
                     <td className="px-4 py-3 text-gray-400">{lead.contactName}</td>
@@ -1046,7 +1046,7 @@ export default function PipelinePage() {
                           {lead.leadProducts.slice(0, 2).map((product) => (
                             <span
                               key={product.productName}
-                              className="text-xs px-2 py-1 bg-cyan-600/20 text-cyan-400 rounded"
+                              className="text-xs px-2 py-1 bg-green-600/20 text-green-400 rounded"
                             >
                               {product.productName}
                             </span>
@@ -1093,7 +1093,7 @@ export default function PipelinePage() {
                                 setSortBy('');
                                 setQuickFilter('');
                               }}
-                              className="px-4 py-2 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg transition-colors"
+                              className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors"
                             >
                               Clear All Filters
                             </button>
@@ -1107,7 +1107,7 @@ export default function PipelinePage() {
                             </p>
                             <button
                               onClick={() => setIsNewLeadOpen(true)}
-                              className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-600 hover:to-purple-600 text-white rounded-lg transition-colors shadow-lg shadow-cyan-500/30"
+                              className="px-4 py-2 bg-gradient-to-r from-green-500 to-purple-500 hover:from-green-600 hover:to-purple-600 text-white rounded-lg transition-colors shadow-lg shadow-green-500/30"
                             >
                               ➕ Add Your First Lead
                             </button>
@@ -1213,7 +1213,7 @@ function NewLeadModal({
             required
             value={formData.organization}
             onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
-            className="w-full px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            className="w-full px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
             placeholder="Company or studio name"
           />
         </div>
@@ -1227,7 +1227,7 @@ function NewLeadModal({
             required
             value={formData.contactName}
             onChange={(e) => setFormData({ ...formData, contactName: e.target.value })}
-            className="w-full px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            className="w-full px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
             placeholder="Primary contact person"
           />
         </div>
@@ -1241,7 +1241,7 @@ function NewLeadModal({
             required
             value={formData.email}
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-            className="w-full px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            className="w-full px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
             placeholder="contact@example.com"
           />
         </div>
@@ -1254,7 +1254,7 @@ function NewLeadModal({
             type="tel"
             value={formData.phone}
             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-            className="w-full px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            className="w-full px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
             placeholder="(555) 123-4567"
           />
         </div>
@@ -1266,7 +1266,7 @@ function NewLeadModal({
           <select
             value={formData.source}
             onChange={(e) => setFormData({ ...formData, source: e.target.value })}
-            className="w-full px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            className="w-full px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-green-500"
           >
             <option value="">Select source...</option>
             <option value="Website">Website</option>
@@ -1287,7 +1287,7 @@ function NewLeadModal({
               value={formData.sourceDetails}
               onChange={(e) => setFormData({ ...formData, sourceDetails: e.target.value })}
               rows={3}
-              className="w-full px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+              className="w-full px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
               placeholder="Additional details about how you found this lead..."
             />
           </div>
@@ -1468,7 +1468,7 @@ function LeadDetailModal({
                 type="text"
                 value={formData.organization}
                 onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
-                className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
               />
             ) : (
               <p className="text-white">{lead.organization || 'N/A'}</p>
@@ -1484,7 +1484,7 @@ function LeadDetailModal({
                 type="text"
                 value={formData.contactName}
                 onChange={(e) => setFormData({ ...formData, contactName: e.target.value })}
-                className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
               />
             ) : (
               <p className="text-white">{lead.contactName || 'N/A'}</p>
@@ -1500,7 +1500,7 @@ function LeadDetailModal({
                 type="email"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
               />
             ) : (
               <p className="text-white flex items-center gap-2">
@@ -1519,7 +1519,7 @@ function LeadDetailModal({
                 type="tel"
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
               />
             ) : (
               <p className="text-white flex items-center gap-2">
@@ -1537,7 +1537,7 @@ function LeadDetailModal({
               <select
                 value={formData.status}
                 onChange={(e) => setFormData({ ...formData, status: e.target.value as any })}
-                className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
               >
                 <option value="NEW">New</option>
                 <option value="CONTACTED">Contacted</option>
@@ -1601,7 +1601,7 @@ function LeadDetailModal({
                           type="checkbox"
                           checked={product.isInterested}
                           onChange={(e) => handleProductChange(index, 'isInterested', e.target.checked)}
-                          className="w-4 h-4 rounded accent-cyan-500"
+                          className="w-4 h-4 rounded accent-green-500"
                         />
                       )}
                       <span className="text-white font-medium">{product.productName}</span>
@@ -1614,7 +1614,7 @@ function LeadDetailModal({
                       <select
                         value={product.status}
                         onChange={(e) => handleProductChange(index, 'status', e.target.value)}
-                        className="px-3 py-1 bg-slate-700 border border-slate-600 rounded-lg text-white text-xs focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                        className="px-3 py-1 bg-slate-700 border border-slate-600 rounded-lg text-white text-xs focus:outline-none focus:ring-2 focus:ring-green-500"
                       >
                         <option value="NOT_INTERESTED">Not Interested</option>
                         <option value="DISCUSSING">Discussing</option>
@@ -1638,7 +1638,7 @@ function LeadDetailModal({
                           value={product.revenueAmount}
                           onChange={(e) => handleProductChange(index, 'revenueAmount', e.target.value)}
                           placeholder="0.00"
-                          className="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-white text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                          className="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-white text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
                         />
                       )}
                     </div>
@@ -1651,7 +1651,7 @@ function LeadDetailModal({
                         onChange={(e) => handleProductChange(index, 'notes', e.target.value)}
                         placeholder="Product discussion notes..."
                         rows={2}
-                        className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                        className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
                       />
                     </div>
                   )}
@@ -1686,7 +1686,7 @@ function getStatusColor(status: string): string {
   const colors: Record<string, string> = {
     NEW: 'bg-gray-600/20 text-gray-400',
     CONTACTED: 'bg-blue-600/20 text-blue-400',
-    QUALIFIED: 'bg-cyan-600/20 text-cyan-400',
+    QUALIFIED: 'bg-green-600/20 text-green-400',
     PROPOSAL_SENT: 'bg-purple-600/20 text-purple-400',
     PROPOSAL_VIEWED: 'bg-purple-600/20 text-purple-400',
     ENGAGED: 'bg-yellow-600/20 text-yellow-400',

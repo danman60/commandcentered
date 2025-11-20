@@ -42,7 +42,7 @@ export function Header({ title, subtitle }: HeaderProps) {
       <div className="flex items-center justify-between">
         {/* Left side - Page title */}
         <div className="flex items-center gap-4">
-          <h1 className="text-[28px] font-bold bg-gradient-to-r from-cyan-600 to-purple-500 bg-clip-text text-transparent leading-tight">
+          <h1 className="text-[28px] font-bold bg-gradient-to-r from-green-600 to-purple-500 bg-clip-text text-transparent leading-tight">
             {title}
           </h1>
           {subtitle && (
@@ -64,7 +64,7 @@ export function Header({ title, subtitle }: HeaderProps) {
               placeholder="Search events, operators, gear..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-80 pl-10 pr-4 py-2.5 bg-[rgba(71,85,105,0.3)] border border-[rgba(71,85,105,0.5)] rounded-lg text-sm text-slate-300 placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors"
+              className="w-80 pl-10 pr-4 py-2.5 bg-[rgba(71,85,105,0.3)] border border-[rgba(71,85,105,0.5)] rounded-lg text-sm text-slate-300 placeholder-slate-500 focus:outline-none focus:border-green-400 focus:ring-1 focus:ring-green-400 transition-colors"
             />
           </div>
 

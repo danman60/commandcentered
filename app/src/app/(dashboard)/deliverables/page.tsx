@@ -39,12 +39,12 @@ export default function DeliverablesPage() {
   return (
     <div className="flex-1 flex flex-col overflow-hidden bg-slate-950">
       {/* Header */}
-      <div className="flex-shrink-0 bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border-b border-cyan-500/30 px-8 py-6">
+      <div className="flex-shrink-0 bg-gradient-to-r from-green-500/10 to-purple-500/10 border-b border-green-500/30 px-8 py-6">
         <div className="flex justify-between items-center">
           <div>
             <div className="flex items-center gap-4 mb-2">
               <span className="text-4xl">🎬</span>
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-green-400 to-purple-400 bg-clip-text text-transparent">
                 Deliverables
               </h1>
             </div>
@@ -54,7 +54,7 @@ export default function DeliverablesPage() {
           </div>
           <button
             onClick={() => setIsNewDeliverableModalOpen(true)}
-            className="px-5 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-400 hover:to-cyan-500 text-white font-semibold rounded-lg shadow-lg shadow-cyan-500/30 transition-all hover:-translate-y-0.5"
+            className="px-5 py-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-400 hover:to-green-500 text-white font-semibold rounded-lg shadow-lg shadow-green-500/30 transition-all hover:-translate-y-0.5"
           >
             ➕ Add Deliverable
           </button>
@@ -71,14 +71,14 @@ export default function DeliverablesPage() {
               placeholder="Search by client, event, or editor..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition-colors"
+              className="w-full pl-12 pr-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-green-500 transition-colors"
             />
           </div>
 
           <select
             value={serviceFilter}
             onChange={(e) => setServiceFilter(e.target.value)}
-            className="px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-cyan-500 min-w-[200px]"
+            className="px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500 min-w-[200px]"
           >
             <option value="">All Services</option>
             <option value="Full Edit">Full Edit</option>
@@ -90,7 +90,7 @@ export default function DeliverablesPage() {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-cyan-500 min-w-[200px]"
+            className="px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500 min-w-[200px]"
           >
             <option value="">All Statuses</option>
             <option value="NOT_STARTED">Not Started</option>
@@ -108,22 +108,22 @@ export default function DeliverablesPage() {
           <table className="w-full">
             <thead className="bg-slate-950/80 border-b border-slate-700">
               <tr>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300 cursor-pointer hover:text-cyan-400">
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300 cursor-pointer hover:text-green-400">
                   Client / Event ⇅
                 </th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300 cursor-pointer hover:text-cyan-400">
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300 cursor-pointer hover:text-green-400">
                   Services ⇅
                 </th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300 cursor-pointer hover:text-cyan-400">
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300 cursor-pointer hover:text-green-400">
                   Google Drive ⇅
                 </th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300 cursor-pointer hover:text-cyan-400">
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300 cursor-pointer hover:text-green-400">
                   Assigned Editor ⇅
                 </th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300 cursor-pointer hover:text-cyan-400">
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300 cursor-pointer hover:text-green-400">
                   Due Date ⇅
                 </th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300 cursor-pointer hover:text-cyan-400">
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300 cursor-pointer hover:text-green-400">
                   Status ⇅
                 </th>
               </tr>
@@ -133,7 +133,7 @@ export default function DeliverablesPage() {
                 <tr
                   key={deliverable.id}
                   onClick={() => setSelectedDeliverableId(deliverable.id)}
-                  className="border-b border-slate-800 hover:bg-cyan-500/5 cursor-pointer transition-colors"
+                  className="border-b border-slate-800 hover:bg-green-500/5 cursor-pointer transition-colors"
                 >
                   <td className="px-6 py-4">
                     <div className="font-bold text-slate-200">
@@ -148,7 +148,7 @@ export default function DeliverablesPage() {
                       {deliverable.services?.slice(0, 3).map((service: any, idx: number) => (
                         <span
                           key={idx}
-                          className="px-2 py-1 bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 text-xs rounded"
+                          className="px-2 py-1 bg-green-500/20 border border-green-500/30 text-green-300 text-xs rounded"
                         >
                           {service.name}
                         </span>
@@ -167,7 +167,7 @@ export default function DeliverablesPage() {
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={(e) => e.stopPropagation()}
-                        className="flex items-center gap-2 text-cyan-400 hover:text-cyan-300"
+                        className="flex items-center gap-2 text-green-400 hover:text-green-300"
                       >
                         <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
                         Open Folder
@@ -258,8 +258,8 @@ function NewDeliverableModal({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 
   return (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="bg-slate-900 border-2 border-cyan-500/30 rounded-xl w-[600px] max-h-[90vh] overflow-y-auto shadow-2xl">
-        <div className="px-6 py-4 border-b border-cyan-500/20 flex justify-between items-center">
+      <div className="bg-slate-900 border-2 border-green-500/30 rounded-xl w-[600px] max-h-[90vh] overflow-y-auto shadow-2xl">
+        <div className="px-6 py-4 border-b border-green-500/20 flex justify-between items-center">
           <h2 className="text-xl font-bold text-white">Create New Deliverable</h2>
           <button
             onClick={onClose}
@@ -277,7 +277,7 @@ function NewDeliverableModal({ isOpen, onClose }: { isOpen: boolean; onClose: ()
             <select
               value={formData.eventId}
               onChange={(e) => setFormData({ ...formData, eventId: e.target.value })}
-              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-cyan-500"
+              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500"
               required
             >
               <option value="">Select an event</option>
@@ -296,7 +296,7 @@ function NewDeliverableModal({ isOpen, onClose }: { isOpen: boolean; onClose: ()
             <select
               value={formData.deliverableType}
               onChange={(e) => setFormData({ ...formData, deliverableType: e.target.value })}
-              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-cyan-500"
+              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500"
               required
             >
               <option value="">Select type</option>
@@ -316,7 +316,7 @@ function NewDeliverableModal({ isOpen, onClose }: { isOpen: boolean; onClose: ()
               type="text"
               value={formData.deliverableName}
               onChange={(e) => setFormData({ ...formData, deliverableName: e.target.value })}
-              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-cyan-500"
+              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500"
               placeholder="e.g., Elite Dance Competition Full Edit"
               required
             />
@@ -329,7 +329,7 @@ function NewDeliverableModal({ isOpen, onClose }: { isOpen: boolean; onClose: ()
             <select
               value={formData.assignedEditorId}
               onChange={(e) => setFormData({ ...formData, assignedEditorId: e.target.value })}
-              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-cyan-500"
+              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500"
             >
               <option value="">Unassigned</option>
               {operators?.map((operator: any) => (
@@ -348,7 +348,7 @@ function NewDeliverableModal({ isOpen, onClose }: { isOpen: boolean; onClose: ()
               type="date"
               value={formData.dueDate}
               onChange={(e) => setFormData({ ...formData, dueDate: e.target.value })}
-              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-cyan-500"
+              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500"
             />
           </div>
 
@@ -363,7 +363,7 @@ function NewDeliverableModal({ isOpen, onClose }: { isOpen: boolean; onClose: ()
             <button
               type="submit"
               disabled={createDeliverable.isPending}
-              className="flex-1 px-4 py-2 bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-400 hover:to-cyan-500 text-white font-semibold rounded-lg transition-all disabled:opacity-50"
+              className="flex-1 px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-400 hover:to-green-500 text-white font-semibold rounded-lg transition-all disabled:opacity-50"
             >
               {createDeliverable.isPending ? 'Creating...' : 'Create Deliverable'}
             </button>
@@ -414,8 +414,8 @@ function DeliverableDetailModal({ deliverableId, isOpen, onClose }: { deliverabl
 
   return (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="bg-slate-900 border-2 border-cyan-500/30 rounded-xl w-[800px] max-h-[90vh] overflow-y-auto shadow-2xl">
-        <div className="px-6 py-4 border-b border-cyan-500/20 flex justify-between items-center">
+      <div className="bg-slate-900 border-2 border-green-500/30 rounded-xl w-[800px] max-h-[90vh] overflow-y-auto shadow-2xl">
+        <div className="px-6 py-4 border-b border-green-500/20 flex justify-between items-center">
           <h2 className="text-xl font-bold text-white">Deliverable Details</h2>
           <button
             onClick={onClose}
@@ -447,7 +447,7 @@ function DeliverableDetailModal({ deliverableId, isOpen, onClose }: { deliverabl
                 <select
                   value={formData.assignedEditorId}
                   onChange={(e) => setFormData({ ...formData, assignedEditorId: e.target.value })}
-                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-cyan-500"
+                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500"
                 >
                   <option value="">Unassigned</option>
                   {operators?.map((operator: any) => (
@@ -472,7 +472,7 @@ function DeliverableDetailModal({ deliverableId, isOpen, onClose }: { deliverabl
                   type="date"
                   value={formData.dueDate}
                   onChange={(e) => setFormData({ ...formData, dueDate: e.target.value })}
-                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-cyan-500"
+                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500"
                 />
               ) : (
                 <div className="px-4 py-2 bg-slate-800/40 rounded-lg text-white">
@@ -489,7 +489,7 @@ function DeliverableDetailModal({ deliverableId, isOpen, onClose }: { deliverabl
                 <select
                   value={formData.status}
                   onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-cyan-500"
+                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500"
                 >
                   <option value="NOT_STARTED">Not Started</option>
                   <option value="IN_PROGRESS">In Progress</option>
@@ -543,7 +543,7 @@ function DeliverableDetailModal({ deliverableId, isOpen, onClose }: { deliverabl
                 <button
                   onClick={handleSave}
                   disabled={updateDeliverable.isPending}
-                  className="flex-1 px-4 py-2 bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-400 hover:to-cyan-500 text-white font-semibold rounded-lg transition-all disabled:opacity-50"
+                  className="flex-1 px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-400 hover:to-green-500 text-white font-semibold rounded-lg transition-all disabled:opacity-50"
                 >
                   {updateDeliverable.isPending ? 'Saving...' : 'Save Changes'}
                 </button>
@@ -551,7 +551,7 @@ function DeliverableDetailModal({ deliverableId, isOpen, onClose }: { deliverabl
             ) : (
               <button
                 onClick={handleEdit}
-                className="flex-1 px-4 py-2 bg-cyan-500 hover:bg-cyan-600 text-white font-semibold rounded-lg transition-all"
+                className="flex-1 px-4 py-2 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg transition-all"
               >
                 Edit Deliverable
               </button>

@@ -156,11 +156,11 @@ export default function FilesPage() {
   return (
     <div className="flex flex-col h-full bg-gray-900">
       {/* Header */}
-      <div className="bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border-b border-cyan-500/30 px-8 py-6">
+      <div className="bg-gradient-to-r from-green-500/10 to-purple-500/10 border-b border-green-500/30 px-8 py-6">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-4">
             <div className="text-4xl">📄</div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-500 to-purple-600 bg-clip-text text-transparent">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-green-500 to-purple-600 bg-clip-text text-transparent">
               Files & Assets
             </h1>
           </div>
@@ -170,7 +170,7 @@ export default function FilesPage() {
             </button>
             <button
               onClick={() => setShowUploadModal(true)}
-              className="px-5 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg font-semibold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/40 hover:-translate-y-0.5 transition-all"
+              className="px-5 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold shadow-lg shadow-green-500/30 hover:shadow-green-500/40 hover:-translate-y-0.5 transition-all"
             >
               ⬆️ Upload File
             </button>
@@ -186,7 +186,7 @@ export default function FilesPage() {
             onClick={() => setActiveTab('documents')}
             className={`px-6 py-3 font-medium transition-all ${
               activeTab === 'documents'
-                ? 'text-cyan-500 border-b-2 border-cyan-500'
+                ? 'text-green-500 border-b-2 border-green-500'
                 : 'text-slate-400 hover:text-slate-300'
             }`}
           >
@@ -196,7 +196,7 @@ export default function FilesPage() {
             onClick={() => setActiveTab('contracts')}
             className={`px-6 py-3 font-medium transition-all ${
               activeTab === 'contracts'
-                ? 'text-cyan-500 border-b-2 border-cyan-500'
+                ? 'text-green-500 border-b-2 border-green-500'
                 : 'text-slate-400 hover:text-slate-300'
             }`}
           >
@@ -206,7 +206,7 @@ export default function FilesPage() {
             onClick={() => setActiveTab('proposals')}
             className={`px-6 py-3 font-medium transition-all ${
               activeTab === 'proposals'
-                ? 'text-cyan-500 border-b-2 border-cyan-500'
+                ? 'text-green-500 border-b-2 border-green-500'
                 : 'text-slate-400 hover:text-slate-300'
             }`}
           >
@@ -216,7 +216,7 @@ export default function FilesPage() {
             onClick={() => setActiveTab('livestreams')}
             className={`px-6 py-3 font-medium transition-all ${
               activeTab === 'livestreams'
-                ? 'text-cyan-500 border-b-2 border-cyan-500'
+                ? 'text-green-500 border-b-2 border-green-500'
                 : 'text-slate-400 hover:text-slate-300'
             }`}
           >
@@ -226,7 +226,7 @@ export default function FilesPage() {
             onClick={() => setActiveTab('service-library')}
             className={`px-6 py-3 font-medium transition-all ${
               activeTab === 'service-library'
-                ? 'text-cyan-500 border-b-2 border-cyan-500'
+                ? 'text-green-500 border-b-2 border-green-500'
                 : 'text-slate-400 hover:text-slate-300'
             }`}
           >
@@ -238,7 +238,7 @@ export default function FilesPage() {
         {activeTab === 'documents' && (
           <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6">
             <div className="flex justify-between items-center mb-5">
-              <h2 className="text-xl font-semibold text-cyan-500">📁 Recent Documents</h2>
+              <h2 className="text-xl font-semibold text-green-500">📁 Recent Documents</h2>
 
               {/* Client Filter */}
               <div className="flex items-center gap-2">
@@ -246,7 +246,7 @@ export default function FilesPage() {
                 <select
                   value={selectedClientId}
                   onChange={(e) => setSelectedClientId(e.target.value)}
-                  className="px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-cyan-500"
+                  className="px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-green-500"
                 >
                   <option value="all">All Clients</option>
                   {clientsData?.map((client) => (
@@ -264,7 +264,7 @@ export default function FilesPage() {
                 {filesData.map((file) => (
                   <div
                     key={file.id}
-                    className="bg-slate-900/60 border border-slate-700/50 rounded-lg p-4 cursor-pointer hover:border-cyan-500/60 hover:-translate-y-1 transition-all"
+                    className="bg-slate-900/60 border border-slate-700/50 rounded-lg p-4 cursor-pointer hover:border-green-500/60 hover:-translate-y-1 transition-all"
                   >
                     <div className="text-5xl text-center mb-3">📄</div>
                     <div className="text-sm font-semibold text-slate-100 mb-1 truncate">{file.fileName}</div>
@@ -272,7 +272,7 @@ export default function FilesPage() {
                       {(Number(file.fileSize) / 1024 / 1024).toFixed(2)} MB
                     </div>
                     {file.client && (
-                      <div className="text-xs text-cyan-400 mt-1">{file.client.organization}</div>
+                      <div className="text-xs text-green-400 mt-1">{file.client.organization}</div>
                     )}
                   </div>
                 ))}
@@ -288,7 +288,7 @@ export default function FilesPage() {
         {/* Tab 2: Contracts */}
         {activeTab === 'contracts' && (
           <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6">
-            <h2 className="text-xl font-semibold text-cyan-500 mb-5">📝 Client Contracts</h2>
+            <h2 className="text-xl font-semibold text-green-500 mb-5">📝 Client Contracts</h2>
             {contractsLoading ? (
               <div className="bg-slate-900/60 p-12 rounded-lg text-center text-slate-400">
                 Loading contracts...
@@ -302,19 +302,19 @@ export default function FilesPage() {
                 <table className="w-full">
                   <thead className="bg-slate-900/80">
                     <tr>
-                      <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
+                      <th className="px-5 py-4 text-left text-xs font-semibold text-green-500 uppercase tracking-wider border-b border-slate-700/30">
                         Contract Name
                       </th>
-                      <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
+                      <th className="px-5 py-4 text-left text-xs font-semibold text-green-500 uppercase tracking-wider border-b border-slate-700/30">
                         Client
                       </th>
-                      <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
+                      <th className="px-5 py-4 text-left text-xs font-semibold text-green-500 uppercase tracking-wider border-b border-slate-700/30">
                         Status
                       </th>
-                      <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
+                      <th className="px-5 py-4 text-left text-xs font-semibold text-green-500 uppercase tracking-wider border-b border-slate-700/30">
                         Date
                       </th>
-                      <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
+                      <th className="px-5 py-4 text-left text-xs font-semibold text-green-500 uppercase tracking-wider border-b border-slate-700/30">
                         Actions
                       </th>
                     </tr>
@@ -323,7 +323,7 @@ export default function FilesPage() {
                     {contracts.map((contract) => (
                     <tr
                       key={contract.id}
-                      className="border-b border-slate-700/20 hover:bg-cyan-500/5 transition-colors cursor-pointer"
+                      className="border-b border-slate-700/20 hover:bg-green-500/5 transition-colors cursor-pointer"
                     >
                       <td className="px-5 py-4 text-sm text-slate-300">{contract.name}</td>
                       <td className="px-5 py-4 text-sm text-slate-300">{contract.client}</td>
@@ -360,42 +360,42 @@ export default function FilesPage() {
           <div>
             {/* Proposal Builder */}
             <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6 mb-6">
-              <h2 className="text-xl font-semibold text-cyan-500 mb-5">💼 Proposal Builder</h2>
+              <h2 className="text-xl font-semibold text-green-500 mb-5">💼 Proposal Builder</h2>
 
               {/* Steps */}
               <div className="flex items-center justify-center gap-4 mb-6">
                 <div className="flex flex-col items-center gap-2">
-                  <div className={`w-10 h-10 rounded-full ${currentStep >= 1 ? 'bg-gradient-to-br from-cyan-500 to-cyan-600' : 'bg-slate-700/50'} text-white flex items-center justify-center font-bold`}>
+                  <div className={`w-10 h-10 rounded-full ${currentStep >= 1 ? 'bg-gradient-to-br from-green-500 to-green-600' : 'bg-slate-700/50'} text-white flex items-center justify-center font-bold`}>
                     1
                   </div>
-                  <div className={`text-xs ${currentStep >= 1 ? 'text-cyan-500' : 'text-slate-500'}`}>Services</div>
+                  <div className={`text-xs ${currentStep >= 1 ? 'text-green-500' : 'text-slate-500'}`}>Services</div>
                 </div>
-                <div className={`text-2xl ${currentStep >= 2 ? 'text-cyan-500' : 'text-slate-600'}`}>→</div>
+                <div className={`text-2xl ${currentStep >= 2 ? 'text-green-500' : 'text-slate-600'}`}>→</div>
                 <div className="flex flex-col items-center gap-2">
-                  <div className={`w-10 h-10 rounded-full ${currentStep >= 2 ? 'bg-gradient-to-br from-cyan-500 to-cyan-600' : 'bg-slate-700/50'} ${currentStep >= 2 ? 'text-white' : 'text-slate-400'} flex items-center justify-center font-bold`}>
+                  <div className={`w-10 h-10 rounded-full ${currentStep >= 2 ? 'bg-gradient-to-br from-green-500 to-green-600' : 'bg-slate-700/50'} ${currentStep >= 2 ? 'text-white' : 'text-slate-400'} flex items-center justify-center font-bold`}>
                     2
                   </div>
-                  <div className={`text-xs ${currentStep >= 2 ? 'text-cyan-500' : 'text-slate-500'}`}>Pricing</div>
+                  <div className={`text-xs ${currentStep >= 2 ? 'text-green-500' : 'text-slate-500'}`}>Pricing</div>
                 </div>
-                <div className={`text-2xl ${currentStep >= 3 ? 'text-cyan-500' : 'text-slate-600'}`}>→</div>
+                <div className={`text-2xl ${currentStep >= 3 ? 'text-green-500' : 'text-slate-600'}`}>→</div>
                 <div className="flex flex-col items-center gap-2">
-                  <div className={`w-10 h-10 rounded-full ${currentStep >= 3 ? 'bg-gradient-to-br from-cyan-500 to-cyan-600' : 'bg-slate-700/50'} ${currentStep >= 3 ? 'text-white' : 'text-slate-400'} flex items-center justify-center font-bold`}>
+                  <div className={`w-10 h-10 rounded-full ${currentStep >= 3 ? 'bg-gradient-to-br from-green-500 to-green-600' : 'bg-slate-700/50'} ${currentStep >= 3 ? 'text-white' : 'text-slate-400'} flex items-center justify-center font-bold`}>
                     3
                   </div>
-                  <div className={`text-xs ${currentStep >= 3 ? 'text-cyan-500' : 'text-slate-500'}`}>Review</div>
+                  <div className={`text-xs ${currentStep >= 3 ? 'text-green-500' : 'text-slate-500'}`}>Review</div>
                 </div>
               </div>
 
               {/* Step 1: Service Selection */}
               {currentStep === 1 && (
                 <div className="bg-slate-900/60 p-6 rounded-lg">
-                  <h3 className="text-lg text-cyan-500 mb-4">Select Services</h3>
+                  <h3 className="text-lg text-green-500 mb-4">Select Services</h3>
 
                   <div className="flex flex-col gap-3 mb-5">
                     {services.map((service) => (
                       <label
                         key={service.id}
-                        className="flex items-center gap-4 p-4 bg-slate-800/50 border border-slate-700/30 rounded-lg cursor-pointer hover:border-cyan-500/50 transition-all"
+                        className="flex items-center gap-4 p-4 bg-slate-800/50 border border-slate-700/30 rounded-lg cursor-pointer hover:border-green-500/50 transition-all"
                       >
                         <input
                           type="checkbox"
@@ -413,9 +413,9 @@ export default function FilesPage() {
                   </div>
 
                   {/* Total */}
-                  <div className="flex justify-between items-center p-5 bg-cyan-500/10 rounded-lg mb-6">
+                  <div className="flex justify-between items-center p-5 bg-green-500/10 rounded-lg mb-6">
                     <div className="text-lg font-semibold text-slate-400">Estimated Total:</div>
-                    <div className="text-3xl font-bold text-cyan-500">${calculateTotal().toLocaleString()}</div>
+                    <div className="text-3xl font-bold text-green-500">${calculateTotal().toLocaleString()}</div>
                   </div>
 
                   {/* Actions */}
@@ -429,7 +429,7 @@ export default function FilesPage() {
                     <button
                       onClick={() => setCurrentStep(2)}
                       disabled={selectedServices.length === 0}
-                      className="px-5 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg font-semibold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/40 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="px-5 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold shadow-lg shadow-green-500/30 hover:shadow-green-500/40 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       Next: Pricing →
                     </button>
@@ -440,7 +440,7 @@ export default function FilesPage() {
               {/* Step 2: Pricing & Terms */}
               {currentStep === 2 && (
                 <div className="bg-slate-900/60 p-6 rounded-lg">
-                  <h3 className="text-lg text-cyan-500 mb-4">Pricing & Terms</h3>
+                  <h3 className="text-lg text-green-500 mb-4">Pricing & Terms</h3>
 
                   {/* Pricing Summary */}
                   <div className="bg-slate-800/50 border border-slate-700/30 rounded-lg p-5 mb-5">
@@ -470,15 +470,15 @@ export default function FilesPage() {
                       max="100"
                       value={proposalPricing.discount}
                       onChange={(e) => setProposalPricing({ ...proposalPricing, discount: Number(e.target.value) })}
-                      className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-cyan-500"
+                      className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500"
                       placeholder="0"
                     />
                   </div>
 
                   {/* Final Total */}
-                  <div className="flex justify-between items-center p-5 bg-cyan-500/10 rounded-lg mb-5">
+                  <div className="flex justify-between items-center p-5 bg-green-500/10 rounded-lg mb-5">
                     <div className="text-lg font-semibold text-slate-400">Final Total:</div>
-                    <div className="text-3xl font-bold text-cyan-500">
+                    <div className="text-3xl font-bold text-green-500">
                       ${(calculateTotal() * (1 - proposalPricing.discount / 100)).toLocaleString()}
                     </div>
                   </div>
@@ -491,7 +491,7 @@ export default function FilesPage() {
                     <textarea
                       value={proposalPricing.notes}
                       onChange={(e) => setProposalPricing({ ...proposalPricing, notes: e.target.value })}
-                      className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-cyan-500 resize-none"
+                      className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500 resize-none"
                       rows={3}
                       placeholder="Any special notes or customizations for this proposal..."
                     />
@@ -505,7 +505,7 @@ export default function FilesPage() {
                     <textarea
                       value={proposalPricing.terms}
                       onChange={(e) => setProposalPricing({ ...proposalPricing, terms: e.target.value })}
-                      className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-cyan-500 resize-none"
+                      className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500 resize-none"
                       rows={3}
                       placeholder="e.g., 50% deposit upon booking, 50% due 7 days before event..."
                     />
@@ -521,7 +521,7 @@ export default function FilesPage() {
                     </button>
                     <button
                       onClick={() => setCurrentStep(3)}
-                      className="px-5 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg font-semibold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/40 transition-all"
+                      className="px-5 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold shadow-lg shadow-green-500/30 hover:shadow-green-500/40 transition-all"
                     >
                       Next: Review →
                     </button>
@@ -532,11 +532,11 @@ export default function FilesPage() {
               {/* Step 3: Review & Generate */}
               {currentStep === 3 && (
                 <div className="bg-slate-900/60 p-6 rounded-lg">
-                  <h3 className="text-lg text-cyan-500 mb-4">Review & Generate Proposal</h3>
+                  <h3 className="text-lg text-green-500 mb-4">Review & Generate Proposal</h3>
 
                   {/* Summary */}
                   <div className="bg-slate-800/50 border border-slate-700/30 rounded-lg p-5 mb-5">
-                    <h4 className="text-sm font-semibold text-cyan-500 mb-3">📋 Proposal Summary</h4>
+                    <h4 className="text-sm font-semibold text-green-500 mb-3">📋 Proposal Summary</h4>
 
                     {/* Services */}
                     <div className="mb-4">
@@ -565,7 +565,7 @@ export default function FilesPage() {
                           <span>-${(calculateTotal() * proposalPricing.discount / 100).toLocaleString()}</span>
                         </div>
                       )}
-                      <div className="flex justify-between text-xl font-bold text-cyan-500 pt-2 border-t border-slate-700/50">
+                      <div className="flex justify-between text-xl font-bold text-green-500 pt-2 border-t border-slate-700/50">
                         <span>Total</span>
                         <span>${(calculateTotal() * (1 - proposalPricing.discount / 100)).toLocaleString()}</span>
                       </div>
@@ -607,7 +607,7 @@ export default function FilesPage() {
 
             {/* Recent Proposals */}
             <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6">
-              <h2 className="text-xl font-semibold text-cyan-500 mb-5">📋 Recent Proposals</h2>
+              <h2 className="text-xl font-semibold text-green-500 mb-5">📋 Recent Proposals</h2>
               {proposalsLoading ? (
                 <div className="bg-slate-900/60 p-12 rounded-lg text-center text-slate-400">
                   Loading proposals...
@@ -621,7 +621,7 @@ export default function FilesPage() {
                   {proposals.map((proposal) => (
                     <div
                       key={proposal.id}
-                      className="bg-slate-900/60 border border-slate-700/50 rounded-lg p-4 cursor-pointer hover:border-cyan-500/60 hover:-translate-y-1 transition-all"
+                      className="bg-slate-900/60 border border-slate-700/50 rounded-lg p-4 cursor-pointer hover:border-green-500/60 hover:-translate-y-1 transition-all"
                     >
                       <div className="text-5xl text-center mb-3">📊</div>
                       <div className="text-sm font-semibold text-slate-100 mb-1 truncate">{proposal.name}</div>
@@ -637,14 +637,14 @@ export default function FilesPage() {
         {/* Tab 4: Livestreams */}
         {activeTab === 'livestreams' && (
           <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6">
-            <h2 className="text-xl font-semibold text-cyan-500 mb-5">📡 Vimeo Livestreams</h2>
+            <h2 className="text-xl font-semibold text-green-500 mb-5">📡 Vimeo Livestreams</h2>
             <div className="flex flex-col gap-4">
               {livestreams.map((stream) => (
                 <div
                   key={stream.id}
                   className="bg-slate-900/60 border border-slate-700/50 rounded-lg p-5 flex gap-5 items-center"
                 >
-                  <div className="w-48 h-28 bg-gradient-to-br from-cyan-500 to-purple-600 rounded-lg flex items-center justify-center text-5xl">
+                  <div className="w-48 h-28 bg-gradient-to-br from-green-500 to-purple-600 rounded-lg flex items-center justify-center text-5xl">
                     🎥
                   </div>
                   <div className="flex-1">
@@ -655,13 +655,13 @@ export default function FilesPage() {
                       <strong>Embed Code:</strong> {stream.embedCode}
                     </div>
                     <div className="flex gap-2">
-                      <button className="px-4 py-2 bg-cyan-500/15 border border-cyan-500/30 rounded-md text-cyan-500 text-xs hover:bg-cyan-500/25 transition-all">
+                      <button className="px-4 py-2 bg-green-500/15 border border-green-500/30 rounded-md text-green-500 text-xs hover:bg-green-500/25 transition-all">
                         📋 Copy Stream Key
                       </button>
-                      <button className="px-4 py-2 bg-cyan-500/15 border border-cyan-500/30 rounded-md text-cyan-500 text-xs hover:bg-cyan-500/25 transition-all">
+                      <button className="px-4 py-2 bg-green-500/15 border border-green-500/30 rounded-md text-green-500 text-xs hover:bg-green-500/25 transition-all">
                         🔗 Copy RTMP URL
                       </button>
-                      <button className="px-4 py-2 bg-cyan-500/15 border border-cyan-500/30 rounded-md text-cyan-500 text-xs hover:bg-cyan-500/25 transition-all">
+                      <button className="px-4 py-2 bg-green-500/15 border border-green-500/30 rounded-md text-green-500 text-xs hover:bg-green-500/25 transition-all">
                         📺 View on Vimeo
                       </button>
                     </div>
@@ -676,10 +676,10 @@ export default function FilesPage() {
         {activeTab === 'service-library' && (
           <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6">
             <div className="flex justify-between items-center mb-5">
-              <h2 className="text-xl font-semibold text-cyan-500">📚 Service Templates Library</h2>
+              <h2 className="text-xl font-semibold text-green-500">📚 Service Templates Library</h2>
               <button
                 onClick={() => setShowAddServiceModal(true)}
-                className="px-5 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg font-semibold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/40 transition-all"
+                className="px-5 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold shadow-lg shadow-green-500/30 hover:shadow-green-500/40 transition-all"
               >
                 ➕ Add Service
               </button>
@@ -689,7 +689,7 @@ export default function FilesPage() {
               {serviceLibraryTemplates.map((template) => (
                 <div
                   key={template.id}
-                  className="bg-slate-900/60 border border-slate-700/50 rounded-lg p-5 cursor-pointer hover:border-cyan-500/60 hover:-translate-y-1 transition-all"
+                  className="bg-slate-900/60 border border-slate-700/50 rounded-lg p-5 cursor-pointer hover:border-green-500/60 hover:-translate-y-1 transition-all"
                 >
                   <h3 className="text-base font-bold text-slate-100 mb-3">{template.name}</h3>
                   <p className="text-sm text-slate-400 mb-3 leading-relaxed">{template.description}</p>
@@ -719,7 +719,7 @@ export default function FilesPage() {
       {showUploadModal && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
           <div className="bg-slate-900 border border-slate-700 rounded-xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
-            <h2 className="text-2xl font-bold text-cyan-500 mb-5">Upload File</h2>
+            <h2 className="text-2xl font-bold text-green-500 mb-5">Upload File</h2>
 
             <div className="flex flex-col gap-4">
               <div>
@@ -730,7 +730,7 @@ export default function FilesPage() {
                   ref={fileInputRef}
                   type="file"
                   onChange={handleFileSelect}
-                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-cyan-500 file:text-white file:cursor-pointer hover:file:bg-cyan-600"
+                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-green-500 file:text-white file:cursor-pointer hover:file:bg-green-600"
                 />
                 {selectedFile && (
                   <p className="text-sm text-slate-400 mt-2">
@@ -746,7 +746,7 @@ export default function FilesPage() {
                 <select
                   value={uploadCategory}
                   onChange={(e) => setUploadCategory(e.target.value)}
-                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-cyan-500"
+                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500"
                 >
                   <option value="documents">Documents</option>
                   <option value="contracts">Contracts</option>
@@ -764,7 +764,7 @@ export default function FilesPage() {
                   value={uploadDescription}
                   onChange={(e) => setUploadDescription(e.target.value)}
                   placeholder="Add a description for this file..."
-                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-cyan-500 resize-none"
+                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500 resize-none"
                   rows={3}
                 />
               </div>
@@ -783,7 +783,7 @@ export default function FilesPage() {
                 <button
                   onClick={handleUpload}
                   disabled={!selectedFile || createFile.isPending}
-                  className="flex-1 px-5 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg font-semibold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/40 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 px-5 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold shadow-lg shadow-green-500/30 hover:shadow-green-500/40 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {createFile.isPending ? 'Uploading...' : 'Upload'}
                 </button>
@@ -797,7 +797,7 @@ export default function FilesPage() {
       {showAddServiceModal && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
           <div className="bg-slate-900 border border-slate-700 rounded-xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
-            <h2 className="text-2xl font-bold text-cyan-500 mb-5">Add New Service Template</h2>
+            <h2 className="text-2xl font-bold text-green-500 mb-5">Add New Service Template</h2>
 
             <form onSubmit={handleAddService} className="flex flex-col gap-4">
               <div>
@@ -809,7 +809,7 @@ export default function FilesPage() {
                   value={serviceFormData.name}
                   onChange={(e) => setServiceFormData({ ...serviceFormData, name: e.target.value })}
                   placeholder="e.g., Dance Recital Package"
-                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-cyan-500"
+                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500"
                   required
                 />
               </div>
@@ -822,7 +822,7 @@ export default function FilesPage() {
                   value={serviceFormData.description}
                   onChange={(e) => setServiceFormData({ ...serviceFormData, description: e.target.value })}
                   placeholder="Describe what's included in this service package..."
-                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-cyan-500 resize-none"
+                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500 resize-none"
                   rows={3}
                   required
                 />
@@ -837,7 +837,7 @@ export default function FilesPage() {
                   value={serviceFormData.price}
                   onChange={(e) => setServiceFormData({ ...serviceFormData, price: e.target.value })}
                   placeholder="e.g., $5,500"
-                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-cyan-500"
+                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500"
                   required
                 />
               </div>
@@ -855,7 +855,7 @@ export default function FilesPage() {
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 px-5 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg font-semibold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/40 transition-all"
+                  className="flex-1 px-5 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold shadow-lg shadow-green-500/30 hover:shadow-green-500/40 transition-all"
                 >
                   Add Service
                 </button>

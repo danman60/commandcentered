@@ -154,11 +154,11 @@ export default function GearPage() {
   return (
     <div className="flex flex-col h-full bg-gray-900">
       {/* Header */}
-      <div className="bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border-b border-cyan-500/30 px-8 py-6">
+      <div className="bg-gradient-to-r from-green-500/10 to-purple-500/10 border-b border-green-500/30 px-8 py-6">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-4">
             <div className="text-4xl">🎥</div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-500 to-purple-600 bg-clip-text text-transparent">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-green-500 to-purple-600 bg-clip-text text-transparent">
               Gear
             </h1>
           </div>
@@ -174,7 +174,7 @@ export default function GearPage() {
                   setShowCreateGearModal(true);
                 }
               }}
-              className="px-5 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg font-semibold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/40 hover:-translate-y-0.5 transition-all"
+              className="px-5 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold shadow-lg shadow-green-500/30 hover:shadow-green-500/40 hover:-translate-y-0.5 transition-all"
             >
               ➕ {activeTab === 'kits' ? 'Add Kit' : 'Add Gear'}
             </button>
@@ -190,8 +190,8 @@ export default function GearPage() {
             onClick={() => setActiveTab('inventory')}
             className={`px-6 py-3 font-semibold transition-all border-b-3 ${
               activeTab === 'inventory'
-                ? 'border-cyan-500 text-cyan-500'
-                : 'border-transparent text-slate-400 hover:text-cyan-500'
+                ? 'border-green-500 text-green-500'
+                : 'border-transparent text-slate-400 hover:text-green-500'
             }`}
           >
             INVENTORY
@@ -200,8 +200,8 @@ export default function GearPage() {
             onClick={() => setActiveTab('calendar')}
             className={`px-6 py-3 font-semibold transition-all border-b-3 ${
               activeTab === 'calendar'
-                ? 'border-cyan-500 text-cyan-500'
-                : 'border-transparent text-slate-400 hover:text-cyan-500'
+                ? 'border-green-500 text-green-500'
+                : 'border-transparent text-slate-400 hover:text-green-500'
             }`}
           >
             CALENDAR
@@ -210,8 +210,8 @@ export default function GearPage() {
             onClick={() => setActiveTab('maintenance')}
             className={`px-6 py-3 font-semibold transition-all border-b-3 ${
               activeTab === 'maintenance'
-                ? 'border-cyan-500 text-cyan-500'
-                : 'border-transparent text-slate-400 hover:text-cyan-500'
+                ? 'border-green-500 text-green-500'
+                : 'border-transparent text-slate-400 hover:text-green-500'
             }`}
           >
             MAINTENANCE
@@ -220,8 +220,8 @@ export default function GearPage() {
             onClick={() => setActiveTab('kits')}
             className={`px-6 py-3 font-semibold transition-all border-b-3 ${
               activeTab === 'kits'
-                ? 'border-cyan-500 text-cyan-500'
-                : 'border-transparent text-slate-400 hover:text-cyan-500'
+                ? 'border-green-500 text-green-500'
+                : 'border-transparent text-slate-400 hover:text-green-500'
             }`}
           >
             KITS
@@ -239,7 +239,7 @@ export default function GearPage() {
                   title="Card View"
                   className={`px-4 py-2 text-sm font-semibold transition-all ${
                     activeView === 'cards'
-                      ? 'bg-cyan-500 text-white'
+                      ? 'bg-green-500 text-white'
                       : 'bg-slate-800/50 text-slate-400 border border-slate-700/30 hover:bg-slate-800/80'
                   }`}
                 >
@@ -250,7 +250,7 @@ export default function GearPage() {
                   title="Table View"
                   className={`px-4 py-2 text-sm font-semibold transition-all ${
                     activeView === 'table'
-                      ? 'bg-cyan-500 text-white'
+                      ? 'bg-green-500 text-white'
                       : 'bg-slate-800/50 text-slate-400 border border-slate-700/30 hover:bg-slate-800/80'
                   }`}
                 >
@@ -267,7 +267,7 @@ export default function GearPage() {
                 <p className="text-slate-400 mb-6">Add your first gear item to get started</p>
                 <button
                   onClick={() => setShowCreateGearModal(true)}
-                  className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg font-semibold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/40 hover:-translate-y-0.5 transition-all"
+                  className="px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold shadow-lg shadow-green-500/30 hover:shadow-green-500/40 hover:-translate-y-0.5 transition-all"
                 >
                   ➕ Add Gear
                 </button>
@@ -280,7 +280,7 @@ export default function GearPage() {
                 {gearData.map((item) => (
                   <div
                     key={item.id}
-                    className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-5 hover:border-cyan-500/50 hover:-translate-y-1 transition-all"
+                    className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-5 hover:border-green-500/50 hover:-translate-y-1 transition-all"
                   >
                     <div className="flex items-start justify-between mb-4">
                       <div className="text-4xl">{item.icon}</div>
@@ -319,19 +319,19 @@ export default function GearPage() {
                   <table className="w-full">
                     <thead className="bg-slate-900/80">
                       <tr>
-                        <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
+                        <th className="px-5 py-4 text-left text-xs font-semibold text-green-500 uppercase tracking-wider border-b border-slate-700/30">
                           Item
                         </th>
-                        <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
+                        <th className="px-5 py-4 text-left text-xs font-semibold text-green-500 uppercase tracking-wider border-b border-slate-700/30">
                           Category
                         </th>
-                        <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
+                        <th className="px-5 py-4 text-left text-xs font-semibold text-green-500 uppercase tracking-wider border-b border-slate-700/30">
                           Type
                         </th>
-                        <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
+                        <th className="px-5 py-4 text-left text-xs font-semibold text-green-500 uppercase tracking-wider border-b border-slate-700/30">
                           Serial Number
                         </th>
-                        <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
+                        <th className="px-5 py-4 text-left text-xs font-semibold text-green-500 uppercase tracking-wider border-b border-slate-700/30">
                           Status
                         </th>
                       </tr>
@@ -340,7 +340,7 @@ export default function GearPage() {
                       {gearData.map((item) => (
                         <tr
                           key={item.id}
-                          className="border-b border-slate-700/20 hover:bg-cyan-500/5 transition-colors cursor-pointer"
+                          className="border-b border-slate-700/20 hover:bg-green-500/5 transition-colors cursor-pointer"
                         >
                           <td className="px-5 py-4">
                             <div className="flex items-center gap-3">
@@ -379,7 +379,7 @@ export default function GearPage() {
                 <p className="text-slate-400 mb-6">Create your first gear kit to get started</p>
                 <button
                   onClick={() => setShowCreateKitModal(true)}
-                  className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg font-semibold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/40 hover:-translate-y-0.5 transition-all"
+                  className="px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold shadow-lg shadow-green-500/30 hover:shadow-green-500/40 hover:-translate-y-0.5 transition-all"
                 >
                   ➕ Create Kit
                 </button>
@@ -392,7 +392,7 @@ export default function GearPage() {
                 {kitData.map((kit) => (
                   <div
                     key={kit.id}
-                    className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6 hover:border-cyan-500/50 hover:-translate-y-1 transition-all"
+                    className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6 hover:border-green-500/50 hover:-translate-y-1 transition-all"
                   >
                     <div className="flex items-start justify-between mb-4">
                       <h3 className="text-lg font-bold text-slate-100">{kit.name}</h3>
@@ -403,7 +403,7 @@ export default function GearPage() {
                       )}
                     </div>
                     <p className="text-sm text-slate-400 mb-4">{kit.description}</p>
-                    <div className="text-sm text-cyan-500">
+                    <div className="text-sm text-green-500">
                       {kit.itemCount} {kit.itemCount === 1 ? 'item' : 'items'} in kit
                     </div>
                   </div>
@@ -436,7 +436,7 @@ export default function GearPage() {
       {showCreateGearModal && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
           <div className="bg-slate-800 border border-slate-700 rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-            <div className="bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border-b border-cyan-500/30 p-6">
+            <div className="bg-gradient-to-r from-green-500/10 to-purple-500/10 border-b border-green-500/30 p-6">
               <h2 className="text-2xl font-bold text-slate-100">Add New Gear</h2>
             </div>
 
@@ -450,7 +450,7 @@ export default function GearPage() {
                   type="text"
                   name="name"
                   required
-                  className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+                  className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-green-500"
                   placeholder="Canon EOS R5"
                 />
               </div>
@@ -463,7 +463,7 @@ export default function GearPage() {
                 <select
                   name="category"
                   required
-                  className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 focus:outline-none focus:border-cyan-500"
+                  className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 focus:outline-none focus:border-green-500"
                 >
                   <option value="">Select category...</option>
                   <option value="CAMERA">Camera</option>
@@ -490,7 +490,7 @@ export default function GearPage() {
                   type="text"
                   name="type"
                   required
-                  className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+                  className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-green-500"
                   placeholder="Full-Frame Mirrorless"
                 />
               </div>
@@ -503,7 +503,7 @@ export default function GearPage() {
                 <input
                   type="text"
                   name="serialNumber"
-                  className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+                  className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-green-500"
                   placeholder="CFJ012345"
                 />
               </div>
@@ -517,7 +517,7 @@ export default function GearPage() {
                   <input
                     type="date"
                     name="purchaseDate"
-                    className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 focus:outline-none focus:border-cyan-500"
+                    className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 focus:outline-none focus:border-green-500"
                   />
                 </div>
                 <div>
@@ -529,7 +529,7 @@ export default function GearPage() {
                     name="purchasePrice"
                     min="0"
                     step="0.01"
-                    className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+                    className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-green-500"
                     placeholder="3999.00"
                   />
                 </div>
@@ -543,7 +543,7 @@ export default function GearPage() {
                 <textarea
                   name="notes"
                   rows={3}
-                  className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+                  className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-green-500"
                   placeholder="Additional notes about this gear..."
                 />
               </div>
@@ -560,7 +560,7 @@ export default function GearPage() {
                 <button
                   type="submit"
                   disabled={createGear.isPending}
-                  className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg font-semibold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/40 hover:-translate-y-0.5 transition-all disabled:opacity-50"
+                  className="px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold shadow-lg shadow-green-500/30 hover:shadow-green-500/40 hover:-translate-y-0.5 transition-all disabled:opacity-50"
                 >
                   {createGear.isPending ? 'Creating...' : 'Create Gear'}
                 </button>

@@ -31,7 +31,7 @@ export function EventCard({
   return (
     <div
       onClick={onClick}
-      className="group relative overflow-hidden rounded-lg border border-slate-700 bg-slate-800/50 backdrop-blur-sm p-3 hover:border-cyan-500/50 hover:bg-slate-800/80 transition-all cursor-pointer"
+      className="group relative overflow-hidden rounded-lg border border-slate-700 bg-slate-800/50 backdrop-blur-sm p-3 hover:border-green-500/50 hover:bg-slate-800/80 transition-all cursor-pointer"
     >
       {/* Status Indicator */}
       <div className="absolute top-0 right-0 m-2">
@@ -78,7 +78,7 @@ export function EventCard({
       </div>
 
       {/* Hover Effect */}
-      <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-r from-green-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
     </div>
   );
 }

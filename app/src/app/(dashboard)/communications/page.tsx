@@ -119,11 +119,11 @@ export default function CommunicationsPage() {
   return (
     <div className="flex flex-col h-full bg-gray-900">
       {/* Header */}
-      <div className="bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border-b border-cyan-500/30 px-8 py-6">
+      <div className="bg-gradient-to-r from-green-500/10 to-purple-500/10 border-b border-green-500/30 px-8 py-6">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-4">
             <div className="text-4xl">💬</div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-500 to-purple-600 bg-clip-text text-transparent">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-green-500 to-purple-600 bg-clip-text text-transparent">
               Communications
             </h1>
           </div>
@@ -136,7 +136,7 @@ export default function CommunicationsPage() {
             </button>
             <button
               onClick={() => setShowComposeModal(true)}
-              className="px-5 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg font-semibold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/40 hover:-translate-y-0.5 transition-all"
+              className="px-5 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold shadow-lg shadow-green-500/30 hover:shadow-green-500/40 hover:-translate-y-0.5 transition-all"
             >
               ✉️ Create Touchpoint
             </button>
@@ -152,7 +152,7 @@ export default function CommunicationsPage() {
             onClick={() => setActiveTab('workflow')}
             className={`px-6 py-3 font-medium transition-all ${
               activeTab === 'workflow'
-                ? 'text-cyan-500 border-b-2 border-cyan-500'
+                ? 'text-green-500 border-b-2 border-green-500'
                 : 'text-slate-400 hover:text-slate-300'
             }`}
           >
@@ -162,7 +162,7 @@ export default function CommunicationsPage() {
             onClick={() => setActiveTab('history')}
             className={`px-6 py-3 font-medium transition-all ${
               activeTab === 'history'
-                ? 'text-cyan-500 border-b-2 border-cyan-500'
+                ? 'text-green-500 border-b-2 border-green-500'
                 : 'text-slate-400 hover:text-slate-300'
             }`}
           >
@@ -172,7 +172,7 @@ export default function CommunicationsPage() {
             onClick={() => setActiveTab('templates')}
             className={`px-6 py-3 font-medium transition-all ${
               activeTab === 'templates'
-                ? 'text-cyan-500 border-b-2 border-cyan-500'
+                ? 'text-green-500 border-b-2 border-green-500'
                 : 'text-slate-400 hover:text-slate-300'
             }`}
           >
@@ -182,7 +182,7 @@ export default function CommunicationsPage() {
             onClick={() => setActiveTab('telegram')}
             className={`px-6 py-3 font-medium transition-all ${
               activeTab === 'telegram'
-                ? 'text-cyan-500 border-b-2 border-cyan-500'
+                ? 'text-green-500 border-b-2 border-green-500'
                 : 'text-slate-400 hover:text-slate-300'
             }`}
           >
@@ -192,7 +192,7 @@ export default function CommunicationsPage() {
             onClick={() => setActiveTab('notifications')}
             className={`px-6 py-3 font-medium transition-all ${
               activeTab === 'notifications'
-                ? 'text-cyan-500 border-b-2 border-cyan-500'
+                ? 'text-green-500 border-b-2 border-green-500'
                 : 'text-slate-400 hover:text-slate-300'
             }`}
           >
@@ -205,7 +205,7 @@ export default function CommunicationsPage() {
           <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6">
             <div className="flex items-center gap-2 mb-5">
               <span className="text-2xl">📊</span>
-              <h2 className="text-xl font-semibold text-cyan-500">Communication Workflow Progress</h2>
+              <h2 className="text-xl font-semibold text-green-500">Communication Workflow Progress</h2>
             </div>
 
             {touchpointsLoading ? (
@@ -221,7 +221,7 @@ export default function CommunicationsPage() {
                 {clientsWithProgress.map((client) => (
                   <div
                     key={client.id}
-                    className="bg-slate-900/60 border border-slate-700/50 rounded-xl p-5 hover:border-cyan-500/50 hover:-translate-y-1 transition-all"
+                    className="bg-slate-900/60 border border-slate-700/50 rounded-xl p-5 hover:border-green-500/50 hover:-translate-y-1 transition-all"
                   >
                     <h3 className="text-lg font-bold text-slate-100 mb-4">{client.name}</h3>
 
@@ -229,13 +229,13 @@ export default function CommunicationsPage() {
                     <div className="mb-4">
                       <div className="flex justify-between mb-2">
                         <span className="text-sm text-slate-400">Communication Progress</span>
-                        <span className="text-sm text-cyan-500 font-semibold">
+                        <span className="text-sm text-green-500 font-semibold">
                           {client.progress}% ({client.completed}/{client.total} Complete)
                         </span>
                       </div>
                       <div className="w-full h-2 bg-slate-900/60 rounded-full overflow-hidden">
                         <div
-                          className="h-full bg-gradient-to-r from-cyan-500 to-purple-600 rounded-full transition-all"
+                          className="h-full bg-gradient-to-r from-green-500 to-purple-600 rounded-full transition-all"
                           style={{ width: `${client.progress}%` }}
                         />
                       </div>
@@ -251,7 +251,7 @@ export default function CommunicationsPage() {
                                 touchpoint.status === 'COMPLETED'
                                   ? 'bg-gradient-to-br from-green-500 to-green-600 shadow-lg shadow-green-500/50 text-white'
                                   : touchpoint.status === 'SCHEDULED'
-                                  ? 'bg-gradient-to-br from-cyan-500 to-cyan-600 shadow-lg shadow-cyan-500/50 text-white'
+                                  ? 'bg-gradient-to-br from-green-500 to-green-600 shadow-lg shadow-green-500/50 text-white'
                                   : 'bg-slate-700/50 border-2 border-slate-600/60 text-slate-500'
                               }`}
                             >
@@ -262,7 +262,7 @@ export default function CommunicationsPage() {
                                 touchpoint.status === 'COMPLETED'
                                   ? 'text-green-500'
                                   : touchpoint.status === 'SCHEDULED'
-                                  ? 'text-cyan-500'
+                                  ? 'text-green-500'
                                   : 'text-slate-500'
                               }`}
                             >
@@ -287,7 +287,7 @@ export default function CommunicationsPage() {
           <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6">
             <div className="flex items-center gap-2 mb-5">
               <span className="text-2xl">📧</span>
-              <h2 className="text-xl font-semibold text-cyan-500">Touchpoint History</h2>
+              <h2 className="text-xl font-semibold text-green-500">Touchpoint History</h2>
             </div>
 
             {touchpointsLoading ? (
@@ -303,16 +303,16 @@ export default function CommunicationsPage() {
                 <table className="w-full">
                   <thead className="bg-slate-900/80">
                     <tr>
-                      <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
+                      <th className="px-5 py-4 text-left text-xs font-semibold text-green-500 uppercase tracking-wider border-b border-slate-700/30">
                         Client
                       </th>
-                      <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
+                      <th className="px-5 py-4 text-left text-xs font-semibold text-green-500 uppercase tracking-wider border-b border-slate-700/30">
                         Touchpoint Type
                       </th>
-                      <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
+                      <th className="px-5 py-4 text-left text-xs font-semibold text-green-500 uppercase tracking-wider border-b border-slate-700/30">
                         Status
                       </th>
-                      <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
+                      <th className="px-5 py-4 text-left text-xs font-semibold text-green-500 uppercase tracking-wider border-b border-slate-700/30">
                         Date
                       </th>
                     </tr>
@@ -321,7 +321,7 @@ export default function CommunicationsPage() {
                     {emailHistory.map((item) => (
                       <tr
                         key={item.id}
-                        className="border-b border-slate-700/20 hover:bg-cyan-500/5 transition-colors cursor-pointer"
+                        className="border-b border-slate-700/20 hover:bg-green-500/5 transition-colors cursor-pointer"
                       >
                         <td className="px-5 py-4 text-sm text-slate-300">{item.client}</td>
                         <td className="px-5 py-4 text-sm text-slate-300">{item.type}</td>
@@ -331,7 +331,7 @@ export default function CommunicationsPage() {
                               item.status === 'completed'
                                 ? 'bg-green-500/20 text-green-500'
                                 : item.status === 'scheduled'
-                                ? 'bg-cyan-500/20 text-cyan-500'
+                                ? 'bg-green-500/20 text-green-500'
                                 : item.status === 'pending'
                                 ? 'bg-orange-500/20 text-orange-500'
                                 : 'bg-slate-500/20 text-slate-500'
@@ -355,7 +355,7 @@ export default function CommunicationsPage() {
           <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6">
             <div className="flex items-center gap-2 mb-5">
               <span className="text-2xl">📝</span>
-              <h2 className="text-xl font-semibold text-cyan-500">Email Templates</h2>
+              <h2 className="text-xl font-semibold text-green-500">Email Templates</h2>
             </div>
 
             {emailConfigsLoading ? (
@@ -371,12 +371,12 @@ export default function CommunicationsPage() {
                 {templates.map((template) => (
                   <div
                     key={template.id}
-                    className="bg-slate-900/60 border border-slate-700/50 rounded-lg p-4 hover:border-cyan-500/50 hover:-translate-y-1 transition-all"
+                    className="bg-slate-900/60 border border-slate-700/50 rounded-lg p-4 hover:border-green-500/50 hover:-translate-y-1 transition-all"
                   >
                     <div className="flex justify-between items-center mb-3">
                       <h3 className="text-base font-bold text-slate-100">{template.name}</h3>
                     </div>
-                    <div className="text-sm text-slate-400 leading-relaxed bg-slate-900/60 p-3 rounded-md border-l-4 border-cyan-500">
+                    <div className="text-sm text-slate-400 leading-relaxed bg-slate-900/60 p-3 rounded-md border-l-4 border-green-500">
                       <strong>Subject:</strong> {template.subject}
                       <br />
                       {template.preview}
@@ -388,7 +388,7 @@ export default function CommunicationsPage() {
 
             <button
               onClick={() => setShowTemplateModal(true)}
-              className="px-5 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg font-semibold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/40 hover:-translate-y-0.5 transition-all"
+              className="px-5 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold shadow-lg shadow-green-500/30 hover:shadow-green-500/40 hover:-translate-y-0.5 transition-all"
             >
               ➕ Create New Template
             </button>
@@ -400,7 +400,7 @@ export default function CommunicationsPage() {
           <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6">
             <div className="flex items-center gap-2 mb-5">
               <span className="text-2xl">💬</span>
-              <h2 className="text-xl font-semibold text-cyan-500">Telegram Integration</h2>
+              <h2 className="text-xl font-semibold text-green-500">Telegram Integration</h2>
             </div>
             <div className="text-center py-12 text-slate-400">
               <div className="text-4xl mb-4">💬</div>
@@ -415,7 +415,7 @@ export default function CommunicationsPage() {
           <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6">
             <div className="flex items-center gap-2 mb-2">
               <span className="text-2xl">🔔</span>
-              <h2 className="text-xl font-semibold text-cyan-500">Notification Log</h2>
+              <h2 className="text-xl font-semibold text-green-500">Notification Log</h2>
             </div>
             <p className="text-sm text-slate-400 mb-5">
               Unified log of all Email, SMS, and Telegram notifications sent from the system
@@ -433,14 +433,14 @@ export default function CommunicationsPage() {
       {showComposeModal && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
           <div className="bg-slate-900 border border-slate-700 rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-            <h2 className="text-2xl font-bold text-cyan-500 mb-5">Create Touchpoint</h2>
+            <h2 className="text-2xl font-bold text-green-500 mb-5">Create Touchpoint</h2>
             <form onSubmit={handleComposeSubmit} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-2">Touchpoint Type</label>
                 <select
                   name="type"
                   required
-                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded-lg focus:outline-none focus:border-cyan-500"
+                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded-lg focus:outline-none focus:border-green-500"
                 >
                   <option value="INITIAL_CONTACT">Initial Contact</option>
                   <option value="PROPOSAL_SENT">Proposal Sent</option>
@@ -459,7 +459,7 @@ export default function CommunicationsPage() {
                 <input
                   type="text"
                   name="clientId"
-                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded-lg focus:outline-none focus:border-cyan-500"
+                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded-lg focus:outline-none focus:border-green-500"
                 />
               </div>
               <div>
@@ -467,7 +467,7 @@ export default function CommunicationsPage() {
                 <input
                   type="text"
                   name="eventId"
-                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded-lg focus:outline-none focus:border-cyan-500"
+                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded-lg focus:outline-none focus:border-green-500"
                 />
               </div>
               <div>
@@ -475,7 +475,7 @@ export default function CommunicationsPage() {
                 <input
                   type="date"
                   name="completedAt"
-                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded-lg focus:outline-none focus:border-cyan-500"
+                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded-lg focus:outline-none focus:border-green-500"
                 />
               </div>
               <div>
@@ -483,7 +483,7 @@ export default function CommunicationsPage() {
                 <textarea
                   name="notes"
                   rows={3}
-                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded-lg focus:outline-none focus:border-cyan-500"
+                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded-lg focus:outline-none focus:border-green-500"
                 />
               </div>
               <div className="flex gap-3">
@@ -497,7 +497,7 @@ export default function CommunicationsPage() {
                 <button
                   type="submit"
                   disabled={createTouchpoint.isPending}
-                  className="flex-1 px-5 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg font-semibold hover:shadow-lg transition-all disabled:opacity-50"
+                  className="flex-1 px-5 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold hover:shadow-lg transition-all disabled:opacity-50"
                 >
                   {createTouchpoint.isPending ? 'Creating...' : 'Create Touchpoint'}
                 </button>
@@ -511,14 +511,14 @@ export default function CommunicationsPage() {
       {showTemplateModal && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
           <div className="bg-slate-900 border border-slate-700 rounded-xl p-6 w-full max-w-2xl">
-            <h2 className="text-2xl font-bold text-cyan-500 mb-5">Create Email Template</h2>
+            <h2 className="text-2xl font-bold text-green-500 mb-5">Create Email Template</h2>
             <form onSubmit={handleTemplateSubmit} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-2">Email Type</label>
                 <select
                   name="emailType"
                   required
-                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded-lg focus:outline-none focus:border-cyan-500"
+                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded-lg focus:outline-none focus:border-green-500"
                 >
                   <option value="SHOW_PROGRAM_REMINDER">Show Program Reminder</option>
                   <option value="REBOOKING_FOLLOWUP">Rebooking Followup</option>
@@ -535,7 +535,7 @@ export default function CommunicationsPage() {
                   type="text"
                   name="subject"
                   required
-                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded-lg focus:outline-none focus:border-cyan-500"
+                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded-lg focus:outline-none focus:border-green-500"
                 />
               </div>
               <div>
@@ -544,7 +544,7 @@ export default function CommunicationsPage() {
                   name="body"
                   required
                   rows={6}
-                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded-lg focus:outline-none focus:border-cyan-500"
+                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded-lg focus:outline-none focus:border-green-500"
                   placeholder="Use {{eventName}}, {{clientName}}, etc. for placeholders"
                 />
               </div>
@@ -553,7 +553,7 @@ export default function CommunicationsPage() {
                 <input
                   type="number"
                   name="sendDelay"
-                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded-lg focus:outline-none focus:border-cyan-500"
+                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded-lg focus:outline-none focus:border-green-500"
                 />
               </div>
               <div className="flex gap-3">
@@ -567,7 +567,7 @@ export default function CommunicationsPage() {
                 <button
                   type="submit"
                   disabled={createEmailConfig.isPending}
-                  className="flex-1 px-5 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg font-semibold hover:shadow-lg transition-all disabled:opacity-50"
+                  className="flex-1 px-5 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold hover:shadow-lg transition-all disabled:opacity-50"
                 >
                   {createEmailConfig.isPending ? 'Creating...' : 'Create Template'}
                 </button>

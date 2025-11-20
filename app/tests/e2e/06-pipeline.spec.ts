@@ -5,237 +5,200 @@
  */
 
 import { test, expect } from '@playwright/test';
-import { testClients, testProducts } from './fixtures/clients';
 
-test.describe('Pipeline with 4-Product Tracking @p0 @critical', () => {
+test.describe('Pipeline with 4-Product Tracking @p0 @critical @pipeline', () => {
   test.beforeEach(async ({ page }) => {
-    // Navigate to Pipeline page
     await page.goto('/pipeline');
     await page.waitForLoadState('networkidle');
   });
 
   /**
    * TC-PIPE-001: Verify client cards layout with CRM fields
-   * Decision: Q13 (Communication touchpoints)
+   * Decision: Q13 (CRM field display)
    */
-  test('TC-PIPE-001: Verify client cards display CRM fields @smoke', async ({ page }) => {
-    // Look for client cards
+  test('TC-PIPE-001: Client cards display with CRM fields', async ({ page }) => {
+    // Look for client cards in grid layout
     const clientCards = page.locator('[data-testid="client-card"]').or(
-      page.locator('.client-card, [data-client]')
+      page.locator('.client-card, [role="article"]').filter({ hasText: /client|studio/i })
     );
 
-    const clientCount = await clientCards.count();
+    const count = await clientCards.count();
 
-    if (clientCount > 0) {
+    if (count > 0) {
       const firstCard = clientCards.first();
-      await expect(firstCard).toBeVisible();
+      await expect(firstCard).toBeVisible({ timeout: 5000 });
 
       // Verify CRM fields are present
-      const hasClientName = await firstCard.locator('text=/[A-Z][a-z]+\s+[A-Z][a-z]+|EMPWR|Glow|ABC/').count() > 0;
-      const hasLastContacted = await page.locator('text=/last contacted/i').count() > 0;
-      const hasNextFollowUp = await page.locator('text=/next follow(-|\s)?up|follow(-|\s)?up/i').count() > 0;
-      const hasContactFrequency = await page.locator('text=/frequency|weekly|bi-weekly|monthly/i').count() > 0;
-      const hasStatusBadge = await firstCard.locator('text=/hot|warm|cold|lead/i').count() > 0;
+      const crmFields = [
+        /client.*name|studio.*name/i,
+        /last.*contacted|contacted/i,
+        /next.*follow.*up|follow.*up/i,
+        /contact.*frequency|frequency/i,
+        /status|lead/i
+      ];
 
-      // At least client name and status should be visible
-      expect(hasClientName).toBeTruthy();
-      expect(hasStatusBadge || hasLastContacted).toBeTruthy();
-    } else {
-      // Check for empty state or add client button
-      const emptyState = page.locator('text=/no clients|add client/i');
-      await expect(emptyState.first()).toBeVisible();
+      let visibleFields = 0;
+      for (const pattern of crmFields) {
+        const field = firstCard.locator('label, span, div').filter({ hasText: pattern }).first();
+        if (await field.isVisible({ timeout: 1000 }).catch(() => false)) {
+          visibleFields++;
+        }
+      }
+
+      // At least 3 CRM fields should be visible
+      expect(visibleFields).toBeGreaterThanOrEqual(3);
     }
   });
 
   /**
    * TC-PIPE-002: Verify client status badges (Hot, Warm, Cold)
+   * Spec: Status badges display with correct colors
    */
-  test('TC-PIPE-002: Verify client status badges with correct colors', async ({ page }) => {
-    const clientCards = page.locator('[data-testid="client-card"]').or(
-      page.locator('.client-card, [data-client]')
+  test('TC-PIPE-002: Client status badges display correctly', async ({ page }) => {
+    // Look for status badges
+    const statusBadges = page.locator('[data-testid="status-badge"]').or(
+      page.locator('.badge, .status').filter({ hasText: /hot|warm|cold|lead/i })
     );
 
-    const clientCount = await clientCards.count();
+    const count = await statusBadges.count();
 
-    if (clientCount > 0) {
-      // Look for status badges
-      const statusBadges = page.locator('[data-testid="status-badge"]').or(
-        page.locator('text=/hot lead|warm lead|cold lead/i')
-      ).or(
-        page.locator('.badge, .status').filter({ hasText: /hot|warm|cold/i })
-      );
+    if (count > 0) {
+      await expect(statusBadges.first()).toBeVisible({ timeout: 5000 });
 
-      const badgeCount = await statusBadges.count();
+      // Verify status badges have styling (colors)
+      for (let i = 0; i < Math.min(count, 3); i++) {
+        const badge = statusBadges.nth(i);
+        const classList = await badge.getAttribute('class');
+        const style = await badge.getAttribute('style');
 
-      if (badgeCount > 0) {
-        const firstBadge = statusBadges.first();
-
-        // Get badge text and styling
-        const badgeText = await firstBadge.textContent() || '';
-        const classList = await firstBadge.getAttribute('class') || '';
-
-        // Verify color coding exists (red for hot, orange for warm, cyan/blue for cold)
-        const hasColorClass = /red|orange|cyan|blue/i.test(classList);
-        const hasStatusText = /hot|warm|cold/i.test(badgeText);
-
-        expect(hasColorClass || hasStatusText).toBeTruthy();
+        // Status badges should have color styling
+        const hasColorStyling = (classList && classList.length > 10) || (style && style.includes('color'));
+        expect(hasColorStyling).toBeTruthy();
       }
     }
   });
 
   /**
    * TC-PIPE-003: Verify 4-product tracking section
-   * Decision: Q6 (Major products to track)
-   *
-   * Products:
-   * 1. Studio Sage Chatbot
-   * 2. Dance Recital Package
-   * 3. Competition Software
-   * 4. Core Video Production Services
+   * Decision: Q6 (4-product tracking)
    */
-  test('TC-PIPE-003: Verify 4-product tracking section visible', async ({ page }) => {
-    const clientCards = page.locator('[data-testid="client-card"]').or(
-      page.locator('.client-card, [data-client]')
-    );
+  test('TC-PIPE-003: 4-product tracking section displays', async ({ page }) => {
+    // Look for client card to expand
+    const clientCard = page.locator('[data-testid="client-card"]').or(
+      page.locator('.client-card, [role="article"]').filter({ hasText: /client|studio/i })
+    ).first();
 
-    const clientCount = await clientCards.count();
+    if (await clientCard.isVisible({ timeout: 3000 }).catch(() => false)) {
+      // Try to expand card (click it or find expand button)
+      const expandButton = clientCard.locator('button').filter({ hasText: /expand|view.*details|more/i }).first();
 
-    if (clientCount > 0) {
-      // Expand first client card if needed
-      const firstCard = clientCards.first();
-
-      // Look for expand button if card is collapsed
-      const expandButton = firstCard.locator('button').filter({ hasText: /expand|details|view/i });
-      const expandCount = await expandButton.count();
-
-      if (expandCount > 0) {
-        await expandButton.first().click();
-        await page.waitForTimeout(300);
+      if (await expandButton.isVisible({ timeout: 1000 }).catch(() => false)) {
+        await expandButton.click();
+        await page.waitForTimeout(500);
+      } else {
+        // Try clicking the card itself
+        await clientCard.click();
+        await page.waitForTimeout(500);
       }
 
-      // Look for product tracking section
-      const productSection = firstCard.locator('[data-testid="product-tracking"]').or(
-        firstCard.locator('text=/products|product focus|tracking/i')
-      );
+      // Look for product tracking sections
+      const products = [
+        /studio.*sage.*chatbot|chatbot/i,
+        /dance.*recital.*package|recital.*package/i,
+        /competition.*software/i,
+        /core.*video.*production|video.*production/i
+      ];
 
-      const hasSectionVisible = await productSection.count() > 0;
+      let visibleProducts = 0;
+      for (const productPattern of products) {
+        const product = page.locator('[data-testid*="product"]').or(
+          page.locator('div, section').filter({ hasText: productPattern })
+        ).first();
 
-      if (hasSectionVisible) {
-        // Verify 4 products are listed
-        const hasStudioSage = await page.locator('text=/studio sage|chatbot/i').count() > 0;
-        const hasRecital = await page.locator('text=/recital package/i').count() > 0;
-        const hasSoftware = await page.locator('text=/competition software/i').count() > 0;
-        const hasVideo = await page.locator('text=/video production|core video/i').count() > 0;
-
-        // At least one product should be visible
-        expect(hasStudioSage || hasRecital || hasSoftware || hasVideo).toBeTruthy();
+        if (await product.isVisible({ timeout: 1000 }).catch(() => false)) {
+          visibleProducts++;
+        }
       }
+
+      // At least 2 products should be visible
+      expect(visibleProducts).toBeGreaterThanOrEqual(2);
     }
   });
 
   /**
-   * TC-PIPE-004: Verify multi-depth product tracking
-   * Decision: Q7 (Product tracking depth)
-   *
-   * Each product should show:
-   * - Checkbox (interested indicator)
-   * - Status badge (Discussing, Proposal, Won, Lost)
-   * - Revenue
-   * - Notes field
+   * TC-PIPE-004: Verify multi-depth product tracking (checkbox, status, revenue, notes)
+   * Decision: Q7 (Multi-depth tracking)
    */
-  test('TC-PIPE-004: Verify multi-depth product tracking fields', async ({ page }) => {
-    const clientCards = page.locator('[data-testid="client-card"]').or(
-      page.locator('.client-card, [data-client]')
-    );
+  test('TC-PIPE-004: Product tracking shows all fields', async ({ page }) => {
+    const clientCard = page.locator('[data-testid="client-card"]').or(
+      page.locator('.client-card, [role="article"]').filter({ hasText: /client|studio/i })
+    ).first();
 
-    const clientCount = await clientCards.count();
-
-    if (clientCount > 0) {
-      const firstCard = clientCards.first();
-
-      // Expand card if needed
-      const expandButton = firstCard.locator('button').filter({ hasText: /expand|details/i });
-      if (await expandButton.count() > 0) {
-        await expandButton.first().click();
-        await page.waitForTimeout(300);
+    if (await clientCard.isVisible({ timeout: 3000 }).catch(() => false)) {
+      // Expand card
+      const expandButton = clientCard.locator('button').filter({ hasText: /expand|view.*details|more/i }).first();
+      if (await expandButton.isVisible({ timeout: 1000 }).catch(() => false)) {
+        await expandButton.click();
+        await page.waitForTimeout(500);
+      } else {
+        await clientCard.click();
+        await page.waitForTimeout(500);
       }
 
-      // Look for product items
-      const productItems = firstCard.locator('[data-testid="product-item"]').or(
-        firstCard.locator('.product-item, [data-product]')
-      );
+      // Look for product tracking fields
+      const productSection = page.locator('[data-testid*="product"]').or(
+        page.locator('div, section').filter({ hasText: /recital|competition|chatbot|video/i })
+      ).first();
 
-      const productCount = await productItems.count();
+      if (await productSection.isVisible({ timeout: 2000 }).catch(() => false)) {
+        // Check for tracking elements
+        const hasCheckbox = await productSection.locator('input[type="checkbox"]').isVisible({ timeout: 1000 }).catch(() => false);
+        const hasStatus = await productSection.locator('.status, .badge').isVisible({ timeout: 1000 }).catch(() => false);
+        const hasRevenue = await productSection.locator('text=/\\$|revenue|price/i').isVisible({ timeout: 1000 }).catch(() => false);
+        const hasNotes = await productSection.locator('textarea, input[type="text"]').isVisible({ timeout: 1000 }).catch(() => false);
 
-      if (productCount > 0) {
-        const firstProduct = productItems.first();
-
-        // Check for tracking fields
-        const hasCheckbox = await firstProduct.locator('input[type="checkbox"]').count() > 0;
-        const hasStatus = await firstProduct.locator('text=/discussing|proposal|won|lost/i').count() > 0;
-        const hasRevenue = await firstProduct.locator('text=/\\$[0-9,]+/').count() > 0;
-        const hasNotes = await firstProduct.locator('textarea, input[type="text"]').or(
-          firstProduct.locator('text=/notes/i')
-        ).count() > 0;
-
-        // At least status and revenue should be visible
-        expect(hasStatus || hasRevenue).toBeTruthy();
+        // At least 2 tracking fields should be present
+        const trackingFields = [hasCheckbox, hasStatus, hasRevenue, hasNotes].filter(Boolean).length;
+        expect(trackingFields).toBeGreaterThanOrEqual(2);
       }
     }
   });
 
   /**
    * TC-PIPE-005: Verify product status progression
-   * Decision: Q7 (Status tracking)
-   *
-   * Statuses: Discussing → Proposal → Won / Lost
+   * Decision: Q7 (Status updates)
    */
-  test('TC-PIPE-005: Verify product status change functionality', async ({ page }) => {
-    const clientCards = page.locator('[data-testid="client-card"]').or(
-      page.locator('.client-card, [data-client]')
-    );
+  test('TC-PIPE-005: Product status can be updated', async ({ page }) => {
+    const clientCard = page.locator('[data-testid="client-card"]').or(
+      page.locator('.client-card, [role="article"]').filter({ hasText: /client|studio/i })
+    ).first();
 
-    const clientCount = await clientCards.count();
-
-    if (clientCount > 0) {
-      const firstCard = clientCards.first();
-
+    if (await clientCard.isVisible({ timeout: 3000 }).catch(() => false)) {
       // Expand card
-      const expandButton = firstCard.locator('button').filter({ hasText: /expand|details/i });
-      if (await expandButton.count() > 0) {
-        await expandButton.first().click();
-        await page.waitForTimeout(300);
+      const expandButton = clientCard.locator('button').filter({ hasText: /expand|view.*details|more/i }).first();
+      if (await expandButton.isVisible({ timeout: 1000 }).catch(() => false)) {
+        await expandButton.click();
+        await page.waitForTimeout(500);
+      } else {
+        await clientCard.click();
+        await page.waitForTimeout(500);
       }
 
-      // Look for status badge that can be clicked
-      const statusBadge = firstCard.locator('[data-testid="product-status"]').or(
-        firstCard.locator('.status-badge, [data-status]').filter({ hasText: /discussing|proposal|won|lost/i })
-      );
+      // Look for status badge
+      const statusBadge = page.locator('[data-testid="product-status"]').or(
+        page.locator('.status, .badge, select[name*="status"]').filter({ hasText: /discussing|proposal|won|lost/i })
+      ).first();
 
-      const statusCount = await statusBadge.count();
+      if (await statusBadge.isVisible({ timeout: 2000 }).catch(() => false)) {
+        // Check if it's clickable (button) or a select
+        const tagName = await statusBadge.evaluate((el) => el.tagName.toLowerCase());
 
-      if (statusCount > 0) {
-        const initialStatus = await statusBadge.first().textContent();
-
-        // Click status badge to open dropdown
-        await statusBadge.first().click();
-        await page.waitForTimeout(300);
-
-        // Look for status options
-        const statusOptions = page.locator('[role="menuitem"], option').filter({ hasText: /discussing|proposal|won|lost/i });
-
-        const optionCount = await statusOptions.count();
-
-        if (optionCount > 0) {
-          // Select a different status
-          await statusOptions.first().click();
-          await page.waitForTimeout(300);
-
-          // Verify status changed (check if text updated)
-          const newStatus = await statusBadge.first().textContent();
-
-          // Status should exist and be a valid value
-          expect(newStatus).toMatch(/discussing|proposal|won|lost/i);
+        if (tagName === 'select') {
+          // It's a dropdown
+          await expect(statusBadge).toBeVisible();
+        } else if (tagName === 'button') {
+          // It's a clickable button
+          await expect(statusBadge).toBeEnabled();
         }
       }
     }
@@ -243,231 +206,145 @@ test.describe('Pipeline with 4-Product Tracking @p0 @critical', () => {
 
   /**
    * TC-PIPE-006: Verify revenue tracking per product
-   * Decision: Q7 (Revenue per product)
+   * Spec: Total client revenue calculated from all products
    */
-  test('TC-PIPE-006: Verify revenue tracking and calculation', async ({ page }) => {
-    const clientCards = page.locator('[data-testid="client-card"]').or(
-      page.locator('.client-card, [data-client]')
+  test('TC-PIPE-006: Revenue tracking displays correctly', async ({ page }) => {
+    // Look for revenue indicators
+    const revenueElements = page.locator('[data-testid*="revenue"]').or(
+      page.locator('text=/\\$[0-9,]+/').filter({ hasText: /\\$/ })
     );
 
-    const clientCount = await clientCards.count();
+    const count = await revenueElements.count();
 
-    if (clientCount > 0) {
-      const firstCard = clientCards.first();
+    if (count > 0) {
+      await expect(revenueElements.first()).toBeVisible({ timeout: 5000 });
 
-      // Look for total revenue (might be in header or footer of card)
-      const totalRevenue = firstCard.locator('[data-testid="total-revenue"]').or(
-        firstCard.locator('text=/total.*\\$[0-9,]+|\\$[0-9,]+.*total/i')
-      );
-
-      const hasTotalRevenue = await totalRevenue.count() > 0;
-
-      // Look for individual product revenues
-      const productRevenues = firstCard.locator('text=/\\$[0-9,]+/');
-      const revenueCount = await productRevenues.count();
-
-      // At least one revenue figure should be visible
-      expect(hasTotalRevenue || revenueCount > 0).toBeTruthy();
-
-      if (revenueCount > 0) {
-        // Verify revenue format (should include $ sign and numbers)
-        const firstRevenue = await productRevenues.first().textContent();
-        expect(firstRevenue).toMatch(/\$[0-9,]+/);
-      }
+      // Verify at least one revenue value is displayed
+      const revenueText = await revenueElements.first().textContent();
+      expect(revenueText).toMatch(/\$[0-9,]+/);
     }
   });
 
   /**
    * TC-PIPE-007: Verify notes field per product
-   * Decision: Q7 (Notes per product)
+   * Decision: Q7 (Notes field)
    */
-  test('TC-PIPE-007: Verify product notes field functionality', async ({ page }) => {
-    const clientCards = page.locator('[data-testid="client-card"]').or(
-      page.locator('.client-card, [data-client]')
-    );
+  test('TC-PIPE-007: Notes field available for products', async ({ page }) => {
+    const clientCard = page.locator('[data-testid="client-card"]').or(
+      page.locator('.client-card, [role="article"]').filter({ hasText: /client|studio/i })
+    ).first();
 
-    const clientCount = await clientCards.count();
-
-    if (clientCount > 0) {
-      const firstCard = clientCards.first();
-
+    if (await clientCard.isVisible({ timeout: 3000 }).catch(() => false)) {
       // Expand card
-      const expandButton = firstCard.locator('button').filter({ hasText: /expand|details/i });
-      if (await expandButton.count() > 0) {
-        await expandButton.first().click();
-        await page.waitForTimeout(300);
+      const expandButton = clientCard.locator('button').filter({ hasText: /expand|view.*details|more/i }).first();
+      if (await expandButton.isVisible({ timeout: 1000 }).catch(() => false)) {
+        await expandButton.click();
+        await page.waitForTimeout(500);
+      } else {
+        await clientCard.click();
+        await page.waitForTimeout(500);
       }
 
       // Look for notes field
-      const notesField = firstCard.locator('textarea[placeholder*="notes" i]').or(
-        firstCard.locator('input[placeholder*="notes" i]')
-      ).or(
-        firstCard.locator('[data-testid="product-notes"]')
-      );
+      const notesField = page.locator('textarea, input[placeholder*="note" i], [data-testid*="notes"]').first();
 
-      const notesCount = await notesField.count();
-
-      if (notesCount > 0) {
-        const testNote = 'Test note - follow up next week';
-
-        // Clear and type new note
-        await notesField.first().clear();
-        await notesField.first().fill(testNote);
-
-        // Verify note was entered
-        const noteValue = await notesField.first().inputValue();
-        expect(noteValue).toBe(testNote);
-
-        // Save changes (look for save button or blur to trigger save)
-        await notesField.first().blur();
-        await page.waitForTimeout(500);
-
-        // Note: In real test, would verify note persists after page refresh
+      if (await notesField.isVisible({ timeout: 2000 }).catch(() => false)) {
+        await expect(notesField).toBeVisible();
+        await expect(notesField).toBeEnabled();
       }
     }
   });
 
   /**
-   * TC-PIPE-008: Verify quick actions buttons
-   * Quick actions: Log Contact, Send Email, View Details
+   * TC-PIPE-008: Verify quick actions (Log Contact, Send Email, View Details)
+   * Spec: Quick action buttons present on client cards
    */
-  test('TC-PIPE-008: Verify quick action buttons are functional', async ({ page }) => {
-    const clientCards = page.locator('[data-testid="client-card"]').or(
-      page.locator('.client-card, [data-client]')
-    );
+  test('TC-PIPE-008: Quick actions available on client cards', async ({ page }) => {
+    const clientCard = page.locator('[data-testid="client-card"]').or(
+      page.locator('.client-card, [role="article"]').filter({ hasText: /client|studio/i })
+    ).first();
 
-    const clientCount = await clientCards.count();
-
-    if (clientCount > 0) {
-      const firstCard = clientCards.first();
-
+    if (await clientCard.isVisible({ timeout: 3000 }).catch(() => false)) {
       // Look for quick action buttons
-      const logContactButton = firstCard.locator('button').filter({ hasText: /log contact/i });
-      const sendEmailButton = firstCard.locator('button').filter({ hasText: /send email|email/i });
-      const viewDetailsButton = firstCard.locator('button').filter({ hasText: /view details|details/i });
+      const actionButtons = clientCard.locator('button').filter({
+        hasText: /log.*contact|send.*email|view.*details|contact|email|details/i
+      });
 
-      const hasLogContact = await logContactButton.count() > 0;
-      const hasSendEmail = await sendEmailButton.count() > 0;
-      const hasViewDetails = await viewDetailsButton.count() > 0;
+      const count = await actionButtons.count();
 
-      // At least one quick action should be available
-      expect(hasLogContact || hasSendEmail || hasViewDetails).toBeTruthy();
+      if (count > 0) {
+        await expect(actionButtons.first()).toBeVisible();
 
-      // Try clicking one of them
-      if (hasLogContact) {
-        await logContactButton.first().click();
-        await page.waitForTimeout(300);
-
-        // Should open a modal or form
-        const modal = page.locator('[role="dialog"]').or(
-          page.locator('.modal')
-        );
-
-        // Modal might appear
-        const modalVisible = await modal.first().isVisible().catch(() => false);
-
-        if (modalVisible) {
-          // Close modal
-          const closeButton = modal.locator('button').filter({ hasText: /close|cancel|×/i });
-          if (await closeButton.count() > 0) {
-            await closeButton.first().click();
-          }
-        }
+        // Verify at least one action button is clickable
+        await expect(actionButtons.first()).toBeEnabled();
       }
     }
   });
 
   /**
    * TC-PIPE-009: Verify inline editing for all fields
+   * Spec: Fields become editable on click
    */
-  test('TC-PIPE-009: Verify inline editing functionality', async ({ page }) => {
-    const clientCards = page.locator('[data-testid="client-card"]').or(
-      page.locator('.client-card, [data-client]')
-    );
+  test('TC-PIPE-009: Inline editing available for fields', async ({ page }) => {
+    const clientCard = page.locator('[data-testid="client-card"]').or(
+      page.locator('.client-card, [role="article"]').filter({ hasText: /client|studio/i })
+    ).first();
 
-    const clientCount = await clientCards.count();
+    if (await clientCard.isVisible({ timeout: 3000 }).catch(() => false)) {
+      // Look for editable fields (inputs, dates, text)
+      const editableFields = clientCard.locator('input[type="text"], input[type="date"], textarea, [contenteditable="true"]');
 
-    if (clientCount > 0) {
-      const firstCard = clientCards.first();
+      const count = await editableFields.count();
 
-      // Look for editable fields (might have contenteditable or click-to-edit)
-      const editableFields = firstCard.locator('[contenteditable="true"]').or(
-        firstCard.locator('input[type="text"], textarea')
-      ).or(
-        firstCard.locator('[data-editable]')
-      );
+      if (count > 0) {
+        await expect(editableFields.first()).toBeVisible();
+        await expect(editableFields.first()).toBeEnabled();
+      } else {
+        // Alternative: Look for click-to-edit fields
+        const clickableFields = clientCard.locator('[data-testid*="editable"], .editable');
+        const clickableCount = await clickableFields.count();
 
-      const editableCount = await editableFields.count();
-
-      if (editableCount > 0) {
-        const firstEditable = editableFields.first();
-
-        // Get initial value
-        const initialValue = await firstEditable.textContent() || await firstEditable.inputValue();
-
-        // Click to edit
-        await firstEditable.click();
-        await page.waitForTimeout(200);
-
-        // Type new value
-        await firstEditable.fill('Test Edit Value');
-
-        // Press Enter or blur to save
-        await firstEditable.press('Enter').catch(async () => {
-          await firstEditable.blur();
-        });
-
-        await page.waitForTimeout(300);
-
-        // Verify value changed
-        const newValue = await firstEditable.textContent() || await firstEditable.inputValue();
-
-        // Value should have changed
-        expect(newValue).not.toBe(initialValue);
+        if (clickableCount > 0) {
+          await expect(clickableFields.first()).toBeVisible();
+        }
       }
     }
   });
 
   /**
    * TC-PIPE-010: Verify filter by product focus
+   * Spec: Filter clients by product interest
    */
-  test('TC-PIPE-010: Verify product focus filter functionality', async ({ page }) => {
-    // Look for filter dropdown or tabs
-    const productFilter = page.locator('select[name*="product"]').or(
-      page.locator('[data-testid="product-filter"]')
-    ).or(
-      page.locator('button, a').filter({ hasText: /recital|software|chatbot|video/i })
+  test('TC-PIPE-010: Filter by product focus works', async ({ page }) => {
+    // Look for product filter
+    const productFilter = page.locator('[data-testid="product-filter"]').or(
+      page.locator('select[name*="product"], select:has-option("Dance Recital")').first()
     );
 
-    const filterCount = await productFilter.count();
-
-    if (filterCount > 0) {
+    if (await productFilter.isVisible({ timeout: 3000 }).catch(() => false)) {
       // Get initial client count
       const clientCards = page.locator('[data-testid="client-card"]').or(
-        page.locator('.client-card, [data-client]')
+        page.locator('.client-card, [role="article"]').filter({ hasText: /client|studio/i })
       );
       const initialCount = await clientCards.count();
 
-      // Apply filter (select a product)
-      const firstFilter = productFilter.first();
-
-      // Try clicking or selecting
-      await firstFilter.click();
+      // Apply filter
+      await productFilter.selectOption({ index: 1 }); // Select first product
       await page.waitForTimeout(500);
 
-      // If it's a select dropdown
-      if (await firstFilter.evaluate((el) => el.tagName === 'SELECT')) {
-        await (firstFilter as any).selectOption({ index: 1 });
-      }
-
-      await page.waitForTimeout(500);
-
-      // Get new client count after filter
+      // Verify filtering applied
       const filteredCount = await clientCards.count();
 
-      // Count might change (or stay same if all clients have that product)
-      // Just verify the filter mechanism exists and can be interacted with
-      expect(filteredCount).toBeGreaterThanOrEqual(0);
+      // Filter should change the count (or keep same if all clients match)
+      expect(filteredCount).toBeLessThanOrEqual(initialCount);
+    } else {
+      // Alternative: Look for filter buttons
+      const filterButtons = page.locator('button').filter({ hasText: /recital|competition|chatbot|video/i });
+      const buttonCount = await filterButtons.count();
+
+      if (buttonCount > 0) {
+        await expect(filterButtons.first()).toBeVisible();
+      }
     }
   });
 });

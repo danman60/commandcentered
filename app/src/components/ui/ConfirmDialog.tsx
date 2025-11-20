@@ -25,8 +25,8 @@ const variantConfig = {
     button: 'bg-orange-600 hover:bg-orange-700 text-white',
   },
   info: {
-    icon: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30',
-    button: 'bg-cyan-600 hover:bg-cyan-700 text-white',
+    icon: 'bg-green-500/20 text-green-400 border-green-500/30',
+    button: 'bg-green-600 hover:bg-green-700 text-white',
   },
 };
 

@@ -145,11 +145,11 @@ export default function OperatorsPage() {
   return (
     <div className="flex flex-col h-full bg-gray-900">
       {/* Header */}
-      <div className="bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border-b border-cyan-500/30 px-8 py-6">
+      <div className="bg-gradient-to-r from-green-500/10 to-purple-500/10 border-b border-green-500/30 px-8 py-6">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-4">
             <div className="text-4xl">👷</div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-500 to-purple-600 bg-clip-text text-transparent">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-green-500 to-purple-600 bg-clip-text text-transparent">
               Operators
             </h1>
           </div>
@@ -159,7 +159,7 @@ export default function OperatorsPage() {
             </button>
             <button
               onClick={() => setShowCreateModal(true)}
-              className="px-5 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg font-semibold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/40 hover:-translate-y-0.5 transition-all"
+              className="px-5 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold shadow-lg shadow-green-500/30 hover:shadow-green-500/40 hover:-translate-y-0.5 transition-all"
             >
               ➕ Add Operator
             </button>
@@ -176,7 +176,7 @@ export default function OperatorsPage() {
             title="Card View"
             className={`px-5 py-3 rounded-lg font-medium transition-all ${
               activeView === 'card'
-                ? 'bg-gradient-to-r from-cyan-500 to-cyan-600 text-white shadow-lg shadow-cyan-500/30'
+                ? 'bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg shadow-green-500/30'
                 : 'bg-slate-800/50 text-slate-400 border border-slate-700/30 hover:bg-slate-800/80'
             }`}
           >
@@ -187,7 +187,7 @@ export default function OperatorsPage() {
             title="Table View"
             className={`px-5 py-3 rounded-lg font-medium transition-all ${
               activeView === 'table'
-                ? 'bg-gradient-to-r from-cyan-500 to-cyan-600 text-white shadow-lg shadow-cyan-500/30'
+                ? 'bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg shadow-green-500/30'
                 : 'bg-slate-800/50 text-slate-400 border border-slate-700/30 hover:bg-slate-800/80'
             }`}
           >
@@ -198,7 +198,7 @@ export default function OperatorsPage() {
             title="Calendar View"
             className={`px-5 py-3 rounded-lg font-medium transition-all ${
               activeView === 'calendar'
-                ? 'bg-gradient-to-r from-cyan-500 to-cyan-600 text-white shadow-lg shadow-cyan-500/30'
+                ? 'bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg shadow-green-500/30'
                 : 'bg-slate-800/50 text-slate-400 border border-slate-700/30 hover:bg-slate-800/80'
             }`}
           >
@@ -214,7 +214,7 @@ export default function OperatorsPage() {
             <p className="text-slate-400 mb-6">Add your first operator to get started</p>
             <button
               onClick={() => setShowCreateModal(true)}
-              className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg font-semibold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/40 hover:-translate-y-0.5 transition-all"
+              className="px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold shadow-lg shadow-green-500/30 hover:shadow-green-500/40 hover:-translate-y-0.5 transition-all"
             >
               ➕ Add Operator
             </button>
@@ -242,7 +242,7 @@ export default function OperatorsPage() {
             <div className="grid grid-cols-7 gap-0.5 bg-slate-700/20 rounded-lg overflow-hidden">
               {/* Day Headers */}
               {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
-                <div key={day} className="bg-slate-900/80 p-3 text-center text-xs font-semibold text-cyan-500 uppercase">
+                <div key={day} className="bg-slate-900/80 p-3 text-center text-xs font-semibold text-green-500 uppercase">
                   {day}
                 </div>
               ))}
@@ -260,7 +260,7 @@ export default function OperatorsPage() {
                     {dayData.operators.map((operator, opIdx) => (
                       <span
                         key={opIdx}
-                        className="inline-block px-2 py-1 bg-gradient-to-r from-cyan-500 to-cyan-600 rounded text-xs font-semibold text-white"
+                        className="inline-block px-2 py-1 bg-gradient-to-r from-green-500 to-green-600 rounded text-xs font-semibold text-white"
                       >
                         {operator}
                       </span>
@@ -282,11 +282,11 @@ export default function OperatorsPage() {
                   setSelectedOperatorId(operator.id);
                   setShowDetailModal(true);
                 }}
-                className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-5 hover:border-cyan-500/50 hover:-translate-y-1 transition-all cursor-pointer"
+                className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-5 hover:border-green-500/50 hover:-translate-y-1 transition-all cursor-pointer"
               >
                 {/* Header */}
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-14 h-14 rounded-full bg-gradient-to-br from-cyan-500 to-purple-600 flex items-center justify-center text-xl font-bold text-white">
+                  <div className="w-14 h-14 rounded-full bg-gradient-to-br from-green-500 to-purple-600 flex items-center justify-center text-xl font-bold text-white">
                     {operator.initials}
                   </div>
                   <div className="flex-1">
@@ -298,11 +298,11 @@ export default function OperatorsPage() {
                 {/* Stats */}
                 <div className="grid grid-cols-2 gap-3 mb-4">
                   <div className="bg-slate-900/60 p-3 rounded-lg text-center">
-                    <div className="text-xl font-bold text-cyan-500">{operator.eventsThisYear}</div>
+                    <div className="text-xl font-bold text-green-500">{operator.eventsThisYear}</div>
                     <div className="text-xs text-slate-400 mt-1">Events This Year</div>
                   </div>
                   <div className="bg-slate-900/60 p-3 rounded-lg text-center">
-                    <div className="text-xl font-bold text-cyan-500">${operator.hourlyRate}/hr</div>
+                    <div className="text-xl font-bold text-green-500">${operator.hourlyRate}/hr</div>
                     <div className="text-xs text-slate-400 mt-1">Hourly Rate</div>
                   </div>
                 </div>
@@ -313,7 +313,7 @@ export default function OperatorsPage() {
                     {operator.skills.map((skill, idx) => (
                       <span
                         key={idx}
-                        className="px-3 py-1 bg-cyan-500/15 border border-cyan-500/30 rounded-full text-xs text-cyan-500"
+                        className="px-3 py-1 bg-green-500/15 border border-green-500/30 rounded-full text-xs text-green-500"
                       >
                         {skill}
                       </span>
@@ -350,22 +350,22 @@ export default function OperatorsPage() {
               <table className="w-full">
                 <thead className="bg-slate-900/80">
                   <tr>
-                    <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
+                    <th className="px-5 py-4 text-left text-xs font-semibold text-green-500 uppercase tracking-wider border-b border-slate-700/30">
                       Operator
                     </th>
-                    <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
+                    <th className="px-5 py-4 text-left text-xs font-semibold text-green-500 uppercase tracking-wider border-b border-slate-700/30">
                       Role
                     </th>
-                    <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
+                    <th className="px-5 py-4 text-left text-xs font-semibold text-green-500 uppercase tracking-wider border-b border-slate-700/30">
                       Skills
                     </th>
-                    <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
+                    <th className="px-5 py-4 text-left text-xs font-semibold text-green-500 uppercase tracking-wider border-b border-slate-700/30">
                       Events
                     </th>
-                    <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
+                    <th className="px-5 py-4 text-left text-xs font-semibold text-green-500 uppercase tracking-wider border-b border-slate-700/30">
                       Rate
                     </th>
-                    <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
+                    <th className="px-5 py-4 text-left text-xs font-semibold text-green-500 uppercase tracking-wider border-b border-slate-700/30">
                       Status
                     </th>
                   </tr>
@@ -378,11 +378,11 @@ export default function OperatorsPage() {
                         setSelectedOperatorId(operator.id);
                         setShowDetailModal(true);
                       }}
-                      className="border-b border-slate-700/20 hover:bg-cyan-500/5 transition-colors cursor-pointer"
+                      className="border-b border-slate-700/20 hover:bg-green-500/5 transition-colors cursor-pointer"
                     >
                       <td className="px-5 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-purple-600 flex items-center justify-center text-sm font-bold text-white">
+                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-purple-600 flex items-center justify-center text-sm font-bold text-white">
                             {operator.initials}
                           </div>
                           <div>
@@ -397,7 +397,7 @@ export default function OperatorsPage() {
                           {operator.skills.slice(0, 2).map((skill, idx) => (
                             <span
                               key={idx}
-                              className="px-2 py-1 bg-cyan-500/15 border border-cyan-500/30 rounded text-xs text-cyan-500"
+                              className="px-2 py-1 bg-green-500/15 border border-green-500/30 rounded text-xs text-green-500"
                             >
                               {skill}
                             </span>
@@ -410,7 +410,7 @@ export default function OperatorsPage() {
                         </div>
                       </td>
                       <td className="px-5 py-4 text-sm text-slate-300">{operator.eventsThisYear}</td>
-                      <td className="px-5 py-4 text-sm text-cyan-500 font-semibold">${operator.hourlyRate}/hr</td>
+                      <td className="px-5 py-4 text-sm text-green-500 font-semibold">${operator.hourlyRate}/hr</td>
                       <td className="px-5 py-4">
                         <span
                           className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${
@@ -435,7 +435,7 @@ export default function OperatorsPage() {
       {showCreateModal && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
           <div className="bg-slate-800 border border-slate-700 rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-            <div className="bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border-b border-cyan-500/30 p-6">
+            <div className="bg-gradient-to-r from-green-500/10 to-purple-500/10 border-b border-green-500/30 p-6">
               <h2 className="text-2xl font-bold text-slate-100">Add New Operator</h2>
             </div>
 
@@ -449,7 +449,7 @@ export default function OperatorsPage() {
                   type="text"
                   name="name"
                   required
-                  className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+                  className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-green-500"
                   placeholder="John Davis"
                 />
               </div>
@@ -463,7 +463,7 @@ export default function OperatorsPage() {
                   type="email"
                   name="email"
                   required
-                  className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+                  className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-green-500"
                   placeholder="john@example.com"
                 />
               </div>
@@ -476,7 +476,7 @@ export default function OperatorsPage() {
                 <input
                   type="tel"
                   name="phone"
-                  className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+                  className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-green-500"
                   placeholder="(555) 123-4567"
                 />
               </div>
@@ -492,7 +492,7 @@ export default function OperatorsPage() {
                   required
                   min="0"
                   step="0.01"
-                  className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+                  className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-green-500"
                   placeholder="50.00"
                 />
               </div>
@@ -505,7 +505,7 @@ export default function OperatorsPage() {
                 <input
                   type="text"
                   name="primaryRole"
-                  className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+                  className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-green-500"
                   placeholder="Lead Videographer"
                 />
               </div>
@@ -518,7 +518,7 @@ export default function OperatorsPage() {
                 <textarea
                   name="bio"
                   rows={3}
-                  className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+                  className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-green-500"
                   placeholder="Brief description of operator experience..."
                 />
               </div>
@@ -531,7 +531,7 @@ export default function OperatorsPage() {
                 <input
                   type="url"
                   name="portfolioUrl"
-                  className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+                  className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-green-500"
                   placeholder="https://portfolio.example.com"
                 />
               </div>
@@ -548,7 +548,7 @@ export default function OperatorsPage() {
                 <button
                   type="submit"
                   disabled={createOperator.isPending}
-                  className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg font-semibold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/40 hover:-translate-y-0.5 transition-all disabled:opacity-50"
+                  className="px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold shadow-lg shadow-green-500/30 hover:shadow-green-500/40 hover:-translate-y-0.5 transition-all disabled:opacity-50"
                 >
                   {createOperator.isPending ? 'Creating...' : 'Create Operator'}
                 </button>
@@ -567,7 +567,7 @@ export default function OperatorsPage() {
           <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
             <div className="bg-slate-800 border border-slate-700 rounded-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
               {/* Header */}
-              <div className="bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border-b border-cyan-500/30 p-6">
+              <div className="bg-gradient-to-r from-green-500/10 to-purple-500/10 border-b border-green-500/30 p-6">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
                     <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center text-white font-bold text-2xl">
@@ -592,7 +592,7 @@ export default function OperatorsPage() {
                 {/* Contact Information */}
                 <div>
                   <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
-                    <span className="w-2 h-2 bg-cyan-500 rounded-full"></span>
+                    <span className="w-2 h-2 bg-green-500 rounded-full"></span>
                     Contact Information
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -620,7 +620,7 @@ export default function OperatorsPage() {
                     </div>
                     <div className="bg-slate-900/50 border border-slate-700/50 rounded-lg p-4">
                       <p className="text-xs text-slate-400 mb-1">Events This Year</p>
-                      <p className="text-2xl font-bold text-cyan-400">{operator.eventsThisYear}</p>
+                      <p className="text-2xl font-bold text-green-400">{operator.eventsThisYear}</p>
                     </div>
                   </div>
                 </div>
@@ -636,7 +636,7 @@ export default function OperatorsPage() {
                       {operator.skills.map((skill, idx) => (
                         <span
                           key={idx}
-                          className="px-3 py-1 bg-cyan-500/20 border border-cyan-500/30 rounded-full text-sm text-cyan-300"
+                          className="px-3 py-1 bg-green-500/20 border border-green-500/30 rounded-full text-sm text-green-300"
                         >
                           {skill}
                         </span>
@@ -686,7 +686,7 @@ export default function OperatorsPage() {
                   Close
                 </button>
                 <button
-                  className="flex-1 px-6 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg font-semibold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/40 transition-all"
+                  className="flex-1 px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold shadow-lg shadow-green-500/30 hover:shadow-green-500/40 transition-all"
                 >
                   Edit Operator
                 </button>

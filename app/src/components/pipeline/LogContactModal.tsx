@@ -56,7 +56,7 @@ export function LogContactModal({ isOpen, onClose, lead, onSuccess }: LogContact
             required
             value={formData.lastContactedAt}
             onChange={(e) => setFormData({ ...formData, lastContactedAt: e.target.value })}
-            className="w-full px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            className="w-full px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-green-500"
           />
           <p className="text-xs text-gray-400 mt-1">When did you contact this lead?</p>
         </div>
@@ -71,7 +71,7 @@ export function LogContactModal({ isOpen, onClose, lead, onSuccess }: LogContact
             onChange={(e) => setFormData({ ...formData, typeOfContact: e.target.value })}
             rows={3}
             placeholder="What did you discuss? Any key points or next steps?"
-            className="w-full px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            className="w-full px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
           />
         </div>
 
@@ -85,7 +85,7 @@ export function LogContactModal({ isOpen, onClose, lead, onSuccess }: LogContact
             value={formData.nextFollowUpAt}
             onChange={(e) => setFormData({ ...formData, nextFollowUpAt: e.target.value })}
             min={formData.lastContactedAt}
-            className="w-full px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            className="w-full px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-green-500"
           />
           <p className="text-xs text-gray-400 mt-1">When should you reach out again?</p>
         </div>
@@ -98,7 +98,7 @@ export function LogContactModal({ isOpen, onClose, lead, onSuccess }: LogContact
           <select
             value={formData.contactFrequency}
             onChange={(e) => setFormData({ ...formData, contactFrequency: e.target.value })}
-            className="w-full px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            className="w-full px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-green-500"
           >
             <option value="">Select frequency...</option>
             <option value="Daily">Daily</option>
@@ -118,7 +118,7 @@ export function LogContactModal({ isOpen, onClose, lead, onSuccess }: LogContact
           <select
             value={formData.temperature}
             onChange={(e) => setFormData({ ...formData, temperature: e.target.value })}
-            className="w-full px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            className="w-full px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-green-500"
           >
             <option value="">No temperature set</option>
             <option value="Hot Lead">🔥 Hot Lead</option>

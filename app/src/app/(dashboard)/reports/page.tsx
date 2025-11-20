@@ -68,12 +68,12 @@ export default function ReportsPage() {
   const eventsByType = useMemo(() => {
     if (!eventSummary) return [];
 
-    const colors = ['bg-cyan-500', 'bg-purple-500', 'bg-green-500', 'bg-orange-500', 'bg-pink-500', 'bg-blue-500'];
+    const colors = ['bg-green-500', 'bg-purple-500', 'bg-green-500', 'bg-orange-500', 'bg-pink-500', 'bg-blue-500'];
 
     return eventSummary.map((event, index) => ({
       type: event.eventType,
       count: event.count,
-      color: colors[index % colors.length] || 'bg-cyan-500',
+      color: colors[index % colors.length] || 'bg-green-500',
     }));
   }, [eventSummary]);
 
@@ -122,7 +122,7 @@ export default function ReportsPage() {
       case 'IN_PROGRESS':
         return 'bg-blue-500 text-white';
       case 'CONFIRMED':
-        return 'bg-cyan-500 text-white';
+        return 'bg-green-500 text-white';
       case 'TENTATIVE':
         return 'bg-orange-500 text-white';
       default:
@@ -139,11 +139,11 @@ export default function ReportsPage() {
   return (
     <div className="flex flex-col h-full bg-gray-900">
       {/* Header */}
-      <div className="bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border-b border-cyan-500/30 px-8 py-6">
+      <div className="bg-gradient-to-r from-green-500/10 to-purple-500/10 border-b border-green-500/30 px-8 py-6">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-4">
             <div className="text-4xl">📈</div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-500 to-purple-600 bg-clip-text text-transparent">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-green-500 to-purple-600 bg-clip-text text-transparent">
               Reports
             </h1>
           </div>
@@ -154,14 +154,14 @@ export default function ReportsPage() {
       <div className="flex-1 overflow-y-auto px-8 py-8">
         {/* Filters Panel */}
         <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6 mb-6">
-          <h2 className="text-lg font-bold text-cyan-500 mb-4">⚙️ Report Filters</h2>
+          <h2 className="text-lg font-bold text-green-500 mb-4">⚙️ Report Filters</h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div>
               <label className="block text-sm font-semibold text-slate-300 mb-2 uppercase">Start Date</label>
               <input
                 type="date"
-                className="w-full px-4 py-2 bg-slate-900/60 border border-slate-700/30 rounded text-slate-100 focus:outline-none focus:border-cyan-500"
+                className="w-full px-4 py-2 bg-slate-900/60 border border-slate-700/30 rounded text-slate-100 focus:outline-none focus:border-green-500"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
               />
@@ -171,7 +171,7 @@ export default function ReportsPage() {
               <label className="block text-sm font-semibold text-slate-300 mb-2 uppercase">End Date</label>
               <input
                 type="date"
-                className="w-full px-4 py-2 bg-slate-900/60 border border-slate-700/30 rounded text-slate-100 focus:outline-none focus:border-cyan-500"
+                className="w-full px-4 py-2 bg-slate-900/60 border border-slate-700/30 rounded text-slate-100 focus:outline-none focus:border-green-500"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
               />
@@ -182,7 +182,7 @@ export default function ReportsPage() {
         {/* Loading State */}
         {isLoading && (
           <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-12 mb-6 text-center">
-            <div className="text-cyan-500 text-lg font-semibold mb-2">Loading Report Data...</div>
+            <div className="text-green-500 text-lg font-semibold mb-2">Loading Report Data...</div>
             <div className="text-slate-400 text-sm">Fetching metrics from {new Date(startDate).toLocaleDateString()} to {new Date(endDate).toLocaleDateString()}</div>
           </div>
         )}
@@ -191,13 +191,13 @@ export default function ReportsPage() {
           <>
             {/* Year-over-Year Comparison Toggle */}
             <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-4 mb-6 flex items-center justify-between">
-              <div className="text-sm font-semibold text-cyan-500 uppercase">Year-over-Year Comparison</div>
+              <div className="text-sm font-semibold text-green-500 uppercase">Year-over-Year Comparison</div>
               <div className="flex items-center gap-3">
                 <span className="text-xs text-slate-400">OFF</span>
                 <button
                   onClick={() => setComparisonEnabled(!comparisonEnabled)}
                   className={`w-12 h-6 rounded-full transition-all ${
-                    comparisonEnabled ? 'bg-cyan-500' : 'bg-slate-700'
+                    comparisonEnabled ? 'bg-green-500' : 'bg-slate-700'
                   } relative`}
                 >
                   <div
@@ -212,7 +212,7 @@ export default function ReportsPage() {
 
             {/* Export Actions */}
             <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-4 mb-6 flex items-center gap-4 flex-wrap">
-              <span className="text-sm font-semibold text-cyan-500 uppercase">Export Report:</span>
+              <span className="text-sm font-semibold text-green-500 uppercase">Export Report:</span>
               <button className="px-4 py-2 bg-slate-700/30 text-slate-300 border border-slate-700/50 rounded text-sm font-semibold hover:bg-slate-700/50 transition-all">
                 📄 PDF
               </button>
@@ -234,7 +234,7 @@ export default function ReportsPage() {
 
               <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6 text-center">
                 <div className="text-sm text-slate-400 uppercase mb-2">Total Events</div>
-                <div className="text-4xl font-bold text-cyan-500 mb-2">{keyMetrics.totalEvents}</div>
+                <div className="text-4xl font-bold text-green-500 mb-2">{keyMetrics.totalEvents}</div>
                 <div className="text-xs text-slate-500">{eventsByType.length} types</div>
               </div>
 
@@ -255,7 +255,7 @@ export default function ReportsPage() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
               {/* Revenue Over Time Chart */}
               <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6">
-                <h3 className="text-lg font-bold text-cyan-500 mb-4">Revenue Over Time</h3>
+                <h3 className="text-lg font-bold text-green-500 mb-4">Revenue Over Time</h3>
                 {revenueData.length === 0 ? (
                   <div className="bg-slate-900/60 p-12 rounded-lg text-center text-slate-400">
                     No revenue data for selected period
@@ -266,7 +266,7 @@ export default function ReportsPage() {
                       {revenueData.map((item) => (
                         <div key={item.month} className="flex flex-col items-center gap-2 flex-1">
                           <div
-                            className="w-full bg-gradient-to-t from-cyan-500 to-cyan-600 rounded-t"
+                            className="w-full bg-gradient-to-t from-green-500 to-green-600 rounded-t"
                             style={{ height: `${(item.revenue / maxRevenueValue) * 100}%` }}
                           ></div>
                           <span className="text-xs text-slate-400">{item.month}</span>
@@ -279,7 +279,7 @@ export default function ReportsPage() {
 
               {/* Events by Type Chart */}
               <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6">
-                <h3 className="text-lg font-bold text-cyan-500 mb-4">Events by Type</h3>
+                <h3 className="text-lg font-bold text-green-500 mb-4">Events by Type</h3>
                 {eventsByType.length === 0 ? (
                   <div className="bg-slate-900/60 p-12 rounded-lg text-center text-slate-400">
                     No events for selected period
@@ -307,7 +307,7 @@ export default function ReportsPage() {
 
               {/* Operator Hours Chart */}
               <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6">
-                <h3 className="text-lg font-bold text-cyan-500 mb-4">Operator Hours Distribution (Top 5)</h3>
+                <h3 className="text-lg font-bold text-green-500 mb-4">Operator Hours Distribution (Top 5)</h3>
                 {operatorHours.length === 0 ? (
                   <div className="bg-slate-900/60 p-12 rounded-lg text-center text-slate-400">
                     No operator hours for selected period
@@ -333,7 +333,7 @@ export default function ReportsPage() {
 
               {/* Equipment Utilization Chart */}
               <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6">
-                <h3 className="text-lg font-bold text-cyan-500 mb-4">Equipment Utilization (Top 5)</h3>
+                <h3 className="text-lg font-bold text-green-500 mb-4">Equipment Utilization (Top 5)</h3>
                 {equipmentUtilization.length === 0 ? (
                   <div className="bg-slate-900/60 p-12 rounded-lg text-center text-slate-400">
                     No equipment utilization data
@@ -362,7 +362,7 @@ export default function ReportsPage() {
 
             {/* Detailed Reports Table */}
             <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6">
-              <h3 className="text-lg font-bold text-cyan-500 mb-4">Recent Events (Last 10)</h3>
+              <h3 className="text-lg font-bold text-green-500 mb-4">Recent Events (Last 10)</h3>
               {detailedReports.length === 0 ? (
                 <div className="bg-slate-900/60 p-12 rounded-lg text-center text-slate-400">
                   No detailed event data available
@@ -372,29 +372,29 @@ export default function ReportsPage() {
                   <table className="w-full">
                     <thead className="bg-slate-900/80">
                       <tr>
-                        <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
+                        <th className="px-5 py-4 text-left text-xs font-semibold text-green-500 uppercase tracking-wider border-b border-slate-700/30">
                           Date
                         </th>
-                        <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
+                        <th className="px-5 py-4 text-left text-xs font-semibold text-green-500 uppercase tracking-wider border-b border-slate-700/30">
                           Client
                         </th>
-                        <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
+                        <th className="px-5 py-4 text-left text-xs font-semibold text-green-500 uppercase tracking-wider border-b border-slate-700/30">
                           Event Type
                         </th>
-                        <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
+                        <th className="px-5 py-4 text-left text-xs font-semibold text-green-500 uppercase tracking-wider border-b border-slate-700/30">
                           Duration (hrs)
                         </th>
-                        <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
+                        <th className="px-5 py-4 text-left text-xs font-semibold text-green-500 uppercase tracking-wider border-b border-slate-700/30">
                           Revenue
                         </th>
-                        <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider border-b border-slate-700/30">
+                        <th className="px-5 py-4 text-left text-xs font-semibold text-green-500 uppercase tracking-wider border-b border-slate-700/30">
                           Status
                         </th>
                       </tr>
                     </thead>
                     <tbody>
                       {detailedReports.map((report, idx) => (
-                        <tr key={idx} className="border-b border-slate-700/20 hover:bg-cyan-500/5 transition-colors">
+                        <tr key={idx} className="border-b border-slate-700/20 hover:bg-green-500/5 transition-colors">
                           <td className="px-5 py-4 text-sm text-slate-100">{report.date}</td>
                           <td className="px-5 py-4 text-sm text-slate-300">{report.client}</td>
                           <td className="px-5 py-4 text-sm text-slate-300">{report.eventType}</td>

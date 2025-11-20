@@ -75,7 +75,7 @@ export function Modal({ isOpen, onClose, title, children, className, 'data-testi
         className={cn(
           'relative w-[80%] max-w-[1200px] max-h-[90vh] flex flex-col',
           'bg-gradient-to-br from-slate-900/95 to-slate-800/95',
-          'rounded-2xl border border-cyan-400/30',
+          'rounded-2xl border border-green-400/30',
           'shadow-[0_24px_48px_rgba(0,0,0,0.5)]',
           'animate-in fade-in zoom-in duration-200',
           className
@@ -83,8 +83,8 @@ export function Modal({ isOpen, onClose, title, children, className, 'data-testi
       >
         {/* Header */}
         {title && (
-          <div className="flex items-center justify-between px-8 py-6 bg-[rgba(10,14,39,0.8)] border-b border-cyan-400/20">
-            <h2 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-indigo-400 bg-clip-text text-transparent">
+          <div className="flex items-center justify-between px-8 py-6 bg-[rgba(10,14,39,0.8)] border-b border-green-400/20">
+            <h2 className="text-2xl font-bold bg-gradient-to-r from-green-400 to-lime-400 bg-clip-text text-transparent">
               {title}
             </h2>
             <button

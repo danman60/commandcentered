@@ -13,8 +13,8 @@ const cardVariants = cva(
             },
             hover: {
                 none: '',
-                lift: 'hover:border-cyan-600/50 hover:-translate-y-0.5',
-                glow: 'hover:border-cyan-600/50 hover:shadow-[0_0_10px_rgba(34,211,238,0.3)]',
+                lift: 'hover:border-green-600/50 hover:-translate-y-0.5',
+                glow: 'hover:border-green-600/50 hover:shadow-[0_0_10px_rgba(34,211,238,0.3)]',
             },
         },
         defaultVariants: {

@@ -50,9 +50,9 @@ export function RevenueSummaryCards({ leads }: RevenueSummaryCardsProps) {
       label: 'Total Pipeline Value',
       value: `$${metrics.totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`,
       icon: TrendingUp,
-      color: 'from-cyan-500 to-blue-500',
-      bgColor: 'bg-cyan-500/10',
-      borderColor: 'border-cyan-500/30',
+      color: 'from-green-500 to-blue-500',
+      bgColor: 'bg-green-500/10',
+      borderColor: 'border-green-500/30',
     },
     {
       label: 'Won Deals',

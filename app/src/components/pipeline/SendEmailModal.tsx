@@ -116,7 +116,7 @@ export function SendEmailModal({ isOpen, onClose, lead }: SendEmailModalProps) {
           <select
             value={selectedTemplate}
             onChange={(e) => setSelectedTemplate(e.target.value as keyof typeof EMAIL_TEMPLATES)}
-            className="w-full px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            className="w-full px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-green-500"
           >
             <option value="followUp">Follow-Up</option>
             <option value="proposal">Proposal</option>
@@ -135,7 +135,7 @@ export function SendEmailModal({ isOpen, onClose, lead }: SendEmailModalProps) {
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
             placeholder="Email subject..."
-            className="w-full px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            className="w-full px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
           />
         </div>
 
@@ -149,7 +149,7 @@ export function SendEmailModal({ isOpen, onClose, lead }: SendEmailModalProps) {
             onChange={(e) => setBody(e.target.value)}
             rows={12}
             placeholder="Compose your email..."
-            className="w-full px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 font-mono text-sm"
+            className="w-full px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 font-mono text-sm"
           />
           <p className="text-xs text-gray-400 mt-1">
             Edit the template above before sending

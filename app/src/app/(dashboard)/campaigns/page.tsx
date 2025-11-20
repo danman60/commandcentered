@@ -83,7 +83,7 @@ export default function CampaignsPage() {
       ACTIVE: 'bg-green-500/10 text-green-500 border-green-500/30',
       PAUSED: 'bg-yellow-500/10 text-yellow-500 border-yellow-500/30',
       DRAFT: 'bg-slate-500/10 text-slate-400 border-slate-500/30',
-      COMPLETED: 'bg-cyan-500/10 text-cyan-500 border-cyan-500/30',
+      COMPLETED: 'bg-green-500/10 text-green-500 border-green-500/30',
     };
     return styles[status];
   };
@@ -91,16 +91,16 @@ export default function CampaignsPage() {
   return (
     <div className="flex flex-col h-full bg-gray-50">
       {/* Header */}
-      <div className="bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border-b border-cyan-500/30 px-8 py-6">
+      <div className="bg-gradient-to-r from-green-500/10 to-purple-500/10 border-b border-green-500/30 px-8 py-6">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-4">
             <div className="text-4xl">📧</div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-500 to-purple-600 bg-clip-text text-transparent">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-green-500 to-purple-600 bg-clip-text text-transparent">
               Campaigns
             </h1>
           </div>
           <div className="flex gap-3">
-            <button className="px-5 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg font-semibold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/40 hover:-translate-y-0.5 transition-all">
+            <button className="px-5 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold shadow-lg shadow-green-500/30 hover:shadow-green-500/40 hover:-translate-y-0.5 transition-all">
               + Create Campaign
             </button>
           </div>
@@ -116,12 +116,12 @@ export default function CampaignsPage() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search campaigns..."
-            className="flex-1 px-4 py-3 bg-slate-800/50 border border-slate-700/30 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+            className="flex-1 px-4 py-3 bg-slate-800/50 border border-slate-700/30 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-green-500"
           />
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-4 py-3 bg-slate-800/50 border border-slate-700/30 rounded-lg text-slate-100 focus:outline-none focus:border-cyan-500"
+            className="px-4 py-3 bg-slate-800/50 border border-slate-700/30 rounded-lg text-slate-100 focus:outline-none focus:border-green-500"
           >
             <option value="all">All Statuses</option>
             <option value="active">Active</option>
@@ -132,7 +132,7 @@ export default function CampaignsPage() {
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="px-4 py-3 bg-slate-800/50 border border-slate-700/30 rounded-lg text-slate-100 focus:outline-none focus:border-cyan-500"
+            className="px-4 py-3 bg-slate-800/50 border border-slate-700/30 rounded-lg text-slate-100 focus:outline-none focus:border-green-500"
           >
             <option value="newest">Newest First</option>
             <option value="oldest">Oldest First</option>
@@ -152,31 +152,31 @@ export default function CampaignsPage() {
                       type="checkbox"
                       checked={selectedCampaigns.length === campaigns.length}
                       onChange={handleSelectAll}
-                      className="w-4 h-4 rounded accent-cyan-500"
+                      className="w-4 h-4 rounded accent-green-500"
                     />
                   </th>
-                  <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider">
+                  <th className="px-5 py-4 text-left text-xs font-semibold text-green-500 uppercase tracking-wider">
                     Name
                   </th>
-                  <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider">
+                  <th className="px-5 py-4 text-left text-xs font-semibold text-green-500 uppercase tracking-wider">
                     Status
                   </th>
-                  <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider">
+                  <th className="px-5 py-4 text-left text-xs font-semibold text-green-500 uppercase tracking-wider">
                     Progress
                   </th>
-                  <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider">
+                  <th className="px-5 py-4 text-left text-xs font-semibold text-green-500 uppercase tracking-wider">
                     Sent
                   </th>
-                  <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider">
+                  <th className="px-5 py-4 text-left text-xs font-semibold text-green-500 uppercase tracking-wider">
                     Opened
                   </th>
-                  <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider">
+                  <th className="px-5 py-4 text-left text-xs font-semibold text-green-500 uppercase tracking-wider">
                     Replied
                   </th>
-                  <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider">
+                  <th className="px-5 py-4 text-left text-xs font-semibold text-green-500 uppercase tracking-wider">
                     Opportunities
                   </th>
-                  <th className="px-5 py-4 text-left text-xs font-semibold text-cyan-500 uppercase tracking-wider w-32">
+                  <th className="px-5 py-4 text-left text-xs font-semibold text-green-500 uppercase tracking-wider w-32">
                     Actions
                   </th>
                 </tr>
@@ -185,19 +185,19 @@ export default function CampaignsPage() {
                 {campaigns.map((campaign) => (
                   <tr
                     key={campaign.id}
-                    className="border-b border-slate-700/20 hover:bg-cyan-500/5 transition-colors"
+                    className="border-b border-slate-700/20 hover:bg-green-500/5 transition-colors"
                   >
                     <td className="px-5 py-5">
                       <input
                         type="checkbox"
                         checked={selectedCampaigns.includes(campaign.id)}
                         onChange={() => handleCampaignSelect(campaign.id)}
-                        className="w-4 h-4 rounded accent-cyan-500"
+                        className="w-4 h-4 rounded accent-green-500"
                       />
                     </td>
                     <td className="px-5 py-5">
                       <Link href={`/campaigns/${campaign.id}`}>
-                        <div className="text-sm font-semibold text-slate-100 hover:text-cyan-500 cursor-pointer">
+                        <div className="text-sm font-semibold text-slate-100 hover:text-green-500 cursor-pointer">
                           {campaign.name}
                         </div>
                         <div className="text-xs text-slate-500 mt-1">
@@ -217,7 +217,7 @@ export default function CampaignsPage() {
                     <td className="px-5 py-5">
                       <div className="w-full bg-slate-900/60 rounded-full h-1.5 mb-2">
                         <div
-                          className="bg-gradient-to-r from-cyan-500 to-cyan-600 h-1.5 rounded-full transition-all"
+                          className="bg-gradient-to-r from-green-500 to-green-600 h-1.5 rounded-full transition-all"
                           style={{ width: `${campaign.progress}%` }}
                         ></div>
                       </div>
@@ -229,13 +229,13 @@ export default function CampaignsPage() {
                     </td>
                     <td className="px-5 py-5">
                       <div className="text-sm font-semibold text-slate-100">{campaign.opened}</div>
-                      <div className="text-xs text-cyan-500">
+                      <div className="text-xs text-green-500">
                         {campaign.sent > 0 ? Math.round((campaign.opened / campaign.sent) * 100) : 0}%
                       </div>
                     </td>
                     <td className="px-5 py-5">
                       <div className="text-sm font-semibold text-slate-100">{campaign.replied}</div>
-                      <div className="text-xs text-cyan-500">
+                      <div className="text-xs text-green-500">
                         {campaign.sent > 0 ? ((campaign.replied / campaign.sent) * 100).toFixed(1) : 0}%
                       </div>
                     </td>
@@ -247,19 +247,19 @@ export default function CampaignsPage() {
                       <div className="flex gap-2">
                         <button
                           title="View Analytics"
-                          className="w-8 h-8 flex items-center justify-center bg-slate-700/30 border border-slate-700/50 rounded hover:bg-slate-700/50 hover:border-cyan-500/50 transition-all"
+                          className="w-8 h-8 flex items-center justify-center bg-slate-700/30 border border-slate-700/50 rounded hover:bg-slate-700/50 hover:border-green-500/50 transition-all"
                         >
                           📊
                         </button>
                         <button
                           title={campaign.status === 'ACTIVE' ? 'Pause Campaign' : 'Resume Campaign'}
-                          className="w-8 h-8 flex items-center justify-center bg-slate-700/30 border border-slate-700/50 rounded hover:bg-slate-700/50 hover:border-cyan-500/50 transition-all"
+                          className="w-8 h-8 flex items-center justify-center bg-slate-700/30 border border-slate-700/50 rounded hover:bg-slate-700/50 hover:border-green-500/50 transition-all"
                         >
                           {campaign.status === 'ACTIVE' ? '⏸️' : '▶️'}
                         </button>
                         <button
                           title="More Options"
-                          className="w-8 h-8 flex items-center justify-center bg-slate-700/30 border border-slate-700/50 rounded hover:bg-slate-700/50 hover:border-cyan-500/50 transition-all"
+                          className="w-8 h-8 flex items-center justify-center bg-slate-700/30 border border-slate-700/50 rounded hover:bg-slate-700/50 hover:border-green-500/50 transition-all"
                         >
                           ⋯
                         </button>

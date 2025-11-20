@@ -115,7 +115,7 @@ export function ProductCard({
           <select
             value={formData.status}
             onChange={(e) => setFormData({ ...formData, status: e.target.value as ProductStatus })}
-            className="px-2 py-1 bg-slate-700 border border-slate-600 rounded text-xs text-white focus:outline-none focus:ring-1 focus:ring-cyan-500"
+            className="px-2 py-1 bg-slate-700 border border-slate-600 rounded text-xs text-white focus:outline-none focus:ring-1 focus:ring-green-500"
           >
             <option value="DISCUSSING">Discussing</option>
             <option value="PROPOSAL">Proposal Sent</option>
@@ -143,7 +143,7 @@ export function ProductCard({
               value={formData.revenueAmount}
               onChange={(e) => setFormData({ ...formData, revenueAmount: e.target.value })}
               placeholder="0.00"
-              className="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-white text-xs focus:outline-none focus:ring-1 focus:ring-cyan-500"
+              className="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-white text-xs focus:outline-none focus:ring-1 focus:ring-green-500"
             />
           </div>
           <div>
@@ -153,7 +153,7 @@ export function ProductCard({
               value={formData.projectedRevenue}
               onChange={(e) => setFormData({ ...formData, projectedRevenue: e.target.value })}
               placeholder="0.00"
-              className="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-white text-xs focus:outline-none focus:ring-1 focus:ring-cyan-500"
+              className="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-white text-xs focus:outline-none focus:ring-1 focus:ring-green-500"
             />
           </div>
           <div>
@@ -163,7 +163,7 @@ export function ProductCard({
               onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
               rows={2}
               placeholder="Add notes..."
-              className="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-white text-xs focus:outline-none focus:ring-1 focus:ring-cyan-500"
+              className="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-white text-xs focus:outline-none focus:ring-1 focus:ring-green-500"
             />
           </div>
         </div>
@@ -189,7 +189,7 @@ export function ProductCard({
           <button
             onClick={handleSave}
             disabled={updateProduct.isPending}
-            className="flex items-center gap-1 px-3 py-1.5 bg-cyan-500 hover:bg-cyan-600 text-white rounded text-xs font-medium transition-colors disabled:opacity-50"
+            className="flex items-center gap-1 px-3 py-1.5 bg-green-500 hover:bg-green-600 text-white rounded text-xs font-medium transition-colors disabled:opacity-50"
           >
             <Check className="w-3 h-3" />
             {updateProduct.isPending ? 'Saving...' : 'Save'}

@@ -129,7 +129,7 @@ export default function LeadFinderPage() {
     <div className="flex h-full bg-gray-50">
       {/* Left Sidebar - Filters */}
       <div className="w-80 bg-slate-800/50 border-r border-slate-700/30 overflow-y-auto p-5">
-        <h2 className="text-sm font-semibold text-cyan-500 uppercase tracking-wide mb-5 pb-3 border-b border-slate-700/30">
+        <h2 className="text-sm font-semibold text-green-500 uppercase tracking-wide mb-5 pb-3 border-b border-slate-700/30">
           🔍 Filters
         </h2>
 
@@ -140,7 +140,7 @@ export default function LeadFinderPage() {
               type="checkbox"
               checked={skipExisting}
               onChange={(e) => setSkipExisting(e.target.checked)}
-              className="w-4 h-4 rounded accent-cyan-500"
+              className="w-4 h-4 rounded accent-green-500"
             />
             <span className="text-sm text-slate-300">Skip already in CRM</span>
           </label>
@@ -157,7 +157,7 @@ export default function LeadFinderPage() {
                 type="checkbox"
                 checked={businessTypes['dance-studio']}
                 onChange={() => handleBusinessTypeChange('dance-studio')}
-                className="w-4 h-4 rounded accent-cyan-500"
+                className="w-4 h-4 rounded accent-green-500"
               />
               <span className="text-sm text-slate-300">Dance Studio</span>
             </label>
@@ -166,7 +166,7 @@ export default function LeadFinderPage() {
                 type="checkbox"
                 checked={businessTypes['dance-school']}
                 onChange={() => handleBusinessTypeChange('dance-school')}
-                className="w-4 h-4 rounded accent-cyan-500"
+                className="w-4 h-4 rounded accent-green-500"
               />
               <span className="text-sm text-slate-300">Dance School</span>
             </label>
@@ -175,7 +175,7 @@ export default function LeadFinderPage() {
                 type="checkbox"
                 checked={businessTypes['performing-arts']}
                 onChange={() => handleBusinessTypeChange('performing-arts')}
-                className="w-4 h-4 rounded accent-cyan-500"
+                className="w-4 h-4 rounded accent-green-500"
               />
               <span className="text-sm text-slate-300">Performing Arts Center</span>
             </label>
@@ -184,7 +184,7 @@ export default function LeadFinderPage() {
                 type="checkbox"
                 checked={businessTypes['event-venue']}
                 onChange={() => handleBusinessTypeChange('event-venue')}
-                className="w-4 h-4 rounded accent-cyan-500"
+                className="w-4 h-4 rounded accent-green-500"
               />
               <span className="text-sm text-slate-300">Event Venue</span>
             </label>
@@ -193,7 +193,7 @@ export default function LeadFinderPage() {
                 type="checkbox"
                 checked={businessTypes['k12-school']}
                 onChange={() => handleBusinessTypeChange('k12-school')}
-                className="w-4 h-4 rounded accent-cyan-500"
+                className="w-4 h-4 rounded accent-green-500"
               />
               <span className="text-sm text-slate-300">K-12 School</span>
             </label>
@@ -210,7 +210,7 @@ export default function LeadFinderPage() {
             value={location}
             onChange={(e) => setLocation(e.target.value)}
             placeholder="City, state, or zip code..."
-            className="w-full px-3 py-2 bg-slate-900/60 border border-slate-700/50 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+            className="w-full px-3 py-2 bg-slate-900/60 border border-slate-700/50 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-green-500"
           />
         </div>
 
@@ -224,7 +224,7 @@ export default function LeadFinderPage() {
             value={keywords}
             onChange={(e) => setKeywords(e.target.value)}
             placeholder="e.g. recital, performance, show"
-            className="w-full px-3 py-2 bg-slate-900/60 border border-slate-700/50 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+            className="w-full px-3 py-2 bg-slate-900/60 border border-slate-700/50 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-green-500"
           />
         </div>
 
@@ -239,14 +239,14 @@ export default function LeadFinderPage() {
               value={minEmployees}
               onChange={(e) => setMinEmployees(e.target.value)}
               placeholder="Min"
-              className="px-3 py-2 bg-slate-900/60 border border-slate-700/50 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+              className="px-3 py-2 bg-slate-900/60 border border-slate-700/50 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-green-500"
             />
             <input
               type="number"
               value={maxEmployees}
               onChange={(e) => setMaxEmployees(e.target.value)}
               placeholder="Max"
-              className="px-3 py-2 bg-slate-900/60 border border-slate-700/50 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+              className="px-3 py-2 bg-slate-900/60 border border-slate-700/50 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-green-500"
             />
           </div>
           <div className="text-xs text-slate-500 mt-1">employees</div>
@@ -263,14 +263,14 @@ export default function LeadFinderPage() {
               value={minRevenue}
               onChange={(e) => setMinRevenue(e.target.value)}
               placeholder="Min"
-              className="px-3 py-2 bg-slate-900/60 border border-slate-700/50 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+              className="px-3 py-2 bg-slate-900/60 border border-slate-700/50 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-green-500"
             />
             <input
               type="number"
               value={maxRevenue}
               onChange={(e) => setMaxRevenue(e.target.value)}
               placeholder="Max"
-              className="px-3 py-2 bg-slate-900/60 border border-slate-700/50 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+              className="px-3 py-2 bg-slate-900/60 border border-slate-700/50 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-green-500"
             />
           </div>
           <div className="text-xs text-slate-500 mt-1">USD (optional)</div>
@@ -283,7 +283,7 @@ export default function LeadFinderPage() {
               type="checkbox"
               checked={hasWebsite}
               onChange={(e) => setHasWebsite(e.target.checked)}
-              className="w-4 h-4 rounded accent-cyan-500"
+              className="w-4 h-4 rounded accent-green-500"
             />
             <span className="text-sm text-slate-300">Has website</span>
           </label>
@@ -299,7 +299,7 @@ export default function LeadFinderPage() {
           </button>
           <button
             onClick={handleSearch}
-            className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg text-sm font-semibold hover:shadow-lg hover:shadow-cyan-500/30 transition-all"
+            className="px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg text-sm font-semibold hover:shadow-lg hover:shadow-green-500/30 transition-all"
           >
             Search
           </button>
@@ -309,11 +309,11 @@ export default function LeadFinderPage() {
       {/* Main Content */}
       <div className="flex-1 overflow-y-auto">
         {/* Header */}
-        <div className="bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border-b border-cyan-500/30 px-8 py-6">
+        <div className="bg-gradient-to-r from-green-500/10 to-purple-500/10 border-b border-green-500/30 px-8 py-6">
           <div className="flex items-center gap-4">
             <div className="text-4xl">🔍</div>
             <div>
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-500 to-purple-600 bg-clip-text text-transparent">
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-green-500 to-purple-600 bg-clip-text text-transparent">
                 Lead Finder
               </h1>
               <p className="text-sm text-slate-400 mt-1">
@@ -330,7 +330,7 @@ export default function LeadFinderPage() {
               <span className="text-sm font-semibold text-slate-300 uppercase tracking-wide">
                 🤖 AI Search
               </span>
-              <span className="px-2 py-0.5 bg-cyan-500 text-white text-xs font-bold rounded">
+              <span className="px-2 py-0.5 bg-green-500 text-white text-xs font-bold rounded">
                 BETA
               </span>
             </div>
@@ -370,7 +370,7 @@ export default function LeadFinderPage() {
               {savedSearches.map((search, idx) => (
                 <div
                   key={idx}
-                  className="flex justify-between items-center px-3 py-2 bg-slate-900/60 border border-slate-700/30 rounded-lg mb-2 hover:border-cyan-500/50 cursor-pointer transition-all"
+                  className="flex justify-between items-center px-3 py-2 bg-slate-900/60 border border-slate-700/30 rounded-lg mb-2 hover:border-green-500/50 cursor-pointer transition-all"
                 >
                   <span className="text-sm text-slate-300">{search.name}</span>
                   <span className="text-xs text-slate-500 bg-slate-800/80 px-2 py-1 rounded">
@@ -378,7 +378,7 @@ export default function LeadFinderPage() {
                   </span>
                 </div>
               ))}
-              <button className="w-full mt-2 px-3 py-2 bg-slate-900/60 border border-dashed border-slate-700/50 text-cyan-500 rounded-lg text-sm font-medium hover:bg-slate-800/60 hover:border-cyan-500/50 transition-all">
+              <button className="w-full mt-2 px-3 py-2 bg-slate-900/60 border border-dashed border-slate-700/50 text-green-500 rounded-lg text-sm font-medium hover:bg-slate-800/60 hover:border-green-500/50 transition-all">
                 + Save Current Search
               </button>
             </div>
@@ -391,7 +391,7 @@ export default function LeadFinderPage() {
               {recentSearches.map((search, idx) => (
                 <div
                   key={idx}
-                  className="flex justify-between items-center px-3 py-2 bg-slate-900/60 border border-slate-700/30 rounded-lg mb-2 hover:border-cyan-500/50 cursor-pointer transition-all"
+                  className="flex justify-between items-center px-3 py-2 bg-slate-900/60 border border-slate-700/30 rounded-lg mb-2 hover:border-green-500/50 cursor-pointer transition-all"
                 >
                   <span className="text-sm text-slate-300">{search.name}</span>
                   <span className="text-xs text-slate-500 bg-slate-800/80 px-2 py-1 rounded">
@@ -426,7 +426,7 @@ export default function LeadFinderPage() {
               <button
                 onClick={() => handleExportToCRM(true)}
                 disabled={selectedLeads.length === 0 || exportMutation.isPending}
-                className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg text-sm font-semibold hover:shadow-lg hover:shadow-cyan-500/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg text-sm font-semibold hover:shadow-lg hover:shadow-green-500/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {exportMutation.isPending ? 'Adding...' : `+ Add Selected to CRM (${selectedLeads.length})`}
               </button>
@@ -437,14 +437,14 @@ export default function LeadFinderPage() {
           {leadResults.map((lead) => (
             <div
               key={lead.id}
-              className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-5 mb-4 hover:border-cyan-500/50 hover:bg-slate-800/70 transition-all"
+              className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-5 mb-4 hover:border-green-500/50 hover:bg-slate-800/70 transition-all"
             >
               <div className="flex items-start gap-3 mb-3">
                 <input
                   type="checkbox"
                   checked={selectedLeads.includes(lead.id)}
                   onChange={() => handleLeadSelect(lead.id)}
-                  className="mt-1 w-4 h-4 rounded accent-cyan-500"
+                  className="mt-1 w-4 h-4 rounded accent-green-500"
                 />
                 <div className="flex-1">
                   <div className="text-base font-semibold text-slate-100 mb-1">{lead.name}</div>
@@ -474,7 +474,7 @@ export default function LeadFinderPage() {
               <div className="flex gap-2">
                 <button
                   onClick={() => alert('Campaign feature coming in Phase 13')}
-                  className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg text-sm font-medium hover:shadow-lg hover:shadow-cyan-500/30 transition-all"
+                  className="px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg text-sm font-medium hover:shadow-lg hover:shadow-green-500/30 transition-all"
                 >
                   Add to Campaign
                 </button>
@@ -496,7 +496,7 @@ export default function LeadFinderPage() {
           ))}
 
           {/* Load More */}
-          <button className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700/30 text-slate-400 rounded-lg text-sm font-medium hover:bg-slate-800/70 hover:border-cyan-500/50 hover:text-cyan-500 transition-all mt-4">
+          <button className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700/30 text-slate-400 rounded-lg text-sm font-medium hover:bg-slate-800/70 hover:border-green-500/50 hover:text-green-500 transition-all mt-4">
             Load More Results (124 remaining)
           </button>
         </div>

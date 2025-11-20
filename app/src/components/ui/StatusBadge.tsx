@@ -24,9 +24,9 @@ export interface StatusBadgeProps {
 const statusConfig = {
   // Event statuses
   CONFIRMED: { label: 'Confirmed', color: 'bg-green-500/20 text-green-400 border-green-500/30' },
-  BOOKED: { label: 'Booked', color: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30' },
+  BOOKED: { label: 'Booked', color: 'bg-green-500/20 text-green-400 border-green-500/30' },
   TENTATIVE: { label: 'Tentative', color: 'bg-orange-500/20 text-orange-400 border-orange-500/30' },
-  PROPOSAL: { label: 'Proposal', color: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30' },
+  PROPOSAL: { label: 'Proposal', color: 'bg-green-500/20 text-green-400 border-green-500/30' },
   PLANNING: { label: 'Planning', color: 'bg-purple-500/20 text-purple-400 border-purple-500/30' },
   COMPLETED: { label: 'Completed', color: 'bg-green-500/20 text-green-400 border-green-500/30' },
   CANCELLED: { label: 'Cancelled', color: 'bg-red-500/20 text-red-400 border-red-500/30' },
@@ -43,7 +43,7 @@ const statusConfig = {
 
   // General statuses
   PENDING: { label: 'Pending', color: 'bg-orange-500/20 text-orange-400 border-orange-500/30' },
-  IN_PROGRESS: { label: 'In Progress', color: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30' },
+  IN_PROGRESS: { label: 'In Progress', color: 'bg-green-500/20 text-green-400 border-green-500/30' },
 };
 
 const sizeClasses = {

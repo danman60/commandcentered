@@ -28,7 +28,7 @@ function DraggableOperatorCard({ operator, getOperatorInitials }: { operator: an
       ref={setNodeRef}
       {...listeners}
       {...attributes}
-      className={`bg-slate-800/60 border border-cyan-500/20 rounded-lg p-3 hover:border-cyan-500 hover:translate-x-1 transition-all cursor-move relative group ${
+      className={`bg-slate-800/60 border border-green-500/20 rounded-lg p-3 hover:border-green-500 hover:translate-x-1 transition-all cursor-move relative group ${
         isDragging ? 'opacity-50' : ''
       }`}
     >
@@ -115,14 +115,14 @@ function DroppableCalendarDay({
   return (
     <div
       ref={setNodeRef}
-      className={`bg-slate-900/80 min-h-[120px] p-2 relative cursor-pointer transition-all hover:bg-cyan-500/5 hover:shadow-[inset_0_0_0_2px_rgba(6,182,212,0.3)] ${
+      className={`bg-slate-900/80 min-h-[120px] p-2 relative cursor-pointer transition-all hover:bg-green-500/5 hover:shadow-[inset_0_0_0_2px_rgba(6,182,212,0.3)] ${
         !isCurrentMonth ? 'opacity-40' : ''
-      } ${isOver ? 'bg-cyan-500/20 shadow-[inset_0_0_0_3px_rgba(6,182,212,0.5)]' : ''}`}
+      } ${isOver ? 'bg-green-500/20 shadow-[inset_0_0_0_3px_rgba(6,182,212,0.5)]' : ''}`}
     >
       <div
         className={`text-sm font-bold mb-1.5 ${
           isToday
-            ? 'text-cyan-400 bg-cyan-500/20 w-7 h-7 flex items-center justify-center rounded-full'
+            ? 'text-green-400 bg-green-500/20 w-7 h-7 flex items-center justify-center rounded-full'
             : 'text-slate-400'
         }`}
       >
@@ -264,7 +264,7 @@ export default function PlanningPage() {
       case 'IN_PROGRESS':
         return 'bg-gradient-to-br from-blue-500 to-blue-600';
       default:
-        return 'bg-gradient-to-br from-cyan-500 to-cyan-600';
+        return 'bg-gradient-to-br from-green-500 to-green-600';
     }
   };
 
@@ -350,26 +350,26 @@ export default function PlanningPage() {
     >
       <div className="flex flex-col h-screen bg-gradient-to-br from-slate-900 to-slate-800">
       {/* Top Bar */}
-      <div className="flex-shrink-0 bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border-b border-cyan-500/30 px-9 py-4 shadow-xl">
+      <div className="flex-shrink-0 bg-gradient-to-r from-green-500/10 to-purple-500/10 border-b border-green-500/30 px-9 py-4 shadow-xl">
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-green-400 to-purple-500 bg-clip-text text-transparent">
               SCHEDULING COMMAND CENTER
             </h1>
             <p className="text-sm text-slate-400 mt-1">
               Drag operators & kits to calendar • 3-Panel Layout
             </p>
           </div>
-          <div className="flex gap-3">
+          <div className="flex gap-3 items-center">
             <button
               onClick={goToPreviousMonth}
               className="px-5 py-3 bg-slate-700/30 hover:bg-slate-700/50 border border-slate-600/50 rounded-lg text-slate-300 font-semibold transition-all"
             >
               ◀ Prev
             </button>
-            <button className="px-5 py-3 bg-slate-700/30 border border-slate-600/50 rounded-lg text-slate-300 font-semibold">
+            <h2 className="px-5 py-3 bg-slate-700/30 border border-slate-600/50 rounded-lg text-slate-300 font-semibold">
               {getMonthName()}
-            </button>
+            </h2>
             <button
               onClick={goToNextMonth}
               className="px-5 py-3 bg-slate-700/30 hover:bg-slate-700/50 border border-slate-600/50 rounded-lg text-slate-300 font-semibold transition-all"
@@ -378,7 +378,7 @@ export default function PlanningPage() {
             </button>
             <button
               onClick={() => setIsNewEventModalOpen(true)}
-              className="px-5 py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-400 hover:to-cyan-500 text-white font-semibold rounded-lg shadow-lg shadow-cyan-500/30 transition-all hover:-translate-y-0.5"
+              className="px-5 py-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-400 hover:to-green-500 text-white font-semibold rounded-lg shadow-lg shadow-green-500/30 transition-all hover:-translate-y-0.5"
             >
               + NEW EVENT
             </button>
@@ -389,14 +389,14 @@ export default function PlanningPage() {
       {/* 3-Panel Layout */}
       <div className="flex-1 flex overflow-hidden">
         {/* Operators Panel */}
-        <div className="w-1/5 min-w-[240px] bg-slate-900/60 backdrop-blur-md border-r border-cyan-500/20 flex flex-col">
-          <div className="flex-shrink-0 px-5 py-4 bg-slate-950/80 border-b border-cyan-500/20 flex justify-between items-center">
-            <span className="text-base font-semibold text-slate-200">Operators</span>
+        <div data-testid="operators-panel" className="w-1/5 min-w-[240px] bg-slate-900/60 backdrop-blur-md border-r border-green-500/20 flex flex-col">
+          <div className="flex-shrink-0 px-5 py-4 bg-slate-950/80 border-b border-green-500/20 flex justify-between items-center">
+            <h3 className="text-base font-semibold text-slate-200">Operators</h3>
             <div className="flex gap-2">
-              <button className="w-8 h-8 rounded-md bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 hover:bg-cyan-500/20 hover:border-cyan-500 transition-all text-sm font-bold">
+              <button className="w-8 h-8 rounded-md bg-green-500/10 border border-green-500/20 text-green-400 hover:bg-green-500/20 hover:border-green-500 transition-all text-sm font-bold">
                 ↕
               </button>
-              <button className="w-8 h-8 rounded-md bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 hover:bg-cyan-500/20 hover:border-cyan-500 transition-all text-lg font-bold">
+              <button className="w-8 h-8 rounded-md bg-green-500/10 border border-green-500/20 text-green-400 hover:bg-green-500/20 hover:border-green-500 transition-all text-lg font-bold">
                 +
               </button>
             </div>
@@ -413,14 +413,14 @@ export default function PlanningPage() {
         </div>
 
         {/* Calendar Panel */}
-        <div className="flex-1 bg-slate-900/60 backdrop-blur-md border-r border-cyan-500/20 flex flex-col min-w-[600px]">
-          <div className="flex-shrink-0 px-5 py-4 bg-slate-950/80 border-b border-cyan-500/20">
+        <div className="flex-1 bg-slate-900/60 backdrop-blur-md border-r border-green-500/20 flex flex-col min-w-[600px]">
+          <div className="flex-shrink-0 px-5 py-4 bg-slate-950/80 border-b border-green-500/20">
             <span className="text-base font-semibold text-slate-200">
               {getMonthName()} Calendar
             </span>
           </div>
           <div className="flex-1 overflow-y-auto">
-            <div className="grid grid-cols-7 gap-px bg-cyan-500/10 p-px">
+            <div role="grid" data-testid="calendar-grid" className="grid grid-cols-7 gap-px bg-green-500/10 p-px">
               {/* Headers */}
               {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
                 <div
@@ -455,9 +455,9 @@ export default function PlanningPage() {
         </div>
 
         {/* Kits Panel */}
-        <div className="w-1/5 min-w-[240px] bg-slate-900/60 backdrop-blur-md border-r border-purple-500/20 flex flex-col">
+        <div data-testid="kits-panel" className="w-1/5 min-w-[240px] bg-slate-900/60 backdrop-blur-md border-r border-purple-500/20 flex flex-col">
           <div className="flex-shrink-0 px-5 py-4 bg-slate-950/80 border-b border-purple-500/20 flex justify-between items-center">
-            <span className="text-base font-semibold text-slate-200">Kits</span>
+            <h3 className="text-base font-semibold text-slate-200">Kits</h3>
             <div className="flex gap-2">
               <button className="w-8 h-8 rounded-md bg-purple-500/10 border border-purple-500/20 text-purple-400 hover:bg-purple-500/20 hover:border-purple-500 transition-all text-sm">
                 🔍
@@ -544,8 +544,8 @@ function NewEventModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
 
   return (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="bg-slate-900 border-2 border-cyan-500/30 rounded-xl w-[600px] max-h-[90vh] overflow-y-auto shadow-2xl">
-        <div className="px-6 py-4 border-b border-cyan-500/20 flex justify-between items-center">
+      <div className="bg-slate-900 border-2 border-green-500/30 rounded-xl w-[600px] max-h-[90vh] overflow-y-auto shadow-2xl">
+        <div className="px-6 py-4 border-b border-green-500/20 flex justify-between items-center">
           <h2 className="text-xl font-bold text-white">Create New Event</h2>
           <button
             onClick={onClose}
@@ -564,7 +564,7 @@ function NewEventModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
               type="text"
               value={formData.eventName}
               onChange={(e) => setFormData({ ...formData, eventName: e.target.value })}
-              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-cyan-500"
+              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500"
               required
             />
           </div>
@@ -576,7 +576,7 @@ function NewEventModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
             <select
               value={formData.clientId}
               onChange={(e) => setFormData({ ...formData, clientId: e.target.value })}
-              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-cyan-500"
+              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500"
             >
               <option value="">Select a client (optional)</option>
               {clients?.map((client) => (
@@ -594,7 +594,7 @@ function NewEventModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
             <select
               value={formData.eventType}
               onChange={(e) => setFormData({ ...formData, eventType: e.target.value as any })}
-              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-cyan-500"
+              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500"
             >
               <option value="DANCE_COMPETITION">Dance Competition</option>
               <option value="RECITAL">Recital</option>
@@ -612,7 +612,7 @@ function NewEventModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
               type="datetime-local"
               value={formData.loadInTime}
               onChange={(e) => setFormData({ ...formData, loadInTime: e.target.value })}
-              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-cyan-500"
+              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500"
               required
             />
           </div>
@@ -625,7 +625,7 @@ function NewEventModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
               type="datetime-local"
               value={formData.loadOutTime}
               onChange={(e) => setFormData({ ...formData, loadOutTime: e.target.value })}
-              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-cyan-500"
+              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500"
               required
             />
           </div>
@@ -638,7 +638,7 @@ function NewEventModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
               type="text"
               value={formData.venueName}
               onChange={(e) => setFormData({ ...formData, venueName: e.target.value })}
-              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-cyan-500"
+              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500"
               required
             />
           </div>
@@ -651,7 +651,7 @@ function NewEventModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
               type="text"
               value={formData.venueAddress}
               onChange={(e) => setFormData({ ...formData, venueAddress: e.target.value })}
-              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-cyan-500"
+              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500"
               required
             />
           </div>
@@ -667,7 +667,7 @@ function NewEventModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
             <button
               type="submit"
               disabled={createEvent.isPending}
-              className="flex-1 px-4 py-2 bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-400 hover:to-cyan-500 text-white font-semibold rounded-lg transition-all disabled:opacity-50"
+              className="flex-1 px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-400 hover:to-green-500 text-white font-semibold rounded-lg transition-all disabled:opacity-50"
             >
               {createEvent.isPending ? 'Creating...' : 'Create Event'}
             </button>
@@ -702,8 +702,8 @@ function EventDetailModal({ eventId, isOpen, onClose }: { eventId: string; isOpe
 
   return (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="bg-slate-900 border-2 border-cyan-500/30 rounded-xl w-[800px] max-h-[90vh] overflow-y-auto shadow-2xl">
-        <div className="px-6 py-4 border-b border-cyan-500/20 flex justify-between items-center">
+      <div className="bg-slate-900 border-2 border-green-500/30 rounded-xl w-[800px] max-h-[90vh] overflow-y-auto shadow-2xl">
+        <div className="px-6 py-4 border-b border-green-500/20 flex justify-between items-center">
           <h2 className="text-xl font-bold text-white">{event.eventName}</h2>
           <button
             onClick={onClose}
@@ -754,7 +754,7 @@ function EventDetailModal({ eventId, isOpen, onClose }: { eventId: string; isOpe
                     endTime,
                   });
                 }}
-                className="px-4 py-2 bg-cyan-500 hover:bg-cyan-600 text-white font-semibold rounded-lg transition-all text-sm"
+                className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg transition-all text-sm"
               >
                 + Add Shift
               </button>
@@ -785,7 +785,7 @@ function EventDetailModal({ eventId, isOpen, onClose }: { eventId: string; isOpe
                         {shift.assignments.map((assignment: any) => (
                           <div
                             key={assignment.id}
-                            className="bg-cyan-500/20 border border-cyan-500/30 px-3 py-1 rounded-full text-sm text-cyan-300"
+                            className="bg-green-500/20 border border-green-500/30 px-3 py-1 rounded-full text-sm text-green-300"
                           >
                             {assignment.operator.name}
                           </div>
@@ -811,7 +811,7 @@ function EventDetailModal({ eventId, isOpen, onClose }: { eventId: string; isOpe
                                 });
                                 setSelectedShiftId(null);
                               }}
-                              className="px-3 py-2 bg-slate-700 hover:bg-cyan-500/20 border border-slate-600 hover:border-cyan-500 text-white rounded transition-all text-sm"
+                              className="px-3 py-2 bg-slate-700 hover:bg-green-500/20 border border-slate-600 hover:border-green-500 text-white rounded transition-all text-sm"
                             >
                               {operator.name}
                             </button>

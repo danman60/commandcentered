@@ -52,7 +52,7 @@ export function ClientCard({
       return { icon: '📱', text: 'Phone', color: 'bg-purple-500/20 text-purple-400 border-purple-500/30' };
     }
     if (method.includes('person') || method.includes('in-person')) {
-      return { icon: '🤝', text: 'In-person', color: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30' };
+      return { icon: '🤝', text: 'In-person', color: 'bg-green-500/20 text-green-400 border-green-500/30' };
     }
 
     return { icon: '💬', text: lead.typeOfContact, color: 'bg-gray-500/20 text-gray-400 border-gray-500/30' };
@@ -141,7 +141,7 @@ export function ClientCard({
     const source = lead.source.toLowerCase();
 
     if (source.includes('referral') || source.includes('referred')) {
-      return { icon: '🤝', text: lead.source, color: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30' };
+      return { icon: '🤝', text: lead.source, color: 'bg-green-500/20 text-green-400 border-green-500/30' };
     }
     if (source.includes('website') || source.includes('web') || source.includes('online')) {
       return { icon: '🌐', text: lead.source, color: 'bg-blue-500/20 text-blue-400 border-blue-500/30' };

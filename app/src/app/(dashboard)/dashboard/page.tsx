@@ -115,7 +115,7 @@ export default function DashboardPage() {
   return (
     <div className="p-8">
       {/* Header */}
-      <div className="bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border-b border-cyan-500/30 -mx-8 px-8 py-6 mb-6">
+      <div className="bg-gradient-to-r from-green-500/10 to-purple-500/10 border-b border-green-500/30 -mx-8 px-8 py-6 mb-6">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-white">Dashboard</h1>
@@ -169,8 +169,8 @@ export default function DashboardPage() {
                       {statsLoading ? '...' : stats?.upcomingEvents ?? 0}
                     </p>
                   </div>
-                  <div className="p-3 bg-cyan-600/20 rounded-lg">
-                    <Calendar className="w-6 h-6 text-cyan-400" />
+                  <div className="p-3 bg-green-600/20 rounded-lg">
+                    <Calendar className="w-6 h-6 text-green-400" />
                   </div>
                 </div>
               </Card>
@@ -197,8 +197,8 @@ export default function DashboardPage() {
                       {statsLoading ? '...' : stats?.totalGear ?? 0}
                     </p>
                   </div>
-                  <div className="p-3 bg-cyan-600/20 rounded-lg">
-                    <Package className="w-6 h-6 text-cyan-400" />
+                  <div className="p-3 bg-green-600/20 rounded-lg">
+                    <Package className="w-6 h-6 text-green-400" />
                   </div>
                 </div>
               </Card>
@@ -226,7 +226,7 @@ export default function DashboardPage() {
             <Card padding="large" hover="glow" className="h-full overflow-hidden">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-white">Event Pipeline</h3>
-                <TrendingUp className="w-5 h-5 text-cyan-400" />
+                <TrendingUp className="w-5 h-5 text-green-400" />
               </div>
               {pipelineLoading ? (
                 <p className="text-gray-400">Loading...</p>
@@ -234,7 +234,7 @@ export default function DashboardPage() {
                 <div className="space-y-3">
                   <PipelineStage label="Proposal" count={pipeline?.PROPOSAL ?? 0} color="bg-yellow-500" />
                   <PipelineStage label="Tentative" count={pipeline?.TENTATIVE ?? 0} color="bg-orange-500" />
-                  <PipelineStage label="Booked" count={pipeline?.BOOKED ?? 0} color="bg-cyan-500" />
+                  <PipelineStage label="Booked" count={pipeline?.BOOKED ?? 0} color="bg-green-500" />
                   <PipelineStage label="Confirmed" count={pipeline?.CONFIRMED ?? 0} color="bg-blue-500" />
                   <PipelineStage label="In Progress" count={pipeline?.IN_PROGRESS ?? 0} color="bg-purple-500" />
                   <PipelineStage label="Completed" count={pipeline?.COMPLETED ?? 0} color="bg-green-500" />
@@ -265,7 +265,7 @@ export default function DashboardPage() {
                     </div>
                     <div className="w-full bg-slate-600 rounded-full h-2">
                       <div
-                        className="bg-gradient-to-r from-cyan-500 to-cyan-600 h-2 rounded-full transition-all duration-300"
+                        className="bg-gradient-to-r from-green-500 to-green-600 h-2 rounded-full transition-all duration-300"
                         style={{
                           width: `${Math.min(100, ((revenueStats?.expectedRevenue ?? 0) / 100000) * 100)}%`
                         }}
@@ -310,7 +310,7 @@ export default function DashboardPage() {
             <Card padding="large" hover="glow" className="h-full">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-white">Upcoming Events</h3>
-                <Calendar className="w-5 h-5 text-cyan-400" />
+                <Calendar className="w-5 h-5 text-green-400" />
               </div>
               {upcomingLoading ? (
                 <p className="text-gray-400">Loading...</p>
@@ -324,7 +324,7 @@ export default function DashboardPage() {
                           <p className="text-xs text-gray-400 mt-1">{event.clientName}</p>
                         </div>
                         <div className="text-right">
-                          <p className="text-xs text-cyan-400">
+                          <p className="text-xs text-green-400">
                             {new Date(event.loadInTime).toLocaleDateString()}
                           </p>
                           <p className="text-xs text-gray-500">
@@ -447,13 +447,13 @@ export default function DashboardPage() {
               {WIDGET_CONFIGS.map((widget) => (
                 <label
                   key={widget.id}
-                  className="flex items-center gap-3 p-3 bg-slate-800/50 rounded-lg border border-slate-700 hover:border-cyan-600/50 cursor-pointer transition-colors"
+                  className="flex items-center gap-3 p-3 bg-slate-800/50 rounded-lg border border-slate-700 hover:border-green-600/50 cursor-pointer transition-colors"
                 >
                   <input
                     type="checkbox"
                     checked={getWidgetVisibility(widget.id)}
                     onChange={() => handleToggleVisibility(widget.id)}
-                    className="w-4 h-4 rounded border-slate-600 bg-slate-700 text-cyan-600 focus:ring-cyan-500 focus:ring-offset-slate-900"
+                    className="w-4 h-4 rounded border-slate-600 bg-slate-700 text-green-600 focus:ring-green-500 focus:ring-offset-slate-900"
                   />
                   <span className="text-white font-medium">{widget.title}</span>
                 </label>
@@ -501,7 +501,7 @@ function getStatusColor(status: string): string {
   const colors: Record<string, string> = {
     PROPOSAL: 'bg-yellow-600/20 text-yellow-400',
     TENTATIVE: 'bg-orange-600/20 text-orange-400',
-    BOOKED: 'bg-cyan-600/20 text-cyan-400',
+    BOOKED: 'bg-green-600/20 text-green-400',
     CONFIRMED: 'bg-blue-600/20 text-blue-400',
     SCHEDULED: 'bg-purple-600/20 text-purple-400',
     IN_PROGRESS: 'bg-purple-600/20 text-purple-400',
