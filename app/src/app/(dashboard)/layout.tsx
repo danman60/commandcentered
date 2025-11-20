@@ -1,28 +1,28 @@
-import { redirect } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
-import { Sidebar } from '@/components/Sidebar'
+'use client';
 
-export default async function DashboardLayout({
+import { Sidebar } from '@/components/Sidebar'
+import { MobileBottomNav } from '@/components/mobile/MobileBottomNav'
+import { useIsMobile } from '@/hooks/useMediaQuery'
+
+export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  // TEMPORARILY DISABLED AUTH FOR TESTING
-  // const supabase = await createClient()
-  // const {
-  //   data: { session },
-  // } = await supabase.auth.getSession()
-
-  // if (!session) {
-  //   redirect('/login')
-  // }
+  const isMobile = useIsMobile();
 
   return (
     <div className="flex h-screen bg-slate-900">
-      <Sidebar />
-      <main className="flex-1 overflow-y-auto">
+      {/* Desktop Sidebar - hidden on mobile */}
+      {!isMobile && <Sidebar />}
+
+      {/* Main Content - with bottom padding on mobile for nav */}
+      <main className={`flex-1 overflow-y-auto ${isMobile ? 'pb-20' : ''}`}>
         {children}
       </main>
+
+      {/* Mobile Bottom Navigation - only on mobile */}
+      {isMobile && <MobileBottomNav />}
     </div>
   )
 }
