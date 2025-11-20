@@ -185,10 +185,10 @@ export default function GearPage() {
       {/* Main Content */}
       <div className="flex-1 overflow-y-auto px-8 py-8">
         {/* Tab Toggle */}
-        <div className="flex gap-2 mb-6 border-b border-slate-700/30">
+        <div className="flex gap-2 mb-6 border-b border-slate-700/30 overflow-x-auto">
           <button
             onClick={() => setActiveTab('inventory')}
-            className={`px-6 py-3 font-semibold transition-all border-b-3 ${
+            className={`px-3 md:px-6 py-2 md:py-3 text-sm md:text-base font-semibold transition-all border-b-3 whitespace-nowrap ${
               activeTab === 'inventory'
                 ? 'border-green-500 text-green-500'
                 : 'border-transparent text-slate-400 hover:text-green-500'
@@ -198,7 +198,7 @@ export default function GearPage() {
           </button>
           <button
             onClick={() => setActiveTab('calendar')}
-            className={`px-6 py-3 font-semibold transition-all border-b-3 ${
+            className={`px-3 md:px-6 py-2 md:py-3 text-sm md:text-base font-semibold transition-all border-b-3 whitespace-nowrap ${
               activeTab === 'calendar'
                 ? 'border-green-500 text-green-500'
                 : 'border-transparent text-slate-400 hover:text-green-500'
@@ -208,7 +208,7 @@ export default function GearPage() {
           </button>
           <button
             onClick={() => setActiveTab('maintenance')}
-            className={`px-6 py-3 font-semibold transition-all border-b-3 ${
+            className={`px-3 md:px-6 py-2 md:py-3 text-sm md:text-base font-semibold transition-all border-b-3 whitespace-nowrap ${
               activeTab === 'maintenance'
                 ? 'border-green-500 text-green-500'
                 : 'border-transparent text-slate-400 hover:text-green-500'
@@ -218,7 +218,7 @@ export default function GearPage() {
           </button>
           <button
             onClick={() => setActiveTab('kits')}
-            className={`px-6 py-3 font-semibold transition-all border-b-3 ${
+            className={`px-3 md:px-6 py-2 md:py-3 text-sm md:text-base font-semibold transition-all border-b-3 whitespace-nowrap ${
               activeTab === 'kits'
                 ? 'border-green-500 text-green-500'
                 : 'border-transparent text-slate-400 hover:text-green-500'
