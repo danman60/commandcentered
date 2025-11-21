@@ -441,7 +441,7 @@ export default function PipelinePage() {
         <div className="flex items-center justify-between">
           <div>
             <div className="flex items-center gap-4">
-              <h1 className="text-3xl font-bold text-white">Pipeline</h1>
+              <h1 className="text-3xl font-bold tactical-heading">Pipeline</h1>
               {allLeads && allLeads.length > 0 && (
                 <div className="px-4 py-2 bg-gradient-to-r from-green-500/20 to-green-500/20 border border-green-500/30 rounded-lg">
                   <div className="text-xs text-gray-400 uppercase font-semibold">Total Value</div>

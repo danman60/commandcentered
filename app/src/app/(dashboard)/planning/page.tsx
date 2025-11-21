@@ -372,7 +372,7 @@ export default function PlanningPage() {
         <div className={`flex ${isMobile ? 'flex-col gap-3' : 'justify-between items-center'}`}>
           {!isMobile && (
           <div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-green-400 to-green-500 bg-clip-text text-transparent">
+            <h1 className="text-3xl font-bold tactical-heading">
               SCHEDULING COMMAND CENTER
             </h1>
             <p className="text-sm text-slate-400 mt-1">

@@ -122,7 +122,7 @@ export default function SettingsPage() {
       <div className="bg-gradient-to-r from-green-500/10 to-green-500/10 border-b border-green-500/30 px-8 py-6">
         <div className="flex items-center gap-4">
           <div className="text-4xl">⚙️</div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-green-500 to-green-600 bg-clip-text text-transparent">
+          <h1 className="text-3xl font-bold tactical-heading">
             Settings
           </h1>
         </div>

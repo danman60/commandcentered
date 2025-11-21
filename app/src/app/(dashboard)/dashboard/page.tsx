@@ -118,11 +118,12 @@ export default function DashboardPage() {
   return (
     <div className="p-8">
       {/* Header */}
-      <div className="bg-gradient-to-r from-green-500/10 to-green-500/10 border-b border-green-500/30 -mx-8 px-8 py-6 mb-6">
-        <div className="flex items-center justify-between">
+      <div className="tactical-glass border-b tactical-border -mx-8 px-8 py-6 mb-6 relative overflow-hidden">
+        <div className="tactical-scanline absolute inset-0 pointer-events-none opacity-20" />
+        <div className="flex items-center justify-between relative z-10">
           <div>
-            <h1 className="text-3xl font-bold text-white">Dashboard</h1>
-            <div className="text-sm text-slate-400 mt-1" suppressHydrationWarning>
+            <h1 className="text-3xl font-bold tactical-heading">Dashboard</h1>
+            <div className="text-sm text-slate-300 mt-1" suppressHydrationWarning>
               Good {new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 18 ? 'afternoon' : 'evening'}, Commander
             </div>
           </div>

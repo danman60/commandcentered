@@ -61,7 +61,7 @@ export default function DeliverablesPage() {
           <div>
             <div className="flex items-center gap-4 mb-2">
               <span className="text-4xl">🎬</span>
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-green-400 to-green-400 bg-clip-text text-transparent">
+              <h1 className="text-3xl font-bold tactical-heading">
                 Deliverables
               </h1>
             </div>

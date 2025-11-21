@@ -143,7 +143,7 @@ export default function ReportsPage() {
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-4">
             <div className="text-4xl">📈</div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-green-500 to-green-600 bg-clip-text text-transparent">
+            <h1 className="text-3xl font-bold tactical-heading">
               Reports
             </h1>
           </div>
