@@ -165,93 +165,85 @@ export default function DashboardPage() {
         {getWidgetVisibility('overview_stats') && (
           <div key="overview_stats" data-testid="widget-overview-stats" className="overflow-hidden">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 h-full">
-              <Card
-                padding="medium"
-                hover="glow"
-                className="overflow-hidden cursor-pointer transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-green-500/30"
+              <div
+                className="tactical-stat-panel p-6 cursor-pointer transition-all relative"
                 onClick={() => router.push('/planning')}
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-400 flex items-center gap-2">
+                    <p className="text-sm font-medium text-gray-400 flex items-center gap-2 uppercase tracking-wide">
                       Upcoming Events
                       <ExternalLink className="w-3 h-3 opacity-50" />
                     </p>
-                    <p className="text-3xl font-bold text-white mt-2">
+                    <p className="text-3xl font-bold mt-2 tactical-number">
                       {statsLoading ? '...' : stats?.upcomingEvents ?? 0}
                     </p>
                   </div>
                   <div className="p-3 bg-green-600/20 rounded-lg">
-                    <Calendar className="w-6 h-6 text-green-400" />
+                    <Calendar className="w-6 h-6 text-green-400" style={{ filter: 'drop-shadow(0 0 4px rgba(16, 185, 129, 0.6))' }} />
                   </div>
                 </div>
-              </Card>
+              </div>
 
-              <Card
-                padding="medium"
-                hover="glow"
-                className="overflow-hidden cursor-pointer transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-green-500/30"
+              <div
+                className="tactical-stat-panel p-6 cursor-pointer transition-all relative"
                 onClick={() => router.push('/operators')}
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-400 flex items-center gap-2">
+                    <p className="text-sm font-medium text-gray-400 flex items-center gap-2 uppercase tracking-wide">
                       Active Operators
                       <ExternalLink className="w-3 h-3 opacity-50" />
                     </p>
-                    <p className="text-3xl font-bold text-white mt-2">
+                    <p className="text-3xl font-bold mt-2 tactical-number">
                       {statsLoading ? '...' : stats?.totalOperators ?? 0}
                     </p>
                   </div>
                   <div className="p-3 bg-green-600/20 rounded-lg">
-                    <Users className="w-6 h-6 text-green-400" />
+                    <Users className="w-6 h-6 text-green-400" style={{ filter: 'drop-shadow(0 0 4px rgba(16, 185, 129, 0.6))' }} />
                   </div>
                 </div>
-              </Card>
+              </div>
 
-              <Card
-                padding="medium"
-                hover="glow"
-                className="overflow-hidden cursor-pointer transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-green-500/30"
+              <div
+                className="tactical-stat-panel p-6 cursor-pointer transition-all relative"
                 onClick={() => router.push('/gear')}
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-400 flex items-center gap-2">
+                    <p className="text-sm font-medium text-gray-400 flex items-center gap-2 uppercase tracking-wide">
                       Gear Items
                       <ExternalLink className="w-3 h-3 opacity-50" />
                     </p>
-                    <p className="text-3xl font-bold text-white mt-2">
+                    <p className="text-3xl font-bold mt-2 tactical-number">
                       {statsLoading ? '...' : stats?.totalGear ?? 0}
                     </p>
                   </div>
                   <div className="p-3 bg-green-600/20 rounded-lg">
-                    <Package className="w-6 h-6 text-green-400" />
+                    <Package className="w-6 h-6 text-green-400" style={{ filter: 'drop-shadow(0 0 4px rgba(16, 185, 129, 0.6))' }} />
                   </div>
                 </div>
-              </Card>
+              </div>
 
-              <Card
-                padding="medium"
-                hover="glow"
-                className="overflow-hidden cursor-pointer transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-green-500/30"
+              <div
+                className="tactical-stat-panel p-6 cursor-pointer transition-all relative"
                 onClick={() => router.push('/pipeline')}
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-400 flex items-center gap-2">
+                    <p className="text-sm font-medium text-gray-400 flex items-center gap-2 uppercase tracking-wide">
                       Total Revenue
                       <ExternalLink className="w-3 h-3 opacity-50" />
                     </p>
-                    <p className="text-3xl font-bold text-white mt-2">
+                    <p className="text-3xl font-bold mt-2 tactical-number">
                       {statsLoading ? '...' : `$${stats?.totalRevenue?.toLocaleString() ?? 0}`}
                     </p>
                   </div>
                   <div className="p-3 bg-green-600/20 rounded-lg">
-                    <DollarSign className="w-6 h-6 text-green-400" />
+                    <DollarSign className="w-6 h-6 text-green-400" style={{ filter: 'drop-shadow(0 0 4px rgba(16, 185, 129, 0.6))' }} />
                   </div>
                 </div>
-              </Card>
+              </div>
             </div>
           </div>
         )}

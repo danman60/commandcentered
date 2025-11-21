@@ -2,12 +2,12 @@ import { ButtonHTMLAttributes, ReactNode } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 const buttonVariants = cva(
-    'inline-flex items-center justify-center gap-2 rounded-lg font-semibold transition-all duration-200 relative overflow-hidden',
+    'inline-flex items-center justify-center gap-2 font-semibold transition-all duration-200 relative overflow-hidden',
     {
         variants: {
             variant: {
-                primary: 'tactical-button-primary',
-                secondary: 'tactical-button text-slate-200',
+                primary: 'tactical-button-primary clip-path-button',
+                secondary: 'tactical-button text-slate-200 clip-path-button',
             },
             size: {
                 small: 'px-4 py-2 text-sm',
