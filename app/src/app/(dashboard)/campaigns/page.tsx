@@ -47,7 +47,9 @@ export default function CampaignsPage() {
     total: c.totalLeads,
     opened: c.openedCount,
     replied: c.repliedCount,
-    opportunities: 0, // TODO: Calculate from campaign leads with opportunityValue
+    opportunities: c.campaignLeads?.filter((cl: any) =>
+      cl.opportunityValue && Number(cl.opportunityValue) > 0
+    ).length || 0,
     revenue: Number(c.revenue),
   }));
 

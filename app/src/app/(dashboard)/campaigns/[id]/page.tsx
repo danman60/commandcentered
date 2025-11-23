@@ -13,7 +13,14 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
   const { data: campaignData, isLoading } = trpc.campaign.getById.useQuery({ id });
 
   if (isLoading) {
-    return <div className="flex items-center justify-center h-full">Loading...</div>;
+    return (
+      <div className="flex items-center justify-center h-full bg-gray-900">
+        <div className="text-center">
+          <div className="text-6xl mb-4 animate-pulse">📧</div>
+          <div className="text-slate-300 text-lg">Loading campaign...</div>
+        </div>
+      </div>
+    );
   }
 
   if (!campaignData) {
@@ -37,7 +44,9 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
     total: campaignData.totalLeads,
     opened: campaignData.openedCount,
     replied: campaignData.repliedCount,
-    opportunities: 0, // TODO: Calculate from leads
+    opportunities: campaignData.campaignLeads.filter((cl: any) =>
+      cl.opportunityValue && Number(cl.opportunityValue) > 0
+    ).length,
     revenue: Number(campaignData.revenue),
   };
 
