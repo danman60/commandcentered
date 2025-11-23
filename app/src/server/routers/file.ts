@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { router, tenantProcedure } from '../trpc';
+import { createClient } from '@/lib/supabase/server';
 
 export const fileRouter = router({
   list: tenantProcedure
@@ -161,7 +162,43 @@ export const fileRouter = router({
       });
       if (!file) throw new Error('File not found');
 
-      // TODO: Also delete from Supabase Storage
+      // Delete from Supabase Storage if filePath is a storage URL
+      if (file.filePath) {
+        try {
+          const supabase = await createClient();
+
+          // Extract storage path from filePath
+          // Format: https://netbsyvxrhrqxyzqflmd.supabase.co/storage/v1/object/public/files/path/to/file.pdf
+          // Or: files/path/to/file.pdf (direct path)
+          let storagePath = file.filePath;
+
+          // If it's a full URL, extract the path after the bucket name
+          if (storagePath.includes('supabase.co/storage')) {
+            const match = storagePath.match(/\/files\/(.+)$/);
+            if (match) {
+              storagePath = match[1];
+            }
+          } else if (storagePath.startsWith('files/')) {
+            // Remove bucket prefix if present
+            storagePath = storagePath.replace(/^files\//, '');
+          }
+
+          // Delete from storage bucket
+          const { error: storageError } = await supabase.storage
+            .from('files')
+            .remove([storagePath]);
+
+          if (storageError) {
+            console.error('Supabase Storage deletion error:', storageError);
+            // Continue with database deletion even if storage deletion fails
+          }
+        } catch (error) {
+          console.error('Error deleting file from Supabase Storage:', error);
+          // Continue with database deletion even if storage deletion fails
+        }
+      }
+
+      // Delete database record
       return ctx.prisma.file.delete({
         where: { id: input.id },
       });
