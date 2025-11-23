@@ -1,11 +1,11 @@
 import React from 'react';
-import type { Lead, LeadProduct } from '@prisma/client';
+import type { Lead, LeadProduct, CommunicationTouchpoint } from '@prisma/client';
 import { TemperatureBadge } from './TemperatureBadge';
 import { ContactInfo } from './ContactInfo';
 import { ProductCard } from './ProductCard';
 
 interface ClientCardProps {
-  lead: Lead & { leadProducts: LeadProduct[] };
+  lead: Lead & { leadProducts: LeadProduct[]; communicationTouchpoints?: CommunicationTouchpoint[] };
   onLogContact?: () => void;
   onSendEmail?: () => void;
   onViewDetails?: () => void;
@@ -291,6 +291,55 @@ export function ClientCard({
           contactFrequency={lead.contactFrequency}
         />
       </div>
+
+      {/* Recent Contact History */}
+      {lead.communicationTouchpoints && lead.communicationTouchpoints.length > 0 && (
+        <div className="mb-5">
+          <div className="flex items-center gap-2 text-gray-300 font-medium mb-3">
+            <span className="text-xl">📞</span>
+            <span>Recent Contact History</span>
+          </div>
+          <div className="space-y-2">
+            {lead.communicationTouchpoints.slice(0, 3).map((touchpoint) => {
+              const date = new Date(touchpoint.completedAt || touchpoint.createdAt);
+              const formattedDate = date.toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric',
+              });
+              const touchpointType = touchpoint.touchpointType
+                .replace(/_/g, ' ')
+                .toLowerCase()
+                .replace(/\b\w/g, (l) => l.toUpperCase());
+              const statusColor =
+                touchpoint.status === 'COMPLETED'
+                  ? 'bg-green-500/20 text-green-400 border-green-500/30'
+                  : touchpoint.status === 'SCHEDULED'
+                  ? 'bg-blue-500/20 text-blue-400 border-blue-500/30'
+                  : 'bg-gray-500/20 text-gray-400 border-gray-500/30';
+
+              return (
+                <div
+                  key={touchpoint.id}
+                  className="flex items-center justify-between px-3 py-2 bg-gray-900/50 rounded border border-gray-700"
+                >
+                  <div className="flex items-center gap-2">
+                    <span className={`px-2 py-0.5 text-xs rounded border font-medium ${statusColor}`}>
+                      {touchpointType}
+                    </span>
+                    {touchpoint.notes && (
+                      <span className="text-xs text-gray-400 max-w-xs truncate">
+                        {touchpoint.notes}
+                      </span>
+                    )}
+                  </div>
+                  <span className="text-xs text-gray-500">{formattedDate}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {/* Product Focus Section */}
       <div className="mb-5">

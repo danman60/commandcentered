@@ -48,6 +48,10 @@ export const leadRouter = router({
         },
         include: {
           leadProducts: true,
+          communicationTouchpoints: {
+            orderBy: { createdAt: 'desc' },
+            take: 5, // Show last 5 touchpoints
+          },
         },
         orderBy: { lastContactedAt: 'desc' },
       });
