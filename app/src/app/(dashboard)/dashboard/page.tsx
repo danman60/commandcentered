@@ -144,11 +144,10 @@ export default function DashboardPage() {
             <Button
               variant="primary"
               size="medium"
-              onClick={() => {/* TODO: Navigate to new event page */}}
+              onClick={() => router.push('/planning')}
             >
               ➕ New Event
-            </Button>
-            <Button
+            </Button>            <Button
               variant="secondary"
               size="medium"
               onClick={() => setIsCustomizeOpen(true)}

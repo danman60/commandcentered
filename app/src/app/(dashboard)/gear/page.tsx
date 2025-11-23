@@ -6,6 +6,148 @@ import { useState } from 'react';
 type ActiveTab = 'inventory' | 'calendar' | 'maintenance' | 'kits';
 type ActiveView = 'cards' | 'table';
 
+// Gear Assignment Calendar Component
+function GearAssignmentCalendar() {
+  const [currentDate, setCurrentDate] = useState(new Date());
+
+  // Query gear assignments for the current month
+  const startOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+  const endOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+
+  const { data: events, isLoading } = trpc.event.list.useQuery();
+  const { data: gear } = trpc.gear.list.useQuery();
+
+  // Get events in the current month
+  const monthEvents = events?.filter(event => {
+    if (!event.loadInTime) return false;
+    const eventDate = new Date(event.loadInTime);
+    return eventDate >= startOfMonth && eventDate <= endOfMonth;
+  }) || [];
+
+  // Generate calendar days
+  const firstDayOfMonth = startOfMonth.getDay();
+  const daysInMonth = endOfMonth.getDate();
+  const calendarDays = [];
+
+  // Previous month padding
+  for (let i = 0; i < firstDayOfMonth; i++) {
+    calendarDays.push({ day: null, events: [] });
+  }
+
+  // Current month days
+  for (let day = 1; day <= daysInMonth; day++) {
+    const dateObj = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
+    const dayEvents = monthEvents.filter(event => {
+      const eventDate = new Date(event.loadInTime);
+      return eventDate.getDate() === day;
+    });
+    calendarDays.push({ day, events: dayEvents });
+  }
+
+  const monthNames = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+
+  const previousMonth = () => {
+    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
+  };
+
+  const nextMonth = () => {
+    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-slate-400">Loading calendar...</div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      {/* Calendar Header */}
+      <div className="flex items-center justify-between">
+        <h3 className="text-2xl font-bold text-slate-100">
+          {monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}
+        </h3>
+        <div className="flex gap-2">
+          <button
+            onClick={previousMonth}
+            className="px-4 py-2 bg-slate-800/50 border border-slate-700/30 rounded-lg text-slate-300 hover:bg-slate-800 hover:border-green-500/30 transition-all"
+          >
+            ← Previous
+          </button>
+          <button
+            onClick={nextMonth}
+            className="px-4 py-2 bg-slate-800/50 border border-slate-700/30 rounded-lg text-slate-300 hover:bg-slate-800 hover:border-green-500/30 transition-all"
+          >
+            Next →
+          </button>
+        </div>
+      </div>
+
+      {/* Calendar Grid */}
+      <div className="grid grid-cols-7 gap-2">
+        {/* Day Headers */}
+        {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
+          <div key={day} className="text-center text-sm font-semibold text-green-500 py-2">
+            {day}
+          </div>
+        ))}
+
+        {/* Calendar Days */}
+        {calendarDays.map((dayData, index) => (
+          <div
+            key={index}
+            className={`min-h-[100px] p-2 rounded-lg border transition-all ${
+              dayData.day
+                ? 'bg-slate-800/30 border-slate-700/30 hover:border-green-500/30'
+                : 'bg-transparent border-transparent'
+            }`}
+          >
+            {dayData.day && (
+              <>
+                <div className="text-sm font-semibold text-slate-300 mb-1">
+                  {dayData.day}
+                </div>
+                <div className="space-y-1">
+                  {dayData.events.map(event => (
+                    <div
+                      key={event.id}
+                      className="text-xs px-2 py-1 bg-green-500/20 border border-green-500/30 rounded text-green-400 hover:bg-green-500/30 transition-colors cursor-pointer"
+                      title={`${event.eventName} - ${event.venueName || 'No venue'}`}
+                    >
+                      <div className="font-semibold truncate">{event.eventName}</div>
+                      {event.venueName && (
+                        <div className="text-green-500/70 truncate text-xs">
+                          {event.venueName}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* Legend */}
+      <div className="flex items-center gap-6 pt-4 border-t border-slate-700/30">
+        <div className="flex items-center gap-2">
+          <div className="w-4 h-4 bg-green-500/20 border border-green-500/30 rounded"></div>
+          <span className="text-sm text-slate-400">Events with gear assignments</span>
+        </div>
+        <div className="text-sm text-slate-500">
+          Total events this month: {monthEvents.length}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function GearPage() {
   const [activeTab, setActiveTab] = useState<ActiveTab>('inventory');
   const [activeView, setActiveView] = useState<ActiveView>('cards');
@@ -413,12 +555,16 @@ export default function GearPage() {
           </div>
         )}
 
-        {/* CALENDAR TAB - TODO */}
+        {/* CALENDAR TAB */}
         {activeTab === 'calendar' && (
-          <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-12 text-center">
-            <div className="text-6xl mb-4">📅</div>
-            <h2 className="text-2xl font-bold text-slate-100 mb-2">Calendar View</h2>
-            <p className="text-slate-400">Gear assignment calendar coming soon...</p>
+          <div className="bg-slate-900/60 backdrop-blur-md border border-slate-700/50 rounded-xl overflow-hidden">
+            <div className="px-6 py-4 border-b border-slate-700/30 bg-slate-950/80">
+              <h2 className="text-xl font-bold text-slate-100">Gear Assignment Calendar</h2>
+              <p className="text-sm text-slate-400 mt-1">View gear assignments across all events</p>
+            </div>
+            <div className="p-6">
+              <GearAssignmentCalendar />
+            </div>
           </div>
         )}
 
