@@ -69,6 +69,126 @@ export default function SettingsPage() {
 
   const [signwellApiKey, setSignwellApiKey] = useState('');
 
+  // Service Templates state
+  const [showTemplateModal, setShowTemplateModal] = useState(false);
+  const [editingTemplateId, setEditingTemplateId] = useState<string | null>(null);
+  const [templateName, setTemplateName] = useState('');
+  const [templateDescription, setTemplateDescription] = useState('');
+  const [templateDurationHours, setTemplateDurationHours] = useState(4);
+  const [templatePrice, setTemplatePrice] = useState(1000);
+  const [templateOperatorCount, setTemplateOperatorCount] = useState(2);
+  const [templateDeliverableTypes, setTemplateDeliverableTypes] = useState('');
+  const [templateEventType, setTemplateEventType] = useState('');
+  const [includeInactive, setIncludeInactive] = useState(false);
+
+  // Service Templates tRPC queries and mutations
+  const { data: templates = [], refetch: refetchTemplates } = trpc.serviceTemplate.list.useQuery({
+    includeInactive,
+  });
+
+  const createTemplate = trpc.serviceTemplate.create.useMutation({
+    onSuccess: () => {
+      refetchTemplates();
+      setShowTemplateModal(false);
+      resetTemplateForm();
+      alert('Template created successfully!');
+    },
+    onError: (error) => {
+      alert(`Error creating template: ${error.message}`);
+    },
+  });
+
+  const updateTemplate = trpc.serviceTemplate.update.useMutation({
+    onSuccess: () => {
+      refetchTemplates();
+      setShowTemplateModal(false);
+      resetTemplateForm();
+      alert('Template updated successfully!');
+    },
+    onError: (error) => {
+      alert(`Error updating template: ${error.message}`);
+    },
+  });
+
+  const deleteTemplate = trpc.serviceTemplate.delete.useMutation({
+    onSuccess: () => {
+      refetchTemplates();
+      alert('Template deleted successfully!');
+    },
+    onError: (error) => {
+      alert(`Error deleting template: ${error.message}`);
+    },
+  });
+
+  const restoreTemplate = trpc.serviceTemplate.restore.useMutation({
+    onSuccess: () => {
+      refetchTemplates();
+      alert('Template restored successfully!');
+    },
+    onError: (error) => {
+      alert(`Error restoring template: ${error.message}`);
+    },
+  });
+
+  const resetTemplateForm = () => {
+    setEditingTemplateId(null);
+    setTemplateName('');
+    setTemplateDescription('');
+    setTemplateDurationHours(4);
+    setTemplatePrice(1000);
+    setTemplateOperatorCount(2);
+    setTemplateDeliverableTypes('');
+    setTemplateEventType('');
+  };
+
+  const handleEditTemplate = (template: any) => {
+    setEditingTemplateId(template.id);
+    setTemplateName(template.name);
+    setTemplateDescription(template.description || '');
+    setTemplateDurationHours(template.defaultDurationHours);
+    setTemplatePrice(Number(template.defaultPrice));
+    setTemplateOperatorCount(template.defaultOperatorCount);
+    setTemplateDeliverableTypes(template.deliverableTypes.join(', '));
+    setTemplateEventType(template.eventType || '');
+    setShowTemplateModal(true);
+  };
+
+  const handleSaveTemplate = () => {
+    const deliverableTypesArray = templateDeliverableTypes
+      .split(',')
+      .map(t => t.trim())
+      .filter(t => t.length > 0);
+
+    if (!templateName.trim()) {
+      alert('Template name is required');
+      return;
+    }
+
+    if (deliverableTypesArray.length === 0) {
+      alert('At least one deliverable type is required');
+      return;
+    }
+
+    const templateData = {
+      name: templateName.trim(),
+      description: templateDescription.trim() || null,
+      defaultDurationHours: templateDurationHours,
+      defaultPrice: templatePrice,
+      defaultOperatorCount: templateOperatorCount,
+      deliverableTypes: deliverableTypesArray,
+      eventType: templateEventType.trim() || null,
+    };
+
+    if (editingTemplateId) {
+      updateTemplate.mutate({
+        id: editingTemplateId,
+        ...templateData,
+      });
+    } else {
+      createTemplate.mutate(templateData);
+    }
+  };
+
   // Initialize form values when settings load
   useState(() => {
     if (settings) {
@@ -1336,28 +1456,283 @@ export default function SettingsPage() {
                   Manage your service templates for quick proposal generation. These templates can be used to quickly populate proposals with predefined services and pricing.
                 </p>
 
-                <div className="mb-6">
+                <div className="flex items-center justify-between mb-6">
                   <button
                     onClick={() => {
-                      // TODO: Open create template modal
-                      alert('Create template modal - to be implemented');
+                      resetTemplateForm();
+                      setShowTemplateModal(true);
                     }}
                     className="px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold shadow-lg shadow-green-500/30 hover:shadow-green-500/40 hover:-translate-y-0.5 transition-all"
                   >
                     ➕ Create New Template
                   </button>
+                  <label className="flex items-center gap-2 text-sm text-slate-400">
+                    <input
+                      type="checkbox"
+                      checked={includeInactive}
+                      onChange={(e) => setIncludeInactive(e.target.checked)}
+                      className="w-4 h-4 rounded border-slate-700 bg-slate-900 text-green-500 focus:ring-green-500"
+                    />
+                    Show inactive templates
+                  </label>
                 </div>
 
-                <div className="bg-slate-900/50 border border-slate-700/50 rounded-lg p-6">
-                  <div className="space-y-4">
-                    <p className="text-slate-400 text-center py-8">
-                      Service template management UI coming soon. Use the tRPC router to create templates programmatically.
-                    </p>
-                    <p className="text-xs text-slate-500 text-center">
-                      Available procedures: list, getById, create, update, delete, restore
+                {templates.length === 0 ? (
+                  <div className="bg-slate-900/50 border border-slate-700/50 rounded-lg p-12 text-center">
+                    <p className="text-slate-400 mb-4">No templates found</p>
+                    <p className="text-xs text-slate-500">
+                      Create your first service template to get started
                     </p>
                   </div>
-                </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {templates.map((template) => (
+                      <div
+                        key={template.id}
+                        className={`bg-slate-900/50 border rounded-lg p-5 ${
+                          template.isActive
+                            ? 'border-slate-700/50 hover:border-green-500/30'
+                            : 'border-slate-700/30 opacity-60'
+                        } transition-all`}
+                      >
+                        <div className="flex items-start justify-between mb-3">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-1">
+                              <h3 className="text-lg font-semibold text-slate-100">
+                                {template.name}
+                              </h3>
+                              {!template.isActive && (
+                                <span className="px-2 py-0.5 bg-slate-700/50 text-slate-400 rounded text-xs font-semibold">
+                                  Inactive
+                                </span>
+                              )}
+                            </div>
+                            {template.description && (
+                              <p className="text-sm text-slate-400 mb-3">
+                                {template.description}
+                              </p>
+                            )}
+                            {template.eventType && (
+                              <p className="text-xs text-slate-500 mb-3">
+                                Event Type: {template.eventType}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-3 mb-4 text-sm">
+                          <div>
+                            <div className="text-slate-500 text-xs">Duration</div>
+                            <div className="text-slate-200 font-semibold">
+                              {template.defaultDurationHours}h
+                            </div>
+                          </div>
+                          <div>
+                            <div className="text-slate-500 text-xs">Price</div>
+                            <div className="text-green-500 font-semibold">
+                              ${Number(template.defaultPrice).toLocaleString()}
+                            </div>
+                          </div>
+                          <div>
+                            <div className="text-slate-500 text-xs">Operators</div>
+                            <div className="text-slate-200 font-semibold">
+                              {template.defaultOperatorCount}
+                            </div>
+                          </div>
+                          <div>
+                            <div className="text-slate-500 text-xs">Deliverables</div>
+                            <div className="text-slate-200 font-semibold">
+                              {template.deliverableTypes.length}
+                            </div>
+                          </div>
+                        </div>
+
+                        {template.deliverableTypes.length > 0 && (
+                          <div className="mb-4">
+                            <div className="text-xs text-slate-500 mb-1">Deliverable Types:</div>
+                            <div className="flex flex-wrap gap-1">
+                              {template.deliverableTypes.map((type: string, idx: number) => (
+                                <span
+                                  key={idx}
+                                  className="px-2 py-0.5 bg-green-500/10 text-green-500 rounded text-xs"
+                                >
+                                  {type}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        <div className="flex gap-2 pt-3 border-t border-slate-700/30">
+                          <button
+                            onClick={() => handleEditTemplate(template)}
+                            className="flex-1 px-3 py-2 bg-slate-700/30 hover:bg-slate-700/50 text-slate-300 border border-slate-700/50 rounded text-xs font-semibold transition-all"
+                          >
+                            Edit
+                          </button>
+                          {template.isActive ? (
+                            <button
+                              onClick={() => {
+                                if (
+                                  confirm(
+                                    `Delete template "${template.name}"? This will mark it as inactive.`
+                                  )
+                                ) {
+                                  deleteTemplate.mutate({ id: template.id });
+                                }
+                              }}
+                              className="px-3 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-500 border border-red-500/30 rounded text-xs font-semibold transition-all"
+                            >
+                              Delete
+                            </button>
+                          ) : (
+                            <button
+                              onClick={() => {
+                                if (
+                                  confirm(`Restore template "${template.name}"?`)
+                                ) {
+                                  restoreTemplate.mutate({ id: template.id });
+                                }
+                              }}
+                              className="px-3 py-2 bg-green-500/10 hover:bg-green-500/20 text-green-500 border border-green-500/30 rounded text-xs font-semibold transition-all"
+                            >
+                              Restore
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Create/Edit Template Modal */}
+                {showTemplateModal && (
+                  <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-slate-900 border border-slate-700 rounded-xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                      <h3 className="text-2xl font-bold text-green-500 mb-6">
+                        {editingTemplateId ? 'Edit Template' : 'Create New Template'}
+                      </h3>
+
+                      <div className="space-y-4">
+                        <div>
+                          <label className="block text-sm font-semibold text-slate-300 mb-2">
+                            Template Name *
+                          </label>
+                          <input
+                            type="text"
+                            value={templateName}
+                            onChange={(e) => setTemplateName(e.target.value)}
+                            placeholder="e.g., Wedding Package Basic"
+                            className="w-full px-4 py-3 bg-slate-900/60 border border-slate-700/50 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-green-500"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-semibold text-slate-300 mb-2">
+                            Description
+                          </label>
+                          <textarea
+                            value={templateDescription}
+                            onChange={(e) => setTemplateDescription(e.target.value)}
+                            placeholder="Brief description of this service template"
+                            rows={3}
+                            className="w-full px-4 py-3 bg-slate-900/60 border border-slate-700/50 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-green-500"
+                          />
+                        </div>
+
+                        <div className="grid grid-cols-3 gap-4">
+                          <div>
+                            <label className="block text-sm font-semibold text-slate-300 mb-2">
+                              Duration (hours) *
+                            </label>
+                            <input
+                              type="number"
+                              value={templateDurationHours}
+                              onChange={(e) => setTemplateDurationHours(Number(e.target.value))}
+                              min="1"
+                              className="w-full px-4 py-3 bg-slate-900/60 border border-slate-700/50 rounded-lg text-slate-100 focus:outline-none focus:border-green-500"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-sm font-semibold text-slate-300 mb-2">
+                              Price ($) *
+                            </label>
+                            <input
+                              type="number"
+                              value={templatePrice}
+                              onChange={(e) => setTemplatePrice(Number(e.target.value))}
+                              min="0"
+                              step="50"
+                              className="w-full px-4 py-3 bg-slate-900/60 border border-slate-700/50 rounded-lg text-slate-100 focus:outline-none focus:border-green-500"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-sm font-semibold text-slate-300 mb-2">
+                              Operators *
+                            </label>
+                            <input
+                              type="number"
+                              value={templateOperatorCount}
+                              onChange={(e) => setTemplateOperatorCount(Number(e.target.value))}
+                              min="1"
+                              className="w-full px-4 py-3 bg-slate-900/60 border border-slate-700/50 rounded-lg text-slate-100 focus:outline-none focus:border-green-500"
+                            />
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-semibold text-slate-300 mb-2">
+                            Deliverable Types (comma-separated) *
+                          </label>
+                          <input
+                            type="text"
+                            value={templateDeliverableTypes}
+                            onChange={(e) => setTemplateDeliverableTypes(e.target.value)}
+                            placeholder="e.g., Highlight Reel, Full Ceremony, Reception Coverage"
+                            className="w-full px-4 py-3 bg-slate-900/60 border border-slate-700/50 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-green-500"
+                          />
+                          <p className="text-xs text-slate-500 mt-1">
+                            Separate multiple types with commas
+                          </p>
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-semibold text-slate-300 mb-2">
+                            Event Type
+                          </label>
+                          <input
+                            type="text"
+                            value={templateEventType}
+                            onChange={(e) => setTemplateEventType(e.target.value)}
+                            placeholder="e.g., Wedding, Corporate Event, Concert"
+                            className="w-full px-4 py-3 bg-slate-900/60 border border-slate-700/50 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-green-500"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="flex gap-3 mt-6">
+                        <button
+                          onClick={() => {
+                            setShowTemplateModal(false);
+                            resetTemplateForm();
+                          }}
+                          className="flex-1 px-6 py-3 bg-slate-700/30 text-slate-300 border border-slate-700/50 rounded-lg font-semibold hover:bg-slate-700/50 transition-all"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          onClick={handleSaveTemplate}
+                          disabled={createTemplate.isPending || updateTemplate.isPending}
+                          className="flex-1 px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold shadow-lg shadow-green-500/30 hover:shadow-green-500/40 hover:-translate-y-0.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          {editingTemplateId ? 'Update Template' : 'Create Template'}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>
