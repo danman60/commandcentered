@@ -568,12 +568,171 @@ export default function GearPage() {
           </div>
         )}
 
-        {/* MAINTENANCE TAB - TODO */}
+        {/* MAINTENANCE TAB */}
         {activeTab === 'maintenance' && (
-          <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-12 text-center">
-            <div className="text-6xl mb-4">🔧</div>
-            <h2 className="text-2xl font-bold text-slate-100 mb-2">Maintenance History</h2>
-            <p className="text-slate-400">Maintenance tracking coming soon...</p>
+          <div>
+            <h2 className="text-2xl font-bold text-slate-100 mb-6">Maintenance Tracking</h2>
+
+            {/* Maintenance Summary Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+              <div className="bg-orange-500/10 border border-orange-500/30 rounded-xl p-4">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="text-3xl">⚠️</div>
+                  <div>
+                    <div className="text-2xl font-bold text-orange-500">
+                      {gearData.filter(g => g.status === 'NEEDS_REPAIR').length}
+                    </div>
+                    <div className="text-sm text-slate-400">Needs Repair</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-4">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="text-3xl">🔧</div>
+                  <div>
+                    <div className="text-2xl font-bold text-blue-500">
+                      {gearData.filter(g => g.status === 'IN_REPAIR').length}
+                    </div>
+                    <div className="text-sm text-slate-400">In Repair</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-4">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="text-3xl">🚫</div>
+                  <div>
+                    <div className="text-2xl font-bold text-red-500">
+                      {gearData.filter(g => g.status === 'OUT_OF_SERVICE' || g.status === 'RETIRED').length}
+                    </div>
+                    <div className="text-sm text-slate-400">Out of Service</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Gear Requiring Attention */}
+            <div className="space-y-4">
+              {/* Needs Repair Section */}
+              {gearData.filter(g => g.status === 'NEEDS_REPAIR').length > 0 && (
+                <div className="bg-orange-500/5 border border-orange-500/20 rounded-xl p-6">
+                  <h3 className="text-xl font-bold text-orange-500 mb-4 flex items-center gap-2">
+                    <span>⚠️</span> Needs Repair ({gearData.filter(g => g.status === 'NEEDS_REPAIR').length})
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {gearData.filter(g => g.status === 'NEEDS_REPAIR').map((item) => (
+                      <div
+                        key={item.id}
+                        className="bg-slate-800/50 border border-slate-700/30 rounded-lg p-4 hover:border-orange-500/50 transition-all"
+                      >
+                        <div className="flex items-start justify-between mb-3">
+                          <div className="text-2xl">{item.icon}</div>
+                          <span className="px-2 py-1 bg-orange-500 text-slate-900 rounded text-xs font-semibold">
+                            Needs Repair
+                          </span>
+                        </div>
+                        <h4 className="text-base font-bold text-slate-100 mb-2">{item.name}</h4>
+                        <div className="text-sm space-y-1">
+                          <div className="flex justify-between">
+                            <span className="text-slate-500">Category:</span>
+                            <span className="text-slate-300">{item.category}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-slate-500">Serial #:</span>
+                            <span className="text-slate-300 font-mono text-xs">{item.serialNumber}</span>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* In Repair Section */}
+              {gearData.filter(g => g.status === 'IN_REPAIR').length > 0 && (
+                <div className="bg-blue-500/5 border border-blue-500/20 rounded-xl p-6">
+                  <h3 className="text-xl font-bold text-blue-500 mb-4 flex items-center gap-2">
+                    <span>🔧</span> In Repair ({gearData.filter(g => g.status === 'IN_REPAIR').length})
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {gearData.filter(g => g.status === 'IN_REPAIR').map((item) => (
+                      <div
+                        key={item.id}
+                        className="bg-slate-800/50 border border-slate-700/30 rounded-lg p-4 hover:border-blue-500/50 transition-all"
+                      >
+                        <div className="flex items-start justify-between mb-3">
+                          <div className="text-2xl">{item.icon}</div>
+                          <span className="px-2 py-1 bg-blue-500 text-white rounded text-xs font-semibold">
+                            In Repair
+                          </span>
+                        </div>
+                        <h4 className="text-base font-bold text-slate-100 mb-2">{item.name}</h4>
+                        <div className="text-sm space-y-1">
+                          <div className="flex justify-between">
+                            <span className="text-slate-500">Category:</span>
+                            <span className="text-slate-300">{item.category}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-slate-500">Serial #:</span>
+                            <span className="text-slate-300 font-mono text-xs">{item.serialNumber}</span>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Out of Service Section */}
+              {gearData.filter(g => g.status === 'OUT_OF_SERVICE' || g.status === 'RETIRED').length > 0 && (
+                <div className="bg-red-500/5 border border-red-500/20 rounded-xl p-6">
+                  <h3 className="text-xl font-bold text-red-500 mb-4 flex items-center gap-2">
+                    <span>🚫</span> Out of Service ({gearData.filter(g => g.status === 'OUT_OF_SERVICE' || g.status === 'RETIRED').length})
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {gearData.filter(g => g.status === 'OUT_OF_SERVICE' || g.status === 'RETIRED').map((item) => (
+                      <div
+                        key={item.id}
+                        className="bg-slate-800/50 border border-slate-700/30 rounded-lg p-4 hover:border-red-500/50 transition-all"
+                      >
+                        <div className="flex items-start justify-between mb-3">
+                          <div className="text-2xl">{item.icon}</div>
+                          <span className="px-2 py-1 bg-red-500 text-white rounded text-xs font-semibold">
+                            {getStatusLabel(item.status)}
+                          </span>
+                        </div>
+                        <h4 className="text-base font-bold text-slate-100 mb-2">{item.name}</h4>
+                        <div className="text-sm space-y-1">
+                          <div className="flex justify-between">
+                            <span className="text-slate-500">Category:</span>
+                            <span className="text-slate-300">{item.category}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-slate-500">Serial #:</span>
+                            <span className="text-slate-300 font-mono text-xs">{item.serialNumber}</span>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Empty State */}
+              {gearData.filter(g =>
+                g.status === 'NEEDS_REPAIR' ||
+                g.status === 'IN_REPAIR' ||
+                g.status === 'OUT_OF_SERVICE' ||
+                g.status === 'RETIRED'
+              ).length === 0 && (
+                <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-12 text-center">
+                  <div className="text-6xl mb-4">✅</div>
+                  <h3 className="text-2xl font-bold text-slate-100 mb-2">All Gear in Good Condition</h3>
+                  <p className="text-slate-400">No items currently need maintenance or repair</p>
+                </div>
+              )}
+            </div>
           </div>
         )}
       </div>
