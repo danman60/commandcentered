@@ -912,6 +912,10 @@ model Deliverable {
   notes               String?           @db.Text
   completionPercentage Int              @default(0) @map("completion_percentage")
 
+  // Google Drive
+  googleDriveFolderId  String? @map("google_drive_folder_id") @db.VarChar(255)
+  googleDriveFolderUrl String? @map("google_drive_folder_url") @db.VarChar(500)
+
   // Relations
   assets    DeliverableAsset[]
   bounties  Bounty[]

@@ -466,11 +466,13 @@ function CompletionSlider({ deliverableId, initialValue }: { deliverableId: stri
 // Deliverable Detail Modal Component
 function DeliverableDetailModal({ deliverableId, isOpen, onClose }: { deliverableId: string; isOpen: boolean; onClose: () => void }) {
   const [isEditMode, setIsEditMode] = useState(false);
+  const [isGoogleDriveEditMode, setIsGoogleDriveEditMode] = useState(false);
   const [formData, setFormData] = useState({
     assignedEditorId: '',
     dueDate: '',
     status: '',
   });
+  const [googleDriveUrl, setGoogleDriveUrl] = useState('');
 
   const { data: deliverable } = trpc.deliverable.getById.useQuery({ id: deliverableId });
   const { data: operators } = trpc.operator.list.useQuery({});
@@ -478,6 +480,13 @@ function DeliverableDetailModal({ deliverableId, isOpen, onClose }: { deliverabl
   const updateDeliverable = trpc.deliverable.update.useMutation({
     onSuccess: () => {
       setIsEditMode(false);
+      window.location.reload();
+    },
+  });
+
+  const updateGoogleDriveFolder = trpc.deliverable.updateGoogleDriveFolder.useMutation({
+    onSuccess: () => {
+      setIsGoogleDriveEditMode(false);
       window.location.reload();
     },
   });
@@ -496,6 +505,38 @@ function DeliverableDetailModal({ deliverableId, isOpen, onClose }: { deliverabl
       id: deliverableId,
       assignedEditorId: formData.assignedEditorId || undefined,
       dueDate: formData.dueDate ? new Date(formData.dueDate) : undefined,
+    });
+  };
+
+  const handleGoogleDriveEdit = () => {
+    setGoogleDriveUrl(deliverable?.googleDriveFolderUrl || '');
+    setIsGoogleDriveEditMode(true);
+  };
+
+  const handleGoogleDriveSave = () => {
+    if (!googleDriveUrl.trim()) {
+      alert('Please enter a valid Google Drive folder URL');
+      return;
+    }
+
+    // Extract folder ID from URL if it's a full URL
+    let folderId = '';
+    try {
+      const url = new URL(googleDriveUrl);
+      const pathParts = url.pathname.split('/');
+      const folderIndex = pathParts.indexOf('folders');
+      if (folderIndex !== -1 && pathParts.length > folderIndex + 1) {
+        folderId = pathParts[folderIndex + 1];
+      }
+    } catch {
+      // If not a valid URL, assume it's just the folder ID
+      folderId = googleDriveUrl.trim();
+    }
+
+    updateGoogleDriveFolder.mutate({
+      id: deliverableId,
+      googleDriveFolderId: folderId,
+      googleDriveFolderUrl: googleDriveUrl.trim(),
     });
   };
 
@@ -617,6 +658,72 @@ function DeliverableDetailModal({ deliverableId, isOpen, onClose }: { deliverabl
                 </div>
               )}
             </div>
+          </div>
+
+          {/* Google Drive Folder */}
+          <div className="mb-6">
+            <h3 className="text-lg font-bold text-white mb-3">Google Drive Folder</h3>
+            {isGoogleDriveEditMode ? (
+              <div className="space-y-3">
+                <input
+                  type="url"
+                  value={googleDriveUrl}
+                  onChange={(e) => setGoogleDriveUrl(e.target.value)}
+                  placeholder="https://drive.google.com/drive/folders/..."
+                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-green-500"
+                />
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => setIsGoogleDriveEditMode(false)}
+                    className="flex-1 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white font-semibold rounded-lg transition-all"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleGoogleDriveSave}
+                    disabled={updateGoogleDriveFolder.isPending}
+                    className="flex-1 px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-400 hover:to-green-500 text-white font-semibold rounded-lg transition-all disabled:opacity-50"
+                  >
+                    {updateGoogleDriveFolder.isPending ? 'Saving...' : 'Save Folder'}
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {deliverable?.googleDriveFolderUrl ? (
+                  <div className="flex items-center justify-between p-3 bg-green-500/10 border border-green-500/30 rounded-lg">
+                    <div className="flex items-center gap-3">
+                      <span className="text-2xl">📁</span>
+                      <div>
+                        <div className="text-sm font-semibold text-green-300">Google Drive Folder</div>
+                        <div className="text-xs text-slate-400 mt-1">Click to open folder</div>
+                      </div>
+                    </div>
+                    <a
+                      href={deliverable.googleDriveFolderUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg transition-all"
+                    >
+                      Open Folder →
+                    </a>
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-center p-6 bg-slate-800/40 border border-slate-700 rounded-lg">
+                    <div className="text-center">
+                      <div className="text-3xl mb-2">📁</div>
+                      <div className="text-sm text-slate-400">No Google Drive folder linked yet</div>
+                    </div>
+                  </div>
+                )}
+                <button
+                  onClick={handleGoogleDriveEdit}
+                  className="w-full px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white font-semibold rounded-lg transition-all"
+                >
+                  {deliverable?.googleDriveFolderUrl ? 'Update Folder Link' : 'Add Folder Link'}
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Action Buttons */}

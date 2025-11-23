@@ -174,4 +174,24 @@ export const deliverableRouter = router({
         include: { event: true, assignedEditor: true },
       });
     }),
+
+  updateGoogleDriveFolder: tenantProcedure
+    .input(z.object({
+      id: z.string().uuid(),
+      googleDriveFolderId: z.string().optional().nullable(),
+      googleDriveFolderUrl: z.string().url().optional().nullable(),
+    }))
+    .mutation(async ({ ctx, input }) => {
+      const deliverable = await ctx.prisma.deliverable.findFirst({
+        where: { id: input.id, tenantId: ctx.tenantId }
+      });
+      if (!deliverable) throw new Error('Deliverable not found');
+
+      const { id, ...data } = input;
+      return ctx.prisma.deliverable.update({
+        where: { id },
+        data,
+        include: { event: true, assignedEditor: true },
+      });
+    }),
 });
