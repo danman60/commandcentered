@@ -327,10 +327,92 @@ export default function SettingsPage() {
             {activeTab === 'profile' && (
               <div>
                 <h2 className="text-2xl font-bold text-green-500 mb-6">Profile Settings</h2>
-                <div className="text-slate-400 text-center py-12">
-                  <div className="text-6xl mb-4">👤</div>
-                  <p>Profile settings coming soon</p>
-                  <p className="text-sm mt-2">User-specific settings will be available here</p>
+
+                {/* Profile Picture Section */}
+                <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6 mb-6">
+                  <h3 className="text-lg font-semibold text-slate-100 mb-4">Profile Picture</h3>
+                  <div className="flex items-center gap-6">
+                    <div className="w-24 h-24 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center text-white text-3xl font-bold">
+                      CC
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-slate-400 text-sm mb-3">Upload a new profile picture</p>
+                      <div className="flex gap-3">
+                        <button className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg text-sm font-semibold transition-all">
+                          Upload Photo
+                        </button>
+                        <button className="px-4 py-2 bg-slate-700/30 hover:bg-slate-700/50 text-slate-300 border border-slate-700/50 rounded-lg text-sm font-semibold transition-all">
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Personal Information */}
+                <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6 mb-6">
+                  <h3 className="text-lg font-semibold text-slate-100 mb-4">Personal Information</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-2">First Name</label>
+                      <input
+                        type="text"
+                        defaultValue="Command"
+                        className="w-full px-4 py-2 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 focus:outline-none focus:border-green-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-2">Last Name</label>
+                      <input
+                        type="text"
+                        defaultValue="Centered"
+                        className="w-full px-4 py-2 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 focus:outline-none focus:border-green-500"
+                      />
+                    </div>
+                    <div className="md:col-span-2">
+                      <label className="block text-sm font-medium text-slate-300 mb-2">Email</label>
+                      <input
+                        type="email"
+                        defaultValue="user@commandcentered.app"
+                        className="w-full px-4 py-2 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 focus:outline-none focus:border-green-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-2">Phone</label>
+                      <input
+                        type="tel"
+                        defaultValue="+1 (555) 123-4567"
+                        className="w-full px-4 py-2 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 focus:outline-none focus:border-green-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-2">Timezone</label>
+                      <select className="w-full px-4 py-2 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 focus:outline-none focus:border-green-500">
+                        <option>America/New_York (EST)</option>
+                        <option>America/Chicago (CST)</option>
+                        <option>America/Denver (MST)</option>
+                        <option>America/Los_Angeles (PST)</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Bio Section */}
+                <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6 mb-6">
+                  <h3 className="text-lg font-semibold text-slate-100 mb-4">Bio</h3>
+                  <textarea
+                    rows={4}
+                    defaultValue="Video production coordinator specializing in event coverage and live streaming."
+                    className="w-full px-4 py-2 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 focus:outline-none focus:border-green-500"
+                    placeholder="Tell us about yourself..."
+                  />
+                </div>
+
+                {/* Save Button */}
+                <div className="flex justify-end">
+                  <button className="px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold shadow-lg shadow-green-500/30 hover:shadow-green-500/40 hover:-translate-y-0.5 transition-all">
+                    Save Changes
+                  </button>
                 </div>
               </div>
             )}
