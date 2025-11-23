@@ -95,6 +95,7 @@ model Tenant {
   files                        File[] // File Upload System
   voiceCommands                VoiceCommand[] // AI Voice Agent
   aiExecutions                 AIExecution[] // AI Voice Agent
+  savedSearches                SavedSearch[] // Saved Lead Finder searches
 
   @@map("tenants")
   @@schema("commandcentered")
@@ -119,6 +120,7 @@ model UserProfile {
   clientNotesCreated         ClientNote[]
   dashboardWidgetPreferences DashboardWidgetPreference[] // Round 6 - GAP-09
   savedLeadSearches          SavedLeadSearch[] // Phase 12 - Lead Finder
+  savedSearches              SavedSearch[] // Generic Saved Searches
   filesUploaded              File[] // File Upload System
   voiceCommands              VoiceCommand[] // AI Voice Agent
   userPreferences            UserPreferences? // User Customization
@@ -2070,6 +2072,29 @@ model OperatorAvailability {
   @@index([operatorId])
   @@index([date])
   @@map("operator_availability")
+  @@schema("commandcentered")
+}
+
+model SavedSearch {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  tenantId String @map("tenant_id") @db.Uuid
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Restrict)
+
+  userId String? @map("user_id") @db.Uuid
+  user   UserProfile? @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  name        String   @db.VarChar(100)
+  searchType  String   @default("lead_finder") @map("search_type") @db.VarChar(50) // "lead_finder", etc.
+  filters     Json     // Store search filters as JSON
+  resultCount Int      @default(0) @map("result_count")
+  lastUsedAt  DateTime @default(now()) @map("last_used_at")
+
+  @@index([tenantId])
+  @@index([userId])
+  @@map("saved_searches")
   @@schema("commandcentered")
 }
 

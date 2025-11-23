@@ -55,16 +55,28 @@ export default function LeadFinderPage() {
     },
   });
 
-  // Saved searches (placeholder - will be implemented with backend)
-  const savedSearches = [
-    { name: 'Ontario Dance Studios', count: 47 },
-    { name: 'GTA Schools', count: 103 },
-  ];
+  // Fetch saved searches from backend
+  const { data: savedSearches = [], refetch: refetchSavedSearches } = trpc.savedSearch.list.useQuery({
+    searchType: 'lead_finder',
+  });
 
-  const recentSearches = [
-    { name: 'Toronto Area', count: 12 },
-    { name: 'Niagara Region', count: 8 },
-  ];
+  // Create saved search mutation
+  const createSavedSearchMutation = trpc.savedSearch.create.useMutation({
+    onSuccess: () => {
+      alert('Search saved successfully!');
+      refetchSavedSearches();
+    },
+  });
+
+  // Delete saved search mutation
+  const deleteSavedSearchMutation = trpc.savedSearch.delete.useMutation({
+    onSuccess: () => {
+      refetchSavedSearches();
+    },
+  });
+
+  // Update last used timestamp mutation
+  const updateLastUsedMutation = trpc.savedSearch.updateLastUsed.useMutation();
 
   const handleBusinessTypeChange = (type: BusinessType) => {
     setBusinessTypes((prev) => ({ ...prev, [type]: !prev[type] }));
@@ -184,6 +196,63 @@ export default function LeadFinderPage() {
       })),
       source: 'Apollo.io',
     });
+  };
+
+  const handleSaveCurrentSearch = () => {
+    const name = prompt('Enter a name for this search:');
+    if (!name) return;
+
+    const filters = {
+      location,
+      keywords,
+      minEmployees,
+      maxEmployees,
+      minRevenue,
+      maxRevenue,
+      hasWebsite,
+      skipExisting,
+      businessTypes,
+    };
+
+    createSavedSearchMutation.mutate({
+      name,
+      searchType: 'lead_finder',
+      filters,
+      resultCount: leadResults.length,
+    });
+  };
+
+  const handleLoadSavedSearch = (searchId: string) => {
+    const search = savedSearches.find((s) => s.id === searchId);
+    if (!search) return;
+
+    // Update last used timestamp
+    updateLastUsedMutation.mutate({ id: searchId });
+
+    // Load filters from saved search
+    const filters = search.filters as any;
+    setLocation(filters.location || '');
+    setKeywords(filters.keywords || '');
+    setMinEmployees(filters.minEmployees || '');
+    setMaxEmployees(filters.maxEmployees || '');
+    setMinRevenue(filters.minRevenue || '');
+    setMaxRevenue(filters.maxRevenue || '');
+    setHasWebsite(filters.hasWebsite || false);
+    setSkipExisting(filters.skipExisting || false);
+    setBusinessTypes(filters.businessTypes || {
+      'dance-studio': false,
+      'dance-school': false,
+      'performing-arts': false,
+      'event-venue': false,
+      'k12-school': false,
+    });
+  };
+
+  const handleDeleteSavedSearch = (searchId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (confirm('Are you sure you want to delete this saved search?')) {
+      deleteSavedSearchMutation.mutate({ id: searchId });
+    }
   };
 
   return (
@@ -421,46 +490,45 @@ export default function LeadFinderPage() {
             </div>
           </div>
 
-          {/* Saved & Recent Searches */}
-          <div className="grid grid-cols-2 gap-4 mb-6">
-            {/* Saved Searches */}
-            <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-5">
-              <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-3">
-                Saved Searches
-              </h3>
-              {savedSearches.map((search, idx) => (
+          {/* Saved Searches */}
+          <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-5 mb-6">
+            <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-3">
+              Saved Searches
+            </h3>
+            {savedSearches.length === 0 ? (
+              <div className="text-sm text-slate-500 text-center py-4">
+                No saved searches yet. Save your first search below!
+              </div>
+            ) : (
+              savedSearches.map((search) => (
                 <div
-                  key={idx}
-                  className="flex justify-between items-center px-3 py-2 bg-slate-900/60 border border-slate-700/30 rounded-lg mb-2 hover:border-green-500/50 cursor-pointer transition-all"
+                  key={search.id}
+                  onClick={() => handleLoadSavedSearch(search.id)}
+                  className="flex justify-between items-center px-3 py-2 bg-slate-900/60 border border-slate-700/30 rounded-lg mb-2 hover:border-green-500/50 cursor-pointer transition-all group"
                 >
                   <span className="text-sm text-slate-300">{search.name}</span>
-                  <span className="text-xs text-slate-500 bg-slate-800/80 px-2 py-1 rounded">
-                    {search.count}
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-slate-500 bg-slate-800/80 px-2 py-1 rounded">
+                      {search.resultCount}
+                    </span>
+                    <button
+                      onClick={(e) => handleDeleteSavedSearch(search.id, e)}
+                      className="text-red-500 opacity-0 group-hover:opacity-100 transition-opacity hover:text-red-400"
+                      title="Delete"
+                    >
+                      ✕
+                    </button>
+                  </div>
                 </div>
-              ))}
-              <button className="w-full mt-2 px-3 py-2 bg-slate-900/60 border border-dashed border-slate-700/50 text-green-500 rounded-lg text-sm font-medium hover:bg-slate-800/60 hover:border-green-500/50 transition-all">
-                + Save Current Search
-              </button>
-            </div>
-
-            {/* Recent Searches */}
-            <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-5">
-              <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-3">
-                Recent Searches
-              </h3>
-              {recentSearches.map((search, idx) => (
-                <div
-                  key={idx}
-                  className="flex justify-between items-center px-3 py-2 bg-slate-900/60 border border-slate-700/30 rounded-lg mb-2 hover:border-green-500/50 cursor-pointer transition-all"
-                >
-                  <span className="text-sm text-slate-300">{search.name}</span>
-                  <span className="text-xs text-slate-500 bg-slate-800/80 px-2 py-1 rounded">
-                    {search.count}
-                  </span>
-                </div>
-              ))}
-            </div>
+              ))
+            )}
+            <button
+              onClick={handleSaveCurrentSearch}
+              disabled={createSavedSearchMutation.isPending}
+              className="w-full mt-2 px-3 py-2 bg-slate-900/60 border border-dashed border-slate-700/50 text-green-500 rounded-lg text-sm font-medium hover:bg-slate-800/60 hover:border-green-500/50 transition-all disabled:opacity-50"
+            >
+              {createSavedSearchMutation.isPending ? 'Saving...' : '+ Save Current Search'}
+            </button>
           </div>
 
           {/* Results Header */}
