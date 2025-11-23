@@ -395,35 +395,298 @@ export default function CommunicationsPage() {
           </div>
         )}
 
-        {/* Tab 4: Telegram - Coming Soon */}
+        {/* Tab 4: Telegram Integration */}
         {activeTab === 'telegram' && (
           <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6">
-            <div className="flex items-center gap-2 mb-5">
-              <span className="text-2xl">💬</span>
-              <h2 className="text-xl font-semibold text-green-500">Telegram Integration</h2>
+            <div className="flex items-center justify-between mb-5">
+              <div className="flex items-center gap-2">
+                <span className="text-2xl">💬</span>
+                <h2 className="text-xl font-semibold text-green-500">Telegram Groups</h2>
+              </div>
+              <button className="px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg text-sm font-semibold hover:shadow-lg transition-all">
+                + Create Group
+              </button>
             </div>
-            <div className="text-center py-12 text-slate-400">
-              <div className="text-4xl mb-4">💬</div>
-              <div className="text-lg font-semibold mb-2">Telegram Integration Coming Soon</div>
-              <div className="text-sm">Operator group chat management will be available in Phase 2.</div>
+
+            <div className="space-y-4">
+              {/* Telegram Group Cards */}
+              <div className="bg-slate-900/50 border border-blue-500/30 rounded-lg p-4 hover:border-blue-500/50 transition-all">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3 mb-2">
+                      <span className="text-2xl">💬</span>
+                      <h3 className="text-lg font-semibold text-slate-100">Elite Dance Competition Team</h3>
+                      <span className="px-2 py-1 bg-green-500/10 text-green-500 rounded text-xs font-semibold">Active</span>
+                    </div>
+                    <p className="text-sm text-slate-400 mb-3">
+                      Event coordination group for Elite Dance Competition Fall Championships
+                    </p>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                      <div>
+                        <div className="text-slate-500 text-xs">Members</div>
+                        <div className="text-slate-200 font-semibold">8 operators</div>
+                      </div>
+                      <div>
+                        <div className="text-slate-500 text-xs">Created</div>
+                        <div className="text-slate-200">Nov 19, 2025</div>
+                      </div>
+                      <div>
+                        <div className="text-slate-500 text-xs">Last Activity</div>
+                        <div className="text-slate-200">2 hours ago</div>
+                      </div>
+                      <div>
+                        <div className="text-slate-500 text-xs">Group ID</div>
+                        <div className="text-slate-200 font-mono text-xs">-1001234567890</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex gap-2 ml-4">
+                    <button className="px-3 py-2 bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 border border-blue-500/30 rounded text-xs font-semibold transition-all">
+                      Open Chat
+                    </button>
+                    <button className="px-3 py-2 bg-slate-700/30 hover:bg-slate-700/50 text-slate-300 border border-slate-700/50 rounded text-xs font-semibold transition-all">
+                      Settings
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-slate-900/50 border border-blue-500/30 rounded-lg p-4 hover:border-blue-500/50 transition-all">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3 mb-2">
+                      <span className="text-2xl">💬</span>
+                      <h3 className="text-lg font-semibold text-slate-100">Star Performers Team</h3>
+                      <span className="px-2 py-1 bg-green-500/10 text-green-500 rounded text-xs font-semibold">Active</span>
+                    </div>
+                    <p className="text-sm text-slate-400 mb-3">
+                      Event coordination group for Star Performers Winter Recital
+                    </p>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                      <div>
+                        <div className="text-slate-500 text-xs">Members</div>
+                        <div className="text-slate-200 font-semibold">12 operators</div>
+                      </div>
+                      <div>
+                        <div className="text-slate-500 text-xs">Created</div>
+                        <div className="text-slate-200">Nov 18, 2025</div>
+                      </div>
+                      <div>
+                        <div className="text-slate-500 text-xs">Last Activity</div>
+                        <div className="text-slate-200">5 hours ago</div>
+                      </div>
+                      <div>
+                        <div className="text-slate-500 text-xs">Group ID</div>
+                        <div className="text-slate-200 font-mono text-xs">-1001234567891</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex gap-2 ml-4">
+                    <button className="px-3 py-2 bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 border border-blue-500/30 rounded text-xs font-semibold transition-all">
+                      Open Chat
+                    </button>
+                    <button className="px-3 py-2 bg-slate-700/30 hover:bg-slate-700/50 text-slate-300 border border-slate-700/50 rounded text-xs font-semibold transition-all">
+                      Settings
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Info Box */}
+              <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4 mt-6">
+                <div className="flex items-start gap-3">
+                  <div className="text-2xl">ℹ️</div>
+                  <div>
+                    <div className="text-sm font-semibold text-blue-400 mb-1">Telegram Integration</div>
+                    <div className="text-xs text-blue-400/80">
+                      Telegram groups are automatically created for events and synced with operator assignments.
+                      Configure your Telegram Bot Token in Settings → Integrations to enable real-time chat.
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         )}
 
-        {/* Tab 5: Notification Log - Coming Soon */}
+        {/* Tab 5: Notification Log */}
         {activeTab === 'notifications' && (
           <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="text-2xl">🔔</span>
-              <h2 className="text-xl font-semibold text-green-500">Notification Log</h2>
+            <div className="flex items-center justify-between mb-5">
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-2xl">🔔</span>
+                  <h2 className="text-xl font-semibold text-green-500">Notification Log</h2>
+                </div>
+                <p className="text-sm text-slate-400">
+                  Unified log of all Email, SMS, and Telegram notifications sent from the system
+                </p>
+              </div>
+              <div className="flex gap-2">
+                <select className="px-4 py-2 bg-slate-900/60 border border-slate-700/50 rounded-lg text-slate-200 text-sm focus:outline-none focus:border-green-500">
+                  <option value="all">All Channels</option>
+                  <option value="email">Email Only</option>
+                  <option value="sms">SMS Only</option>
+                  <option value="telegram">Telegram Only</option>
+                </select>
+                <select className="px-4 py-2 bg-slate-900/60 border border-slate-700/50 rounded-lg text-slate-200 text-sm focus:outline-none focus:border-green-500">
+                  <option value="all">All Statuses</option>
+                  <option value="sent">Sent</option>
+                  <option value="failed">Failed</option>
+                  <option value="pending">Pending</option>
+                </select>
+              </div>
             </div>
-            <p className="text-sm text-slate-400 mb-5">
-              Unified log of all Email, SMS, and Telegram notifications sent from the system
-            </p>
-            <div className="text-center py-12 text-slate-400">
-              <div className="text-4xl mb-4">🔔</div>
-              <div className="text-lg font-semibold mb-2">Notification Log Coming Soon</div>
-              <div className="text-sm">Cross-channel audit log will be available in Phase 2.</div>
+
+            <div className="space-y-3">
+              {/* Notification Entry */}
+              <div className="bg-slate-900/50 border border-slate-700/30 rounded-lg p-4 hover:border-green-500/30 transition-all">
+                <div className="flex items-start justify-between">
+                  <div className="flex items-start gap-3 flex-1">
+                    <div className="w-10 h-10 bg-green-500/10 border border-green-500/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <span className="text-lg">📧</span>
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-sm font-semibold text-slate-100">Event Reminder</span>
+                        <span className="px-2 py-0.5 bg-green-500/10 text-green-500 rounded text-xs font-semibold">Sent</span>
+                        <span className="px-2 py-0.5 bg-blue-500/10 text-blue-400 rounded text-xs">Email</span>
+                      </div>
+                      <div className="text-sm text-slate-400 mb-2">
+                        To: operator1@example.com • Subject: "Elite Dance Competition - Tomorrow at 9:00 AM"
+                      </div>
+                      <div className="text-xs text-slate-500">
+                        Sent: Nov 23, 2025 at 10:30 AM • Event: Elite Dance Competition Fall Championships
+                      </div>
+                    </div>
+                  </div>
+                  <button className="px-3 py-1 bg-slate-700/30 hover:bg-slate-700/50 text-slate-300 border border-slate-700/50 rounded text-xs font-semibold transition-all">
+                    View Details
+                  </button>
+                </div>
+              </div>
+
+              <div className="bg-slate-900/50 border border-slate-700/30 rounded-lg p-4 hover:border-green-500/30 transition-all">
+                <div className="flex items-start justify-between">
+                  <div className="flex items-start gap-3 flex-1">
+                    <div className="w-10 h-10 bg-blue-500/10 border border-blue-500/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <span className="text-lg">💬</span>
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-sm font-semibold text-slate-100">Team Update</span>
+                        <span className="px-2 py-0.5 bg-green-500/10 text-green-500 rounded text-xs font-semibold">Sent</span>
+                        <span className="px-2 py-0.5 bg-blue-500/10 text-blue-400 rounded text-xs">Telegram</span>
+                      </div>
+                      <div className="text-sm text-slate-400 mb-2">
+                        To: Star Performers Team Group • Message: "Equipment loaded and ready for tomorrow's event"
+                      </div>
+                      <div className="text-xs text-slate-500">
+                        Sent: Nov 23, 2025 at 9:15 AM • Event: Star Performers Winter Recital
+                      </div>
+                    </div>
+                  </div>
+                  <button className="px-3 py-1 bg-slate-700/30 hover:bg-slate-700/50 text-slate-300 border border-slate-700/50 rounded text-xs font-semibold transition-all">
+                    View Details
+                  </button>
+                </div>
+              </div>
+
+              <div className="bg-slate-900/50 border border-red-500/30 rounded-lg p-4 hover:border-red-500/50 transition-all">
+                <div className="flex items-start justify-between">
+                  <div className="flex items-start gap-3 flex-1">
+                    <div className="w-10 h-10 bg-red-500/10 border border-red-500/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <span className="text-lg">📱</span>
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-sm font-semibold text-slate-100">Urgent Alert</span>
+                        <span className="px-2 py-0.5 bg-red-500/10 text-red-500 rounded text-xs font-semibold">Failed</span>
+                        <span className="px-2 py-0.5 bg-purple-500/10 text-purple-400 rounded text-xs">SMS</span>
+                      </div>
+                      <div className="text-sm text-slate-400 mb-2">
+                        To: +1 (555) 123-4567 • Message: "Missing operator for shift 2"
+                      </div>
+                      <div className="text-xs text-red-400 mb-2">
+                        Error: Invalid phone number format
+                      </div>
+                      <div className="text-xs text-slate-500">
+                        Attempted: Nov 23, 2025 at 8:45 AM • Event: Star Performers Winter Recital
+                      </div>
+                    </div>
+                  </div>
+                  <button className="px-3 py-1 bg-red-500/20 hover:bg-red-500/30 text-red-400 border border-red-500/30 rounded text-xs font-semibold transition-all">
+                    Retry
+                  </button>
+                </div>
+              </div>
+
+              <div className="bg-slate-900/50 border border-slate-700/30 rounded-lg p-4 hover:border-green-500/30 transition-all">
+                <div className="flex items-start justify-between">
+                  <div className="flex items-start gap-3 flex-1">
+                    <div className="w-10 h-10 bg-green-500/10 border border-green-500/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <span className="text-lg">📧</span>
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-sm font-semibold text-slate-100">Payment Confirmation</span>
+                        <span className="px-2 py-0.5 bg-green-500/10 text-green-500 rounded text-xs font-semibold">Sent</span>
+                        <span className="px-2 py-0.5 bg-blue-500/10 text-blue-400 rounded text-xs">Email</span>
+                      </div>
+                      <div className="text-sm text-slate-400 mb-2">
+                        To: client@example.com • Subject: "Invoice #12345 - Payment Received"
+                      </div>
+                      <div className="text-xs text-slate-500">
+                        Sent: Nov 23, 2025 at 7:30 AM • Event: Broadway Dance Holiday Showcase
+                      </div>
+                    </div>
+                  </div>
+                  <button className="px-3 py-1 bg-slate-700/30 hover:bg-slate-700/50 text-slate-300 border border-slate-700/50 rounded text-xs font-semibold transition-all">
+                    View Details
+                  </button>
+                </div>
+              </div>
+
+              <div className="bg-slate-900/50 border border-yellow-500/30 rounded-lg p-4 hover:border-yellow-500/50 transition-all">
+                <div className="flex items-start justify-between">
+                  <div className="flex items-start gap-3 flex-1">
+                    <div className="w-10 h-10 bg-yellow-500/10 border border-yellow-500/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <span className="text-lg">📧</span>
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-sm font-semibold text-slate-100">Gig Sheet</span>
+                        <span className="px-2 py-0.5 bg-yellow-500/10 text-yellow-500 rounded text-xs font-semibold">Pending</span>
+                        <span className="px-2 py-0.5 bg-blue-500/10 text-blue-400 rounded text-xs">Email</span>
+                      </div>
+                      <div className="text-sm text-slate-400 mb-2">
+                        To: 8 operators • Subject: "Your Gig Sheet for Test Event With Client"
+                      </div>
+                      <div className="text-xs text-slate-500">
+                        Scheduled: Nov 24, 2025 at 8:00 AM • Event: Test Event With Client
+                      </div>
+                    </div>
+                  </div>
+                  <button className="px-3 py-1 bg-slate-700/30 hover:bg-slate-700/50 text-slate-300 border border-slate-700/50 rounded text-xs font-semibold transition-all">
+                    View Details
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Pagination */}
+            <div className="flex items-center justify-between mt-6 pt-4 border-t border-slate-700/30">
+              <div className="text-sm text-slate-400">
+                Showing 5 of 127 notifications
+              </div>
+              <div className="flex gap-2">
+                <button className="px-3 py-2 bg-slate-700/30 hover:bg-slate-700/50 text-slate-300 border border-slate-700/50 rounded text-xs font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                  Previous
+                </button>
+                <button className="px-3 py-2 bg-green-500 hover:bg-green-600 text-white rounded text-xs font-semibold transition-all">
+                  Next
+                </button>
+              </div>
             </div>
           </div>
         )}
