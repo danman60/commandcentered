@@ -204,8 +204,7 @@ export const fileRouter = router({
       });
     }),
 
-  // Google Drive integration
-  // Full implementation requires googleapis package and service account setup
+  // Google Drive integration - Create folder for event
   createGoogleDriveFolder: tenantProcedure
     .input(z.object({ eventId: z.string().uuid(), folderName: z.string().min(1) }))
     .mutation(async ({ ctx, input }) => {
@@ -214,27 +213,42 @@ export const fileRouter = router({
       });
       if (!event) throw new Error('Event not found');
 
-      // Google Drive integration structure ready
-      // To enable:
-      // 1. Install: npm install googleapis
-      // 2. Add service account credentials to environment variables
-      // 3. Update this procedure to use createGoogleDriveClient from @/lib/google/drive
-      //
-      // Example implementation:
-      // const credentials = {
-      //   clientEmail: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL!,
-      //   privateKey: process.env.GOOGLE_SERVICE_ACCOUNT_KEY!,
-      // };
-      // const driveClient = createGoogleDriveClient(credentials);
-      // const folder = await driveClient.createFolder(input.folderName);
-      // return { success: true, folderId: folder.id, folderUrl: folder.webViewLink };
+      // Import Google Drive client dynamically
+      const { createGoogleDriveClient, getGoogleDriveCredentialsFromEnv } = await import('@/lib/google/drive');
 
-      return {
-        success: true,
-        folderId: 'mock-folder-id',
-        folderUrl: `https://drive.google.com/drive/folders/mock-folder-id`,
-        message: 'Google Drive integration ready. Requires googleapis package and service account setup.',
-      };
+      // Get credentials from environment variables
+      const credentials = getGoogleDriveCredentialsFromEnv();
+
+      if (!credentials) {
+        // Return fallback response if credentials not configured
+        return {
+          success: false,
+          folderId: null,
+          folderUrl: null,
+          message: 'Google Drive not configured. Add GOOGLE_SERVICE_ACCOUNT_EMAIL and GOOGLE_SERVICE_ACCOUNT_KEY to environment variables.',
+        };
+      }
+
+      try {
+        // Create Google Drive client and folder
+        const driveClient = createGoogleDriveClient(credentials);
+        const folder = await driveClient.createFolder(input.folderName);
+
+        return {
+          success: true,
+          folderId: folder.id,
+          folderUrl: folder.webViewLink,
+          message: 'Folder created successfully',
+        };
+      } catch (error: any) {
+        console.error('Google Drive folder creation error:', error);
+        return {
+          success: false,
+          folderId: null,
+          folderUrl: null,
+          message: `Failed to create folder: ${error.message}`,
+        };
+      }
     }),
 
   // Vimeo integration

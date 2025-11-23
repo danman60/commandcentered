@@ -1,7 +1,7 @@
 /**
  * Google Drive API Client
  *
- * Integration with Google Drive for file management:
+ * Integration with Google Drive for file management using googleapis package.
  * - Create folders
  * - Upload files
  * - Share folders/files
@@ -10,24 +10,26 @@
  * API Documentation: https://developers.google.com/drive/api/v3/reference
  *
  * Authentication:
- * - Requires OAuth 2.0 credentials or Service Account
- * - Service Account recommended for server-side operations
+ * - Requires Service Account credentials from Google Cloud Console
+ * - Set GOOGLE_SERVICE_ACCOUNT_EMAIL and GOOGLE_SERVICE_ACCOUNT_KEY environment variables
  */
 
-interface GoogleDriveCredentials {
+import { google } from 'googleapis';
+
+export interface GoogleDriveCredentials {
   clientEmail: string;
   privateKey: string;
   projectId?: string;
 }
 
-interface DriveFolder {
+export interface DriveFolder {
   id: string;
   name: string;
   webViewLink: string;
-  createdTime: string;
+  createdTime?: string;
 }
 
-interface DriveFile {
+export interface DriveFile {
   id: string;
   name: string;
   mimeType: string;
@@ -39,116 +41,82 @@ interface DriveFile {
  * Google Drive API Client using Service Account
  */
 export class GoogleDriveClient {
-  private accessToken: string | null = null;
-  private tokenExpiry: number | null = null;
-  private credentials: GoogleDriveCredentials;
-  private baseUrl = 'https://www.googleapis.com/drive/v3';
+  private drive;
+  private auth;
 
   constructor(credentials: GoogleDriveCredentials) {
-    this.credentials = credentials;
-  }
+    // Create Google Auth instance with service account credentials
+    this.auth = new google.auth.GoogleAuth({
+      credentials: {
+        client_email: credentials.clientEmail,
+        private_key: credentials.privateKey.replace(/\\n/g, '\n'), // Handle escaped newlines
+        project_id: credentials.projectId,
+      },
+      scopes: ['https://www.googleapis.com/auth/drive.file'],
+    });
 
-  /**
-   * Get OAuth 2.0 access token using Service Account
-   */
-  private async getAccessToken(): Promise<string> {
-    // Check if we have a valid cached token
-    if (this.accessToken && this.tokenExpiry && Date.now() < this.tokenExpiry) {
-      return this.accessToken;
-    }
-
-    // Create JWT for service account authentication
-    const now = Math.floor(Date.now() / 1000);
-    const expiry = now + 3600; // 1 hour
-
-    const header = {
-      alg: 'RS256',
-      typ: 'JWT',
-    };
-
-    const payload = {
-      iss: this.credentials.clientEmail,
-      scope: 'https://www.googleapis.com/auth/drive.file',
-      aud: 'https://oauth2.googleapis.com/token',
-      exp: expiry,
-      iat: now,
-    };
-
-    // Note: In production, you'll need to sign this JWT with the private key
-    // This requires a crypto library like jose or jsonwebtoken
-    // For now, this is a placeholder structure
-    throw new Error(
-      'Google Drive Service Account authentication requires JWT signing.\n' +
-      'Install @googleapis/drive package: npm install @googleapis/drive\n' +
-      'Or use google-auth-library for service account auth.'
-    );
+    // Initialize Drive API client
+    this.drive = google.drive({ version: 'v3', auth: this.auth });
   }
 
   /**
    * Create a folder in Google Drive
    */
   async createFolder(folderName: string, parentFolderId?: string): Promise<DriveFolder> {
-    const token = await this.getAccessToken();
-
-    const metadata: any = {
+    const fileMetadata: any = {
       name: folderName,
       mimeType: 'application/vnd.google-apps.folder',
     };
 
     if (parentFolderId) {
-      metadata.parents = [parentFolderId];
+      fileMetadata.parents = [parentFolderId];
     }
 
-    const response = await fetch(`${this.baseUrl}/files?fields=id,name,webViewLink,createdTime`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(metadata),
+    const response = await this.drive.files.create({
+      requestBody: fileMetadata,
+      fields: 'id, name, webViewLink, createdTime',
     });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Google Drive API error: ${response.status} - ${errorText}`);
+    if (!response.data.id) {
+      throw new Error('Failed to create folder: No folder ID returned');
     }
 
-    return response.json();
+    return {
+      id: response.data.id,
+      name: response.data.name || folderName,
+      webViewLink: response.data.webViewLink || '',
+      createdTime: response.data.createdTime || undefined,
+    };
   }
 
   /**
    * Share a folder with specific users or make it public
    */
-  async shareFolder(folderId: string, emails?: string[], makePublic: boolean = false): Promise<void> {
-    const token = await this.getAccessToken();
-
+  async shareFolder(
+    folderId: string,
+    emails?: string[],
+    makePublic: boolean = false
+  ): Promise<void> {
     if (makePublic) {
       // Make folder publicly accessible
-      await fetch(`${this.baseUrl}/files/${folderId}/permissions`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+      await this.drive.permissions.create({
+        fileId: folderId,
+        requestBody: {
           role: 'reader',
           type: 'anyone',
-        }),
+        },
       });
     } else if (emails && emails.length > 0) {
       // Share with specific users
       for (const email of emails) {
-        await fetch(`${this.baseUrl}/files/${folderId}/permissions`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
+        await this.drive.permissions.create({
+          fileId: folderId,
+          requestBody: {
             role: 'writer',
             type: 'user',
             emailAddress: email,
-          }),
+          },
+          sendNotificationEmail: false, // Don't spam users
         });
       }
     }
@@ -158,61 +126,80 @@ export class GoogleDriveClient {
    * Get folder metadata
    */
   async getFolder(folderId: string): Promise<DriveFolder> {
-    const token = await this.getAccessToken();
+    const response = await this.drive.files.get({
+      fileId: folderId,
+      fields: 'id, name, webViewLink, createdTime',
+    });
 
-    const response = await fetch(
-      `${this.baseUrl}/files/${folderId}?fields=id,name,webViewLink,createdTime`,
-      {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      }
-    );
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Google Drive API error: ${response.status} - ${errorText}`);
+    if (!response.data.id) {
+      throw new Error('Folder not found');
     }
 
-    return response.json();
+    return {
+      id: response.data.id,
+      name: response.data.name || '',
+      webViewLink: response.data.webViewLink || '',
+      createdTime: response.data.createdTime || undefined,
+    };
+  }
+
+  /**
+   * List files in a folder
+   */
+  async listFiles(folderId: string): Promise<DriveFile[]> {
+    const response = await this.drive.files.list({
+      q: `'${folderId}' in parents and trashed=false`,
+      fields: 'files(id, name, mimeType, webViewLink, webContentLink)',
+      orderBy: 'createdTime desc',
+    });
+
+    return (response.data.files || []).map((file) => ({
+      id: file.id || '',
+      name: file.name || '',
+      mimeType: file.mimeType || '',
+      webViewLink: file.webViewLink || '',
+      webContentLink: file.webContentLink || undefined,
+    }));
   }
 }
 
 /**
  * Create Google Drive client with service account credentials
+ *
+ * Credentials can be obtained from:
+ * 1. Create service account in Google Cloud Console
+ * 2. Download JSON key file
+ * 3. Extract client_email and private_key
+ * 4. Add to environment variables or tenant settings
  */
-export function createGoogleDriveClient(credentials: GoogleDriveCredentials): GoogleDriveClient {
+export function createGoogleDriveClient(
+  credentials: GoogleDriveCredentials
+): GoogleDriveClient {
   if (!credentials.clientEmail || !credentials.privateKey) {
-    throw new Error('Google Drive requires service account credentials (clientEmail and privateKey)');
+    throw new Error(
+      'Google Drive requires service account credentials (clientEmail and privateKey).\n' +
+      'Create a service account at https://console.cloud.google.com/iam-admin/serviceaccounts'
+    );
   }
+
   return new GoogleDriveClient(credentials);
 }
 
 /**
- * Placeholder implementation using @googleapis/drive (recommended approach)
- *
- * Installation: npm install googleapis
- *
- * import { google } from 'googleapis';
- *
- * export async function createGoogleDriveFolder(eventName: string, credentials: any) {
- *   const auth = new google.auth.GoogleAuth({
- *     credentials,
- *     scopes: ['https://www.googleapis.com/auth/drive.file'],
- *   });
- *
- *   const drive = google.drive({ version: 'v3', auth });
- *
- *   const fileMetadata = {
- *     name: eventName,
- *     mimeType: 'application/vnd.google-apps.folder',
- *   };
- *
- *   const file = await drive.files.create({
- *     requestBody: fileMetadata,
- *     fields: 'id, webViewLink',
- *   });
- *
- *   return file.data;
- * }
+ * Helper function to get credentials from environment variables
  */
+export function getGoogleDriveCredentialsFromEnv(): GoogleDriveCredentials | null {
+  const clientEmail = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
+  const privateKey = process.env.GOOGLE_SERVICE_ACCOUNT_KEY;
+  const projectId = process.env.GOOGLE_PROJECT_ID;
+
+  if (!clientEmail || !privateKey) {
+    return null;
+  }
+
+  return {
+    clientEmail,
+    privateKey,
+    projectId,
+  };
+}
