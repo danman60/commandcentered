@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { router, tenantProcedure } from '../trpc';
 import { UserRole } from '@prisma/client';
 import { TRPCError } from '@trpc/server';
+import { supabaseAdmin } from '@/lib/supabase/admin';
 
 export const userRouter = router({
   // List all users for tenant
@@ -73,32 +74,17 @@ export const userRouter = router({
     return user;
   }),
 
-  // Create new user
-  // NOTE: This creates UserProfile only. Supabase Auth user creation (auth.users)
-  // must be handled separately via Supabase Admin API or Auth flow.
-  // TODO: Integrate with Supabase Auth API for complete user creation
+  // Create new user with Supabase Auth integration
   create: tenantProcedure
     .input(
       z.object({
-        authUserId: z.string().uuid(),
         email: z.string().email(),
+        password: z.string().min(6),
         name: z.string().optional(),
         role: z.nativeEnum(UserRole).default(UserRole.OPERATOR),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      // Check if user already exists with this authUserId
-      const existing = await ctx.prisma.userProfile.findUnique({
-        where: { authUserId: input.authUserId },
-      });
-
-      if (existing) {
-        throw new TRPCError({
-          code: 'CONFLICT',
-          message: 'User profile already exists for this auth user',
-        });
-      }
-
       // Check if email already exists in tenant
       const existingEmail = await ctx.prisma.userProfile.findUnique({
         where: { tenantId_email: { tenantId: ctx.tenantId, email: input.email } },
@@ -111,16 +97,40 @@ export const userRouter = router({
         });
       }
 
-      return ctx.prisma.userProfile.create({
-        data: {
-          tenantId: ctx.tenantId,
-          authUserId: input.authUserId,
-          email: input.email,
-          name: input.name,
-          role: input.role,
-          isActive: true,
-        },
+      // Create Supabase Auth user
+      const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
+        email: input.email,
+        password: input.password,
+        email_confirm: true, // Auto-confirm email for admin-created users
       });
+
+      if (authError || !authData.user) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: `Failed to create auth user: ${authError?.message || 'Unknown error'}`,
+        });
+      }
+
+      // Create UserProfile with auth user ID
+      try {
+        return await ctx.prisma.userProfile.create({
+          data: {
+            tenantId: ctx.tenantId,
+            authUserId: authData.user.id,
+            email: input.email,
+            name: input.name,
+            role: input.role,
+            isActive: true,
+          },
+        });
+      } catch (error) {
+        // If profile creation fails, delete the auth user to maintain consistency
+        await supabaseAdmin.auth.admin.deleteUser(authData.user.id);
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: `Failed to create user profile: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        });
+      }
     }),
 
   // Update user profile
