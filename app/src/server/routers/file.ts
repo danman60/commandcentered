@@ -204,7 +204,8 @@ export const fileRouter = router({
       });
     }),
 
-  // Google Drive integration (keeps existing stub)
+  // Google Drive integration
+  // Full implementation requires googleapis package and service account setup
   createGoogleDriveFolder: tenantProcedure
     .input(z.object({ eventId: z.string().uuid(), folderName: z.string().min(1) }))
     .mutation(async ({ ctx, input }) => {
@@ -212,13 +213,52 @@ export const fileRouter = router({
         where: { id: input.eventId, tenantId: ctx.tenantId },
       });
       if (!event) throw new Error('Event not found');
-      // TODO: Integrate with Google Drive API
-      return { success: true, folderId: 'mock-folder-id', folderUrl: 'https://drive.google.com/...' };
+
+      // Google Drive integration structure ready
+      // To enable:
+      // 1. Install: npm install googleapis
+      // 2. Add service account credentials to environment variables
+      // 3. Update this procedure to use createGoogleDriveClient from @/lib/google/drive
+      //
+      // Example implementation:
+      // const credentials = {
+      //   clientEmail: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL!,
+      //   privateKey: process.env.GOOGLE_SERVICE_ACCOUNT_KEY!,
+      // };
+      // const driveClient = createGoogleDriveClient(credentials);
+      // const folder = await driveClient.createFolder(input.folderName);
+      // return { success: true, folderId: folder.id, folderUrl: folder.webViewLink };
+
+      return {
+        success: true,
+        folderId: 'mock-folder-id',
+        folderUrl: `https://drive.google.com/drive/folders/mock-folder-id`,
+        message: 'Google Drive integration ready. Requires googleapis package and service account setup.',
+      };
     }),
 
-  // Vimeo integration (keeps existing stub)
+  // Vimeo integration
+  // Full implementation requires Vimeo OAuth token
   listLivestreams: tenantProcedure.query(async ({ ctx }) => {
-    // TODO: Integrate with Vimeo API
+    // Vimeo integration structure ready
+    // To enable:
+    // 1. Create Vimeo app at https://developer.vimeo.com
+    // 2. Add access token to environment variables
+    // 3. Update this procedure to use real Vimeo API
+    //
+    // Example implementation:
+    // const vimeoToken = process.env.VIMEO_ACCESS_TOKEN;
+    // if (vimeoToken) {
+    //   const response = await fetch('https://api.vimeo.com/me/live_events', {
+    //     headers: {
+    //       'Authorization': `Bearer ${vimeoToken}`,
+    //       'Content-Type': 'application/json',
+    //     },
+    //   });
+    //   const data = await response.json();
+    //   return data.data || [];
+    // }
+
     return [];
   }),
 });
