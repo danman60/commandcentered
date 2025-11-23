@@ -1030,6 +1030,40 @@ function EventDetailModal({ eventId, isOpen, onClose }: { eventId: string; isOpe
             </div>
           )}
 
+          {/* Gig Sheets */}
+          <div className="bg-slate-800/50 border border-slate-700/50 rounded-lg p-4">
+            <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+              <span className="text-xl">📋</span>
+              Gig Sheets
+            </h3>
+            <p className="text-sm text-slate-400 mb-4">
+              Generate event brief documents for operators with all event details, location, equipment checklists, and contacts.
+            </p>
+
+            <div className="flex gap-3">
+              <button
+                type="button"
+                onClick={() => {
+                  alert('Commander Gig Sheet generation coming soon!\n\nThis will generate a comprehensive event brief with:\n• All event details\n• All operators and roles\n• Complete equipment list\n• Venue and parking info\n• Client contacts');
+                }}
+                className="flex-1 px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-400 hover:to-green-500 text-white font-semibold rounded-lg transition-all flex items-center justify-center gap-2"
+              >
+                <span>📄</span>
+                Commander Gig Sheet
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  alert('Per-Operator Gig Sheets coming soon!\n\nThis will generate individual gig sheets for each operator with:\n• Their specific role and shift times\n• Equipment assigned to them\n• Event details\n• Venue and parking info');
+                }}
+                className="flex-1 px-4 py-2 bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-400 hover:to-cyan-500 text-white font-semibold rounded-lg transition-all flex items-center justify-center gap-2"
+              >
+                <span>👥</span>
+                Per-Operator Gig Sheets
+              </button>
+            </div>
+          </div>
+
           {/* Shift Builder */}
           <div>
             <div className="flex justify-between items-center mb-4">
