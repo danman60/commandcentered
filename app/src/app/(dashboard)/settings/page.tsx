@@ -3,7 +3,7 @@
 import { trpc } from '@/lib/trpc/client';
 import { useState } from 'react';
 
-type SettingsTab = 'organization' | 'profile' | 'notifications' | 'email' | 'billing' | 'security' | 'integrations' | 'templates';
+type SettingsTab = 'organization' | 'profile' | 'notifications' | 'email' | 'automation' | 'billing' | 'security' | 'integrations' | 'templates';
 
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState<SettingsTab>('organization');
@@ -129,6 +129,7 @@ export default function SettingsPage() {
     { id: 'profile', icon: '👤', label: 'Profile' },
     { id: 'notifications', icon: '🔔', label: 'Notifications' },
     { id: 'email', icon: '📧', label: 'Email Settings' },
+    { id: 'automation', icon: '🤖', label: 'Email Automation' },
     { id: 'billing', icon: '💳', label: 'Billing' },
     { id: 'security', icon: '🔐', label: 'Security' },
     { id: 'integrations', icon: '🔌', label: 'Integrations' },
@@ -431,6 +432,170 @@ export default function SettingsPage() {
                   className="mt-8 px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold shadow-lg shadow-green-500/30 hover:shadow-green-500/40 hover:-translate-y-0.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   💾 Save Email Settings
+                </button>
+              </div>
+            )}
+
+            {/* Email Automation Tab */}
+            {activeTab === 'automation' && (
+              <div>
+                <h2 className="text-2xl font-bold text-green-500 mb-6">Email Automation</h2>
+                <p className="text-slate-400 mb-6">
+                  Configure automated email triggers for events. These emails are sent automatically based on event lifecycle milestones.
+                </p>
+
+                <div className="space-y-8">
+                  {/* Pre-Event Reminders */}
+                  <div className="bg-slate-800/50 border border-slate-700/50 rounded-lg p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <span className="text-3xl">⏰</span>
+                      <h3 className="text-lg font-semibold text-white">Pre-Event Reminders</h3>
+                    </div>
+                    <p className="text-sm text-slate-400 mb-4">
+                      Automatically remind operators and clients before events
+                    </p>
+
+                    <div className="space-y-4">
+                      <label className="flex items-center gap-3 p-3 bg-slate-900/50 rounded-lg border border-slate-700 hover:border-green-600/50 cursor-pointer transition-colors">
+                        <input type="checkbox" className="w-4 h-4 rounded border-slate-600 bg-slate-700 text-green-600" />
+                        <div className="flex-1">
+                          <div className="text-white font-medium">48-Hour Reminder</div>
+                          <div className="text-xs text-slate-500">Send reminder 48 hours before event load-in time</div>
+                        </div>
+                      </label>
+
+                      <label className="flex items-center gap-3 p-3 bg-slate-900/50 rounded-lg border border-slate-700 hover:border-green-600/50 cursor-pointer transition-colors">
+                        <input type="checkbox" className="w-4 h-4 rounded border-slate-600 bg-slate-700 text-green-600" />
+                        <div className="flex-1">
+                          <div className="text-white font-medium">24-Hour Reminder</div>
+                          <div className="text-xs text-slate-500">Send reminder 24 hours before event load-in time</div>
+                        </div>
+                      </label>
+
+                      <label className="flex items-center gap-3 p-3 bg-slate-900/50 rounded-lg border border-slate-700 hover:border-green-600/50 cursor-pointer transition-colors">
+                        <input type="checkbox" className="w-4 h-4 rounded border-slate-600 bg-slate-700 text-green-600" />
+                        <div className="flex-1">
+                          <div className="text-white font-medium">Morning-Of Reminder</div>
+                          <div className="text-xs text-slate-500">Send reminder at 8 AM on event day</div>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+
+                  {/* Post-Event Follow-ups */}
+                  <div className="bg-slate-800/50 border border-slate-700/50 rounded-lg p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <span className="text-3xl">✉️</span>
+                      <h3 className="text-lg font-semibold text-white">Post-Event Follow-ups</h3>
+                    </div>
+                    <p className="text-sm text-slate-400 mb-4">
+                      Automatically follow up with clients after events
+                    </p>
+
+                    <div className="space-y-4">
+                      <label className="flex items-center gap-3 p-3 bg-slate-900/50 rounded-lg border border-slate-700 hover:border-green-600/50 cursor-pointer transition-colors">
+                        <input type="checkbox" className="w-4 h-4 rounded border-slate-600 bg-slate-700 text-green-600" />
+                        <div className="flex-1">
+                          <div className="text-white font-medium">2-Week Follow-up</div>
+                          <div className="text-xs text-slate-500">Send follow-up 2 weeks after event for feedback/rebooking</div>
+                        </div>
+                      </label>
+
+                      <label className="flex items-center gap-3 p-3 bg-slate-900/50 rounded-lg border border-slate-700 hover:border-green-600/50 cursor-pointer transition-colors">
+                        <input type="checkbox" className="w-4 h-4 rounded border-slate-600 bg-slate-700 text-green-600" />
+                        <div className="flex-1">
+                          <div className="text-white font-medium">4-Week Follow-up</div>
+                          <div className="text-xs text-slate-500">Send follow-up 4 weeks after event for future bookings</div>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+
+                  {/* Document Triggers */}
+                  <div className="bg-slate-800/50 border border-slate-700/50 rounded-lg p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <span className="text-3xl">📄</span>
+                      <h3 className="text-lg font-semibold text-white">Document Triggers</h3>
+                    </div>
+                    <p className="text-sm text-slate-400 mb-4">
+                      Automatically send documents at specific times
+                    </p>
+
+                    <div className="space-y-4">
+                      <label className="flex items-center gap-3 p-3 bg-slate-900/50 rounded-lg border border-slate-700 hover:border-green-600/50 cursor-pointer transition-colors">
+                        <input type="checkbox" className="w-4 h-4 rounded border-slate-600 bg-slate-700 text-green-600" />
+                        <div className="flex-1">
+                          <div className="text-white font-medium">Questionnaire on Booking</div>
+                          <div className="text-xs text-slate-500">Send event questionnaire when status changes to BOOKED</div>
+                        </div>
+                      </label>
+
+                      <label className="flex items-center gap-3 p-3 bg-slate-900/50 rounded-lg border border-slate-700 hover:border-green-600/50 cursor-pointer transition-colors">
+                        <input type="checkbox" className="w-4 h-4 rounded border-slate-600 bg-slate-700 text-green-600" />
+                        <div className="flex-1">
+                          <div className="text-white font-medium">Invoice on Completion</div>
+                          <div className="text-xs text-slate-500">Send invoice when event status changes to COMPLETED</div>
+                        </div>
+                      </label>
+
+                      <label className="flex items-center gap-3 p-3 bg-slate-900/50 rounded-lg border border-slate-700 hover:border-green-600/50 cursor-pointer transition-colors">
+                        <input type="checkbox" className="w-4 h-4 rounded border-slate-600 bg-slate-700 text-green-600" />
+                        <div className="flex-1">
+                          <div className="text-white font-medium">Payment Reminders</div>
+                          <div className="text-xs text-slate-500">Send payment reminders for outstanding invoices (7 days overdue)</div>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+
+                  {/* Contract Automation */}
+                  <div className="bg-slate-800/50 border border-slate-700/50 rounded-lg p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <span className="text-3xl">📝</span>
+                      <h3 className="text-lg font-semibold text-white">Contract Automation</h3>
+                    </div>
+                    <p className="text-sm text-slate-400 mb-4">
+                      Automatically send contracts and follow up on signatures
+                    </p>
+
+                    <div className="space-y-4">
+                      <label className="flex items-center gap-3 p-3 bg-slate-900/50 rounded-lg border border-slate-700 hover:border-green-600/50 cursor-pointer transition-colors">
+                        <input type="checkbox" className="w-4 h-4 rounded border-slate-600 bg-slate-700 text-green-600" />
+                        <div className="flex-1">
+                          <div className="text-white font-medium">Auto-Send Contract</div>
+                          <div className="text-xs text-slate-500">Automatically send contract when proposal is accepted</div>
+                        </div>
+                      </label>
+
+                      <label className="flex items-center gap-3 p-3 bg-slate-900/50 rounded-lg border border-slate-700 hover:border-green-600/50 cursor-pointer transition-colors">
+                        <input type="checkbox" className="w-4 h-4 rounded border-slate-600 bg-slate-700 text-green-600" />
+                        <div className="flex-1">
+                          <div className="text-white font-medium">Signature Reminders</div>
+                          <div className="text-xs text-slate-500">Send reminders every 3 days for unsigned contracts</div>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-8 p-4 bg-blue-500/10 border border-blue-500/30 rounded-lg">
+                  <div className="flex items-start gap-3">
+                    <span className="text-2xl">ℹ️</span>
+                    <div className="text-sm text-blue-400">
+                      <div className="font-semibold mb-1">Email automation is currently in preview</div>
+                      <div className="text-blue-400/80">
+                        These settings will be functional once email provider is configured in Email Settings tab.
+                        All automated emails respect your configured email templates and branding.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => alert('Email automation settings saved! (Preview mode)')}
+                  className="mt-8 px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold shadow-lg shadow-green-500/30 hover:shadow-green-500/40 hover:-translate-y-0.5 transition-all"
+                >
+                  💾 Save Automation Settings
                 </button>
               </div>
             )}
