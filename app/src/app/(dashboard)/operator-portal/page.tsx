@@ -5,10 +5,88 @@ import { useState } from 'react';
 
 export default function OperatorPortalPage() {
   const [activeTab, setActiveTab] = useState<'schedule' | 'profile' | 'availability'>('schedule');
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [showAvailabilityModal, setShowAvailabilityModal] = useState(false);
+  const [currentMonth, setCurrentMonth] = useState(new Date());
 
   // Fetch current user's operator data
   // Note: This would need auth context to get current operator ID
-  // For now, we'll show the structure
+  // For demo purposes, using a placeholder operator ID
+  const operatorId = 'placeholder-operator-id';
+
+  // Get availability for current month
+  const startOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1);
+  const endOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0);
+
+  const { data: availability, refetch: refetchAvailability } = trpc.operatorAvailability.getByDateRange.useQuery(
+    {
+      operatorId,
+      startDate: startOfMonth.toISOString().split('T')[0],
+      endDate: endOfMonth.toISOString().split('T')[0],
+    },
+    {
+      enabled: activeTab === 'availability',
+    }
+  );
+
+  // Mutations
+  const createAvailability = trpc.operatorAvailability.create.useMutation({
+    onSuccess: () => {
+      refetchAvailability();
+      setShowAvailabilityModal(false);
+      setSelectedDate(null);
+    },
+  });
+
+  const deleteAvailability = trpc.operatorAvailability.delete.useMutation({
+    onSuccess: () => {
+      refetchAvailability();
+    },
+  });
+
+  // Calendar helpers
+  const getDaysInMonth = () => {
+    const year = currentMonth.getFullYear();
+    const month = currentMonth.getMonth();
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const days = [];
+
+    // Add empty cells for days before month starts
+    for (let i = 0; i < firstDay; i++) {
+      days.push(null);
+    }
+
+    // Add days of month
+    for (let day = 1; day <= daysInMonth; day++) {
+      days.push(new Date(year, month, day));
+    }
+
+    return days;
+  };
+
+  const getAvailabilityForDate = (date: Date) => {
+    if (!availability) return null;
+    const dateStr = date.toISOString().split('T')[0];
+    return availability.find(
+      (a) => new Date(a.date).toISOString().split('T')[0] === dateStr
+    );
+  };
+
+  const handleDateClick = (date: Date) => {
+    setSelectedDate(date);
+    setShowAvailabilityModal(true);
+  };
+
+  const handleSetAvailability = (type: 'full_day' | 'unavailable') => {
+    if (!selectedDate) return;
+
+    createAvailability.mutate({
+      operatorId,
+      date: selectedDate.toISOString().split('T')[0],
+      availableType: type,
+    });
+  };
 
   return (
     <div className="min-h-screen bg-slate-900 p-6">
@@ -173,50 +251,176 @@ export default function OperatorPortalPage() {
         {/* Availability Tab */}
         {activeTab === 'availability' && (
           <div className="bg-slate-800/50 border border-slate-700/50 rounded-xl p-6">
-            <h2 className="text-xl font-bold text-green-500 mb-6">Manage Availability</h2>
-
-            <div className="mb-6">
-              <h3 className="text-lg font-semibold text-slate-200 mb-3">Upcoming Availability</h3>
-              <p className="text-slate-400 text-sm mb-4">
-                Let your admin know when you're available for work. Mark days or specific time slots.
-              </p>
-
-              <div className="grid grid-cols-7 gap-2 mb-4">
-                {/* Calendar grid placeholder */}
-                {Array.from({ length: 35 }, (_, i) => (
-                  <div
-                    key={i}
-                    className="aspect-square bg-slate-900/60 border border-slate-700/50 rounded-lg flex items-center justify-center text-sm text-slate-400 hover:border-green-500/50 transition-all cursor-pointer"
-                  >
-                    {i + 1}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="mt-8">
-              <h3 className="text-lg font-semibold text-slate-200 mb-3">Blackout Dates</h3>
-              <p className="text-slate-400 text-sm mb-4">
-                Mark dates when you're unavailable (vacation, personal days, etc.)
-              </p>
-
-              <div className="bg-slate-900/60 border border-slate-700/50 rounded-lg p-6 text-center">
-                <p className="text-slate-500 mb-4">No blackout dates set</p>
-                <button className="px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold shadow-lg shadow-green-500/30 hover:shadow-green-500/40 hover:-translate-y-0.5 transition-all">
-                  ➕ Add Blackout Date
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-bold text-green-500">Manage Availability</h2>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))}
+                  className="px-3 py-1 bg-slate-700 hover:bg-slate-600 text-white rounded transition"
+                >
+                  ←
+                </button>
+                <span className="px-4 py-1 bg-slate-700 text-white rounded">
+                  {currentMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                </span>
+                <button
+                  onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1))}
+                  className="px-3 py-1 bg-slate-700 hover:bg-slate-600 text-white rounded transition"
+                >
+                  →
                 </button>
               </div>
             </div>
 
-            <div className="mt-6 p-4 bg-blue-500/10 border border-blue-500/30 rounded-lg">
-              <div className="flex items-start gap-3">
-                <div className="text-2xl">ℹ️</div>
-                <div>
-                  <div className="text-sm font-semibold text-blue-400 mb-1">Availability System</div>
-                  <div className="text-xs text-blue-400/80">
-                    This feature is coming soon. For now, communicate your availability directly with your admin.
+            <div className="mb-6">
+              <p className="text-slate-400 text-sm mb-4">
+                Click on a date to mark your availability. Green = Available, Red = Unavailable.
+              </p>
+
+              {/* Calendar Header */}
+              <div className="grid grid-cols-7 gap-2 mb-2">
+                {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
+                  <div key={day} className="text-center text-xs font-semibold text-slate-400 py-2">
+                    {day}
                   </div>
+                ))}
+              </div>
+
+              {/* Calendar Grid */}
+              <div className="grid grid-cols-7 gap-2">
+                {getDaysInMonth().map((date, index) => {
+                  if (!date) {
+                    return <div key={`empty-${index}`} className="aspect-square" />;
+                  }
+
+                  const avail = getAvailabilityForDate(date);
+                  const isAvailable = avail?.availableType === 'full_day';
+                  const isUnavailable = avail?.availableType === 'unavailable';
+                  const isToday = date.toDateString() === new Date().toDateString();
+
+                  return (
+                    <button
+                      key={date.toISOString()}
+                      onClick={() => handleDateClick(date)}
+                      className={`aspect-square rounded-lg flex items-center justify-center text-sm font-semibold transition-all ${
+                        isToday ? 'ring-2 ring-green-500' : ''
+                      } ${
+                        isAvailable
+                          ? 'bg-green-500/20 text-green-400 border border-green-500/30 hover:bg-green-500/30'
+                          : isUnavailable
+                          ? 'bg-red-500/20 text-red-400 border border-red-500/30 hover:bg-red-500/30'
+                          : 'bg-slate-900/60 border border-slate-700/50 text-slate-400 hover:border-green-500/50'
+                      }`}
+                    >
+                      {date.getDate()}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Legend */}
+            <div className="flex gap-4 text-sm mb-6">
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 bg-green-500/20 border border-green-500/30 rounded"></div>
+                <span className="text-slate-400">Available</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 bg-red-500/20 border border-red-500/30 rounded"></div>
+                <span className="text-slate-400">Unavailable</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 ring-2 ring-green-500 rounded"></div>
+                <span className="text-slate-400">Today</span>
+              </div>
+            </div>
+
+            {/* Blackout Dates List */}
+            <div className="mt-8">
+              <h3 className="text-lg font-semibold text-slate-200 mb-3">Blackout Dates</h3>
+              {availability?.filter((a) => a.availableType === 'unavailable').length ?? 0 > 0 ? (
+                <div className="space-y-2">
+                  {availability
+                    ?.filter((a) => a.availableType === 'unavailable')
+                    .map((a) => (
+                      <div
+                        key={a.id}
+                        className="flex items-center justify-between bg-slate-900/60 border border-slate-700/50 rounded-lg p-3"
+                      >
+                        <div>
+                          <span className="text-slate-200">
+                            {new Date(a.date).toLocaleDateString('en-US', {
+                              month: 'long',
+                              day: 'numeric',
+                              year: 'numeric',
+                            })}
+                          </span>
+                          {a.notes && <p className="text-sm text-slate-400 mt-1">{a.notes}</p>}
+                        </div>
+                        <button
+                          onClick={() => deleteAvailability.mutate({ id: a.id })}
+                          className="px-3 py-1 bg-red-500/20 text-red-400 rounded hover:bg-red-500/30 transition"
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    ))}
                 </div>
+              ) : (
+                <p className="text-slate-500 text-center py-6">No blackout dates set</p>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Availability Modal */}
+        {showAvailabilityModal && selectedDate && (
+          <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+            <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 max-w-md w-full mx-4">
+              <h3 className="text-xl font-bold text-green-500 mb-4">
+                {selectedDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+              </h3>
+
+              <p className="text-slate-400 text-sm mb-6">Set your availability for this date:</p>
+
+              <div className="space-y-3">
+                <button
+                  onClick={() => handleSetAvailability('full_day')}
+                  className="w-full px-4 py-3 bg-green-500/20 text-green-400 border border-green-500/30 rounded-lg hover:bg-green-500/30 transition font-semibold"
+                >
+                  ✓ Mark as Available
+                </button>
+
+                <button
+                  onClick={() => handleSetAvailability('unavailable')}
+                  className="w-full px-4 py-3 bg-red-500/20 text-red-400 border border-red-500/30 rounded-lg hover:bg-red-500/30 transition font-semibold"
+                >
+                  ✗ Mark as Unavailable
+                </button>
+
+                <button
+                  onClick={() => {
+                    const avail = getAvailabilityForDate(selectedDate);
+                    if (avail) {
+                      deleteAvailability.mutate({ id: avail.id });
+                    }
+                    setShowAvailabilityModal(false);
+                    setSelectedDate(null);
+                  }}
+                  className="w-full px-4 py-3 bg-slate-700 text-slate-300 rounded-lg hover:bg-slate-600 transition"
+                >
+                  Clear Availability
+                </button>
+
+                <button
+                  onClick={() => {
+                    setShowAvailabilityModal(false);
+                    setSelectedDate(null);
+                  }}
+                  className="w-full px-4 py-3 bg-slate-900 text-slate-400 rounded-lg hover:bg-slate-800 transition"
+                >
+                  Cancel
+                </button>
               </div>
             </div>
           </div>
