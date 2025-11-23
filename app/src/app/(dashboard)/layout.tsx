@@ -5,6 +5,7 @@ import { MobileBottomNav } from '@/components/mobile/MobileBottomNav'
 import { CornerFrames } from '@/components/ui/CornerFrames'
 import { MicrophoneFAB } from '@/components/voice/MicrophoneFAB'
 import { useIsMobile } from '@/hooks/useMediaQuery'
+import { trpc } from '@/lib/trpc/client'
 
 export default function DashboardLayout({
   children,
@@ -13,14 +14,42 @@ export default function DashboardLayout({
 }) {
   const isMobile = useIsMobile();
 
-  const handleTranscription = (text: string) => {
+  const createVoiceCommand = trpc.voiceCommand.create.useMutation();
+  const executeVoiceCommand = trpc.voiceCommand.execute.useMutation();
+
+  const handleTranscription = async (text: string) => {
     console.log('[Voice] Transcription:', text);
-    // TODO: Connect to voice command router
+
+    try {
+      // Create voice command from transcription
+      const command = await createVoiceCommand.mutateAsync({
+        transcription: text,
+      });
+
+      console.log('[Voice] Command created:', command);
+
+      // If command doesn't require confirmation, execute immediately
+      if (command.status === 'CONFIRMED') {
+        await handleCommand(command.id);
+      }
+    } catch (error) {
+      console.error('[Voice] Error creating command:', error);
+    }
   };
 
-  const handleCommand = (command: any) => {
-    console.log('[Voice] Command:', command);
-    // TODO: Execute command via tRPC
+  const handleCommand = async (commandId: string) => {
+    console.log('[Voice] Executing command:', commandId);
+
+    try {
+      // Execute voice command via tRPC
+      const result = await executeVoiceCommand.mutateAsync({
+        id: commandId,
+      });
+
+      console.log('[Voice] Command executed:', result);
+    } catch (error) {
+      console.error('[Voice] Error executing command:', error);
+    }
   };
 
   return (

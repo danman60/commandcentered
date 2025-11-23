@@ -23,9 +23,10 @@ import { serviceTemplateRouter } from './serviceTemplate';
 import { userPreferencesRouter } from './userPreferences';
 import { operatorAvailabilityRouter } from './operatorAvailability';
 import { savedSearchRouter } from './savedSearch';
+import { voiceCommandRouter } from './voiceCommand';
 
 /**
- * Main tRPC router - 24 routers, ~177 procedures
+ * Main tRPC router - 25 routers, ~187 procedures
  *
  * All routers enforce multi-tenant isolation via tenantProcedure
  */
@@ -54,6 +55,7 @@ export const appRouter = router({
   userPreferences: userPreferencesRouter, // 8 procedures
   operatorAvailability: operatorAvailabilityRouter, // 6 procedures
   savedSearch: savedSearchRouter, // 5 procedures
+  voiceCommand: voiceCommandRouter, // 10 procedures (AI Voice Agent)
 });
 
 export type AppRouter = typeof appRouter;
