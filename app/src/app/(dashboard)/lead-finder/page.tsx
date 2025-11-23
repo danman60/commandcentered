@@ -99,8 +99,69 @@ export default function LeadFinderPage() {
   };
 
   const handleAISearch = () => {
-    // AI Search placeholder - will be implemented with Apollo.io API
-    alert(`AI Search: "${aiSearchQuery}" - Feature coming soon`);
+    if (!aiSearchQuery.trim()) {
+      alert('Please enter a search query');
+      return;
+    }
+
+    // Filter leads based on AI search query
+    const query = aiSearchQuery.toLowerCase().trim();
+    const filtered = leadResults.filter(lead => {
+      const searchFields = [
+        lead.name.toLowerCase(),
+        lead.email.toLowerCase(),
+        lead.location?.toLowerCase() || '',
+        lead.website?.toLowerCase() || '',
+        ...(lead.tags?.map(tag => tag.toLowerCase()) || [])
+      ];
+
+      return searchFields.some(field => field.includes(query));
+    });
+
+    if (filtered.length === 0) {
+      alert(`No leads found matching "${aiSearchQuery}"`);
+    } else {
+      // Auto-select the filtered leads
+      setSelectedLeads(filtered.map(lead => lead.id));
+      alert(`Found ${filtered.length} leads matching "${aiSearchQuery}"\nLeads have been auto-selected.`);
+    }
+  };
+
+  const handleExportCSV = (selectedOnly: boolean = false) => {
+    const leadsToExport = selectedOnly
+      ? leadResults.filter((lead) => selectedLeads.includes(lead.id))
+      : leadResults;
+
+    if (leadsToExport.length === 0) {
+      alert('No leads to export');
+      return;
+    }
+
+    // Create CSV content
+    const headers = ['Name', 'Email', 'Location', 'Website', 'Tags'];
+    const rows = leadsToExport.map(lead => [
+      lead.name,
+      lead.email,
+      lead.location || '',
+      lead.website || '',
+      lead.tags?.join('; ') || ''
+    ]);
+
+    const csvContent = [
+      headers.join(','),
+      ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
+    ].join('\n');
+
+    // Create and trigger download
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `leads-export-${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   const handleExportToCRM = (selectedOnly: boolean = false) => {
@@ -418,10 +479,11 @@ export default function LeadFinderPage() {
             </div>
             <div className="flex gap-2">
               <button
-                onClick={() => alert('CSV export feature coming soon')}
-                className="px-4 py-2 bg-slate-700/30 text-slate-300 border border-slate-700/50 rounded-lg text-sm font-medium hover:bg-slate-700/50 transition-all"
+                onClick={() => handleExportCSV(true)}
+                disabled={selectedLeads.length === 0}
+                className="px-4 py-2 bg-slate-700/30 text-slate-300 border border-slate-700/50 rounded-lg text-sm font-medium hover:bg-slate-700/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Export CSV
+                📥 Export CSV ({selectedLeads.length})
               </button>
               <button
                 onClick={() => handleExportToCRM(true)}
