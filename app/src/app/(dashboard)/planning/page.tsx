@@ -1264,6 +1264,66 @@ function CommanderGigSheetModal({ event, isOpen, onClose }: { event: any; isOpen
   const loadOutDate = new Date(event.loadOutTime);
   const duration = (loadOutDate.getTime() - loadInDate.getTime()) / (1000 * 60 * 60); // hours
 
+  // Collect all operator emails
+  const getAllOperatorEmails = () => {
+    const emails: string[] = [];
+    const operators = new Map();
+
+    event.shifts?.forEach((shift: any) => {
+      shift.shiftAssignments?.forEach((assignment: any) => {
+        if (assignment.operator?.email && !operators.has(assignment.operator.id)) {
+          operators.set(assignment.operator.id, assignment.operator);
+          emails.push(assignment.operator.email);
+        }
+      });
+    });
+
+    return emails;
+  };
+
+  // Generate mailto: link for all operators
+  const generateTeamMailtoLink = () => {
+    const emails = getAllOperatorEmails();
+
+    if (emails.length === 0) {
+      alert('No operator emails found for this event');
+      return;
+    }
+
+    const subject = `Team Gig Sheet: ${event.eventName}`;
+    const body = `Hi Team,
+
+Here are the details for our upcoming event:
+
+EVENT: ${event.eventName}
+DATE: ${loadInDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
+TIME: ${loadInDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })} - ${loadOutDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })} (${duration.toFixed(1)} hours)
+TYPE: ${event.eventType.replace('_', ' ')}
+
+${event.venueName ? `LOCATION:
+${event.venueName}
+${event.venueAddress || ''}
+${event.parkingInstructions ? `Parking: ${event.parkingInstructions}` : ''}
+
+` : ''}${event.notes ? `EVENT NOTES:
+${event.notes}
+
+` : ''}TEAM ASSIGNMENTS:
+${event.shifts?.map((shift: any) => {
+  const assignments = shift.shiftAssignments || [];
+  return `${shift.shiftName || 'Shift'} (${new Date(shift.startTime).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })} - ${new Date(shift.endTime).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}):
+${assignments.map((a: any) => `  - ${a.operator?.name || 'TBD'}: ${a.role || 'Unassigned'}`).join('\n')}`;
+}).join('\n\n')}
+
+${event.clientName ? `CLIENT CONTACT:
+${event.clientName}${event.clientPhone ? ` - ${event.clientPhone}` : ''}${event.clientEmail ? ` - ${event.clientEmail}` : ''}
+
+` : ''}Looking forward to working with you all!`;
+
+    const mailtoLink = `mailto:?bcc=${encodeURIComponent(emails.join(','))}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = mailtoLink;
+  };
+
   return (
     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[60]">
       <div className="bg-slate-900 border-2 border-green-500/30 rounded-xl w-[900px] max-h-[90vh] overflow-y-auto shadow-2xl">
@@ -1444,7 +1504,7 @@ function CommanderGigSheetModal({ event, isOpen, onClose }: { event: any; isOpen
               Print Gig Sheet
             </button>
             <button
-              onClick={() => alert('Email functionality coming soon!')}
+              onClick={generateTeamMailtoLink}
               className="flex-1 px-4 py-2 bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-400 hover:to-cyan-500 text-white font-semibold rounded-lg transition-all flex items-center justify-center gap-2"
             >
               <span>📧</span>
@@ -1587,11 +1647,13 @@ function PerOperatorGigSheetModal({
 
   // Find operator and their assignments
   let operatorName = '';
+  let operatorEmail = '';
   const operatorAssignments: any[] = [];
   event.shifts?.forEach((shift: any) => {
     shift.shiftAssignments?.forEach((assignment: any) => {
       if (assignment.operator?.id === operatorId) {
         operatorName = assignment.operator.name;
+        operatorEmail = assignment.operator.email;
         operatorAssignments.push({
           ...assignment,
           shift: {
@@ -1617,6 +1679,47 @@ function PerOperatorGigSheetModal({
   });
 
   const duration = (latestEnd.getTime() - earliestStart.getTime()) / (1000 * 60 * 60);
+
+  // Generate mailto: link for operator
+  const generateMailtoLink = () => {
+    if (!operatorEmail) {
+      alert('Operator email not found');
+      return;
+    }
+
+    const subject = `Gig Sheet: ${event.eventName}`;
+
+    const body = `Hi ${operatorName},
+
+Here are your details for the upcoming event:
+
+EVENT: ${event.eventName}
+DATE: ${loadInDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
+YOUR TIME: ${earliestStart.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })} - ${latestEnd.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })} (${duration.toFixed(1)} hours)
+TYPE: ${event.eventType.replace('_', ' ')}
+
+${event.venueName ? `LOCATION:
+${event.venueName}
+${event.venueAddress || ''}
+${event.parkingInstructions ? `Parking: ${event.parkingInstructions}` : ''}
+
+` : ''}YOUR ASSIGNMENTS:
+${operatorAssignments.map((assignment: any) =>
+  `- ${assignment.shift.shiftName || 'Shift'}: ${new Date(assignment.shift.startTime).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })} - ${new Date(assignment.shift.endTime).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
+  Role: ${assignment.role || 'Unassigned'}`
+).join('\n')}
+
+${event.notes ? `EVENT NOTES:
+${event.notes}
+
+` : ''}${event.client ? `CLIENT CONTACT:
+${event.client.organization}${event.client.contactName ? ` - ${event.client.contactName}` : ''}${event.client.phone ? ` (${event.client.phone})` : ''}
+
+` : ''}Looking forward to working with you!`;
+
+    const mailtoLink = `mailto:${encodeURIComponent(operatorEmail)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = mailtoLink;
+  };
 
   return (
     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[60]">
@@ -1798,11 +1901,11 @@ function PerOperatorGigSheetModal({
               Print Gig Sheet
             </button>
             <button
-              onClick={() => alert('Email functionality coming soon!')}
+              onClick={generateMailtoLink}
               className="flex-1 px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-400 hover:to-green-500 text-white font-semibold rounded-lg transition-all flex items-center justify-center gap-2"
             >
               <span>📧</span>
-              Email to Me
+              Email Gig Sheet
             </button>
           </div>
         </div>
