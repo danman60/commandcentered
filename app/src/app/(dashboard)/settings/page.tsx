@@ -3,7 +3,7 @@
 import { trpc } from '@/lib/trpc/client';
 import { useState } from 'react';
 
-type SettingsTab = 'organization' | 'profile' | 'notifications' | 'email' | 'billing' | 'security' | 'integrations';
+type SettingsTab = 'organization' | 'profile' | 'notifications' | 'email' | 'billing' | 'security' | 'integrations' | 'templates';
 
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState<SettingsTab>('organization');
@@ -132,6 +132,7 @@ export default function SettingsPage() {
     { id: 'billing', icon: '💳', label: 'Billing' },
     { id: 'security', icon: '🔐', label: 'Security' },
     { id: 'integrations', icon: '🔌', label: 'Integrations' },
+    { id: 'templates', icon: '📋', label: 'Service Templates' },
   ] as const;
 
   return (
@@ -842,6 +843,39 @@ export default function SettingsPage() {
                 >
                   💾 Save Integration Settings
                 </button>
+              </div>
+            )}
+
+            {/* Service Templates Tab */}
+            {activeTab === 'templates' && (
+              <div>
+                <h2 className="text-2xl font-bold text-green-500 mb-6">Service Templates</h2>
+                <p className="text-slate-400 mb-6">
+                  Manage your service templates for quick proposal generation. These templates can be used to quickly populate proposals with predefined services and pricing.
+                </p>
+
+                <div className="mb-6">
+                  <button
+                    onClick={() => {
+                      // TODO: Open create template modal
+                      alert('Create template modal - to be implemented');
+                    }}
+                    className="px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold shadow-lg shadow-green-500/30 hover:shadow-green-500/40 hover:-translate-y-0.5 transition-all"
+                  >
+                    ➕ Create New Template
+                  </button>
+                </div>
+
+                <div className="bg-slate-900/50 border border-slate-700/50 rounded-lg p-6">
+                  <div className="space-y-4">
+                    <p className="text-slate-400 text-center py-8">
+                      Service template management UI coming soon. Use the tRPC router to create templates programmatically.
+                    </p>
+                    <p className="text-xs text-slate-500 text-center">
+                      Available procedures: list, getById, create, update, delete, restore
+                    </p>
+                  </div>
+                </div>
               </div>
             )}
           </div>
