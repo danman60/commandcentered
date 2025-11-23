@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
@@ -17,6 +17,7 @@ import {
   Clock,
   Settings,
   ExternalLink,
+  RotateCcw,
 } from 'lucide-react';
 import { Responsive, WidthProvider, Layout } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
@@ -41,9 +42,21 @@ const WIDGET_CONFIGS: WidgetConfig[] = [
   { id: 'recent_activity', title: 'Recent Activity', defaultVisible: true },
 ];
 
+// Default layout configuration
+const DEFAULT_LAYOUT: Layout[] = [
+  { i: 'overview_stats', x: 0, y: 0, w: 12, h: 2, minW: 6, minH: 2 },
+  { i: 'event_pipeline', x: 0, y: 2, w: 6, h: 4, minW: 4, minH: 3 },
+  { i: 'revenue_stats', x: 6, y: 2, w: 6, h: 4, minW: 4, minH: 3 },
+  { i: 'upcoming_events', x: 0, y: 6, w: 6, h: 5, minW: 4, minH: 4 },
+  { i: 'critical_alerts', x: 6, y: 6, w: 6, h: 5, minW: 4, minH: 4 },
+  { i: 'recent_activity', x: 0, y: 11, w: 12, h: 4, minW: 6, minH: 3 },
+];
+
 export default function DashboardPage() {
   const router = useRouter();
   const [isCustomizeOpen, setIsCustomizeOpen] = useState(false);
+  const [currentLayout, setCurrentLayout] = useState<Layout[]>(DEFAULT_LAYOUT);
+  const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Fetch all dashboard data
   const { data: stats, isLoading: statsLoading } = trpc.dashboard.getStats.useQuery();
@@ -60,51 +73,51 @@ export default function DashboardPage() {
   });
   const updateSettings = trpc.dashboard.updateSettings.useMutation();
 
+  // Fetch user preferences for layout persistence
+  const { data: userPrefs } = trpc.userPreferences.get.useQuery();
+  const updateDashboardLayout = trpc.userPreferences.updateDashboardLayout.useMutation();
+  const resetPreferences = trpc.userPreferences.resetToDefaults.useMutation({
+    onSuccess: () => {
+      setCurrentLayout(DEFAULT_LAYOUT);
+      refetchWidgets();
+    },
+  });
+
+  // Restore layout from user preferences on mount
+  useEffect(() => {
+    if (userPrefs?.dashboardLayout && Array.isArray(userPrefs.dashboardLayout)) {
+      setCurrentLayout(userPrefs.dashboardLayout as unknown as Layout[]);
+    }
+  }, [userPrefs]);
+
   // Determine which widgets are visible
   const getWidgetVisibility = (widgetId: WidgetType): boolean => {
     const pref = widgetPrefs?.find(w => w.widgetType === widgetId);
     return pref?.isVisible ?? WIDGET_CONFIGS.find(w => w.id === widgetId)?.defaultVisible ?? true;
   };
 
-  // Get layout configuration
+  // Get layout configuration (filter by visibility)
   const getLayout = (): Layout[] => {
-    const layout: Layout[] = [];
-
-    if (getWidgetVisibility('overview_stats')) {
-      layout.push({ i: 'overview_stats', x: 0, y: 0, w: 12, h: 2, minW: 6, minH: 2 });
-    }
-    if (getWidgetVisibility('event_pipeline')) {
-      layout.push({ i: 'event_pipeline', x: 0, y: 2, w: 6, h: 4, minW: 4, minH: 3 });
-    }
-    if (getWidgetVisibility('revenue_stats')) {
-      layout.push({ i: 'revenue_stats', x: 6, y: 2, w: 6, h: 4, minW: 4, minH: 3 });
-    }
-    if (getWidgetVisibility('upcoming_events')) {
-      layout.push({ i: 'upcoming_events', x: 0, y: 6, w: 6, h: 5, minW: 4, minH: 4 });
-    }
-    if (getWidgetVisibility('critical_alerts')) {
-      layout.push({ i: 'critical_alerts', x: 6, y: 6, w: 6, h: 5, minW: 4, minH: 4 });
-    }
-    if (getWidgetVisibility('recent_activity')) {
-      layout.push({ i: 'recent_activity', x: 0, y: 11, w: 12, h: 4, minW: 6, minH: 3 });
-    }
-
-    return layout;
+    return currentLayout.filter(item => getWidgetVisibility(item.i as WidgetType));
   };
 
-  // Handle layout change
-  const handleLayoutChange = (layout: Layout[]) => {
-    // Save layout to backend
-    layout.forEach(item => {
-      const pref = widgetPrefs?.find(w => w.widgetType === item.i);
-      updateSettings.mutate({
-        widgetType: item.i,
-        position: { x: item.x, y: item.y },
-        size: { w: item.w, h: item.h },
-        isVisible: pref?.isVisible ?? true,
+  // Handle layout change with debouncing
+  const handleLayoutChange = useCallback((layout: Layout[]) => {
+    // Update local state immediately for responsive UI
+    setCurrentLayout(layout);
+
+    // Debounce database save (wait 1 second after last change)
+    if (saveTimeoutRef.current) {
+      clearTimeout(saveTimeoutRef.current);
+    }
+
+    saveTimeoutRef.current = setTimeout(() => {
+      updateDashboardLayout.mutate({
+        dashboardLayout: layout,
+        visibleWidgets: layout.map(item => item.i),
       });
-    });
-  };
+    }, 1000);
+  }, [updateDashboardLayout]);
 
   // Toggle widget visibility
   const handleToggleVisibility = async (widgetId: WidgetType) => {
@@ -509,7 +522,16 @@ export default function DashboardPage() {
               ))}
             </div>
 
-            <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-slate-700">
+            <div className="flex justify-between items-center gap-3 mt-6 pt-4 border-t border-slate-700">
+              <Button
+                variant="secondary"
+                size="medium"
+                onClick={() => resetPreferences.mutate()}
+                data-testid="reset-layout-button"
+              >
+                <RotateCcw className="w-4 h-4 mr-2" />
+                Reset Layout
+              </Button>
               <Button
                 variant="primary"
                 size="medium"
