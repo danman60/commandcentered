@@ -65,6 +65,7 @@ export default function OperatorsPage() {
       hourlyRate: Number(op.hourlyRate),
       eventsThisYear,
       avgRating: op.averageRating ? Number(op.averageRating) : 0,
+      totalRatings: op.totalRatings || 0,
       skills: skills.slice(0, 5), // Top 5 skills
       availabilityStatus,
       available,
@@ -748,8 +749,21 @@ export default function OperatorsPage() {
                     Performance Metrics
                   </h3>
                   <div className="bg-slate-900/50 border border-slate-700/50 rounded-lg p-4">
-                    <p className="text-sm text-slate-400">Average Rating: Coming soon</p>
-                    <p className="text-sm text-slate-400 mt-1">Client Feedback: Coming soon</p>
+                    <div className="flex items-center justify-between mb-2">
+                      <p className="text-sm text-slate-400">Average Rating:</p>
+                      <div className="flex items-center gap-2">
+                        <span className="text-lg font-semibold text-green-500">
+                          {operator.avgRating > 0 ? operator.avgRating.toFixed(2) : 'N/A'}
+                        </span>
+                        {operator.avgRating > 0 && <span className="text-yellow-500">⭐</span>}
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm text-slate-400">Total Ratings:</p>
+                      <span className="text-sm font-semibold text-slate-200">
+                        {operator.totalRatings} {operator.totalRatings === 1 ? 'rating' : 'ratings'}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
