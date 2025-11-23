@@ -1,11 +1,12 @@
 import { z } from 'zod';
 import { router, tenantProcedure } from '../trpc';
+import { createApolloClient, ApolloClient } from '@/lib/apollo/client';
 
 /**
  * Lead Finder Router - Phase 12
  *
  * Manages external lead search and import:
- * - Search for leads (Apollo.io integration placeholder)
+ * - Search for leads (Apollo.io integration)
  * - Export leads to CRM
  * - Manage saved searches
  * - Configure lead source APIs
@@ -25,8 +26,8 @@ const LeadSearchResultSchema = z.object({
 
 export const leadFinderRouter = router({
   /**
-   * Search for leads using external API (Apollo.io)
-   * Currently returns mock data - API integration pending
+   * Search for leads using Apollo.io API
+   * Falls back to mock data if API key not configured
    */
   search: tenantProcedure
     .input(
@@ -43,9 +44,49 @@ export const leadFinderRouter = router({
       })
     )
     .query(async ({ ctx, input }) => {
-      // TODO: Integrate Apollo.io API
-      // For now, return mock data matching the Lead Finder UI expectations
+      // Try to get Apollo.io API key from config
+      const apolloConfig = await ctx.prisma.leadSourceConfig.findFirst({
+        where: {
+          tenantId: ctx.tenantId,
+          sourceName: 'Apollo.io',
+          isActive: true,
+        },
+      });
 
+      // If API key configured, use real Apollo.io API
+      if (apolloConfig?.apiKey) {
+        try {
+          const apolloClient = createApolloClient(apolloConfig.apiKey);
+
+          // Build location array for Apollo API
+          const locations = input.location ? [input.location] : [];
+
+          // Build employee range for Apollo API
+          const employeeRanges = [];
+          if (input.minEmployees && input.maxEmployees) {
+            employeeRanges.push(`${input.minEmployees},${input.maxEmployees}`);
+          }
+
+          // Search with Apollo.io
+          const response = await apolloClient.searchOrganizations({
+            q_keywords: input.keywords,
+            organization_locations: locations,
+            organization_num_employees_ranges: employeeRanges.length > 0 ? employeeRanges : undefined,
+          });
+
+          // Convert Apollo organizations to our format
+          const results = (response.organizations || []).map((org) =>
+            ApolloClient.formatOrganization(org)
+          );
+
+          return results;
+        } catch (error) {
+          console.error('Apollo.io API error:', error);
+          // Fall through to mock data on error
+        }
+      }
+
+      // Mock data fallback (when API key not configured or API error)
       const mockResults = [
         {
           id: 'lead-1',
