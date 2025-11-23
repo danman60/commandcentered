@@ -1,5 +1,8 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
+import { PrismaClient } from '@prisma/client'
+
+const prisma = new PrismaClient()
 
 export async function proxy(request: NextRequest) {
   let response = NextResponse.next({
@@ -68,9 +71,50 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(url)
   }
 
-  // TODO: Multi-tenant subdomain verification
-  // Extract subdomain and verify user belongs to tenant
-  // This will be implemented after tenant/organization system is set up
+  // Multi-tenant subdomain verification
+  if (user && subdomain && subdomain !== 'localhost' && subdomain !== 'www') {
+    try {
+      // Look up tenant by subdomain
+      const tenant = await prisma.tenant.findUnique({
+        where: { subdomain },
+        select: { id: true, subdomain: true },
+      });
+
+      if (!tenant) {
+        // Subdomain doesn't exist - show 404 or redirect
+        return new NextResponse('Tenant not found', { status: 404 });
+      }
+
+      // Look up user's profile
+      const userProfile = await prisma.userProfile.findUnique({
+        where: { authUserId: user.id },
+        select: { tenantId: true },
+      });
+
+      if (!userProfile) {
+        // User profile doesn't exist - needs to complete signup
+        if (url.pathname !== '/signup') {
+          url.pathname = '/signup';
+          return NextResponse.redirect(url);
+        }
+      } else if (userProfile.tenantId !== tenant.id) {
+        // User belongs to different tenant - redirect to their tenant
+        const userTenant = await prisma.tenant.findUnique({
+          where: { id: userProfile.tenantId },
+          select: { subdomain: true },
+        });
+
+        if (userTenant) {
+          const correctUrl = url.clone();
+          correctUrl.host = `${userTenant.subdomain}.${hostname.split('.').slice(1).join('.')}`;
+          return NextResponse.redirect(correctUrl);
+        }
+      }
+    } catch (error) {
+      console.error('Subdomain verification error:', error);
+      // Continue on error to avoid breaking the app
+    }
+  }
 
   return response
 }
