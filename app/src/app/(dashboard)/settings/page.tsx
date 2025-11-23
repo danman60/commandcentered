@@ -421,10 +421,113 @@ export default function SettingsPage() {
             {activeTab === 'notifications' && (
               <div>
                 <h2 className="text-2xl font-bold text-green-500 mb-6">Notification Settings</h2>
-                <div className="text-slate-400 text-center py-12">
-                  <div className="text-6xl mb-4">🔔</div>
-                  <p>Notification preferences coming soon</p>
-                  <p className="text-sm mt-2">Manage email, SMS, and push notifications here</p>
+
+                {/* Email Notifications */}
+                <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6 mb-6">
+                  <h3 className="text-lg font-semibold text-slate-100 mb-4">Email Notifications</h3>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between py-3 border-b border-slate-700/30">
+                      <div>
+                        <div className="text-sm font-medium text-slate-200">Event Updates</div>
+                        <div className="text-xs text-slate-500 mt-1">Get notified about event changes and updates</div>
+                      </div>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" defaultChecked className="sr-only peer" />
+                        <div className="w-11 h-6 bg-slate-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-green-500 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                      </label>
+                    </div>
+                    <div className="flex items-center justify-between py-3 border-b border-slate-700/30">
+                      <div>
+                        <div className="text-sm font-medium text-slate-200">New Leads</div>
+                        <div className="text-xs text-slate-500 mt-1">Alerts when new leads are added to campaigns</div>
+                      </div>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" defaultChecked className="sr-only peer" />
+                        <div className="w-11 h-6 bg-slate-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-green-500 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                      </label>
+                    </div>
+                    <div className="flex items-center justify-between py-3 border-b border-slate-700/30">
+                      <div>
+                        <div className="text-sm font-medium text-slate-200">Campaign Reports</div>
+                        <div className="text-xs text-slate-500 mt-1">Weekly summary of campaign performance</div>
+                      </div>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" defaultChecked className="sr-only peer" />
+                        <div className="w-11 h-6 bg-slate-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-green-500 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                      </label>
+                    </div>
+                    <div className="flex items-center justify-between py-3">
+                      <div>
+                        <div className="text-sm font-medium text-slate-200">System Alerts</div>
+                        <div className="text-xs text-slate-500 mt-1">Important system messages and maintenance notices</div>
+                      </div>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" defaultChecked className="sr-only peer" />
+                        <div className="w-11 h-6 bg-slate-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-green-500 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Push Notifications */}
+                <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6 mb-6">
+                  <h3 className="text-lg font-semibold text-slate-100 mb-4">Push Notifications</h3>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between py-3 border-b border-slate-700/30">
+                      <div>
+                        <div className="text-sm font-medium text-slate-200">Desktop Notifications</div>
+                        <div className="text-xs text-slate-500 mt-1">Show desktop alerts for important updates</div>
+                      </div>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" className="sr-only peer" />
+                        <div className="w-11 h-6 bg-slate-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-green-500 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                      </label>
+                    </div>
+                    <div className="flex items-center justify-between py-3">
+                      <div>
+                        <div className="text-sm font-medium text-slate-200">Sound Alerts</div>
+                        <div className="text-xs text-slate-500 mt-1">Play sound when notifications arrive</div>
+                      </div>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" className="sr-only peer" />
+                        <div className="w-11 h-6 bg-slate-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-green-500 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                {/* SMS Notifications */}
+                <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6 mb-6">
+                  <h3 className="text-lg font-semibold text-slate-100 mb-4">SMS Notifications</h3>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between py-3 border-b border-slate-700/30">
+                      <div>
+                        <div className="text-sm font-medium text-slate-200">Critical Alerts</div>
+                        <div className="text-xs text-slate-500 mt-1">Urgent system alerts via SMS</div>
+                      </div>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" className="sr-only peer" />
+                        <div className="w-11 h-6 bg-slate-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-green-500 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                      </label>
+                    </div>
+                    <div className="flex items-center justify-between py-3">
+                      <div>
+                        <div className="text-sm font-medium text-slate-200">Event Reminders</div>
+                        <div className="text-xs text-slate-500 mt-1">Get SMS reminders before events start</div>
+                      </div>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" className="sr-only peer" />
+                        <div className="w-11 h-6 bg-slate-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-green-500 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Save Button */}
+                <div className="flex justify-end">
+                  <button className="px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold shadow-lg shadow-green-500/30 hover:shadow-green-500/40 hover:-translate-y-0.5 transition-all">
+                    Save Preferences
+                  </button>
                 </div>
               </div>
             )}
@@ -766,10 +869,142 @@ export default function SettingsPage() {
             {activeTab === 'security' && (
               <div>
                 <h2 className="text-2xl font-bold text-green-500 mb-6">Security Settings</h2>
-                <div className="text-slate-400 text-center py-12">
-                  <div className="text-6xl mb-4">🔐</div>
-                  <p>Security settings coming soon</p>
-                  <p className="text-sm mt-2">Password policies, 2FA, and access control will be available here</p>
+
+                {/* Change Password */}
+                <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6 mb-6">
+                  <h3 className="text-lg font-semibold text-slate-100 mb-4">Change Password</h3>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-2">Current Password</label>
+                      <input
+                        type="password"
+                        placeholder="Enter current password"
+                        className="w-full px-4 py-2 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-green-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-2">New Password</label>
+                      <input
+                        type="password"
+                        placeholder="Enter new password"
+                        className="w-full px-4 py-2 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-green-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-2">Confirm New Password</label>
+                      <input
+                        type="password"
+                        placeholder="Confirm new password"
+                        className="w-full px-4 py-2 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-green-500"
+                      />
+                    </div>
+                    <button className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg text-sm font-semibold transition-all">
+                      Update Password
+                    </button>
+                  </div>
+                </div>
+
+                {/* Two-Factor Authentication */}
+                <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6 mb-6">
+                  <h3 className="text-lg font-semibold text-slate-100 mb-4">Two-Factor Authentication</h3>
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <p className="text-sm text-slate-300 mb-2">Enhance your account security with 2FA</p>
+                      <p className="text-xs text-slate-500">Use an authenticator app to generate verification codes</p>
+                    </div>
+                    <button className="px-4 py-2 bg-slate-700/30 hover:bg-slate-700/50 text-slate-300 border border-slate-700/50 rounded-lg text-sm font-semibold transition-all">
+                      Enable 2FA
+                    </button>
+                  </div>
+                </div>
+
+                {/* Active Sessions */}
+                <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6 mb-6">
+                  <h3 className="text-lg font-semibold text-slate-100 mb-4">Active Sessions</h3>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between py-3 border-b border-slate-700/30">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-green-500/10 border border-green-500/30 rounded-lg flex items-center justify-center">
+                          <span className="text-lg">💻</span>
+                        </div>
+                        <div>
+                          <div className="text-sm font-medium text-slate-200">Windows PC - Chrome</div>
+                          <div className="text-xs text-slate-500">Current session • Last active: Now</div>
+                        </div>
+                      </div>
+                      <span className="px-2 py-1 bg-green-500/10 text-green-500 rounded text-xs font-semibold">Active</span>
+                    </div>
+                    <div className="flex items-center justify-between py-3 border-b border-slate-700/30">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-slate-700/30 border border-slate-700/50 rounded-lg flex items-center justify-center">
+                          <span className="text-lg">📱</span>
+                        </div>
+                        <div>
+                          <div className="text-sm font-medium text-slate-200">iPhone 14 - Safari</div>
+                          <div className="text-xs text-slate-500">Last active: 2 hours ago</div>
+                        </div>
+                      </div>
+                      <button className="px-3 py-1 bg-red-500/10 hover:bg-red-500/20 text-red-500 border border-red-500/30 rounded text-xs font-semibold transition-all">
+                        Revoke
+                      </button>
+                    </div>
+                    <div className="flex items-center justify-between py-3">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-slate-700/30 border border-slate-700/50 rounded-lg flex items-center justify-center">
+                          <span className="text-lg">💻</span>
+                        </div>
+                        <div>
+                          <div className="text-sm font-medium text-slate-200">MacBook Pro - Firefox</div>
+                          <div className="text-xs text-slate-500">Last active: 1 day ago</div>
+                        </div>
+                      </div>
+                      <button className="px-3 py-1 bg-red-500/10 hover:bg-red-500/20 text-red-500 border border-red-500/30 rounded text-xs font-semibold transition-all">
+                        Revoke
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Login History */}
+                <div className="bg-slate-800/50 border border-slate-700/30 rounded-xl p-6 mb-6">
+                  <h3 className="text-lg font-semibold text-slate-100 mb-4">Recent Login Activity</h3>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between py-2 border-b border-slate-700/20">
+                      <div>
+                        <div className="text-sm text-slate-300">Login from New York, USA</div>
+                        <div className="text-xs text-slate-500">Today at 9:42 AM</div>
+                      </div>
+                      <span className="text-xs text-green-500">✓ Success</span>
+                    </div>
+                    <div className="flex items-center justify-between py-2 border-b border-slate-700/20">
+                      <div>
+                        <div className="text-sm text-slate-300">Login from New York, USA</div>
+                        <div className="text-xs text-slate-500">Yesterday at 8:15 AM</div>
+                      </div>
+                      <span className="text-xs text-green-500">✓ Success</span>
+                    </div>
+                    <div className="flex items-center justify-between py-2">
+                      <div>
+                        <div className="text-sm text-slate-300">Login from San Francisco, USA</div>
+                        <div className="text-xs text-slate-500">2 days ago at 3:22 PM</div>
+                      </div>
+                      <span className="text-xs text-green-500">✓ Success</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Danger Zone */}
+                <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-6">
+                  <h3 className="text-lg font-semibold text-red-500 mb-4">Danger Zone</h3>
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <p className="text-sm text-slate-300 mb-2">Sign out from all devices</p>
+                      <p className="text-xs text-slate-500">This will end all active sessions except your current one</p>
+                    </div>
+                    <button className="px-4 py-2 bg-red-500/20 hover:bg-red-500/30 text-red-500 border border-red-500/50 rounded-lg text-sm font-semibold transition-all">
+                      Sign Out All
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
