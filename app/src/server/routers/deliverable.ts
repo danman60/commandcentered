@@ -11,7 +11,7 @@ export const deliverableRouter = router({
           ...(input?.eventId && { eventId: input.eventId }),
           ...(input?.status && { status: input.status }),
         },
-        include: { event: true, assignedEditor: true },
+        include: { event: true, client: true, assignedEditor: true },
         orderBy: { dueDate: 'asc' },
       });
     }),
@@ -23,6 +23,7 @@ export const deliverableRouter = router({
         where: { id: input.id, tenantId: ctx.tenantId },
         include: {
           event: true,
+          client: true,
           assignedEditor: true,
           assets: true,
         },
@@ -39,7 +40,7 @@ export const deliverableRouter = router({
           eventId: input.eventId,
           tenantId: ctx.tenantId,
         },
-        include: { event: true, assignedEditor: true },
+        include: { event: true, client: true, assignedEditor: true },
         orderBy: { dueDate: 'asc' },
       });
     }),
@@ -47,7 +48,8 @@ export const deliverableRouter = router({
   create: tenantProcedure
     .input(
       z.object({
-        eventId: z.string().uuid(),
+        eventId: z.string().uuid().optional(),
+        clientId: z.string().uuid().optional(),
         deliverableType: z.string(),
         deliverableName: z.string(),
         dueDate: z.date(),
@@ -57,11 +59,31 @@ export const deliverableRouter = router({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const event = await ctx.prisma.event.findFirst({
-        where: { id: input.eventId, tenantId: ctx.tenantId }
-      });
-      if (!event) throw new Error('Event not found');
+      // Validate that exactly one of eventId or clientId is provided
+      if (!input.eventId && !input.clientId) {
+        throw new Error('Either eventId or clientId must be provided');
+      }
+      if (input.eventId && input.clientId) {
+        throw new Error('Cannot provide both eventId and clientId');
+      }
 
+      // Validate event if provided
+      if (input.eventId) {
+        const event = await ctx.prisma.event.findFirst({
+          where: { id: input.eventId, tenantId: ctx.tenantId }
+        });
+        if (!event) throw new Error('Event not found');
+      }
+
+      // Validate client if provided
+      if (input.clientId) {
+        const client = await ctx.prisma.client.findFirst({
+          where: { id: input.clientId, tenantId: ctx.tenantId }
+        });
+        if (!client) throw new Error('Client not found');
+      }
+
+      // Validate editor if assigned
       if (input.assignedEditorId) {
         const editor = await ctx.prisma.editor.findFirst({
           where: { id: input.assignedEditorId, tenantId: ctx.tenantId }
@@ -73,6 +95,7 @@ export const deliverableRouter = router({
         data: {
           tenantId: ctx.tenantId,
           eventId: input.eventId,
+          clientId: input.clientId,
           deliverableType: input.deliverableType,
           deliverableName: input.deliverableName,
           dueDate: input.dueDate,
@@ -81,7 +104,7 @@ export const deliverableRouter = router({
           notes: input.notes,
           status: 'NOT_STARTED',
         },
-        include: { event: true, assignedEditor: true },
+        include: { event: true, client: true, assignedEditor: true },
       });
     }),
 
@@ -115,7 +138,7 @@ export const deliverableRouter = router({
       return ctx.prisma.deliverable.update({
         where: { id },
         data: updateData,
-        include: { event: true, assignedEditor: true },
+        include: { event: true, client: true, assignedEditor: true },
       });
     }),
 
@@ -133,7 +156,7 @@ export const deliverableRouter = router({
       return ctx.prisma.deliverable.update({
         where: { id: input.id },
         data: { status: input.status },
-        include: { event: true, assignedEditor: true },
+        include: { event: true, client: true, assignedEditor: true },
       });
     }),
 
@@ -156,7 +179,7 @@ export const deliverableRouter = router({
       return ctx.prisma.deliverable.update({
         where: { id: input.id },
         data: { assignedEditorId: input.editorId },
-        include: { event: true, assignedEditor: true },
+        include: { event: true, client: true, assignedEditor: true },
       });
     }),
 
@@ -171,7 +194,7 @@ export const deliverableRouter = router({
       return ctx.prisma.deliverable.update({
         where: { id: input.id },
         data: { status: 'DELIVERED' },
-        include: { event: true, assignedEditor: true },
+        include: { event: true, client: true, assignedEditor: true },
       });
     }),
 
@@ -191,7 +214,7 @@ export const deliverableRouter = router({
       return ctx.prisma.deliverable.update({
         where: { id },
         data,
-        include: { event: true, assignedEditor: true },
+        include: { event: true, client: true, assignedEditor: true },
       });
     }),
 });

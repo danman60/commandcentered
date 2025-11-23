@@ -8,9 +8,10 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-  schemas  = ["commandcentered"]
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+  schemas   = ["commandcentered"]
 }
 
 // ============================================
@@ -897,8 +898,11 @@ model Deliverable {
   tenantId String @map("tenant_id") @db.Uuid
   tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Restrict)
 
-  eventId String @map("event_id") @db.Uuid
-  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  eventId String? @map("event_id") @db.Uuid
+  event   Event?  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  clientId String? @map("client_id") @db.Uuid
+  client   Client? @relation(fields: [clientId], references: [id], onDelete: Cascade)
 
   deliverableType  String            @map("deliverable_type") @db.Text
   deliverableName  String            @map("deliverable_name") @db.Text
@@ -923,6 +927,7 @@ model Deliverable {
 
   @@index([tenantId])
   @@index([eventId])
+  @@index([clientId])
   @@index([assignedEditorId])
   @@index([dueDate])
   @@index([status])
@@ -1726,7 +1731,8 @@ model Client {
   // Relations
   contracts                Contract[]
   communicationTouchpoints CommunicationTouchpoint[] // Round 6 - GAP-11
-  files                    File[] // File Upload System
+  files                    File[]                    // File Upload System
+  deliverables             Deliverable[]
 
   @@index([tenantId])
   @@index([leadId])

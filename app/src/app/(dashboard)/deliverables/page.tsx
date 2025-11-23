@@ -269,8 +269,10 @@ export default function DeliverablesPage() {
 
 // New Deliverable Modal Component
 function NewDeliverableModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+  const [linkType, setLinkType] = useState<'event' | 'client'>('event');
   const [formData, setFormData] = useState({
     eventId: '',
+    clientId: '',
     deliverableType: '',
     deliverableName: '',
     assignedEditorId: '',
@@ -278,6 +280,7 @@ function NewDeliverableModal({ isOpen, onClose }: { isOpen: boolean; onClose: ()
   });
 
   const { data: events } = trpc.event.list.useQuery({});
+  const { data: clients } = trpc.client.list.useQuery({});
   const { data: operators } = trpc.operator.list.useQuery({});
 
   const createDeliverable = trpc.deliverable.create.useMutation({
@@ -290,7 +293,8 @@ function NewDeliverableModal({ isOpen, onClose }: { isOpen: boolean; onClose: ()
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     createDeliverable.mutate({
-      eventId: formData.eventId,
+      eventId: linkType === 'event' ? formData.eventId : undefined,
+      clientId: linkType === 'client' ? formData.clientId : undefined,
       deliverableType: formData.deliverableType,
       deliverableName: formData.deliverableName,
       dueDate: new Date(formData.dueDate),
@@ -314,24 +318,86 @@ function NewDeliverableModal({ isOpen, onClose }: { isOpen: boolean; onClose: ()
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
+          {/* Link Type Toggle */}
           <div>
             <label className="block text-sm font-semibold text-slate-300 mb-2">
-              Event
+              Link To
             </label>
-            <select
-              value={formData.eventId}
-              onChange={(e) => setFormData({ ...formData, eventId: e.target.value })}
-              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500"
-              required
-            >
-              <option value="">Select an event</option>
-              {events?.map((event: any) => (
-                <option key={event.id} value={event.id}>
-                  {event.eventName} - {event.client?.companyName || 'No client'}
-                </option>
-              ))}
-            </select>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setLinkType('event');
+                  setFormData({ ...formData, clientId: '' });
+                }}
+                className={`flex-1 px-4 py-2 rounded-lg font-semibold transition-all ${
+                  linkType === 'event'
+                    ? 'bg-green-500 text-white'
+                    : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
+                }`}
+              >
+                Event
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setLinkType('client');
+                  setFormData({ ...formData, eventId: '' });
+                }}
+                className={`flex-1 px-4 py-2 rounded-lg font-semibold transition-all ${
+                  linkType === 'client'
+                    ? 'bg-green-500 text-white'
+                    : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
+                }`}
+              >
+                Client
+              </button>
+            </div>
           </div>
+
+          {/* Event Dropdown (shown when linkType is 'event') */}
+          {linkType === 'event' && (
+            <div>
+              <label className="block text-sm font-semibold text-slate-300 mb-2">
+                Event
+              </label>
+              <select
+                value={formData.eventId}
+                onChange={(e) => setFormData({ ...formData, eventId: e.target.value })}
+                className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500"
+                required
+              >
+                <option value="">Select an event</option>
+                {events?.map((event: any) => (
+                  <option key={event.id} value={event.id}>
+                    {event.eventName} - {event.client?.companyName || 'No client'}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          {/* Client Dropdown (shown when linkType is 'client') */}
+          {linkType === 'client' && (
+            <div>
+              <label className="block text-sm font-semibold text-slate-300 mb-2">
+                Client
+              </label>
+              <select
+                value={formData.clientId}
+                onChange={(e) => setFormData({ ...formData, clientId: e.target.value })}
+                className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500"
+                required
+              >
+                <option value="">Select a client</option>
+                {clients?.map((client: any) => (
+                  <option key={client.id} value={client.id}>
+                    {client.organization || client.contactName}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
 
           <div>
             <label className="block text-sm font-semibold text-slate-300 mb-2">
@@ -558,12 +624,14 @@ function DeliverableDetailModal({ deliverableId, isOpen, onClose }: { deliverabl
         <div className="p-6">
           {/* Event Info */}
           <div className="mb-6 p-4 bg-slate-800/60 rounded-lg">
-            <div className="text-sm text-slate-400 mb-1">Event</div>
+            <div className="text-sm text-slate-400 mb-1">
+              {(deliverable as any).event ? 'Event' : (deliverable as any).client ? 'Client' : 'Source'}
+            </div>
             <div className="font-bold text-white">
-              {deliverable.event?.eventName || 'N/A'}
+              {(deliverable as any).event?.eventName || (deliverable as any).client?.organization || 'N/A'}
             </div>
             <div className="text-sm text-slate-400">
-              {deliverable.event?.venueName || 'No venue'}
+              {(deliverable as any).event?.venueName || (deliverable as any).client?.contactName || 'No additional info'}
             </div>
           </div>
 
@@ -588,7 +656,7 @@ function DeliverableDetailModal({ deliverableId, isOpen, onClose }: { deliverabl
                 </select>
               ) : (
                 <div className="px-4 py-2 bg-slate-800/40 rounded-lg text-white">
-                  {deliverable.assignedEditor?.name || 'Unassigned'}
+                  {(deliverable as any).assignedEditor?.name || 'Unassigned'}
                 </div>
               )}
             </div>
@@ -639,7 +707,7 @@ function DeliverableDetailModal({ deliverableId, isOpen, onClose }: { deliverabl
           <div className="mb-6">
             <h3 className="text-lg font-bold text-white mb-3">Assets</h3>
             <div className="space-y-2">
-              {deliverable?.assets?.map((asset: any) => (
+              {(deliverable as any)?.assets?.map((asset: any) => (
                 <div key={asset.id} className="flex items-center justify-between p-3 bg-slate-800/60 rounded-lg">
                   <div>
                     <div className="font-medium text-slate-200">{asset.assetName}</div>
@@ -652,7 +720,7 @@ function DeliverableDetailModal({ deliverableId, isOpen, onClose }: { deliverabl
                   </span>
                 </div>
               ))}
-              {!deliverable?.assets || deliverable.assets.length === 0 && (
+              {!(deliverable as any)?.assets || (deliverable as any).assets.length === 0 && (
                 <div className="text-sm text-slate-500 text-center py-4">
                   No assets added yet
                 </div>
