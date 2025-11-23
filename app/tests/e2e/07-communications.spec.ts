@@ -8,13 +8,6 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Communications Module @p0 @communications', () => {
   test.beforeEach(async ({ page }) => {
-    // Login before each test
-    await page.goto('/login');
-    await page.fill('input[type="email"]', 'test@example.com');
-    await page.fill('input[type="password"]', 'password123');
-    await page.click('button[type="submit"]');
-    await page.waitForURL('**/dashboard');
-
     // Navigate to Communications
     await page.goto('/communications');
     await page.waitForLoadState('networkidle');
@@ -26,15 +19,10 @@ test.describe('Communications Module @p0 @communications', () => {
     await expect(heading).toBeVisible({ timeout: 5000 });
   });
 
-  test('TC-COMM-002: Tab navigation works (Email, SMS, Telegram, Notification Log)', async ({ page }) => {
+  test('TC-COMM-002: Tab navigation works (Email, Telegram, Notification Log)', async ({ page }) => {
     // Check Email tab (default)
     const emailTab = page.locator('button').filter({ hasText: /email/i }).first();
     await expect(emailTab).toBeVisible();
-
-    // Click SMS tab
-    const smsTab = page.locator('button').filter({ hasText: /sms/i }).first();
-    await smsTab.click();
-    await page.waitForTimeout(500);
 
     // Click Telegram tab
     const telegramTab = page.locator('button').filter({ hasText: /telegram/i }).first();

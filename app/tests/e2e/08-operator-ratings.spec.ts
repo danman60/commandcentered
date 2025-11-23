@@ -8,13 +8,6 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Operator Ratings System @p0 @operators @ratings', () => {
   test.beforeEach(async ({ page }) => {
-    // Login before each test
-    await page.goto('/login');
-    await page.fill('input[type="email"]', 'test@example.com');
-    await page.fill('input[type="password"]', 'password123');
-    await page.click('button[type="submit"]');
-    await page.waitForURL('**/dashboard');
-
     // Navigate to Operators
     await page.goto('/operators');
     await page.waitForLoadState('networkidle');
