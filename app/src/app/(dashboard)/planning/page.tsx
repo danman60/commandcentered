@@ -754,6 +754,7 @@ function EventDetailModal({ eventId, isOpen, onClose }: { eventId: string; isOpe
   const { data: operators } = trpc.operator.list.useQuery({});
   const [selectedShiftId, setSelectedShiftId] = useState<string | null>(null);
   const [editingShiftId, setEditingShiftId] = useState<string | null>(null);
+  const [showCommanderGigSheet, setShowCommanderGigSheet] = useState(false);
   const [editShiftData, setEditShiftData] = useState({
     shiftName: '',
     startTime: '',
@@ -1043,9 +1044,7 @@ function EventDetailModal({ eventId, isOpen, onClose }: { eventId: string; isOpe
             <div className="flex gap-3">
               <button
                 type="button"
-                onClick={() => {
-                  alert('Commander Gig Sheet generation coming soon!\n\nThis will generate a comprehensive event brief with:\n• All event details\n• All operators and roles\n• Complete equipment list\n• Venue and parking info\n• Client contacts');
-                }}
+                onClick={() => setShowCommanderGigSheet(true)}
                 className="flex-1 px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-400 hover:to-green-500 text-white font-semibold rounded-lg transition-all flex items-center justify-center gap-2"
               >
                 <span>📄</span>
@@ -1218,6 +1217,216 @@ function EventDetailModal({ eventId, isOpen, onClose }: { eventId: string; isOpe
                 No shifts created yet. Click "Add Shift" to get started.
               </div>
             )}
+          </div>
+        </div>
+      </div>
+
+      {/* Commander Gig Sheet Modal */}
+      {showCommanderGigSheet && event && (
+        <CommanderGigSheetModal
+          event={event}
+          isOpen={showCommanderGigSheet}
+          onClose={() => setShowCommanderGigSheet(false)}
+        />
+      )}
+    </div>
+  );
+}
+
+// Commander Gig Sheet Modal Component
+function CommanderGigSheetModal({ event, isOpen, onClose }: { event: any; isOpen: boolean; onClose: () => void }) {
+  if (!isOpen) return null;
+
+  const loadInDate = new Date(event.loadInTime);
+  const loadOutDate = new Date(event.loadOutTime);
+  const duration = (loadOutDate.getTime() - loadInDate.getTime()) / (1000 * 60 * 60); // hours
+
+  return (
+    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[60]">
+      <div className="bg-slate-900 border-2 border-green-500/30 rounded-xl w-[900px] max-h-[90vh] overflow-y-auto shadow-2xl">
+        {/* Header */}
+        <div className="px-6 py-4 border-b border-green-500/20 flex justify-between items-center bg-gradient-to-r from-green-600/10 to-cyan-600/10">
+          <div>
+            <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+              <span>⚡</span>
+              GIG SHEET: {event.eventName.toUpperCase()}
+            </h2>
+            <p className="text-xs text-slate-400 mt-1 uppercase tracking-wider">Commander Event Brief & Details</p>
+          </div>
+          <button
+            onClick={onClose}
+            className="text-slate-400 hover:text-white text-2xl font-bold"
+          >
+            ×
+          </button>
+        </div>
+
+        {/* Content */}
+        <div className="p-6 space-y-4">
+          {/* Event Details */}
+          <div className="bg-slate-800/50 border border-slate-700/50 rounded-lg p-4">
+            <h3 className="text-lg font-semibold text-green-400 mb-3 flex items-center gap-2">
+              <span>🎬</span>
+              EVENT DETAILS
+            </h3>
+            <div className="space-y-2 text-white">
+              <div className="text-xl font-bold">{event.eventName}</div>
+              <div className="text-slate-300">
+                {loadInDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
+              </div>
+              <div className="text-slate-300">
+                {loadInDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })} - {loadOutDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })} ({duration.toFixed(1)} hours)
+              </div>
+              <div className="text-sm text-slate-400">Type: {event.eventType.replace('_', ' ')}</div>
+            </div>
+          </div>
+
+          {/* Location */}
+          <div className="bg-slate-800/50 border border-slate-700/50 rounded-lg p-4">
+            <h3 className="text-lg font-semibold text-green-400 mb-3 flex items-center gap-2">
+              <span>📍</span>
+              LOCATION
+            </h3>
+            <div className="space-y-2">
+              <div className="text-white font-bold">{event.venueName}</div>
+              <div className="text-slate-300">{event.venueAddress}</div>
+              {event.parkingInstructions && (
+                <div className="mt-3 p-3 bg-slate-900/50 rounded border border-slate-700">
+                  <div className="text-xs font-semibold text-slate-400 mb-1">🅿️ PARKING INSTRUCTIONS</div>
+                  <div className="text-slate-300 text-sm">{event.parkingInstructions}</div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Team (Operators) */}
+          {event.shifts && event.shifts.length > 0 && (
+            <div className="bg-slate-800/50 border border-slate-700/50 rounded-lg p-4">
+              <h3 className="text-lg font-semibold text-green-400 mb-3 flex items-center gap-2">
+                <span>👥</span>
+                TEAM
+              </h3>
+              <div className="space-y-3">
+                {event.shifts.map((shift: any) => (
+                  <div key={shift.id}>
+                    <div className="text-xs font-semibold text-slate-400 mb-2">
+                      {shift.shiftName || 'Shift'}: {new Date(shift.startTime).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })} - {new Date(shift.endTime).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
+                    </div>
+                    <div className="space-y-1">
+                      {shift.shiftAssignments && shift.shiftAssignments.map((assignment: any) => (
+                        <div key={assignment.id} className="text-slate-300 flex items-center gap-2">
+                          <span className="text-green-400">•</span>
+                          <span className="font-medium">{assignment.operator?.name || 'Unknown Operator'}</span>
+                          <span className="text-slate-500">-</span>
+                          <span className="text-sm text-slate-400">{assignment.role || 'Unassigned'}</span>
+                        </div>
+                      ))}
+                      {(!shift.shiftAssignments || shift.shiftAssignments.length === 0) && (
+                        <div className="text-slate-500 italic text-sm">No operators assigned yet</div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Equipment Checklist */}
+          {event.gearAssignments && event.gearAssignments.length > 0 && (
+            <div className="bg-slate-800/50 border border-slate-700/50 rounded-lg p-4">
+              <h3 className="text-lg font-semibold text-green-400 mb-3 flex items-center gap-2">
+                <span>📦</span>
+                EQUIPMENT CHECKLIST
+              </h3>
+              <div className="space-y-1">
+                {event.gearAssignments.map((assignment: any) => (
+                  <div key={assignment.id} className="flex items-center gap-2 text-slate-300">
+                    <input type="checkbox" className="w-4 h-4 rounded border-slate-600" />
+                    <span>{assignment.gear?.name || 'Unknown Gear'}</span>
+                    {assignment.gear?.category && (
+                      <span className="text-xs text-slate-500">({assignment.gear.category})</span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Telegram Group */}
+          {event.telegramGroupId && (
+            <div className="bg-slate-800/50 border border-blue-600/30 rounded-lg p-4">
+              <h3 className="text-lg font-semibold text-blue-400 mb-3 flex items-center gap-2">
+                <span>💬</span>
+                TELEGRAM GROUP
+              </h3>
+              {event.telegramInviteLink ? (
+                <a
+                  href={event.telegramInviteLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block px-4 py-2 bg-blue-500/20 hover:bg-blue-500/30 border border-blue-500 text-blue-300 rounded-lg font-semibold transition-all"
+                >
+                  JOIN GROUP →
+                </a>
+              ) : (
+                <div className="text-slate-400">Group ID: {event.telegramGroupId}</div>
+              )}
+            </div>
+          )}
+
+          {/* Event Notes */}
+          {event.notes && (
+            <div className="bg-slate-800/50 border border-slate-700/50 rounded-lg p-4">
+              <h3 className="text-lg font-semibold text-green-400 mb-3 flex items-center gap-2">
+                <span>📋</span>
+                EVENT NOTES & INSTRUCTIONS
+              </h3>
+              <div className="text-slate-300 whitespace-pre-wrap">{event.notes}</div>
+            </div>
+          )}
+
+          {/* Contacts */}
+          <div className="bg-slate-800/50 border border-slate-700/50 rounded-lg p-4">
+            <h3 className="text-lg font-semibold text-green-400 mb-3 flex items-center gap-2">
+              <span>📞</span>
+              CONTACTS
+            </h3>
+            <div className="space-y-2">
+              {event.clientName && (
+                <div>
+                  <span className="font-semibold text-white">Client:</span>
+                  <span className="text-slate-300 ml-2">{event.clientName}</span>
+                  {event.clientPhone && <span className="text-slate-400 ml-2">({event.clientPhone})</span>}
+                  {event.clientEmail && <span className="text-slate-400 ml-2">- {event.clientEmail}</span>}
+                </div>
+              )}
+              <div>
+                <span className="font-semibold text-white">Venue:</span>
+                <span className="text-slate-300 ml-2">{event.venueName}</span>
+              </div>
+              <div className="mt-3 p-2 bg-red-500/10 border border-red-500/30 rounded">
+                <div className="text-red-400 font-bold text-sm">🚨 EMERGENCY CONTACT</div>
+                <div className="text-slate-300 text-sm">Commander: (Contact info from profile)</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Export Options */}
+          <div className="flex gap-3 pt-4">
+            <button
+              onClick={() => window.print()}
+              className="flex-1 px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-400 hover:to-green-500 text-white font-semibold rounded-lg transition-all flex items-center justify-center gap-2"
+            >
+              <span>🖨️</span>
+              Print Gig Sheet
+            </button>
+            <button
+              onClick={() => alert('Email functionality coming soon!')}
+              className="flex-1 px-4 py-2 bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-400 hover:to-cyan-500 text-white font-semibold rounded-lg transition-all flex items-center justify-center gap-2"
+            >
+              <span>📧</span>
+              Email to Team
+            </button>
           </div>
         </div>
       </div>
