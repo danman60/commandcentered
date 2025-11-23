@@ -64,7 +64,7 @@ export default function OperatorsPage() {
       role: skills[0] || 'Operator', // Use first skill as primary role
       hourlyRate: Number(op.hourlyRate),
       eventsThisYear,
-      avgRating: 0, // TODO: Implement rating system
+      avgRating: op.averageRating ? Number(op.averageRating) : 0,
       skills: skills.slice(0, 5), // Top 5 skills
       availabilityStatus,
       available,
