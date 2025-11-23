@@ -924,6 +924,112 @@ function EventDetailModal({ eventId, isOpen, onClose }: { eventId: string; isOpe
             </div>
           )}
 
+          {/* Integrations */}
+          {(event.vimeoEventId || event.telegramGroupId || event.googleDriveFolderId) && (
+            <div className="bg-slate-800/50 border border-slate-700/50 rounded-lg p-4">
+              <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                <span className="text-xl">🔗</span>
+                Integrations
+              </h3>
+
+              <div className="space-y-4">
+                {/* Vimeo Livestream */}
+                {event.vimeoEventId && (
+                  <div className="bg-slate-900/50 border border-purple-600/30 rounded-lg p-4">
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className="text-2xl">📹</span>
+                      <h4 className="text-md font-semibold text-purple-400">Vimeo Livestream</h4>
+                    </div>
+                    <div className="grid grid-cols-1 gap-3">
+                      <div>
+                        <div className="text-xs font-semibold text-slate-400 mb-1">Event ID</div>
+                        <div className="text-white text-sm font-mono bg-slate-800 px-3 py-2 rounded border border-slate-700">
+                          {event.vimeoEventId}
+                        </div>
+                      </div>
+                      <div className="text-xs text-slate-400 italic">
+                        Stream configuration available in Settings → Integrations
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Telegram Group */}
+                {event.telegramGroupId && (
+                  <div className="bg-slate-900/50 border border-blue-600/30 rounded-lg p-4">
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className="text-2xl">💬</span>
+                      <h4 className="text-md font-semibold text-blue-400">Telegram Group</h4>
+                    </div>
+                    <div className="grid grid-cols-1 gap-3">
+                      <div>
+                        <div className="text-xs font-semibold text-slate-400 mb-1">Group ID</div>
+                        <div className="text-white text-sm font-mono bg-slate-800 px-3 py-2 rounded border border-slate-700">
+                          {event.telegramGroupId}
+                        </div>
+                      </div>
+                      {event.telegramInviteLink && (
+                        <div>
+                          <div className="text-xs font-semibold text-slate-400 mb-1">Invite Link</div>
+                          <a
+                            href={event.telegramInviteLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-400 text-sm hover:text-blue-300 underline break-all"
+                          >
+                            {event.telegramInviteLink}
+                          </a>
+                        </div>
+                      )}
+                      {event.telegramGroupCreatedAt && (
+                        <div>
+                          <div className="text-xs font-semibold text-slate-400 mb-1">Created</div>
+                          <div className="text-slate-300 text-sm">
+                            {new Date(event.telegramGroupCreatedAt).toLocaleString()}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* Google Drive Folder */}
+                {event.googleDriveFolderId && (
+                  <div className="bg-slate-900/50 border border-green-600/30 rounded-lg p-4">
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className="text-2xl">📁</span>
+                      <h4 className="text-md font-semibold text-green-400">Google Drive Folder</h4>
+                    </div>
+                    <div className="grid grid-cols-1 gap-3">
+                      <div>
+                        <div className="text-xs font-semibold text-slate-400 mb-1">Folder ID</div>
+                        <div className="text-white text-sm font-mono bg-slate-800 px-3 py-2 rounded border border-slate-700">
+                          {event.googleDriveFolderId}
+                        </div>
+                      </div>
+                      {event.googleDriveFolderUrl && (
+                        <div>
+                          <div className="text-xs font-semibold text-slate-400 mb-1">Folder URL</div>
+                          <a
+                            href={event.googleDriveFolderUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-green-400 text-sm hover:text-green-300 underline break-all inline-flex items-center gap-1"
+                          >
+                            Open in Google Drive
+                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                            </svg>
+                          </a>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
           {/* Shift Builder */}
           <div>
             <div className="flex justify-between items-center mb-4">
