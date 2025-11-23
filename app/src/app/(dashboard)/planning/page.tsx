@@ -147,7 +147,7 @@ function DroppableCalendarDay({
             </div>
             <div className="flex gap-1 flex-wrap">
               {event.shifts?.flatMap((shift: any) =>
-                shift.assignments?.map((assignment: any, idx: number) => (
+                shift.shiftAssignments?.map((assignment: any, idx: number) => (
                   <span
                     key={idx}
                     className="bg-black/30 px-1.5 py-0.5 rounded text-[10px] font-bold text-white"
@@ -156,9 +156,24 @@ function DroppableCalendarDay({
                   </span>
                 )) || []
               ) || []}
-              {event.gearAssignments?.slice(0, 2).map((ga: any, idx: number) => (
-                <span key={idx} className="text-xs">📷</span>
-              )) || []}
+              {(() => {
+                // Group gear assignments by kit
+                const kitGroups = event.gearAssignments?.reduce((acc: any, ga: any) => {
+                  if (ga.kit) {
+                    if (!acc[ga.kit.id]) {
+                      acc[ga.kit.id] = { name: ga.kit.kitName, count: 0 };
+                    }
+                    acc[ga.kit.id].count++;
+                  }
+                  return acc;
+                }, {}) || {};
+
+                return Object.values(kitGroups).slice(0, 2).map((kit: any, idx: number) => (
+                  <span key={idx} className="bg-purple-500/20 px-1.5 py-0.5 rounded text-[10px] font-bold text-purple-300">
+                    📷 {kit.name}
+                  </span>
+                ));
+              })()}
             </div>
           </div>
         ))}
@@ -196,6 +211,12 @@ export default function PlanningPage() {
   });
 
   const assignGear = trpc.gearAssignment.assign.useMutation({
+    onSuccess: () => {
+      window.location.reload();
+    },
+  });
+
+  const bulkAssignGear = trpc.gearAssignment.bulkAssign.useMutation({
     onSuccess: () => {
       window.location.reload();
     },
@@ -313,7 +334,7 @@ export default function PlanningPage() {
 
       if (dropData.eventId) {
         // Found an existing event on this day
-        const droppedEvent = events?.find(e => e.id === dropData.eventId);
+        const droppedEvent = events?.find(e => e.id === dropData.eventId) as any;
 
         if (dragData.type === 'operator') {
           // Assign operator to event
@@ -342,11 +363,15 @@ export default function PlanningPage() {
             });
           }
         } else if (dragData.type === 'kit') {
-          // Assign kit/gear to event
-          assignGear.mutate({
-            eventId: dropData.eventId,
-            gearId: dragData.id,
-          });
+          // Assign all gear in kit to event
+          const kit = kits?.find(k => k.id === dragData.id);
+          if (kit && kit.gearIds && kit.gearIds.length > 0) {
+            bulkAssignGear.mutate({
+              eventId: dropData.eventId,
+              gearIds: kit.gearIds,
+              kitId: kit.id,
+            });
+          }
         }
       } else {
         // No event on this day - could create a new event or show a modal
@@ -534,6 +559,17 @@ export default function PlanningPage() {
           onClose={() => setIsKitModalOpen(false)}
         />
       )}
+
+      {/* Drag Overlay */}
+      <DragOverlay>
+        {activeDragItem ? (
+          <div className="bg-slate-800 border-2 border-green-500 rounded-lg p-3 shadow-2xl opacity-90">
+            <div className="font-bold text-white">
+              {activeDragItem.type === 'operator' ? '👤' : '📷'} {activeDragItem.name}
+            </div>
+          </div>
+        ) : null}
+      </DragOverlay>
       </div>
     </DndContext>
   );
@@ -717,11 +753,24 @@ function EventDetailModal({ eventId, isOpen, onClose }: { eventId: string; isOpe
   const { data: event, refetch: refetchEvent } = trpc.event.getById.useQuery({ id: eventId });
   const { data: operators } = trpc.operator.list.useQuery({});
   const [selectedShiftId, setSelectedShiftId] = useState<string | null>(null);
+  const [editingShiftId, setEditingShiftId] = useState<string | null>(null);
+  const [editShiftData, setEditShiftData] = useState({
+    shiftName: '',
+    startTime: '',
+    endTime: '',
+  });
 
   const createShift = trpc.shift.create.useMutation({
     onSuccess: () => {
       // Refetch event data to show new shift without page reload
       refetchEvent();
+    },
+  });
+
+  const updateShift = trpc.shift.update.useMutation({
+    onSuccess: () => {
+      refetchEvent();
+      setEditingShiftId(null);
     },
   });
 
@@ -731,6 +780,30 @@ function EventDetailModal({ eventId, isOpen, onClose }: { eventId: string; isOpe
       refetchEvent();
     },
   });
+
+  const startEditShift = (shift: any) => {
+    setEditingShiftId(shift.id);
+    setEditShiftData({
+      shiftName: shift.shiftName || shift.role || 'Default Shift',
+      startTime: new Date(shift.startTime).toISOString().slice(0, 16),
+      endTime: new Date(shift.endTime).toISOString().slice(0, 16),
+    });
+  };
+
+  const saveShiftEdit = () => {
+    if (!editingShiftId) return;
+    updateShift.mutate({
+      id: editingShiftId,
+      shiftName: editShiftData.shiftName,
+      startTime: new Date(editShiftData.startTime),
+      endTime: new Date(editShiftData.endTime),
+    });
+  };
+
+  const cancelShiftEdit = () => {
+    setEditingShiftId(null);
+    setEditShiftData({ shiftName: '', startTime: '', endTime: '' });
+  };
 
   if (!isOpen || !event) return null;
 
@@ -881,25 +954,86 @@ function EventDetailModal({ eventId, isOpen, onClose }: { eventId: string; isOpe
               <div className="space-y-3">
                 {event.shifts.map((shift: any) => (
                   <div key={shift.id} className="bg-slate-800 border border-slate-700 rounded-lg p-4">
-                    <div className="flex justify-between items-start mb-3">
-                      <div>
-                        <div className="font-bold text-white">{shift.role}</div>
-                        <div className="text-sm text-slate-400">
-                          {new Date(shift.startTime).toLocaleString()} - {new Date(shift.endTime).toLocaleString()}
+                    {editingShiftId === shift.id ? (
+                      // Edit Mode
+                      <div className="space-y-3">
+                        <div>
+                          <label className="block text-xs font-semibold text-slate-400 mb-1">Shift Name</label>
+                          <input
+                            type="text"
+                            value={editShiftData.shiftName}
+                            onChange={(e) => setEditShiftData({ ...editShiftData, shiftName: e.target.value })}
+                            className="w-full px-3 py-2 bg-slate-900 border border-slate-600 rounded text-white text-sm focus:outline-none focus:border-green-500"
+                          />
+                        </div>
+                        <div className="grid grid-cols-2 gap-3">
+                          <div>
+                            <label className="block text-xs font-semibold text-slate-400 mb-1">Start Time</label>
+                            <input
+                              type="datetime-local"
+                              value={editShiftData.startTime}
+                              onChange={(e) => setEditShiftData({ ...editShiftData, startTime: e.target.value })}
+                              className="w-full px-3 py-2 bg-slate-900 border border-slate-600 rounded text-white text-sm focus:outline-none focus:border-green-500"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-xs font-semibold text-slate-400 mb-1">End Time</label>
+                            <input
+                              type="datetime-local"
+                              value={editShiftData.endTime}
+                              onChange={(e) => setEditShiftData({ ...editShiftData, endTime: e.target.value })}
+                              className="w-full px-3 py-2 bg-slate-900 border border-slate-600 rounded text-white text-sm focus:outline-none focus:border-green-500"
+                            />
+                          </div>
+                        </div>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={saveShiftEdit}
+                            disabled={updateShift.isPending}
+                            className="px-3 py-1 bg-green-500 hover:bg-green-600 text-white rounded text-sm font-semibold disabled:opacity-50"
+                          >
+                            {updateShift.isPending ? 'Saving...' : 'Save'}
+                          </button>
+                          <button
+                            onClick={cancelShiftEdit}
+                            className="px-3 py-1 bg-slate-700 hover:bg-slate-600 text-white rounded text-sm font-semibold"
+                          >
+                            Cancel
+                          </button>
                         </div>
                       </div>
-                      <button
-                        onClick={() => setSelectedShiftId(shift.id)}
-                        className="px-3 py-1 bg-green-500/20 border border-green-500/30 text-green-400 hover:bg-green-500/30 rounded text-sm font-semibold"
-                      >
-                        Assign Operator
-                      </button>
-                    </div>
+                    ) : (
+                      // View Mode
+                      <>
+                        <div className="flex justify-between items-start mb-3">
+                          <div>
+                            <div className="font-bold text-white">{shift.shiftName || shift.role || 'Default Shift'}</div>
+                            <div className="text-sm text-slate-400">
+                              {new Date(shift.startTime).toLocaleString()} - {new Date(shift.endTime).toLocaleString()}
+                            </div>
+                          </div>
+                          <div className="flex gap-2">
+                            <button
+                              onClick={() => startEditShift(shift)}
+                              className="px-3 py-1 bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 rounded text-sm font-semibold"
+                            >
+                              ✏️ Edit
+                            </button>
+                            <button
+                              onClick={() => setSelectedShiftId(shift.id)}
+                              className="px-3 py-1 bg-green-500/20 border border-green-500/30 text-green-400 hover:bg-green-500/30 rounded text-sm font-semibold"
+                            >
+                              + Operator
+                            </button>
+                          </div>
+                        </div>
+                      </>
+                    )}
 
                     {/* Assigned Operators */}
-                    {shift.assignments && shift.assignments.length > 0 && (
+                    {!editingShiftId && shift.shiftAssignments && shift.shiftAssignments.length > 0 && (
                       <div className="flex flex-wrap gap-2">
-                        {shift.assignments.map((assignment: any) => (
+                        {shift.shiftAssignments.map((assignment: any) => (
                           <div
                             key={assignment.id}
                             className="bg-green-500/20 border border-green-500/30 px-3 py-1 rounded-full text-sm text-green-300"
@@ -911,7 +1045,7 @@ function EventDetailModal({ eventId, isOpen, onClose }: { eventId: string; isOpe
                     )}
 
                     {/* Operator Selection */}
-                    {selectedShiftId === shift.id && (
+                    {!editingShiftId && selectedShiftId === shift.id && (
                       <div className="mt-3 pt-3 border-t border-slate-700">
                         <div className="text-sm font-semibold text-slate-300 mb-2">
                           Select Operator:

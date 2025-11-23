@@ -91,6 +91,8 @@ model Tenant {
   campaignSteps                CampaignStep[] // Phase 13 - Email Campaigns
   campaignLeads                CampaignLead[] // Phase 13 - Email Campaigns
   files                        File[] // File Upload System
+  voiceCommands                VoiceCommand[] // AI Voice Agent
+  aiExecutions                 AIExecution[] // AI Voice Agent
 
   @@map("tenants")
   @@schema("commandcentered")
@@ -116,6 +118,8 @@ model UserProfile {
   dashboardWidgetPreferences DashboardWidgetPreference[] // Round 6 - GAP-09
   savedLeadSearches          SavedLeadSearch[] // Phase 12 - Lead Finder
   filesUploaded              File[] // File Upload System
+  voiceCommands              VoiceCommand[] // AI Voice Agent
+  userPreferences            UserPreferences? // User Customization
 
   @@unique([tenantId, email])
   @@index([tenantId])
@@ -2565,5 +2569,128 @@ model File {
   @@index([leadId])
   @@index([uploadedById])
   @@map("files")
+  @@schema("commandcentered")
+}
+
+// ============================================
+// AI VOICE AGENT SYSTEM
+// ============================================
+
+model VoiceCommand {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+
+  tenantId String      @map("tenant_id") @db.Uuid
+  tenant   Tenant      @relation(fields: [tenantId], references: [id], onDelete: Restrict)
+  userId   String      @map("user_id") @db.Uuid
+  user     UserProfile @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Voice Input
+  audioUrl      String? @map("audio_url") @db.Text // Stored audio file URL
+  transcription String  @db.Text // Whisper transcription
+
+  // AI Processing
+  parsedIntent Json    @map("parsed_intent") @db.JsonB // GPT-4 parsed intent
+  action       String  @db.VarChar(50) // "query", "create", "update", "delete"
+  entityType   String? @map("entity_type") @db.VarChar(50) // "event", "operator", "kit", etc.
+  entityId     String? @map("entity_id") @db.Uuid
+
+  // Execution
+  status        CommandStatus @default(PENDING)
+  requiresConfirmation Boolean   @default(false) @map("requires_confirmation")
+  confirmedAt   DateTime?     @map("confirmed_at")
+  executedAt    DateTime?     @map("executed_at")
+
+  // Results
+  success      Boolean @default(false)
+  errorMessage String? @map("error_message") @db.Text
+  result       Json?   @db.JsonB // Command execution result
+
+  aiExecutions AIExecution[]
+
+  @@index([tenantId])
+  @@index([userId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("voice_commands")
+  @@schema("commandcentered")
+}
+
+enum CommandStatus {
+  PENDING           @map("pending")
+  AWAITING_CONFIRMATION @map("awaiting_confirmation")
+  CONFIRMED         @map("confirmed")
+  EXECUTING         @map("executing")
+  COMPLETED         @map("completed")
+  FAILED            @map("failed")
+  CANCELLED         @map("cancelled")
+
+  @@map("command_status")
+  @@schema("commandcentered")
+}
+
+model AIExecution {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+
+  tenantId String @map("tenant_id") @db.Uuid
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Restrict)
+
+  voiceCommandId String?      @map("voice_command_id") @db.Uuid
+  voiceCommand   VoiceCommand? @relation(fields: [voiceCommandId], references: [id], onDelete: SetNull)
+
+  // AI Model Info
+  model         String @db.VarChar(50) // "gpt-4", "whisper-1"
+  executionType String @map("execution_type") @db.VarChar(50) // "transcription", "parsing", "generation"
+
+  // Input/Output
+  inputTokens  Int?   @map("input_tokens")
+  outputTokens Int?   @map("output_tokens")
+  cost         Float? // Approximate cost in USD
+  latencyMs    Int?   @map("latency_ms")
+
+  // Request/Response
+  request  Json @db.JsonB
+  response Json @db.JsonB
+
+  @@index([tenantId])
+  @@index([voiceCommandId])
+  @@index([model])
+  @@index([createdAt])
+  @@map("ai_executions")
+  @@schema("commandcentered")
+}
+
+// ============================================
+// USER PREFERENCES & CUSTOMIZATION
+// ============================================
+
+model UserPreferences {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  userId String      @unique @map("user_id") @db.Uuid
+  user   UserProfile @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Dashboard Customization
+  dashboardLayout Json? @map("dashboard_layout") @db.JsonB // React Grid Layout config
+  visibleWidgets  String[] @default([]) @map("visible_widgets") // Widget IDs that are visible
+
+  // Navigation Customization
+  navigationCollapsed Boolean @default(false) @map("navigation_collapsed")
+  navigationOrder     Json?   @map("navigation_order") @db.JsonB // Custom nav item order
+  navigationLabels    Json?   @map("navigation_labels") @db.JsonB // Custom nav item labels
+
+  // View Preferences
+  defaultViewTypes Json? @map("default_view_types") @db.JsonB // Default view per page (card/table/calendar)
+  panelSizes       Json? @map("panel_sizes") @db.JsonB // Resizable panel widths
+
+  // Other Preferences
+  theme          String @default("dark") @db.VarChar(20) // "light", "dark", "tactical"
+  notificationsEnabled Boolean @default(true) @map("notifications_enabled")
+
+  @@index([userId])
+  @@map("user_preferences")
   @@schema("commandcentered")
 }

@@ -110,6 +110,12 @@ export const eventRouter = router({
                   category: true,
                 },
               },
+              kit: {
+                select: {
+                  id: true,
+                  kitName: true,
+                },
+              },
             },
           },
           alerts: {
@@ -508,11 +514,35 @@ export const eventRouter = router({
         },
         include: {
           shifts: {
-            select: {
-              id: true,
-              shiftName: true,
-              startTime: true,
-              endTime: true,
+            include: {
+              shiftAssignments: {
+                include: {
+                  operator: {
+                    select: {
+                      id: true,
+                      name: true,
+                    },
+                  },
+                },
+              },
+            },
+            orderBy: { startTime: 'asc' },
+          },
+          gearAssignments: {
+            include: {
+              gear: {
+                select: {
+                  id: true,
+                  name: true,
+                  category: true,
+                },
+              },
+              kit: {
+                select: {
+                  id: true,
+                  kitName: true,
+                },
+              },
             },
           },
           deliverables: {

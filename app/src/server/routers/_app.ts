@@ -19,9 +19,11 @@ import { proposalRouter } from './proposal';
 import { leadFinderRouter } from './leadFinder';
 import { campaignRouter } from './campaign';
 import { crmRouter } from './crm';
+import { serviceTemplateRouter } from './serviceTemplate';
+import { userPreferencesRouter } from './userPreferences';
 
 /**
- * Main tRPC router - 20 routers, ~151 procedures
+ * Main tRPC router - 22 routers, ~166 procedures
  *
  * All routers enforce multi-tenant isolation via tenantProcedure
  */
@@ -46,6 +48,8 @@ export const appRouter = router({
   leadFinder: leadFinderRouter, // 7 procedures (Phase 12)
   campaign: campaignRouter, // 11 procedures (Phase 13)
   crm: crmRouter, // 3 procedures
+  serviceTemplate: serviceTemplateRouter, // 7 procedures
+  userPreferences: userPreferencesRouter, // 8 procedures
 });
 
 export type AppRouter = typeof appRouter;

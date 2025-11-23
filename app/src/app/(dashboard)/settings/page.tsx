@@ -51,6 +51,24 @@ export default function SettingsPage() {
   const [googleDriveEnabled, setGoogleDriveEnabled] = useState(false);
   const [googleDriveParentFolderId, setGoogleDriveParentFolderId] = useState('');
 
+  // Integration API keys (stored in SystemSettings or future IntegrationSettings model)
+  const [openaiApiKey, setOpenaiApiKey] = useState('');
+  const [openaiOrgId, setOpenaiOrgId] = useState('');
+
+  const [vimeoAccessToken, setVimeoAccessToken] = useState('');
+  const [vimeoClientId, setVimeoClientId] = useState('');
+  const [vimeoClientSecret, setVimeoClientSecret] = useState('');
+
+  const [telegramBotToken, setTelegramBotToken] = useState('');
+  const [telegramBotUsername, setTelegramBotUsername] = useState('');
+
+  const [googleClientId, setGoogleClientId] = useState('');
+  const [googleClientSecret, setGoogleClientSecret] = useState('');
+  const [googleServiceAccountEmail, setGoogleServiceAccountEmail] = useState('');
+  const [googleServiceAccountKey, setGoogleServiceAccountKey] = useState('');
+
+  const [signwellApiKey, setSignwellApiKey] = useState('');
+
   // Initialize form values when settings load
   useState(() => {
     if (settings) {
@@ -513,91 +531,307 @@ export default function SettingsPage() {
               <div>
                 <h2 className="text-2xl font-bold text-green-500 mb-6">Integrations</h2>
 
-                <div className="space-y-6">
-                  {/* Google Drive */}
-                  <div className="pb-6 border-b border-slate-700/30">
-                    <div className="flex items-center justify-between mb-4">
-                      <div>
-                        <label className="block text-sm font-semibold text-slate-300 mb-1">
-                          Google Drive Integration
-                        </label>
-                        <p className="text-xs text-slate-500">
-                          Sync files and deliverables to Google Drive
-                        </p>
+                <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4 mb-6">
+                  <div className="flex items-start gap-3">
+                    <div className="text-2xl">ℹ️</div>
+                    <div>
+                      <div className="text-sm font-semibold text-blue-500">API Keys Storage</div>
+                      <div className="text-xs text-blue-500/80 mt-1">
+                        These integration keys are stored in your database settings. For production use, configure them in environment variables instead.
                       </div>
-                      <button
-                        onClick={() => setGoogleDriveEnabled(!googleDriveEnabled)}
-                        className={`w-14 h-7 rounded-full transition-all relative ${
-                          googleDriveEnabled ? 'bg-green-500' : 'bg-slate-700'
-                        }`}
-                      >
-                        <div
-                          className={`w-6 h-6 bg-white rounded-full absolute top-0.5 transition-all ${
-                            googleDriveEnabled ? 'left-7' : 'left-0.5'
-                          }`}
-                        ></div>
-                      </button>
                     </div>
+                  </div>
+                </div>
 
-                    {googleDriveEnabled && (
-                      <div className="mt-4">
+                <div className="space-y-8">
+                  {/* OpenAI Integration */}
+                  <div className="pb-6 border-b border-slate-700/30">
+                    <h3 className="text-lg font-semibold text-slate-300 mb-4 flex items-center gap-2">
+                      <span>🤖</span> OpenAI (Voice Agent + AI Features)
+                    </h3>
+
+                    <div className="space-y-4">
+                      <div>
                         <label className="block text-sm font-semibold text-slate-300 mb-2">
-                          Parent Folder ID
+                          API Key
                         </label>
-                        <p className="text-xs text-slate-500 mb-3">
-                          Google Drive folder ID where files will be stored
+                        <p className="text-xs text-slate-500 mb-2">
+                          Your OpenAI API key (starts with sk-)
                         </p>
                         <input
-                          type="text"
-                          value={googleDriveParentFolderId}
-                          onChange={(e) => setGoogleDriveParentFolderId(e.target.value)}
-                          placeholder="1a2b3c4d5e6f7g8h9i0j"
+                          type="password"
+                          value={openaiApiKey}
+                          onChange={(e) => setOpenaiApiKey(e.target.value)}
+                          placeholder="sk-••••••••••••••••"
                           className="w-full px-4 py-3 bg-slate-900/60 border border-slate-700/50 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-green-500"
                         />
                       </div>
-                    )}
-                  </div>
 
-                  {/* Vimeo Integration (Placeholder) */}
-                  <div className="pb-6 border-b border-slate-700/30">
-                    <div className="flex items-center justify-between mb-4">
                       <div>
-                        <label className="block text-sm font-semibold text-slate-300 mb-1">
-                          Vimeo Integration
+                        <label className="block text-sm font-semibold text-slate-300 mb-2">
+                          Organization ID (Optional)
                         </label>
-                        <p className="text-xs text-slate-500">
-                          Manage livestreams and video hosting
+                        <p className="text-xs text-slate-500 mb-2">
+                          Your OpenAI organization ID (starts with org-)
                         </p>
+                        <input
+                          type="text"
+                          value={openaiOrgId}
+                          onChange={(e) => setOpenaiOrgId(e.target.value)}
+                          placeholder="org-••••••••••••••••"
+                          className="w-full px-4 py-3 bg-slate-900/60 border border-slate-700/50 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-green-500"
+                        />
                       </div>
-                      <button
-                        disabled
-                        className="w-14 h-7 rounded-full bg-slate-700 opacity-50 cursor-not-allowed relative"
-                      >
-                        <div className="w-6 h-6 bg-white rounded-full absolute top-0.5 left-0.5"></div>
+
+                      <button className="px-4 py-2 bg-slate-700/50 border border-slate-600/50 rounded-lg text-sm text-slate-300 hover:bg-slate-700 transition-all">
+                        🔌 Test Connection
                       </button>
                     </div>
-                    <p className="text-xs text-slate-500">Coming soon</p>
                   </div>
 
-                  {/* Telegram Integration (Placeholder) */}
+                  {/* Vimeo Integration */}
                   <div className="pb-6 border-b border-slate-700/30">
-                    <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-lg font-semibold text-slate-300 mb-4 flex items-center gap-2">
+                      <span>📹</span> Vimeo (Livestream Integration)
+                    </h3>
+
+                    <div className="space-y-4">
                       <div>
-                        <label className="block text-sm font-semibold text-slate-300 mb-1">
-                          Telegram Bot Integration
+                        <label className="block text-sm font-semibold text-slate-300 mb-2">
+                          Access Token
                         </label>
-                        <p className="text-xs text-slate-500">
-                          Send notifications via Telegram
+                        <p className="text-xs text-slate-500 mb-2">
+                          Your Vimeo personal access token
                         </p>
+                        <input
+                          type="password"
+                          value={vimeoAccessToken}
+                          onChange={(e) => setVimeoAccessToken(e.target.value)}
+                          placeholder="••••••••••••••••"
+                          className="w-full px-4 py-3 bg-slate-900/60 border border-slate-700/50 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-green-500"
+                        />
                       </div>
-                      <button
-                        disabled
-                        className="w-14 h-7 rounded-full bg-slate-700 opacity-50 cursor-not-allowed relative"
-                      >
-                        <div className="w-6 h-6 bg-white rounded-full absolute top-0.5 left-0.5"></div>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-semibold text-slate-300 mb-2">
+                            Client ID
+                          </label>
+                          <input
+                            type="text"
+                            value={vimeoClientId}
+                            onChange={(e) => setVimeoClientId(e.target.value)}
+                            placeholder="Client ID"
+                            className="w-full px-4 py-3 bg-slate-900/60 border border-slate-700/50 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-green-500"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-semibold text-slate-300 mb-2">
+                            Client Secret
+                          </label>
+                          <input
+                            type="password"
+                            value={vimeoClientSecret}
+                            onChange={(e) => setVimeoClientSecret(e.target.value)}
+                            placeholder="Client Secret"
+                            className="w-full px-4 py-3 bg-slate-900/60 border border-slate-700/50 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-green-500"
+                          />
+                        </div>
+                      </div>
+
+                      <button className="px-4 py-2 bg-slate-700/50 border border-slate-600/50 rounded-lg text-sm text-slate-300 hover:bg-slate-700 transition-all">
+                        🔌 Test Connection
                       </button>
                     </div>
-                    <p className="text-xs text-slate-500">Coming soon</p>
+                  </div>
+
+                  {/* Telegram Integration */}
+                  <div className="pb-6 border-b border-slate-700/30">
+                    <h3 className="text-lg font-semibold text-slate-300 mb-4 flex items-center gap-2">
+                      <span>💬</span> Telegram (Operator Coordination)
+                    </h3>
+
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-semibold text-slate-300 mb-2">
+                          Bot Token
+                        </label>
+                        <p className="text-xs text-slate-500 mb-2">
+                          Your Telegram bot token from @BotFather
+                        </p>
+                        <input
+                          type="password"
+                          value={telegramBotToken}
+                          onChange={(e) => setTelegramBotToken(e.target.value)}
+                          placeholder="••••••••:••••••••••••••••"
+                          className="w-full px-4 py-3 bg-slate-900/60 border border-slate-700/50 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-green-500"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-semibold text-slate-300 mb-2">
+                          Bot Username
+                        </label>
+                        <p className="text-xs text-slate-500 mb-2">
+                          Your bot's username (without @)
+                        </p>
+                        <input
+                          type="text"
+                          value={telegramBotUsername}
+                          onChange={(e) => setTelegramBotUsername(e.target.value)}
+                          placeholder="your_bot_username"
+                          className="w-full px-4 py-3 bg-slate-900/60 border border-slate-700/50 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-green-500"
+                        />
+                      </div>
+
+                      <button className="px-4 py-2 bg-slate-700/50 border border-slate-600/50 rounded-lg text-sm text-slate-300 hover:bg-slate-700 transition-all">
+                        🔌 Test Connection
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Google APIs Integration */}
+                  <div className="pb-6 border-b border-slate-700/30">
+                    <h3 className="text-lg font-semibold text-slate-300 mb-4 flex items-center gap-2">
+                      <span>🔍</span> Google APIs (Drive + Gmail)
+                    </h3>
+
+                    <div className="space-y-4">
+                      {/* Google Drive Toggle */}
+                      <div className="bg-slate-800/30 rounded-lg p-4">
+                        <div className="flex items-center justify-between mb-4">
+                          <div>
+                            <label className="block text-sm font-semibold text-slate-300 mb-1">
+                              Enable Google Drive
+                            </label>
+                            <p className="text-xs text-slate-500">
+                              Automatically create folders for events
+                            </p>
+                          </div>
+                          <button
+                            onClick={() => setGoogleDriveEnabled(!googleDriveEnabled)}
+                            className={`w-14 h-7 rounded-full transition-all relative ${
+                              googleDriveEnabled ? 'bg-green-500' : 'bg-slate-700'
+                            }`}
+                          >
+                            <div
+                              className={`w-6 h-6 bg-white rounded-full absolute top-0.5 transition-all ${
+                                googleDriveEnabled ? 'left-7' : 'left-0.5'
+                              }`}
+                            ></div>
+                          </button>
+                        </div>
+
+                        {googleDriveEnabled && (
+                          <div>
+                            <label className="block text-sm font-semibold text-slate-300 mb-2">
+                              Parent Folder ID
+                            </label>
+                            <p className="text-xs text-slate-500 mb-2">
+                              Google Drive folder ID where event folders will be created
+                            </p>
+                            <input
+                              type="text"
+                              value={googleDriveParentFolderId}
+                              onChange={(e) => setGoogleDriveParentFolderId(e.target.value)}
+                              placeholder="1a2b3c4d5e6f7g8h9i0j"
+                              className="w-full px-4 py-3 bg-slate-900/60 border border-slate-700/50 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-green-500"
+                            />
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-semibold text-slate-300 mb-2">
+                            OAuth Client ID
+                          </label>
+                          <input
+                            type="text"
+                            value={googleClientId}
+                            onChange={(e) => setGoogleClientId(e.target.value)}
+                            placeholder="••••••••.apps.googleusercontent.com"
+                            className="w-full px-4 py-3 bg-slate-900/60 border border-slate-700/50 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-green-500"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-semibold text-slate-300 mb-2">
+                            OAuth Client Secret
+                          </label>
+                          <input
+                            type="password"
+                            value={googleClientSecret}
+                            onChange={(e) => setGoogleClientSecret(e.target.value)}
+                            placeholder="••••••••••••••••"
+                            className="w-full px-4 py-3 bg-slate-900/60 border border-slate-700/50 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-green-500"
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-semibold text-slate-300 mb-2">
+                          Service Account Email
+                        </label>
+                        <input
+                          type="email"
+                          value={googleServiceAccountEmail}
+                          onChange={(e) => setGoogleServiceAccountEmail(e.target.value)}
+                          placeholder="service-account@project.iam.gserviceaccount.com"
+                          className="w-full px-4 py-3 bg-slate-900/60 border border-slate-700/50 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-green-500"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-semibold text-slate-300 mb-2">
+                          Service Account Key (Base64)
+                        </label>
+                        <p className="text-xs text-slate-500 mb-2">
+                          Base64-encoded JSON service account key
+                        </p>
+                        <textarea
+                          value={googleServiceAccountKey}
+                          onChange={(e) => setGoogleServiceAccountKey(e.target.value)}
+                          placeholder="eyJ0eXBlIjoic2VydmljZV9hY2NvdW50..."
+                          rows={3}
+                          className="w-full px-4 py-3 bg-slate-900/60 border border-slate-700/50 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-green-500 font-mono text-xs"
+                        />
+                      </div>
+
+                      <button className="px-4 py-2 bg-slate-700/50 border border-slate-600/50 rounded-lg text-sm text-slate-300 hover:bg-slate-700 transition-all">
+                        🔌 Test Connection
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* SignWell Integration */}
+                  <div className="pb-6 border-b border-slate-700/30">
+                    <h3 className="text-lg font-semibold text-slate-300 mb-4 flex items-center gap-2">
+                      <span>✍️</span> SignWell (E-Signatures)
+                    </h3>
+
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-semibold text-slate-300 mb-2">
+                          API Key
+                        </label>
+                        <p className="text-xs text-slate-500 mb-2">
+                          Your SignWell API key
+                        </p>
+                        <input
+                          type="password"
+                          value={signwellApiKey}
+                          onChange={(e) => setSignwellApiKey(e.target.value)}
+                          placeholder="••••••••••••••••"
+                          className="w-full px-4 py-3 bg-slate-900/60 border border-slate-700/50 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:border-green-500"
+                        />
+                      </div>
+
+                      <button className="px-4 py-2 bg-slate-700/50 border border-slate-600/50 rounded-lg text-sm text-slate-300 hover:bg-slate-700 transition-all">
+                        🔌 Test Connection
+                      </button>
+                    </div>
                   </div>
                 </div>
 
