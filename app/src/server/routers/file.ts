@@ -251,28 +251,45 @@ export const fileRouter = router({
       }
     }),
 
-  // Vimeo integration
-  // Full implementation requires Vimeo OAuth token
+  // Vimeo integration - List live events
   listLivestreams: tenantProcedure.query(async ({ ctx }) => {
-    // Vimeo integration structure ready
-    // To enable:
-    // 1. Create Vimeo app at https://developer.vimeo.com
-    // 2. Add access token to environment variables
-    // 3. Update this procedure to use real Vimeo API
-    //
-    // Example implementation:
-    // const vimeoToken = process.env.VIMEO_ACCESS_TOKEN;
-    // if (vimeoToken) {
-    //   const response = await fetch('https://api.vimeo.com/me/live_events', {
-    //     headers: {
-    //       'Authorization': `Bearer ${vimeoToken}`,
-    //       'Content-Type': 'application/json',
-    //     },
-    //   });
-    //   const data = await response.json();
-    //   return data.data || [];
-    // }
+    const vimeoToken = process.env.VIMEO_ACCESS_TOKEN;
 
-    return [];
+    if (!vimeoToken) {
+      return {
+        success: false,
+        events: [],
+        message: 'Vimeo not configured. Add VIMEO_ACCESS_TOKEN to environment variables.',
+      };
+    }
+
+    try {
+      const response = await fetch('https://api.vimeo.com/me/live_events', {
+        headers: {
+          'Authorization': `Bearer ${vimeoToken}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/vnd.vimeo.*+json;version=3.4',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Vimeo API error: ${response.status} ${response.statusText}`);
+      }
+
+      const data = await response.json();
+
+      return {
+        success: true,
+        events: data.data || [],
+        message: 'Livestreams retrieved successfully',
+      };
+    } catch (error: any) {
+      console.error('Vimeo API error:', error);
+      return {
+        success: false,
+        events: [],
+        message: `Failed to fetch livestreams: ${error.message}`,
+      };
+    }
   }),
 });
