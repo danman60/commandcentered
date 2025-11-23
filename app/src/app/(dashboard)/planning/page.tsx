@@ -755,6 +755,8 @@ function EventDetailModal({ eventId, isOpen, onClose }: { eventId: string; isOpe
   const [selectedShiftId, setSelectedShiftId] = useState<string | null>(null);
   const [editingShiftId, setEditingShiftId] = useState<string | null>(null);
   const [showCommanderGigSheet, setShowCommanderGigSheet] = useState(false);
+  const [showOperatorSelection, setShowOperatorSelection] = useState(false);
+  const [selectedOperatorId, setSelectedOperatorId] = useState<string | null>(null);
   const [editShiftData, setEditShiftData] = useState({
     shiftName: '',
     startTime: '',
@@ -1052,9 +1054,7 @@ function EventDetailModal({ eventId, isOpen, onClose }: { eventId: string; isOpe
               </button>
               <button
                 type="button"
-                onClick={() => {
-                  alert('Per-Operator Gig Sheets coming soon!\n\nThis will generate individual gig sheets for each operator with:\n• Their specific role and shift times\n• Equipment assigned to them\n• Event details\n• Venue and parking info');
-                }}
+                onClick={() => setShowOperatorSelection(true)}
                 className="flex-1 px-4 py-2 bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-400 hover:to-cyan-500 text-white font-semibold rounded-lg transition-all flex items-center justify-center gap-2"
               >
                 <span>👥</span>
@@ -1227,6 +1227,29 @@ function EventDetailModal({ eventId, isOpen, onClose }: { eventId: string; isOpe
           event={event}
           isOpen={showCommanderGigSheet}
           onClose={() => setShowCommanderGigSheet(false)}
+        />
+      )}
+
+      {/* Operator Selection Modal */}
+      {showOperatorSelection && event && (
+        <OperatorSelectionModal
+          event={event}
+          isOpen={showOperatorSelection}
+          onClose={() => setShowOperatorSelection(false)}
+          onSelectOperator={(operatorId) => {
+            setSelectedOperatorId(operatorId);
+            setShowOperatorSelection(false);
+          }}
+        />
+      )}
+
+      {/* Per-Operator Gig Sheet Modal */}
+      {selectedOperatorId && event && (
+        <PerOperatorGigSheetModal
+          event={event}
+          operatorId={selectedOperatorId}
+          isOpen={!!selectedOperatorId}
+          onClose={() => setSelectedOperatorId(null)}
         />
       )}
     </div>
@@ -1426,6 +1449,360 @@ function CommanderGigSheetModal({ event, isOpen, onClose }: { event: any; isOpen
             >
               <span>📧</span>
               Email to Team
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Operator Selection Modal Component
+function OperatorSelectionModal({
+  event,
+  isOpen,
+  onClose,
+  onSelectOperator
+}: {
+  event: any;
+  isOpen: boolean;
+  onClose: () => void;
+  onSelectOperator: (operatorId: string) => void;
+}) {
+  if (!isOpen) return null;
+
+  // Get all unique operators from shift assignments
+  const operators = new Map();
+  event.shifts?.forEach((shift: any) => {
+    shift.shiftAssignments?.forEach((assignment: any) => {
+      if (assignment.operator) {
+        operators.set(assignment.operator.id, assignment.operator);
+      }
+    });
+  });
+
+  const operatorList = Array.from(operators.values());
+
+  return (
+    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[60]">
+      <div className="bg-slate-900 border-2 border-cyan-500/30 rounded-xl w-[600px] max-h-[90vh] overflow-y-auto shadow-2xl">
+        {/* Header */}
+        <div className="px-6 py-4 border-b border-cyan-500/20 flex justify-between items-center bg-gradient-to-r from-cyan-600/10 to-green-600/10">
+          <div>
+            <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+              <span>👥</span>
+              SELECT OPERATOR
+            </h2>
+            <p className="text-xs text-slate-400 mt-1 uppercase tracking-wider">Choose operator for gig sheet</p>
+          </div>
+          <button
+            onClick={onClose}
+            className="text-slate-400 hover:text-white text-2xl font-bold"
+          >
+            ×
+          </button>
+        </div>
+
+        {/* Content */}
+        <div className="p-6">
+          {operatorList.length > 0 ? (
+            <div className="space-y-3">
+              {operatorList.map((operator: any) => {
+                // Get all assignments for this operator across all shifts
+                const assignments: any[] = [];
+                event.shifts?.forEach((shift: any) => {
+                  shift.shiftAssignments?.forEach((assignment: any) => {
+                    if (assignment.operator?.id === operator.id) {
+                      assignments.push({
+                        ...assignment,
+                        shift: {
+                          shiftName: shift.shiftName,
+                          startTime: shift.startTime,
+                          endTime: shift.endTime,
+                        },
+                      });
+                    }
+                  });
+                });
+
+                return (
+                  <button
+                    key={operator.id}
+                    onClick={() => onSelectOperator(operator.id)}
+                    className="w-full bg-slate-800/50 border border-slate-700/50 hover:border-cyan-500/50 rounded-lg p-4 text-left transition-all group"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex-1">
+                        <div className="text-lg font-semibold text-white group-hover:text-cyan-400 transition-colors">
+                          {operator.name}
+                        </div>
+                        <div className="text-sm text-slate-400 mt-1">
+                          {assignments.length} assignment{assignments.length !== 1 ? 's' : ''}: {assignments.map(a => a.role).join(', ')}
+                        </div>
+                      </div>
+                      <span className="text-cyan-400 text-xl">→</span>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <div className="text-4xl mb-4">👤</div>
+              <p className="text-slate-400">No operators assigned to this event yet.</p>
+            </div>
+          )}
+        </div>
+
+        {/* Footer */}
+        <div className="px-6 py-4 border-t border-slate-700/50">
+          <button
+            onClick={onClose}
+            className="w-full px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white font-semibold rounded-lg transition-all"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Per-Operator Gig Sheet Modal Component
+function PerOperatorGigSheetModal({
+  event,
+  operatorId,
+  isOpen,
+  onClose
+}: {
+  event: any;
+  operatorId: string;
+  isOpen: boolean;
+  onClose: () => void;
+}) {
+  if (!isOpen) return null;
+
+  const loadInDate = new Date(event.loadInTime);
+  const loadOutDate = new Date(event.loadOutTime);
+
+  // Find operator and their assignments
+  let operatorName = '';
+  const operatorAssignments: any[] = [];
+  event.shifts?.forEach((shift: any) => {
+    shift.shiftAssignments?.forEach((assignment: any) => {
+      if (assignment.operator?.id === operatorId) {
+        operatorName = assignment.operator.name;
+        operatorAssignments.push({
+          ...assignment,
+          shift: {
+            id: shift.id,
+            shiftName: shift.shiftName,
+            startTime: shift.startTime,
+            endTime: shift.endTime,
+          },
+        });
+      }
+    });
+  });
+
+  // Calculate earliest start and latest end for this operator
+  let earliestStart = operatorAssignments.length > 0 ? new Date(operatorAssignments[0].shift.startTime) : loadInDate;
+  let latestEnd = operatorAssignments.length > 0 ? new Date(operatorAssignments[0].shift.endTime) : loadOutDate;
+
+  operatorAssignments.forEach(assignment => {
+    const start = new Date(assignment.shift.startTime);
+    const end = new Date(assignment.shift.endTime);
+    if (start < earliestStart) earliestStart = start;
+    if (end > latestEnd) latestEnd = end;
+  });
+
+  const duration = (latestEnd.getTime() - earliestStart.getTime()) / (1000 * 60 * 60);
+
+  return (
+    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[60]">
+      <div className="bg-slate-900 border-2 border-cyan-500/30 rounded-xl w-[900px] max-h-[90vh] overflow-y-auto shadow-2xl">
+        {/* Header */}
+        <div className="px-6 py-4 border-b border-cyan-500/20 flex justify-between items-center bg-gradient-to-r from-cyan-600/10 to-green-600/10">
+          <div>
+            <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+              <span>⚡</span>
+              GIG SHEET: {event.eventName.toUpperCase()}
+            </h2>
+            <p className="text-xs text-slate-400 mt-1 uppercase tracking-wider">
+              Operator Brief for {operatorName}
+            </p>
+          </div>
+          <button
+            onClick={onClose}
+            className="text-slate-400 hover:text-white text-2xl font-bold"
+          >
+            ×
+          </button>
+        </div>
+
+        {/* Content */}
+        <div className="p-6 space-y-4">
+          {/* Event Details */}
+          <div className="bg-slate-800/50 border border-slate-700/50 rounded-lg p-4">
+            <h3 className="text-lg font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+              <span>🎬</span>
+              EVENT DETAILS
+            </h3>
+            <div className="space-y-2 text-white">
+              <div className="text-xl font-bold">{event.eventName}</div>
+              <div className="text-slate-300">
+                {loadInDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
+              </div>
+              <div className="text-slate-300">
+                Your Time: {earliestStart.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })} - {latestEnd.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })} ({duration.toFixed(1)} hours)
+              </div>
+              <div className="text-sm text-slate-400">Type: {event.eventType.replace('_', ' ')}</div>
+            </div>
+          </div>
+
+          {/* Location */}
+          {event.venueName && (
+            <div className="bg-slate-800/50 border border-slate-700/50 rounded-lg p-4">
+              <h3 className="text-lg font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+                <span>📍</span>
+                LOCATION
+              </h3>
+              <div className="space-y-2">
+                <div className="text-white font-medium">{event.venueName}</div>
+                {event.venueAddress && (
+                  <div className="text-slate-300">{event.venueAddress}</div>
+                )}
+                {event.parkingInstructions && (
+                  <div className="mt-3 text-sm text-slate-400">
+                    <div className="font-semibold text-slate-300 mb-1">🅿️ Parking Instructions:</div>
+                    {event.parkingInstructions}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Your Assignments */}
+          <div className="bg-slate-800/50 border border-slate-700/50 rounded-lg p-4">
+            <h3 className="text-lg font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+              <span>👤</span>
+              YOUR ASSIGNMENTS
+            </h3>
+            <div className="space-y-3">
+              {operatorAssignments.map((assignment: any) => (
+                <div key={assignment.id} className="bg-slate-900/50 rounded-lg p-3">
+                  <div className="text-sm font-semibold text-slate-400 mb-2">
+                    {assignment.shift.shiftName || 'Shift'}: {new Date(assignment.shift.startTime).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })} - {new Date(assignment.shift.endTime).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
+                  </div>
+                  <div className="text-white font-medium">
+                    Role: {assignment.role || 'Unassigned'}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Equipment Checklist */}
+          {event.gearAssignments && event.gearAssignments.length > 0 && (
+            <div className="bg-slate-800/50 border border-slate-700/50 rounded-lg p-4">
+              <h3 className="text-lg font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+                <span>📦</span>
+                EQUIPMENT CHECKLIST
+              </h3>
+              <div className="space-y-2">
+                {event.gearAssignments.map((assignment: any) => (
+                  <label key={assignment.id} className="flex items-center gap-3 p-2 hover:bg-slate-900/50 rounded cursor-pointer">
+                    <input
+                      type="checkbox"
+                      className="w-5 h-5 rounded border-slate-600 bg-slate-800 text-cyan-500 focus:ring-cyan-500"
+                    />
+                    <div className="flex-1">
+                      <div className="text-white font-medium">{assignment.gear?.name || 'Unknown Gear'}</div>
+                      {assignment.gear?.category && (
+                        <div className="text-xs text-slate-400">{assignment.gear.category}</div>
+                      )}
+                    </div>
+                  </label>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Telegram Group */}
+          {event.telegramGroupId && (
+            <div className="bg-slate-800/50 border border-slate-700/50 rounded-lg p-4">
+              <h3 className="text-lg font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+                <span>💬</span>
+                TELEGRAM GROUP
+              </h3>
+              <button
+                onClick={() => window.open(`https://t.me/${event.telegramGroupId}`, '_blank')}
+                className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-400 hover:to-cyan-500 text-white font-semibold rounded-lg transition-all flex items-center gap-2"
+              >
+                <span>📱</span>
+                Join Event Group
+              </button>
+              <div className="mt-3 text-sm text-slate-400">
+                Quick access to event coordination and team communication.
+              </div>
+            </div>
+          )}
+
+          {/* Event Notes */}
+          {event.notes && (
+            <div className="bg-slate-800/50 border border-slate-700/50 rounded-lg p-4">
+              <h3 className="text-lg font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+                <span>📋</span>
+                EVENT NOTES & INSTRUCTIONS
+              </h3>
+              <div className="text-slate-300 whitespace-pre-wrap">{event.notes}</div>
+            </div>
+          )}
+
+          {/* Contacts */}
+          <div className="bg-slate-800/50 border border-slate-700/50 rounded-lg p-4">
+            <h3 className="text-lg font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+              <span>📞</span>
+              CONTACTS
+            </h3>
+            <div className="space-y-2 text-slate-300">
+              {event.client && (
+                <div>
+                  <span className="font-semibold text-white">Client: </span>
+                  {event.client.organization}
+                  {event.client.contactName && ` - ${event.client.contactName}`}
+                  {event.client.phone && ` (${event.client.phone})`}
+                </div>
+              )}
+              {event.venueName && (
+                <div>
+                  <span className="font-semibold text-white">Venue: </span>
+                  {event.venueName}
+                </div>
+              )}
+              <div className="mt-4 pt-4 border-t border-slate-700/50">
+                <div className="text-red-400 font-bold">
+                  🚨 EMERGENCY CONTACT: [Commander Contact Info]
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Export Options */}
+          <div className="flex gap-3 pt-4">
+            <button
+              onClick={() => window.print()}
+              className="flex-1 px-4 py-2 bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-400 hover:to-cyan-500 text-white font-semibold rounded-lg transition-all flex items-center justify-center gap-2"
+            >
+              <span>🖨️</span>
+              Print Gig Sheet
+            </button>
+            <button
+              onClick={() => alert('Email functionality coming soon!')}
+              className="flex-1 px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-400 hover:to-green-500 text-white font-semibold rounded-lg transition-all flex items-center justify-center gap-2"
+            >
+              <span>📧</span>
+              Email to Me
             </button>
           </div>
         </div>
