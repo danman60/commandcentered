@@ -1,11 +1,34 @@
 # Current Work - CommandCentered Development
 
-**Last Updated:** November 23, 2025 at 12:30 PM EST
-**Current Phase:** ✅ Google Drive Folder Management Complete
+**Last Updated:** November 23, 2025 at 2:55 PM EST
+**Current Phase:** ✅ Client Deliverables Feature Complete
 
 ---
 
-## ✅ CURRENT SESSION (Nov 23 - Google Drive Folder Management COMPLETE!)
+## ✅ LATEST SESSION (Nov 23 - Client Deliverables Feature COMPLETE!)
+
+**What Was Done:**
+Completed "Allow adding deliverables by Client" feature - deliverables can now be linked to either an Event OR a Client (not just events).
+
+**Work Completed:**
+- ✅ Schema Migration: Made eventId optional, added clientId field (schema.prisma:900-905)
+- ✅ Database Push: Applied schema changes via Prisma with directUrl support
+- ✅ Router Updates: Updated deliverable.create to accept either eventId OR clientId with validation (deliverable.ts:48-103)
+- ✅ UI Updates: Added Event/Client toggle in Create Deliverable form (deliverables/page.tsx:320-400)
+  - Link Type toggle buttons (Event/Client)
+  - Conditional rendering of Event or Client dropdown
+  - Client list query integration
+  - Form submission logic to send either eventId or clientId
+- ✅ Display Updates: Deliverable list shows event OR client info dynamically (deliverables/page.tsx:558-570)
+- ✅ Build: Passed successfully
+- ✅ Commit: 23158c5
+- ✅ Deploy: Pushed to main (production)
+
+**Status:** ✅ **COMPLETE** - Feature deployed to production
+
+---
+
+## ✅ PREVIOUS SESSION (Nov 23 - Google Drive Folder Management COMPLETE!)
 
 **What Was Done:**
 Implemented Google Drive folder management for Deliverables with full database migration, API, and UI.
