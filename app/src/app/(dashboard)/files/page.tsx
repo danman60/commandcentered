@@ -26,6 +26,9 @@ export default function FilesPage() {
     category: activeTab === 'documents' ? 'documents' : undefined,
     clientId: selectedClientId !== 'all' ? selectedClientId : undefined,
   });
+  const { data: serviceTemplatesData } = trpc.serviceTemplate.list.useQuery({
+    includeInactive: false,
+  });
   const createFile = trpc.file.create.useMutation({
     onSuccess: () => {
       refetchFiles();
@@ -64,13 +67,32 @@ export default function FilesPage() {
     }));
   }, [proposalsData]);
 
-  // Mock data for demonstration (backend integration TODO)
-  const documents = [
-    { id: '1', icon: '📄', name: 'EMPWR_Contract_2025.pdf', size: '2.3 MB', date: 'Nov 10, 2025' },
-    { id: '2', icon: '📊', name: 'Glow_Proposal.pdf', size: '1.8 MB', date: 'Nov 8, 2025' },
-    { id: '3', icon: '📄', name: 'ABC_Questionnaire.pdf', size: '512 KB', date: 'Nov 5, 2025' },
-    { id: '4', icon: '📄', name: 'Event_Schedule.xlsx', size: '1.2 MB', date: 'Nov 3, 2025' },
-  ];
+  // Transform files from backend
+  const documents = useMemo(() => {
+    if (!filesData) return [];
+
+    return filesData.map(file => {
+      const fileSizeNum = Number(file.fileSize);
+      const sizeInMB = fileSizeNum / (1024 * 1024);
+      const sizeInKB = fileSizeNum / 1024;
+      const size = sizeInMB >= 1
+        ? `${sizeInMB.toFixed(1)} MB`
+        : `${Math.round(sizeInKB)} KB`;
+
+      const icon = file.fileType.includes('pdf') ? '📄'
+        : file.fileType.includes('sheet') || file.fileName.endsWith('.xlsx') ? '📊'
+        : file.fileType.includes('image') ? '🖼️'
+        : '📄';
+
+      return {
+        id: file.id,
+        icon,
+        name: file.fileName,
+        size,
+        date: new Date(file.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+      };
+    });
+  }, [filesData]);
 
   const livestreams = [
     {
@@ -96,14 +118,17 @@ export default function FilesPage() {
     { id: 'raw-footage', name: 'Raw Footage Delivery', description: 'All raw footage via Google Drive', price: 400 },
   ];
 
-  const serviceLibraryTemplates = [
-    { id: '1', name: 'Dance Recital Package', description: 'Multi-camera setup, livestream, 3-min highlight reel, full event video', price: '$8,500' },
-    { id: '2', name: 'Competition Coverage', description: 'Full competition recording, awards ceremony, livestream archive', price: '$6,200' },
-    { id: '3', name: 'Corporate Event', description: 'Professional coverage, interviews, B-roll, highlight package', price: '$4,500' },
-    { id: '4', name: 'Content Capture Day', description: '8-hour shoot, multiple setups, raw footage + 3-5 reels', price: '$3,800' },
-    { id: '5', name: 'Wedding Video', description: 'Full day coverage, ceremony + reception, 10-min highlight film', price: '$5,500' },
-    { id: '6', name: 'Livestream Only', description: 'Single-camera livestream setup, no editing or deliverables', price: '$1,800' },
-  ];
+  // Transform service templates from backend
+  const serviceLibraryTemplates = useMemo(() => {
+    if (!serviceTemplatesData) return [];
+
+    return serviceTemplatesData.map(template => ({
+      id: template.id,
+      name: template.name,
+      description: template.description || '',
+      price: `$${Number(template.defaultPrice).toLocaleString()}`,
+    }));
+  }, [serviceTemplatesData]);
 
   const toggleService = (serviceId: string) => {
     setSelectedServices(prev =>
