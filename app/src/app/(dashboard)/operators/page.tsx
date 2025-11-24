@@ -22,6 +22,7 @@ export default function OperatorsPage() {
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [selectedOperatorId, setSelectedOperatorId] = useState<string | null>(null);
   const [editForm, setEditForm] = useState<any>(null);
+  const [isEditing, setIsEditing] = useState(false);
 
   // Fetch operators with real data
   const { data: operators, isLoading, refetch } = trpc.operator.list.useQuery({
@@ -32,6 +33,16 @@ export default function OperatorsPage() {
   const createOperator = trpc.operator.create.useMutation({
     onSuccess: () => {
       setShowCreateModal(false);
+      // Refetch operators list
+      refetch();
+    },
+  });
+
+  // Update operator mutation
+  const updateOperator = trpc.operator.update.useMutation({
+    onSuccess: () => {
+      setIsEditing(false);
+      setEditForm(null);
       // Refetch operators list
       refetch();
     },
@@ -582,12 +593,25 @@ export default function OperatorsPage() {
                       {operator.initials}
                     </div>
                     <div>
-                      <h2 className="text-2xl font-bold text-white">{operator.name}</h2>
+                      {isEditing ? (
+                        <input
+                          type="text"
+                          value={editForm?.name || ''}
+                          onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
+                          className="text-2xl font-bold bg-slate-800 border border-slate-600 rounded px-3 py-1 text-white w-full"
+                        />
+                      ) : (
+                        <h2 className="text-2xl font-bold text-white">{operator.name}</h2>
+                      )}
                       <p className="text-slate-400">{operator.role}</p>
                     </div>
                   </div>
                   <button
-                    onClick={() => setShowDetailModal(false)}
+                    onClick={() => {
+                      setShowDetailModal(false);
+                      setIsEditing(false);
+                      setEditForm(null);
+                    }}
                     className="text-slate-400 hover:text-white text-2xl font-bold"
                   >
                     ×
@@ -606,11 +630,29 @@ export default function OperatorsPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="bg-slate-900/50 border border-slate-700/50 rounded-lg p-4">
                       <p className="text-xs text-slate-400 mb-1">Email</p>
-                      <p className="text-white">{operator.email}</p>
+                      {isEditing ? (
+                        <input
+                          type="email"
+                          value={editForm?.email || ''}
+                          onChange={(e) => setEditForm({ ...editForm, email: e.target.value })}
+                          className="w-full bg-slate-800 border border-slate-600 rounded px-3 py-2 text-white"
+                        />
+                      ) : (
+                        <p className="text-white">{operator.email}</p>
+                      )}
                     </div>
                     <div className="bg-slate-900/50 border border-slate-700/50 rounded-lg p-4">
                       <p className="text-xs text-slate-400 mb-1">Phone</p>
-                      <p className="text-white">{operator.phone}</p>
+                      {isEditing ? (
+                        <input
+                          type="tel"
+                          value={editForm?.phone || ''}
+                          onChange={(e) => setEditForm({ ...editForm, phone: e.target.value })}
+                          className="w-full bg-slate-800 border border-slate-600 rounded px-3 py-2 text-white"
+                        />
+                      ) : (
+                        <p className="text-white">{operator.phone}</p>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -624,7 +666,21 @@ export default function OperatorsPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="bg-slate-900/50 border border-slate-700/50 rounded-lg p-4">
                       <p className="text-xs text-slate-400 mb-1">Hourly Rate</p>
-                      <p className="text-2xl font-bold text-green-400">${operator.hourlyRate.toFixed(2)}/hr</p>
+                      {isEditing ? (
+                        <div className="flex items-center gap-2">
+                          <span className="text-2xl font-bold text-green-400">$</span>
+                          <input
+                            type="number"
+                            step="0.01"
+                            value={editForm?.hourlyRate || 0}
+                            onChange={(e) => setEditForm({ ...editForm, hourlyRate: parseFloat(e.target.value) || 0 })}
+                            className="bg-slate-800 border border-slate-600 rounded px-3 py-2 text-white text-xl font-bold text-green-400 w-32"
+                          />
+                          <span className="text-2xl font-bold text-green-400">/hr</span>
+                        </div>
+                      ) : (
+                        <p className="text-2xl font-bold text-green-400">${operator.hourlyRate.toFixed(2)}/hr</p>
+                      )}
                     </div>
                     <div className="bg-slate-900/50 border border-slate-700/50 rounded-lg p-4">
                       <p className="text-xs text-slate-400 mb-1">Events This Year</p>
@@ -634,33 +690,54 @@ export default function OperatorsPage() {
                 </div>
 
                 {/* Bio & Portfolio */}
-                {(operator.bio || operator.portfolioUrl) && (
+                {(operator.bio || operator.portfolioUrl || isEditing) && (
                   <div>
                     <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
                       <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
                       Bio & Portfolio
                     </h3>
                     <div className="space-y-4">
-                      {operator.bio && (
+                      {(operator.bio || isEditing) && (
                         <div className="bg-slate-900/50 border border-slate-700/50 rounded-lg p-4">
                           <p className="text-xs text-slate-400 mb-2">Biography</p>
-                          <p className="text-white text-sm leading-relaxed">{operator.bio}</p>
+                          {isEditing ? (
+                            <textarea
+                              value={editForm?.bio || ''}
+                              onChange={(e) => setEditForm({ ...editForm, bio: e.target.value })}
+                              className="w-full bg-slate-800 border border-slate-600 rounded px-3 py-2 text-white text-sm leading-relaxed min-h-[100px]"
+                              placeholder="Enter bio..."
+                            />
+                          ) : (
+                            <p className="text-white text-sm leading-relaxed">{operator.bio}</p>
+                          )}
                         </div>
                       )}
-                      {operator.portfolioUrl && (
+                      {(operator.portfolioUrl || isEditing) && (
                         <div className="bg-slate-900/50 border border-slate-700/50 rounded-lg p-4">
                           <p className="text-xs text-slate-400 mb-2">Portfolio</p>
-                          <a
-                            href={operator.portfolioUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-green-400 hover:text-green-300 underline text-sm flex items-center gap-2"
-                          >
-                            {operator.portfolioUrl}
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                            </svg>
-                          </a>
+                          {isEditing ? (
+                            <input
+                              type="url"
+                              value={editForm?.portfolioUrl || ''}
+                              onChange={(e) => setEditForm({ ...editForm, portfolioUrl: e.target.value })}
+                              className="w-full bg-slate-800 border border-slate-600 rounded px-3 py-2 text-white"
+                              placeholder="https://..."
+                            />
+                          ) : (
+                            operator.portfolioUrl && (
+                              <a
+                                href={operator.portfolioUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-green-400 hover:text-green-300 underline text-sm flex items-center gap-2"
+                              >
+                                {operator.portfolioUrl}
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                </svg>
+                              </a>
+                            )
+                          )}
                         </div>
                       )}
                     </div>
@@ -772,16 +849,55 @@ export default function OperatorsPage() {
               {/* Footer Actions */}
               <div className="border-t border-slate-700/30 p-6 flex gap-3">
                 <button
-                  onClick={() => setShowDetailModal(false)}
+                  onClick={() => {
+                    setShowDetailModal(false);
+                    setIsEditing(false);
+                    setEditForm(null);
+                  }}
                   className="flex-1 px-6 py-3 bg-slate-700/30 text-slate-300 border border-slate-700/50 rounded-lg font-semibold hover:bg-slate-700/50 transition-all"
                 >
                   Close
                 </button>
-                <button
-                  className="flex-1 px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold shadow-lg shadow-green-500/30 hover:shadow-green-500/40 transition-all"
-                >
-                  Edit Operator
-                </button>
+                {!isEditing ? (
+                  <button
+                    onClick={() => {
+                      setIsEditing(true);
+                      setEditForm({
+                        id: operator.id,
+                        name: operator.name,
+                        email: operator.email,
+                        phone: operator.phone === '-' ? '' : operator.phone,
+                        hourlyRate: operator.hourlyRate,
+                        bio: operator.bio || '',
+                        portfolioUrl: operator.portfolioUrl || '',
+                      });
+                    }}
+                    className="flex-1 px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold shadow-lg shadow-green-500/30 hover:shadow-green-500/40 transition-all"
+                  >
+                    Edit Operator
+                  </button>
+                ) : (
+                  <>
+                    <button
+                      onClick={() => {
+                        setIsEditing(false);
+                        setEditForm(null);
+                      }}
+                      className="flex-1 px-6 py-3 bg-slate-700/30 text-slate-300 border border-slate-700/50 rounded-lg font-semibold hover:bg-slate-700/50 transition-all"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={() => {
+                        updateOperator.mutate(editForm);
+                      }}
+                      disabled={updateOperator.isPending}
+                      className="flex-1 px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg font-semibold shadow-lg shadow-blue-500/30 hover:shadow-blue-500/40 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {updateOperator.isPending ? 'Saving...' : 'Save Changes'}
+                    </button>
+                  </>
+                )}
               </div>
             </div>
           </div>
