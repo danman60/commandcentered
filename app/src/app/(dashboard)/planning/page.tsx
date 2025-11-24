@@ -95,6 +95,8 @@ function DroppableCalendarDay({
   getEventStatusShadow,
   getOperatorInitials,
   onEventClick,
+  unassignOperatorMutation,
+  unassignGearMutation,
 }: {
   date: Date;
   events: any[];
@@ -104,6 +106,8 @@ function DroppableCalendarDay({
   getEventStatusShadow: (status: string) => string;
   getOperatorInitials: (operator: any) => string;
   onEventClick: (eventId: string) => void;
+  unassignOperatorMutation: any;
+  unassignGearMutation: any;
 }) {
   const dropData = {
     date,
@@ -150,9 +154,22 @@ function DroppableCalendarDay({
                 shift.shiftAssignments?.map((assignment: any, idx: number) => (
                   <span
                     key={idx}
-                    className="bg-black/30 px-1.5 py-0.5 rounded text-[10px] font-bold text-white"
+                    className="bg-black/30 px-1.5 py-0.5 rounded text-[10px] font-bold text-white flex items-center gap-1 group"
                   >
                     {getOperatorInitials(assignment?.operator)}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (window.confirm(`Remove ${assignment?.operator?.name} from this shift?`)) {
+                          // Remove operator assignment
+                          unassignOperatorMutation.mutate({ assignmentId: assignment.id });
+                        }
+                      }}
+                      className="opacity-0 group-hover:opacity-100 transition-opacity text-red-400 hover:text-red-300 ml-0.5"
+                      title={`Remove ${assignment?.operator?.name}`}
+                    >
+                      ×
+                    </button>
                   </span>
                 )) || []
               ) || []}
@@ -161,16 +178,31 @@ function DroppableCalendarDay({
                 const kitGroups = event.gearAssignments?.reduce((acc: any, ga: any) => {
                   if (ga.kit) {
                     if (!acc[ga.kit.id]) {
-                      acc[ga.kit.id] = { name: ga.kit.kitName, count: 0 };
+                      acc[ga.kit.id] = { name: ga.kit.kitName, kitId: ga.kit.id, assignmentIds: [] };
                     }
-                    acc[ga.kit.id].count++;
+                    acc[ga.kit.id].assignmentIds.push(ga.id);
                   }
                   return acc;
                 }, {}) || {};
 
                 return Object.values(kitGroups).slice(0, 2).map((kit: any, idx: number) => (
-                  <span key={idx} className="bg-purple-500/20 px-1.5 py-0.5 rounded text-[10px] font-bold text-purple-300">
+                  <span key={idx} className="bg-purple-500/20 px-1.5 py-0.5 rounded text-[10px] font-bold text-purple-300 flex items-center gap-1 group">
                     📷 {kit.name}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (window.confirm(`Remove kit "${kit.name}" from this event?`)) {
+                          // Remove all gear assignments for this kit
+                          kit.assignmentIds.forEach((assignmentId: string) => {
+                            unassignGearMutation.mutate({ assignmentId });
+                          });
+                        }
+                      }}
+                      className="opacity-0 group-hover:opacity-100 transition-opacity text-red-400 hover:text-red-300 ml-0.5"
+                      title={`Remove ${kit.name}`}
+                    >
+                      ×
+                    </button>
                   </span>
                 ));
               })()}
@@ -223,6 +255,18 @@ export default function PlanningPage() {
   });
 
   const createShift = trpc.shift.create.useMutation({
+    onSuccess: () => {
+      window.location.reload();
+    },
+  });
+
+  const unassignOperatorMutation = trpc.shift.unassignOperator.useMutation({
+    onSuccess: () => {
+      window.location.reload();
+    },
+  });
+
+  const unassignGearMutation = trpc.gearAssignment.unassign.useMutation({
     onSuccess: () => {
       window.location.reload();
     },
@@ -504,6 +548,8 @@ export default function PlanningPage() {
                     getEventStatusShadow={getEventStatusShadow}
                     getOperatorInitials={getOperatorInitials}
                     onEventClick={(eventId) => setSelectedEventId(eventId)}
+                    unassignOperatorMutation={unassignOperatorMutation}
+                    unassignGearMutation={unassignGearMutation}
                   />
                 );
               })}
