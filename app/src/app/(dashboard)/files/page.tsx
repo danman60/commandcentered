@@ -2,6 +2,12 @@
 
 import { trpc } from '@/lib/trpc/client';
 import { useState, useMemo, useRef } from 'react';
+import {
+  FileActionsMenu,
+  FileRenameModal,
+  FileDeleteModal,
+  FileMetadataModal,
+} from '@/components/files/FileActionsMenu';
 
 export default function FilesPage() {
   const [activeTab, setActiveTab] = useState<'documents' | 'contracts' | 'proposals' | 'livestreams' | 'service-library'>('documents');
@@ -17,6 +23,12 @@ export default function FilesPage() {
   const [serviceFormData, setServiceFormData] = useState({ name: '', description: '', price: '' });
   const [customServices, setCustomServices] = useState<Array<{ id: string; name: string; description: string; price: string }>>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // File actions state
+  const [selectedFileForAction, setSelectedFileForAction] = useState<any>(null);
+  const [showRenameModal, setShowRenameModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showMetadataModal, setShowMetadataModal] = useState(false);
 
   // Fetch contracts and proposals from backend
   const { data: contractsData, isLoading: contractsLoading } = trpc.contract.list.useQuery();
@@ -35,6 +47,16 @@ export default function FilesPage() {
       setShowUploadModal(false);
       setSelectedFile(null);
       setUploadDescription('');
+    },
+  });
+  const updateFile = trpc.file.update.useMutation({
+    onSuccess: () => {
+      refetchFiles();
+    },
+  });
+  const deleteFile = trpc.file.delete.useMutation({
+    onSuccess: () => {
+      refetchFiles();
     },
   });
 
@@ -178,6 +200,48 @@ export default function FilesPage() {
     setServiceFormData({ name: '', description: '', price: '' });
   };
 
+  // File action handlers
+  const handleDownload = (file: any) => {
+    // Open file URL in new tab to trigger download
+    window.open(file.filePath, '_blank');
+  };
+
+  const handleRename = (file: any) => {
+    setSelectedFileForAction(file);
+    setShowRenameModal(true);
+  };
+
+  const handleDelete = (file: any) => {
+    setSelectedFileForAction(file);
+    setShowDeleteModal(true);
+  };
+
+  const handleEditMetadata = (file: any) => {
+    setSelectedFileForAction(file);
+    setShowMetadataModal(true);
+  };
+
+  const handleRenameSubmit = async (fileId: string, newName: string) => {
+    await updateFile.mutateAsync({ id: fileId, fileName: newName });
+    setShowRenameModal(false);
+    setSelectedFileForAction(null);
+  };
+
+  const handleDeleteSubmit = async (fileId: string) => {
+    await deleteFile.mutateAsync({ id: fileId });
+    setShowDeleteModal(false);
+    setSelectedFileForAction(null);
+  };
+
+  const handleMetadataSubmit = async (
+    fileId: string,
+    data: { description?: string; category?: string }
+  ) => {
+    await updateFile.mutateAsync({ id: fileId, ...data });
+    setShowMetadataModal(false);
+    setSelectedFileForAction(null);
+  };
+
   return (
     <div className="flex flex-col h-full bg-gray-900">
       {/* Header */}
@@ -289,8 +353,27 @@ export default function FilesPage() {
                 {filesData.map((file) => (
                   <div
                     key={file.id}
-                    className="bg-slate-900/60 border border-slate-700/50 rounded-lg p-4 cursor-pointer hover:border-green-500/60 hover:-translate-y-1 transition-all"
+                    className="bg-slate-900/60 border border-slate-700/50 rounded-lg p-4 hover:border-green-500/60 hover:-translate-y-1 transition-all relative"
                   >
+                    {/* File Actions Menu */}
+                    <div className="absolute top-2 right-2">
+                      <FileActionsMenu
+                        file={{
+                          id: file.id,
+                          fileName: file.fileName,
+                          filePath: file.filePath,
+                          fileSize: file.fileSize,
+                          fileType: file.fileType,
+                          description: file.description,
+                          category: file.category,
+                        }}
+                        onDownload={handleDownload}
+                        onRename={handleRename}
+                        onDelete={handleDelete}
+                        onEditMetadata={handleEditMetadata}
+                      />
+                    </div>
+
                     <div className="text-5xl text-center mb-3">📄</div>
                     <div className="text-sm font-semibold text-slate-100 mb-1 truncate">{file.fileName}</div>
                     <div className="text-xs text-slate-500">
@@ -888,6 +971,45 @@ export default function FilesPage() {
             </form>
           </div>
         </div>
+      )}
+
+      {/* File Rename Modal */}
+      {selectedFileForAction && (
+        <FileRenameModal
+          file={selectedFileForAction}
+          isOpen={showRenameModal}
+          onClose={() => {
+            setShowRenameModal(false);
+            setSelectedFileForAction(null);
+          }}
+          onRename={handleRenameSubmit}
+        />
+      )}
+
+      {/* File Delete Modal */}
+      {selectedFileForAction && (
+        <FileDeleteModal
+          file={selectedFileForAction}
+          isOpen={showDeleteModal}
+          onClose={() => {
+            setShowDeleteModal(false);
+            setSelectedFileForAction(null);
+          }}
+          onDelete={handleDeleteSubmit}
+        />
+      )}
+
+      {/* File Metadata Modal */}
+      {selectedFileForAction && (
+        <FileMetadataModal
+          file={selectedFileForAction}
+          isOpen={showMetadataModal}
+          onClose={() => {
+            setShowMetadataModal(false);
+            setSelectedFileForAction(null);
+          }}
+          onUpdate={handleMetadataSubmit}
+        />
       )}
     </div>
   );
