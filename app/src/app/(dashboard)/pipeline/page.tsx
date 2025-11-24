@@ -1686,13 +1686,13 @@ function getStatusColor(status: string): string {
   const colors: Record<string, string> = {
     NEW: 'bg-gray-600/20 text-gray-400',
     CONTACTED: 'bg-blue-600/20 text-blue-400',
-    QUALIFIED: 'bg-green-600/20 text-green-400',
-    PROPOSAL_SENT: 'bg-green-600/20 text-green-400',
-    PROPOSAL_VIEWED: 'bg-green-600/20 text-green-400',
+    QUALIFIED: 'bg-green-600/20 text-white',
+    PROPOSAL_SENT: 'bg-green-600/20 text-white',
+    PROPOSAL_VIEWED: 'bg-green-600/20 text-white',
     ENGAGED: 'bg-yellow-600/20 text-yellow-400',
     PROPOSAL_SUBMITTED: 'bg-orange-600/20 text-orange-400',
-    CONTRACT_SENT: 'bg-green-600/20 text-green-400',
-    CONVERTED: 'bg-green-600/20 text-green-400',
+    CONTRACT_SENT: 'bg-green-600/20 text-white',
+    CONVERTED: 'bg-green-600/20 text-white',
     LOST: 'bg-red-600/20 text-red-400',
   };
   return colors[status] || 'bg-gray-600/20 text-gray-400';
@@ -1702,8 +1702,8 @@ function getProductStatusColor(status: string): string {
   const colors: Record<string, string> = {
     NOT_INTERESTED: 'bg-gray-600/20 text-gray-400',
     DISCUSSING: 'bg-blue-600/20 text-blue-400',
-    PROPOSAL: 'bg-green-600/20 text-green-400',
-    WON: 'bg-green-600/20 text-green-400',
+    PROPOSAL: 'bg-green-600/20 text-white',
+    WON: 'bg-green-600/20 text-white',
     LOST: 'bg-red-600/20 text-red-400',
   };
   return colors[status] || 'bg-gray-600/20 text-gray-400';
