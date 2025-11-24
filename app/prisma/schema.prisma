@@ -430,8 +430,8 @@ model Operator {
   status OperatorStatus @default(ACTIVE)
 
   // Ratings
-  averageRating  Decimal? @default(0) @map("average_rating") @db.Decimal(3, 2) // 0.00 to 5.00
-  totalRatings   Int      @default(0) @map("total_ratings")
+  averageRating Decimal? @default(0) @map("average_rating") @db.Decimal(3, 2) // 0.00 to 5.00
+  totalRatings  Int      @default(0) @map("total_ratings")
 
   // Relations
   shiftAssignments ShiftAssignment[]
@@ -496,10 +496,10 @@ model OperatorRating {
   eventId String? @map("event_id") @db.Uuid
   event   Event?  @relation(fields: [eventId], references: [id], onDelete: SetNull)
 
-  rating      Decimal @db.Decimal(3, 2) // 0.00 to 5.00
-  feedback    String? @db.Text
-  ratedBy     String? @map("rated_by") @db.Uuid // User who gave the rating
-  ratingType  String  @default("event_performance") @map("rating_type") @db.VarChar(50) // event_performance, professionalism, technical_skill
+  rating     Decimal @db.Decimal(3, 2) // 0.00 to 5.00
+  feedback   String? @db.Text
+  ratedBy    String? @map("rated_by") @db.Uuid // User who gave the rating
+  ratingType String  @default("event_performance") @map("rating_type") @db.VarChar(50) // event_performance, professionalism, technical_skill
 
   @@index([tenantId])
   @@index([operatorId])
@@ -940,17 +940,17 @@ model Deliverable {
   clientId String? @map("client_id") @db.Uuid
   client   Client? @relation(fields: [clientId], references: [id], onDelete: Cascade)
 
-  deliverableType  String            @map("deliverable_type") @db.Text
-  deliverableName  String            @map("deliverable_name") @db.Text
-  dueDate          DateTime          @map("due_date") @db.Date
-  totalAssets      Int               @default(0) @map("total_assets")
-  completedAssets  Int               @default(0) @map("completed_assets")
-  assignedEditorId String?           @map("assigned_editor_id") @db.Uuid
-  assignedEditor   Editor?           @relation(fields: [assignedEditorId], references: [id], onDelete: SetNull)
-  status              DeliverableStatus @default(NOT_STARTED)
-  priority            Priority          @default(NORMAL)
-  notes               String?           @db.Text
-  completionPercentage Int              @default(0) @map("completion_percentage")
+  deliverableType      String            @map("deliverable_type") @db.Text
+  deliverableName      String            @map("deliverable_name") @db.Text
+  dueDate              DateTime          @map("due_date") @db.Date
+  totalAssets          Int               @default(0) @map("total_assets")
+  completedAssets      Int               @default(0) @map("completed_assets")
+  assignedEditorId     String?           @map("assigned_editor_id") @db.Uuid
+  assignedEditor       Editor?           @relation(fields: [assignedEditorId], references: [id], onDelete: SetNull)
+  status               DeliverableStatus @default(NOT_STARTED)
+  priority             Priority          @default(NORMAL)
+  notes                String?           @db.Text
+  completionPercentage Int               @default(0) @map("completion_percentage")
 
   // Google Drive
   googleDriveFolderId  String? @map("google_drive_folder_id") @db.VarChar(255)
@@ -1764,10 +1764,13 @@ model Client {
   totalRevenue Decimal @default(0) @map("total_revenue") @db.Decimal(10, 2)
   totalEvents  Int     @default(0) @map("total_events")
 
+  // Visual customization
+  brandColor String? @map("brand_color") @db.VarChar(7) // Hex color code (e.g., #06b6d4)
+
   // Relations
   contracts                Contract[]
   communicationTouchpoints CommunicationTouchpoint[] // Round 6 - GAP-11
-  files                    File[]                    // File Upload System
+  files                    File[] // File Upload System
   deliverables             Deliverable[]
 
   @@index([tenantId])
@@ -2083,12 +2086,12 @@ model SavedSearch {
   tenantId String @map("tenant_id") @db.Uuid
   tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Restrict)
 
-  userId String? @map("user_id") @db.Uuid
+  userId String?      @map("user_id") @db.Uuid
   user   UserProfile? @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   name        String   @db.VarChar(100)
   searchType  String   @default("lead_finder") @map("search_type") @db.VarChar(50) // "lead_finder", etc.
-  filters     Json     // Store search filters as JSON
+  filters     Json // Store search filters as JSON
   resultCount Int      @default(0) @map("result_count")
   lastUsedAt  DateTime @default(now()) @map("last_used_at")
 
@@ -2456,10 +2459,10 @@ model SavedLeadSearch {
   userId String      @map("user_id") @db.Uuid
   user   UserProfile @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  searchName    String @map("search_name") @db.VarChar(100)
-  searchCriteria Json  @map("search_criteria") @db.JsonB // {businessTypes, location, keywords, employees, revenue, etc.}
-  resultCount   Int    @default(0) @map("result_count")
-  lastRunAt     DateTime? @map("last_run_at")
+  searchName     String    @map("search_name") @db.VarChar(100)
+  searchCriteria Json      @map("search_criteria") @db.JsonB // {businessTypes, location, keywords, employees, revenue, etc.}
+  resultCount    Int       @default(0) @map("result_count")
+  lastRunAt      DateTime? @map("last_run_at")
 
   @@index([tenantId])
   @@index([userId])
@@ -2476,13 +2479,13 @@ model LeadSourceConfig {
   tenantId String @map("tenant_id") @db.Uuid
   tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Restrict)
 
-  sourceName      String  @map("source_name") @db.VarChar(50) // "Apollo.io", "ZoomInfo", "Hunter.io", etc.
-  apiKey          String? @db.VarChar(255) // Encrypted API key
-  apiSecret       String? @map("api_secret") @db.VarChar(255) // Encrypted secret if needed
-  configJson      Json?   @map("config_json") @db.JsonB // Additional configuration
-  isActive        Boolean @default(false) @map("is_active")
-  lastSyncAt      DateTime? @map("last_sync_at")
-  totalLeadsFetched Int    @default(0) @map("total_leads_fetched")
+  sourceName        String    @map("source_name") @db.VarChar(50) // "Apollo.io", "ZoomInfo", "Hunter.io", etc.
+  apiKey            String?   @db.VarChar(255) // Encrypted API key
+  apiSecret         String?   @map("api_secret") @db.VarChar(255) // Encrypted secret if needed
+  configJson        Json?     @map("config_json") @db.JsonB // Additional configuration
+  isActive          Boolean   @default(false) @map("is_active")
+  lastSyncAt        DateTime? @map("last_sync_at")
+  totalLeadsFetched Int       @default(0) @map("total_leads_fetched")
 
   @@unique([tenantId, sourceName])
   @@index([tenantId])
@@ -2505,14 +2508,14 @@ model Campaign {
   tenantId String @map("tenant_id") @db.Uuid
   tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Restrict)
 
-  name         String          @db.VarChar(255)
-  status       CampaignStatus  @default(DRAFT)
-  totalLeads   Int             @default(0) @map("total_leads")
-  sentCount    Int             @default(0) @map("sent_count")
-  openedCount  Int             @default(0) @map("opened_count")
-  repliedCount Int             @default(0) @map("replied_count")
-  revenue      Decimal         @default(0) @map("revenue") @db.Decimal(10, 2)
-  lastSentAt   DateTime?       @map("last_sent_at")
+  name         String         @db.VarChar(255)
+  status       CampaignStatus @default(DRAFT)
+  totalLeads   Int            @default(0) @map("total_leads")
+  sentCount    Int            @default(0) @map("sent_count")
+  openedCount  Int            @default(0) @map("opened_count")
+  repliedCount Int            @default(0) @map("replied_count")
+  revenue      Decimal        @default(0) @map("revenue") @db.Decimal(10, 2)
+  lastSentAt   DateTime?      @map("last_sent_at")
 
   // Relations
   steps         CampaignStep[]
@@ -2546,14 +2549,14 @@ model CampaignStep {
   campaignId String   @map("campaign_id") @db.Uuid
   campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
 
-  stepNumber   Int     @map("step_number") // 1, 2, 3, etc.
-  stepName     String  @map("step_name") @db.VarChar(100) // "Initial Outreach", "Follow-up"
-  subject      String  @db.VarChar(255)
-  bodyTemplate String  @map("body_template") @db.Text // HTML template with {{placeholders}}
-  delayDays    Int     @default(0) @map("delay_days") // Days to wait after previous step
-  sentCount    Int     @default(0) @map("sent_count")
-  openedCount  Int     @default(0) @map("opened_count")
-  repliedCount Int     @default(0) @map("replied_count")
+  stepNumber   Int    @map("step_number") // 1, 2, 3, etc.
+  stepName     String @map("step_name") @db.VarChar(100) // "Initial Outreach", "Follow-up"
+  subject      String @db.VarChar(255)
+  bodyTemplate String @map("body_template") @db.Text // HTML template with {{placeholders}}
+  delayDays    Int    @default(0) @map("delay_days") // Days to wait after previous step
+  sentCount    Int    @default(0) @map("sent_count")
+  openedCount  Int    @default(0) @map("opened_count")
+  repliedCount Int    @default(0) @map("replied_count")
 
   @@index([tenantId])
   @@index([campaignId])
@@ -2576,13 +2579,13 @@ model CampaignLead {
   leadId String @map("lead_id") @db.Uuid
   lead   Lead   @relation(fields: [leadId], references: [id], onDelete: Cascade)
 
-  status          CampaignLeadStatus @default(PENDING)
-  currentStep     Int                @default(1) @map("current_step")
-  lastSentAt      DateTime?          @map("last_sent_at")
-  lastOpenedAt    DateTime?          @map("last_opened_at")
-  repliedAt       DateTime?          @map("replied_at")
-  unsubscribedAt  DateTime?          @map("unsubscribed_at")
-  opportunityValue Decimal?          @map("opportunity_value") @db.Decimal(10, 2)
+  status           CampaignLeadStatus @default(PENDING)
+  currentStep      Int                @default(1) @map("current_step")
+  lastSentAt       DateTime?          @map("last_sent_at")
+  lastOpenedAt     DateTime?          @map("last_opened_at")
+  repliedAt        DateTime?          @map("replied_at")
+  unsubscribedAt   DateTime?          @map("unsubscribed_at")
+  opportunityValue Decimal?           @map("opportunity_value") @db.Decimal(10, 2)
 
   @@unique([campaignId, leadId])
   @@index([tenantId])
@@ -2665,10 +2668,10 @@ model VoiceCommand {
   entityId     String? @map("entity_id") @db.Uuid
 
   // Execution
-  status        CommandStatus @default(PENDING)
-  requiresConfirmation Boolean   @default(false) @map("requires_confirmation")
-  confirmedAt   DateTime?     @map("confirmed_at")
-  executedAt    DateTime?     @map("executed_at")
+  status               CommandStatus @default(PENDING)
+  requiresConfirmation Boolean       @default(false) @map("requires_confirmation")
+  confirmedAt          DateTime?     @map("confirmed_at")
+  executedAt           DateTime?     @map("executed_at")
 
   // Results
   success      Boolean @default(false)
@@ -2686,13 +2689,13 @@ model VoiceCommand {
 }
 
 enum CommandStatus {
-  PENDING           @map("pending")
+  PENDING               @map("pending")
   AWAITING_CONFIRMATION @map("awaiting_confirmation")
-  CONFIRMED         @map("confirmed")
-  EXECUTING         @map("executing")
-  COMPLETED         @map("completed")
-  FAILED            @map("failed")
-  CANCELLED         @map("cancelled")
+  CONFIRMED             @map("confirmed")
+  EXECUTING             @map("executing")
+  COMPLETED             @map("completed")
+  FAILED                @map("failed")
+  CANCELLED             @map("cancelled")
 
   @@map("command_status")
   @@schema("commandcentered")
@@ -2705,7 +2708,7 @@ model AIExecution {
   tenantId String @map("tenant_id") @db.Uuid
   tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Restrict)
 
-  voiceCommandId String?      @map("voice_command_id") @db.Uuid
+  voiceCommandId String?       @map("voice_command_id") @db.Uuid
   voiceCommand   VoiceCommand? @relation(fields: [voiceCommandId], references: [id], onDelete: SetNull)
 
   // AI Model Info
@@ -2743,7 +2746,7 @@ model UserPreferences {
   user   UserProfile @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   // Dashboard Customization
-  dashboardLayout Json? @map("dashboard_layout") @db.JsonB // React Grid Layout config
+  dashboardLayout Json?    @map("dashboard_layout") @db.JsonB // React Grid Layout config
   visibleWidgets  String[] @default([]) @map("visible_widgets") // Widget IDs that are visible
 
   // Navigation Customization
@@ -2756,7 +2759,7 @@ model UserPreferences {
   panelSizes       Json? @map("panel_sizes") @db.JsonB // Resizable panel widths
 
   // Other Preferences
-  theme          String @default("dark") @db.VarChar(20) // "light", "dark", "tactical"
+  theme                String  @default("dark") @db.VarChar(20) // "light", "dark", "tactical"
   notificationsEnabled Boolean @default(true) @map("notifications_enabled")
 
   @@index([userId])
