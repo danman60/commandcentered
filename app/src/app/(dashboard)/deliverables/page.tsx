@@ -1,7 +1,9 @@
 'use client';
 
 import { trpc } from '@/lib/trpc/client';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
+import { SortableTableHeader, useSorting } from '@/components/ui/SortableTableHeader';
+import { InlineEditField, InlineEditSelect } from '@/components/ui/InlineEditField';
 
 export default function DeliverablesPage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -10,9 +12,28 @@ export default function DeliverablesPage() {
   const [selectedDeliverableId, setSelectedDeliverableId] = useState<string | null>(null);
   const [isNewDeliverableModalOpen, setIsNewDeliverableModalOpen] = useState(false);
 
-  const { data: deliverables } = trpc.deliverable.list.useQuery({
+  const { data: deliverables, refetch: refetchDeliverables } = trpc.deliverable.list.useQuery({
     status: statusFilter as any || undefined,
   });
+
+  const updateDeliverable = trpc.deliverable.update.useMutation({
+    onSuccess: () => {
+      refetchDeliverables();
+    },
+  });
+
+  const updateStatus = trpc.deliverable.updateStatus.useMutation({
+    onSuccess: () => {
+      refetchDeliverables();
+    },
+  });
+
+  // Sorting hook - sort by due date by default
+  const { sortConfig, handleSort, sortedData } = useSorting(
+    deliverables || [],
+    'dueDate',
+    'asc'
+  );
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -125,37 +146,58 @@ export default function DeliverablesPage() {
           <table className="w-full">
             <thead className="bg-slate-950/80 border-b border-slate-700">
               <tr>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300 cursor-pointer hover:text-green-400">
-                  Client / Event ⇅
+                <SortableTableHeader
+                  label="Client / Event"
+                  sortKey="event.client.companyName"
+                  currentSort={sortConfig}
+                  onSort={handleSort}
+                />
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300">
+                  Services
                 </th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300 cursor-pointer hover:text-green-400">
-                  Services ⇅
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300">
+                  Google Drive
                 </th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300 cursor-pointer hover:text-green-400">
-                  Google Drive ⇅
-                </th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300 cursor-pointer hover:text-green-400">
-                  Assigned Editor ⇅
-                </th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300 cursor-pointer hover:text-green-400">
-                  Assets ⇅
-                </th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300 cursor-pointer hover:text-green-400">
-                  Due Date ⇅
-                </th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300 cursor-pointer hover:text-green-400">
-                  Priority ⇅
-                </th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300 cursor-pointer hover:text-green-400">
-                  Status ⇅
-                </th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300 cursor-pointer hover:text-green-400">
-                  Completion % ⇅
-                </th>
+                <SortableTableHeader
+                  label="Assigned Editor"
+                  sortKey="assignedEditor.firstName"
+                  currentSort={sortConfig}
+                  onSort={handleSort}
+                />
+                <SortableTableHeader
+                  label="Assets"
+                  sortKey="completedAssets"
+                  currentSort={sortConfig}
+                  onSort={handleSort}
+                />
+                <SortableTableHeader
+                  label="Due Date"
+                  sortKey="dueDate"
+                  currentSort={sortConfig}
+                  onSort={handleSort}
+                />
+                <SortableTableHeader
+                  label="Priority"
+                  sortKey="priority"
+                  currentSort={sortConfig}
+                  onSort={handleSort}
+                />
+                <SortableTableHeader
+                  label="Status"
+                  sortKey="status"
+                  currentSort={sortConfig}
+                  onSort={handleSort}
+                />
+                <SortableTableHeader
+                  label="Completion %"
+                  sortKey="completionPercentage"
+                  currentSort={sortConfig}
+                  onSort={handleSort}
+                />
               </tr>
             </thead>
             <tbody>
-              {deliverables?.map((deliverable: any) => (
+              {sortedData?.map((deliverable: any) => (
                 <tr
                   key={deliverable.id}
                   onClick={() => setSelectedDeliverableId(deliverable.id)}
@@ -214,18 +256,62 @@ export default function DeliverablesPage() {
                       <span className="text-slate-300">{deliverable.totalAssets || 0}</span>
                     </div>
                   </td>
-                  <td className="px-6 py-4 text-slate-300">
-                    {formatDate(deliverable.dueDate)}
+                  <td className="px-6 py-4" onClick={(e) => e.stopPropagation()}>
+                    <InlineEditField
+                      type="date"
+                      value={deliverable.dueDate ? new Date(deliverable.dueDate).toISOString().split('T')[0] : ''}
+                      onSave={async (newValue: string) => {
+                        await updateDeliverable.mutateAsync({
+                          id: deliverable.id,
+                          dueDate: new Date(newValue),
+                        });
+                      }}
+                      formatDisplay={(val) => formatDate(val)}
+                      className="text-slate-300"
+                    />
                   </td>
-                  <td className="px-6 py-4">
-                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getPriorityColor(deliverable.priority || 'NORMAL')}`}>
-                      {deliverable.priority || 'NORMAL'}
-                    </span>
+                  <td className="px-6 py-4" onClick={(e) => e.stopPropagation()}>
+                    <div className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${getPriorityColor(deliverable.priority || 'NORMAL')}`}>
+                      <InlineEditSelect
+                        value={deliverable.priority || 'NORMAL'}
+                        options={[
+                          { label: 'Low', value: 'LOW' },
+                          { label: 'Normal', value: 'NORMAL' },
+                          { label: 'High', value: 'HIGH' },
+                          { label: 'Urgent', value: 'URGENT' },
+                          { label: 'Critical', value: 'CRITICAL' },
+                        ]}
+                        onSave={async (newValue: string) => {
+                          await updateDeliverable.mutateAsync({
+                            id: deliverable.id,
+                            priority: newValue as any,
+                          });
+                        }}
+                        displayClassName="text-xs"
+                      />
+                    </div>
                   </td>
-                  <td className="px-6 py-4">
-                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(deliverable.status)}`}>
-                      {deliverable.status?.replace('_', ' ')}
-                    </span>
+                  <td className="px-6 py-4" onClick={(e) => e.stopPropagation()}>
+                    <div className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(deliverable.status)}`}>
+                      <InlineEditSelect
+                        value={deliverable.status}
+                        options={[
+                          { label: 'Not Started', value: 'NOT_STARTED' },
+                          { label: 'In Progress', value: 'IN_PROGRESS' },
+                          { label: 'In Review', value: 'IN_REVIEW' },
+                          { label: 'Delivered', value: 'DELIVERED' },
+                          { label: 'Cancelled', value: 'CANCELLED' },
+                        ]}
+                        onSave={async (newValue: string) => {
+                          await updateStatus.mutateAsync({
+                            id: deliverable.id,
+                            status: newValue as any,
+                          });
+                        }}
+                        formatDisplay={(val) => val.replace('_', ' ')}
+                        displayClassName="text-xs"
+                      />
+                    </div>
                   </td>
                   <td className="px-6 py-4" onClick={(e) => e.stopPropagation()}>
                     <CompletionSlider
