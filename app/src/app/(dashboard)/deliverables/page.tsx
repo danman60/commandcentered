@@ -493,10 +493,11 @@ function CompletionSlider({ deliverableId, initialValue }: { deliverableId: stri
     const newValue = parseInt(e.target.value);
     setValue(newValue);
 
-    // Update database with debounced call
+    // Update database - if slider hits 100%, mark as DELIVERED
     updateDeliverable.mutate({
       id: deliverableId,
       completionPercentage: newValue,
+      ...(newValue === 100 && { status: 'DELIVERED' }),
     });
   };
 
