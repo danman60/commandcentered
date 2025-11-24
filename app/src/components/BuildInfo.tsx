@@ -10,7 +10,7 @@ export function BuildInfo() {
   const buildTime = process.env.NEXT_PUBLIC_BUILD_TIME || 'unknown';
 
   return (
-    <div className="fixed bottom-2 right-2 text-xs text-slate-500 font-mono bg-slate-800/80 px-2 py-1 rounded border border-slate-700/50 z-50">
+    <div className="hidden md:block fixed bottom-2 right-2 text-xs text-slate-500 font-mono bg-slate-800/80 px-2 py-1 rounded border border-slate-700/50 z-50">
       Build: {commitSha.substring(0, 7)} | {buildTime} EST
     </div>
   );

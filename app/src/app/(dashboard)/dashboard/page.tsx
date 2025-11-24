@@ -188,9 +188,10 @@ export default function DashboardPage() {
               size="medium"
               onClick={() => setIsCustomizeOpen(true)}
               data-testid="customize-dashboard"
+              title="Customize Dashboard"
             >
               <Settings className="w-4 h-4" />
-              Customize
+              <span className="hidden md:inline">Customize</span>
             </Button>
           </div>
         </div>
