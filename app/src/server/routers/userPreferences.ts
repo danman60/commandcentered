@@ -34,8 +34,9 @@ export const userPreferencesRouter = router({
   updateDashboardLayout: protectedProcedure
     .input(
       z.object({
-        dashboardLayout: z.any(), // React Grid Layout config
+        dashboardLayout: z.any().optional(), // React Grid Layout config
         visibleWidgets: z.array(z.string()).optional(),
+        dashboardDraggingEnabled: z.boolean().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -43,12 +44,14 @@ export const userPreferencesRouter = router({
         where: { userId: ctx.user.id },
         create: {
           userId: ctx.user.id,
-          dashboardLayout: input.dashboardLayout,
+          dashboardLayout: input.dashboardLayout || Prisma.JsonNull,
           visibleWidgets: input.visibleWidgets || [],
+          dashboardDraggingEnabled: input.dashboardDraggingEnabled ?? false,
         },
         update: {
-          dashboardLayout: input.dashboardLayout,
+          ...(input.dashboardLayout !== undefined && { dashboardLayout: input.dashboardLayout }),
           ...(input.visibleWidgets && { visibleWidgets: input.visibleWidgets }),
+          ...(input.dashboardDraggingEnabled !== undefined && { dashboardDraggingEnabled: input.dashboardDraggingEnabled }),
         },
       });
     }),

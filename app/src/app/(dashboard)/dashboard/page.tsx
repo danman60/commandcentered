@@ -18,9 +18,11 @@ import {
   Settings,
   ExternalLink,
   RotateCcw,
+  Move,
 } from 'lucide-react';
 import { Responsive, WidthProvider, Layout } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
+import { useIsMobile } from '@/hooks/useMediaQuery';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -54,8 +56,10 @@ const DEFAULT_LAYOUT: Layout[] = [
 
 export default function DashboardPage() {
   const router = useRouter();
+  const isMobile = useIsMobile();
   const [isCustomizeOpen, setIsCustomizeOpen] = useState(false);
   const [currentLayout, setCurrentLayout] = useState<Layout[]>(DEFAULT_LAYOUT);
+  const [isDraggingEnabled, setIsDraggingEnabled] = useState(false); // Default OFF
   const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Fetch all dashboard data
@@ -89,6 +93,15 @@ export default function DashboardPage() {
       setCurrentLayout(userPrefs.dashboardLayout as unknown as Layout[]);
     }
   }, [userPrefs]);
+
+  // Restore dragging state from preferences (default OFF, always OFF on mobile)
+  useEffect(() => {
+    if (isMobile) {
+      setIsDraggingEnabled(false);
+    } else if (userPrefs?.dashboardDraggingEnabled !== undefined) {
+      setIsDraggingEnabled(userPrefs.dashboardDraggingEnabled);
+    }
+  }, [userPrefs, isMobile]);
 
   // Determine which widgets are visible
   const getWidgetVisibility = (widgetId: WidgetType): boolean => {
@@ -128,6 +141,16 @@ export default function DashboardPage() {
     });
   };
 
+  // Toggle dragging mode
+  const handleToggleDragging = async () => {
+    if (isMobile) return; // Don't allow toggle on mobile
+    const newState = !isDraggingEnabled;
+    setIsDraggingEnabled(newState);
+    await updateDashboardLayout.mutateAsync({
+      dashboardDraggingEnabled: newState,
+    });
+  };
+
   return (
     <div className="p-8">
       {/* Header */}
@@ -147,7 +170,20 @@ export default function DashboardPage() {
               onClick={() => router.push('/planning')}
             >
               ➕ New Event
-            </Button>            <Button
+            </Button>
+            {!isMobile && (
+              <Button
+                variant={isDraggingEnabled ? "primary" : "secondary"}
+                size="medium"
+                onClick={handleToggleDragging}
+                data-testid="toggle-dragging"
+                title={isDraggingEnabled ? "Disable drag & drop" : "Enable drag & drop"}
+              >
+                <Move className="w-4 h-4" />
+                {isDraggingEnabled ? 'Dragging ON' : 'Dragging OFF'}
+              </Button>
+            )}
+            <Button
               variant="secondary"
               size="medium"
               onClick={() => setIsCustomizeOpen(true)}
@@ -168,8 +204,8 @@ export default function DashboardPage() {
         cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
         rowHeight={60}
         onLayoutChange={handleLayoutChange}
-        isDraggable={true}
-        isResizable={true}
+        isDraggable={isDraggingEnabled && !isMobile}
+        isResizable={isDraggingEnabled && !isMobile}
         compactType="vertical"
         preventCollision={false}
       >

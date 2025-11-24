@@ -2746,8 +2746,9 @@ model UserPreferences {
   user   UserProfile @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   // Dashboard Customization
-  dashboardLayout Json?    @map("dashboard_layout") @db.JsonB // React Grid Layout config
-  visibleWidgets  String[] @default([]) @map("visible_widgets") // Widget IDs that are visible
+  dashboardLayout          Json?    @map("dashboard_layout") @db.JsonB // React Grid Layout config
+  visibleWidgets           String[] @default([]) @map("visible_widgets") // Widget IDs that are visible
+  dashboardDraggingEnabled Boolean  @default(false) @map("dashboard_dragging_enabled") // Enable drag & drop
 
   // Navigation Customization
   navigationCollapsed Boolean @default(false) @map("navigation_collapsed")
