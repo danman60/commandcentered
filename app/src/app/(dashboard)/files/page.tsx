@@ -174,40 +174,31 @@ export default function FilesPage() {
     if (!selectedFile) return;
 
     try {
-      // Import Supabase client
-      const { createClient } = await import('@/lib/supabase/client');
-      const supabase = createClient();
+      // Create FormData for server-side upload (bypasses client-side JWT)
+      const formData = new FormData();
+      formData.append('file', selectedFile);
+      formData.append('category', uploadCategory);
 
-      // Generate unique file path
-      const timestamp = Date.now();
-      const sanitizedFileName = selectedFile.name.replace(/[^a-zA-Z0-9.-]/g, '_');
-      const storagePath = `${uploadCategory}/${timestamp}-${sanitizedFileName}`;
+      // Upload via API route (uses service role key server-side)
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
 
-      // Upload to Supabase Storage
-      const { data: uploadData, error: uploadError } = await supabase.storage
-        .from('files')
-        .upload(storagePath, selectedFile, {
-          cacheControl: '3600',
-          upsert: false,
-        });
+      const result = await response.json();
 
-      if (uploadError) {
-        console.error('Upload error:', uploadError);
-        alert(`Upload failed: ${uploadError.message}`);
+      if (!response.ok || !result.success) {
+        console.error('Upload error:', result.error);
+        alert(`Upload failed: ${result.error || 'Unknown error'}`);
         return;
       }
 
-      // Get public URL
-      const { data: urlData } = supabase.storage
-        .from('files')
-        .getPublicUrl(storagePath);
-
       // Save file metadata to database
       createFile.mutate({
-        fileName: selectedFile.name,
-        fileType: selectedFile.type,
-        filePath: urlData.publicUrl,
-        fileSize: selectedFile.size,
+        fileName: result.fileName,
+        fileType: result.fileType,
+        filePath: result.filePath,
+        fileSize: result.fileSize,
         category: uploadCategory,
         description: uploadDescription || undefined,
       });

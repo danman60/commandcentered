@@ -1,0 +1,10 @@
+Test File for CommandCentered Upload
+
+This is a test document to verify:
+1. Supabase Storage upload functionality
+2. File metadata saved to database
+3. Public URL generation
+4. FileActionsMenu operations (Download, Rename, Delete, Edit Metadata)
+
+Created: November 24, 2025
+Build: 8c86427
