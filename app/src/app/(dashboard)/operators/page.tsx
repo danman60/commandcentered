@@ -21,6 +21,7 @@ export default function OperatorsPage() {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [selectedOperatorId, setSelectedOperatorId] = useState<string | null>(null);
+  const [editForm, setEditForm] = useState<any>(null);
 
   // Fetch operators with real data
   const { data: operators, isLoading, refetch } = trpc.operator.list.useQuery({

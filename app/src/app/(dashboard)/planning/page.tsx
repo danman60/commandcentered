@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { trpc } from '@/lib/trpc/client';
 import { DndContext, DragEndEvent, DragOverlay, useDraggable, useDroppable } from '@dnd-kit/core';
 import { useIsMobile } from '@/hooks/useMediaQuery';
-import { OperatorRole } from '@prisma/client';
+import { OperatorRole, PayType } from '@prisma/client';
 
 type DragItem = {
   type: 'operator' | 'kit';
@@ -391,6 +391,8 @@ export default function PlanningPage() {
               shiftId,
               operatorId: dragData.id,
               role: OperatorRole.VIDEOGRAPHER,
+              payType: PayType.FLAT,
+              flatRate: 0, // Placeholder - will be set by user later
             });
           } else {
             // Create a shift first, then assign
