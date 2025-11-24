@@ -170,17 +170,51 @@ export default function FilesPage() {
     }
   };
 
-  const handleUpload = () => {
+  const handleUpload = async () => {
     if (!selectedFile) return;
 
-    createFile.mutate({
-      fileName: selectedFile.name,
-      fileType: selectedFile.type,
-      filePath: `/uploads/${selectedFile.name}`, // Placeholder path
-      fileSize: selectedFile.size,
-      category: uploadCategory,
-      description: uploadDescription || undefined,
-    });
+    try {
+      // Import Supabase client
+      const { createClient } = await import('@/lib/supabase/client');
+      const supabase = createClient();
+
+      // Generate unique file path
+      const timestamp = Date.now();
+      const sanitizedFileName = selectedFile.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+      const storagePath = `${uploadCategory}/${timestamp}-${sanitizedFileName}`;
+
+      // Upload to Supabase Storage
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('files')
+        .upload(storagePath, selectedFile, {
+          cacheControl: '3600',
+          upsert: false,
+        });
+
+      if (uploadError) {
+        console.error('Upload error:', uploadError);
+        alert(`Upload failed: ${uploadError.message}`);
+        return;
+      }
+
+      // Get public URL
+      const { data: urlData } = supabase.storage
+        .from('files')
+        .getPublicUrl(storagePath);
+
+      // Save file metadata to database
+      createFile.mutate({
+        fileName: selectedFile.name,
+        fileType: selectedFile.type,
+        filePath: urlData.publicUrl,
+        fileSize: selectedFile.size,
+        category: uploadCategory,
+        description: uploadDescription || undefined,
+      });
+    } catch (error) {
+      console.error('Upload error:', error);
+      alert(`Upload failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
   };
 
   const handleAddService = (e: React.FormEvent<HTMLFormElement>) => {
