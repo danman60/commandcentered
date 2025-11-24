@@ -1,7 +1,15 @@
 import { redirect } from 'next/navigation'
+import { createClient } from '@/lib/supabase/server'
 
 export default async function Home() {
-  // TEMPORARILY DISABLED AUTH FOR TESTING
-  // Just redirect to dashboard
-  redirect('/dashboard')
+  const supabase = await createClient()
+  const { data: { session } } = await supabase.auth.getSession()
+
+  if (session) {
+    // User is authenticated, redirect to dashboard
+    redirect('/dashboard')
+  } else {
+    // User is not authenticated, redirect to login
+    redirect('/login')
+  }
 }
