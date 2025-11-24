@@ -20,9 +20,9 @@ export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
   //   throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Not authenticated' })
   // }
 
-  // Default test user when auth disabled
+  // Default test user when auth disabled (using existing user ID)
   const testUser = ctx.user || {
-    id: 'test-user-id',
+    id: '00000000-0000-0000-0000-000000000001', // Use existing test user ID
     tenantId: '00000000-0000-0000-0000-000000000001',
     role: 'SUPER_ADMIN' as const,
     email: 'test@commandcentered.app',
@@ -46,9 +46,9 @@ export const tenantProcedure = publicProcedure.use(async ({ ctx, next }) => {
   //   })
   // }
 
-  // Default test user when auth disabled
+  // Default test user when auth disabled (using existing user ID)
   const testUser = ctx.user || {
-    id: 'test-user-id',
+    id: '00000000-0000-0000-0000-000000000001', // Use existing test user ID
     tenantId: '00000000-0000-0000-0000-000000000001',
     role: 'SUPER_ADMIN' as const,
     email: 'test@commandcentered.app',
