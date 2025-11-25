@@ -8,12 +8,12 @@ const TESTING_MODE = true
 export async function createContext({ req, resHeaders }: FetchCreateContextFnOptions) {
   const supabase = await createClient()
 
-  // Default test user for when auth is disabled
+  // Default test user for when auth is disabled (using existing user UUID)
   if (TESTING_MODE) {
     return {
       prisma,
       user: {
-        id: 'test-user-id',
+        id: '00000000-0000-0000-0000-000000000001', // Use existing test user UUID
         tenantId: '00000000-0000-0000-0000-000000000001',
         role: 'SUPER_ADMIN' as const,
         email: 'test@commandcentered.app',

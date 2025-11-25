@@ -217,4 +217,40 @@ export const deliverableRouter = router({
         include: { event: true, client: true, assignedEditor: true },
       });
     }),
+
+  getStats: tenantProcedure
+    .query(async ({ ctx }) => {
+      const now = new Date();
+      const oneWeekFromNow = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+
+      const allDeliverables = await ctx.prisma.deliverable.findMany({
+        where: {
+          tenantId: ctx.tenantId,
+          status: { notIn: ['DELIVERED', 'CANCELLED'] },
+        },
+        include: { event: true, client: true },
+        orderBy: { dueDate: 'asc' },
+      });
+
+      const overdue = allDeliverables.filter(d => d.dueDate < now).length;
+      const dueThisWeek = allDeliverables.filter(d => d.dueDate >= now && d.dueDate <= oneWeekFromNow).length;
+      const inProgress = allDeliverables.filter(d => d.status === 'IN_PROGRESS').length;
+
+      const nextUp = allDeliverables.slice(0, 2).map(d => {
+        const daysUntilDue = Math.floor((d.dueDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+        return {
+          id: d.id,
+          title: d.deliverableName,
+          eventName: d.event?.eventName || d.client?.organization || 'Unknown',
+          dueInDays: daysUntilDue,
+        };
+      });
+
+      return {
+        overdue,
+        dueThisWeek,
+        inProgress,
+        nextUp,
+      };
+    }),
 });

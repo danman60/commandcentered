@@ -27,7 +27,7 @@ import { useIsMobile } from '@/hooks/useMediaQuery';
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 // Widget type definitions
-type WidgetType = 'overview_stats' | 'event_pipeline' | 'revenue_stats' | 'upcoming_events' | 'critical_alerts' | 'recent_activity';
+type WidgetType = 'overview_stats' | 'event_pipeline' | 'revenue_stats' | 'upcoming_events' | 'critical_alerts' | 'recent_activity' | 'deliverables';
 
 interface WidgetConfig {
   id: WidgetType;
@@ -39,6 +39,7 @@ const WIDGET_CONFIGS: WidgetConfig[] = [
   { id: 'overview_stats', title: 'Overview Stats', defaultVisible: true },
   { id: 'event_pipeline', title: 'Event Pipeline', defaultVisible: true },
   { id: 'revenue_stats', title: 'Revenue Overview', defaultVisible: true },
+  { id: 'deliverables', title: 'Deliverables', defaultVisible: true },
   { id: 'upcoming_events', title: 'Upcoming Events', defaultVisible: true },
   { id: 'critical_alerts', title: 'Critical Alerts', defaultVisible: true },
   { id: 'recent_activity', title: 'Recent Activity', defaultVisible: true },
@@ -47,8 +48,9 @@ const WIDGET_CONFIGS: WidgetConfig[] = [
 // Default layout configuration
 const DEFAULT_LAYOUT: Layout[] = [
   { i: 'overview_stats', x: 0, y: 0, w: 12, h: 2, minW: 6, minH: 2 },
-  { i: 'event_pipeline', x: 0, y: 2, w: 6, h: 4, minW: 4, minH: 3 },
-  { i: 'revenue_stats', x: 6, y: 2, w: 6, h: 4, minW: 4, minH: 3 },
+  { i: 'event_pipeline', x: 0, y: 2, w: 4, h: 4, minW: 4, minH: 3 },
+  { i: 'revenue_stats', x: 4, y: 2, w: 4, h: 4, minW: 4, minH: 3 },
+  { i: 'deliverables', x: 8, y: 2, w: 4, h: 4, minW: 4, minH: 3 },
   { i: 'upcoming_events', x: 0, y: 6, w: 6, h: 5, minW: 4, minH: 4 },
   { i: 'critical_alerts', x: 6, y: 6, w: 6, h: 5, minW: 4, minH: 4 },
   { i: 'recent_activity', x: 0, y: 11, w: 12, h: 4, minW: 6, minH: 3 },
@@ -66,6 +68,7 @@ export default function DashboardPage() {
   const { data: stats, isLoading: statsLoading } = trpc.dashboard.getStats.useQuery();
   const { data: pipeline, isLoading: pipelineLoading } = trpc.dashboard.getEventPipeline.useQuery();
   const { data: revenueStats, isLoading: revenueLoading } = trpc.dashboard.getRevenueStats.useQuery();
+  const { data: deliverablesStats, isLoading: deliverablesLoading } = trpc.deliverable.getStats.useQuery();
   const { data: upcomingEvents, isLoading: upcomingLoading } = trpc.dashboard.getUpcomingEvents.useQuery({ limit: 5 });
   const { data: criticalAlerts, isLoading: alertsLoading } = trpc.dashboard.getCriticalAlerts.useQuery();
   const { data: recentActivity, isLoading: activityLoading } = trpc.dashboard.getRecentActivity.useQuery({ limit: 10 });
@@ -381,7 +384,74 @@ export default function DashboardPage() {
           </div>
         )}
 
-        {/* Widget 4: Upcoming Events */}
+        {/* Widget 4: Deliverables */}
+        {getWidgetVisibility('deliverables') && (
+          <div key="deliverables" data-testid="widget-deliverables">
+            <Card padding="large" hover="glow" className="h-full cursor-pointer" onClick={() => router.push('/deliverables')}>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold text-white">📦 Deliverables</h3>
+                <ExternalLink className="w-4 h-4 text-gray-400" />
+              </div>
+              {deliverablesLoading ? (
+                <p className="text-gray-400">Loading...</p>
+              ) : (
+                <div className="space-y-4">
+                  {/* Status Summary */}
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-red-400 flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-red-500"></span>
+                        Overdue
+                      </span>
+                      <span className="text-lg font-bold text-red-400">
+                        {deliverablesStats?.overdue ?? 0}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-yellow-400 flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-yellow-500"></span>
+                        Due This Week
+                      </span>
+                      <span className="text-lg font-bold text-yellow-400">
+                        {deliverablesStats?.dueThisWeek ?? 0}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-green-400 flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-green-500"></span>
+                        In Progress
+                      </span>
+                      <span className="text-lg font-bold text-green-400">
+                        {deliverablesStats?.inProgress ?? 0}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Next Up Section */}
+                  {deliverablesStats?.nextUp && deliverablesStats.nextUp.length > 0 && (
+                    <div className="pt-3 border-t border-slate-600">
+                      <p className="text-xs font-semibold text-gray-400 mb-2 uppercase tracking-wide">Next Up:</p>
+                      <div className="space-y-1">
+                        {deliverablesStats.nextUp.slice(0, 2).map((item: any, idx: number) => (
+                          <div key={idx} className="text-xs text-gray-300 truncate">
+                            • {item.eventName} - {item.title}
+                            {item.dueInDays !== undefined && (
+                              <span className={`ml-1 ${item.dueInDays === 0 ? 'text-red-400' : item.dueInDays <= 2 ? 'text-yellow-400' : 'text-gray-400'}`}>
+                                ({item.dueInDays === 0 ? 'today' : `${item.dueInDays}d`})
+                              </span>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </Card>
+          </div>
+        )}
+
+        {/* Widget 5: Upcoming Events */}
         {getWidgetVisibility('upcoming_events') && (
           <div key="upcoming_events" data-testid="widget-upcoming-events">
             <Card padding="large" hover="glow" className="h-full">
