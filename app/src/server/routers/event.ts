@@ -85,6 +85,12 @@ export const eventRouter = router({
                       name: true,
                     },
                   },
+                  rideProvider: {
+                    select: {
+                      id: true,
+                      name: true,
+                    },
+                  },
                 },
               },
             },
