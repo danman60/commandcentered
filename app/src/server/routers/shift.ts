@@ -316,28 +316,36 @@ export const shiftRouter = router({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      // Verify shift belongs to tenant
-      const shift = await ctx.prisma.shift.findFirst({
-        where: {
-          id: input.shiftId,
-          tenantId: ctx.tenantId,
-        },
-      });
+      try {
+        console.log('[assignOperator] Starting with ctx.user.id:', ctx.user?.id, 'ctx.tenantId:', ctx.tenantId);
+        console.log('[assignOperator] Input:', JSON.stringify(input));
 
-      if (!shift) {
-        throw new Error('Shift not found');
-      }
+        // Verify shift belongs to tenant
+        const shift = await ctx.prisma.shift.findFirst({
+          where: {
+            id: input.shiftId,
+            tenantId: ctx.tenantId,
+          },
+        });
 
-      // Verify operator belongs to tenant
-      const operator = await ctx.prisma.operator.findFirst({
-        where: {
-          id: input.operatorId,
-          tenantId: ctx.tenantId,
-        },
-      });
+        if (!shift) {
+          throw new Error('Shift not found');
+        }
 
-      if (!operator) {
-        throw new Error('Operator not found');
+        // Verify operator belongs to tenant
+        const operator = await ctx.prisma.operator.findFirst({
+          where: {
+            id: input.operatorId,
+            tenantId: ctx.tenantId,
+          },
+        });
+
+        if (!operator) {
+          throw new Error('Operator not found');
+        }
+      } catch (error) {
+        console.error('[assignOperator] Error in verification:', error);
+        throw error;
       }
 
       // Verify ride provider if specified
@@ -382,25 +390,33 @@ export const shiftRouter = router({
         calculatedPay = input.flatRate;
       }
 
-      return ctx.prisma.shiftAssignment.create({
-        data: {
-          tenantId: ctx.tenantId,
-          shiftId: input.shiftId,
-          operatorId: input.operatorId,
-          role: input.role,
-          payType: input.payType,
-          hourlyRate: input.hourlyRate,
-          estimatedHours: input.estimatedHours,
-          flatRate: input.flatRate,
-          calculatedPay,
-          needsRide: input.needsRide,
-          rideProviderId: input.rideProviderId,
-        },
-        include: {
-          operator: true,
-          shift: true,
-        },
-      });
+      console.log('[assignOperator] Creating assignment with tenantId:', ctx.tenantId);
+      try {
+        const result = await ctx.prisma.shiftAssignment.create({
+          data: {
+            tenantId: ctx.tenantId,
+            shiftId: input.shiftId,
+            operatorId: input.operatorId,
+            role: input.role,
+            payType: input.payType,
+            hourlyRate: input.hourlyRate,
+            estimatedHours: input.estimatedHours,
+            flatRate: input.flatRate,
+            calculatedPay,
+            needsRide: input.needsRide,
+            rideProviderId: input.rideProviderId,
+          },
+          include: {
+            operator: true,
+            shift: true,
+          },
+        });
+        console.log('[assignOperator] Success! Created assignment:', result.id);
+        return result;
+      } catch (error) {
+        console.error('[assignOperator] Failed to create assignment:', error);
+        throw error;
+      }
     }),
 
   /**
