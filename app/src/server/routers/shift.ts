@@ -377,14 +377,14 @@ export const shiftRouter = router({
       // Calculate pay based on type
       let calculatedPay = 0;
       if (input.payType === 'HOURLY') {
-        if (!input.hourlyRate || !input.estimatedHours) {
+        if (input.hourlyRate == null || input.estimatedHours == null) {
           throw new Error(
             'Hourly rate and estimated hours required for hourly pay type'
           );
         }
         calculatedPay = input.hourlyRate * input.estimatedHours;
       } else if (input.payType === 'FLAT') {
-        if (!input.flatRate) {
+        if (input.flatRate == null) {
           throw new Error('Flat rate required for flat pay type');
         }
         calculatedPay = input.flatRate;
