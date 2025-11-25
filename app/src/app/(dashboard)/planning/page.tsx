@@ -228,48 +228,48 @@ export default function PlanningPage() {
   const firstDay = new Date(year, month, 1);
   const lastDay = new Date(year, month + 1, 0);
 
-  const { data: events } = trpc.event.getByDateRange.useQuery({
+  const { data: events, refetch: refetchEvents } = trpc.event.getByDateRange.useQuery({
     startDate: firstDay,
     endDate: lastDay,
   });
 
   const { data: operators } = trpc.operator.list.useQuery({});
-  const { data: kits } = trpc.kit.list.useQuery({});
+  const { data: kits, refetch: refetchKits } = trpc.kit.list.useQuery({});
 
   // Mutations for assignment
   const assignOperator = trpc.shift.assignOperator.useMutation({
     onSuccess: () => {
-      window.location.reload();
+      refetchEvents();
     },
   });
 
   const assignGear = trpc.gearAssignment.assign.useMutation({
     onSuccess: () => {
-      window.location.reload();
+      refetchEvents();
     },
   });
 
   const bulkAssignGear = trpc.gearAssignment.bulkAssign.useMutation({
     onSuccess: () => {
-      window.location.reload();
+      refetchEvents();
     },
   });
 
   const createShift = trpc.shift.create.useMutation({
     onSuccess: () => {
-      window.location.reload();
+      refetchEvents();
     },
   });
 
   const unassignOperatorMutation = trpc.shift.unassignOperator.useMutation({
     onSuccess: () => {
-      window.location.reload();
+      refetchEvents();
     },
   });
 
   const unassignGearMutation = trpc.gearAssignment.unassign.useMutation({
     onSuccess: () => {
-      window.location.reload();
+      refetchEvents();
     },
   });
 
