@@ -797,6 +797,50 @@ function NewEventModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
   );
 }
 
+// Droppable Shift Container (for detail modal drag-drop)
+function DroppableShift({ shiftId, children }: { shiftId: string; children: React.ReactNode }) {
+  const { setNodeRef, isOver } = useDroppable({
+    id: shiftId,
+  });
+
+  return (
+    <div
+      ref={setNodeRef}
+      className={`transition-all ${isOver ? 'ring-2 ring-green-500 ring-opacity-50' : ''}`}
+    >
+      {children}
+    </div>
+  );
+}
+
+// Draggable Operator Badge (for detail modal drag-drop)
+function DraggableOperatorBadge({ assignment, shiftId }: { assignment: any; shiftId: string }) {
+  const dragData = {
+    assignmentId: assignment.id,
+    operatorId: assignment.operator.id,
+    role: assignment.role,
+    currentShiftId: shiftId,
+  };
+
+  const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
+    id: `shift-assignment-${assignment.id}`,
+    data: dragData,
+  });
+
+  return (
+    <div
+      ref={setNodeRef}
+      {...attributes}
+      {...listeners}
+      className={`bg-green-500/20 border border-green-500/30 px-3 py-1 rounded-full text-sm text-green-300 cursor-move hover:bg-green-500/30 transition-all ${
+        isDragging ? 'opacity-50' : ''
+      }`}
+    >
+      {assignment.operator.name}
+    </div>
+  );
+}
+
 // Event Detail Modal with Shift Builder
 function EventDetailModal({ eventId, isOpen, onClose }: { eventId: string; isOpen: boolean; onClose: () => void }) {
   const { data: event, refetch: refetchEvent } = trpc.event.getById.useQuery({ id: eventId });
@@ -832,6 +876,41 @@ function EventDetailModal({ eventId, isOpen, onClose }: { eventId: string; isOpe
       refetchEvent();
     },
   });
+
+  const unassignOperator = trpc.shift.unassignOperator.useMutation({
+    onSuccess: () => {
+      refetchEvent();
+    },
+  });
+
+  // Handle drag-drop of operators between shifts
+  const handleShiftDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (!over || !active.data.current) return;
+
+    const draggedAssignment = active.data.current as { assignmentId: string; operatorId: string; role: string; currentShiftId: string };
+    const targetShiftId = over.id as string;
+
+    // Don't do anything if dropped on the same shift
+    if (draggedAssignment.currentShiftId === targetShiftId) return;
+
+    // Reassign operator: unassign from current shift, then assign to new shift
+    unassignOperator.mutate(
+      { assignmentId: draggedAssignment.assignmentId },
+      {
+        onSuccess: () => {
+          // After unassigning, assign to new shift
+          assignOperator.mutate({
+            shiftId: targetShiftId,
+            operatorId: draggedAssignment.operatorId,
+            role: draggedAssignment.role as OperatorRole,
+            payType: 'HOURLY' as PayType,
+          });
+        },
+      }
+    );
+  };
 
   const startEditShift = (shift: any) => {
     setEditingShiftId(shift.id);
@@ -1139,9 +1218,11 @@ function EventDetailModal({ eventId, isOpen, onClose }: { eventId: string; isOpe
             </div>
 
             {event.shifts && event.shifts.length > 0 ? (
-              <div className="space-y-3">
-                {event.shifts.map((shift: any) => (
-                  <div key={shift.id} className="bg-slate-800 border border-slate-700 rounded-lg p-4">
+              <DndContext onDragEnd={handleShiftDragEnd}>
+                <div className="space-y-3">
+                  {event.shifts.map((shift: any) => (
+                    <DroppableShift key={shift.id} shiftId={shift.id}>
+                      <div className="bg-slate-800 border border-slate-700 rounded-lg p-4">
                     {editingShiftId === shift.id ? (
                       // Edit Mode
                       <div className="space-y-3">
@@ -1222,12 +1303,11 @@ function EventDetailModal({ eventId, isOpen, onClose }: { eventId: string; isOpe
                     {!editingShiftId && shift.shiftAssignments && shift.shiftAssignments.length > 0 && (
                       <div className="flex flex-wrap gap-2">
                         {shift.shiftAssignments.map((assignment: any) => (
-                          <div
+                          <DraggableOperatorBadge
                             key={assignment.id}
-                            className="bg-green-500/20 border border-green-500/30 px-3 py-1 rounded-full text-sm text-green-300"
-                          >
-                            {assignment.operator.name}
-                          </div>
+                            assignment={assignment}
+                            shiftId={shift.id}
+                          />
                         ))}
                       </div>
                     )}
@@ -1258,9 +1338,11 @@ function EventDetailModal({ eventId, isOpen, onClose }: { eventId: string; isOpe
                         </div>
                       </div>
                     )}
-                  </div>
-                ))}
-              </div>
+                      </div>
+                    </DroppableShift>
+                  ))}
+                </div>
+              </DndContext>
             ) : (
               <div className="text-center text-slate-400 py-8">
                 No shifts created yet. Click "Add Shift" to get started.
