@@ -926,23 +926,41 @@ function EventDetailModal({ eventId, isOpen, onClose }: { eventId: string; isOpe
     // Don't do anything if dropped on the same shift
     if (draggedAssignment.currentShiftId === targetShiftId) return;
 
+    // Prepare assignment data with defaults for missing values
+    const payType = (draggedAssignment.payType as PayType) || 'FLAT';
+    const assignmentData: any = {
+      shiftId: targetShiftId,
+      operatorId: draggedAssignment.operatorId,
+      role: (draggedAssignment.role as OperatorRole) || 'VIDEOGRAPHER',
+      payType: payType,
+      needsRide: draggedAssignment.needsRide ?? false,
+    };
+
+    // Add pay fields based on payType
+    if (payType === 'HOURLY') {
+      assignmentData.hourlyRate = draggedAssignment.hourlyRate ?? 50; // Default hourly rate
+      assignmentData.estimatedHours = draggedAssignment.estimatedHours ?? 8; // Default 8 hours
+    } else if (payType === 'FLAT') {
+      assignmentData.flatRate = draggedAssignment.flatRate ?? 0; // Default flat rate
+    }
+
+    // Add ride provider if specified
+    if (draggedAssignment.rideProviderId) {
+      assignmentData.rideProviderId = draggedAssignment.rideProviderId;
+    }
+
+    console.log('[handleShiftDragEnd] Assignment data:', assignmentData);
+
     // Reassign operator: unassign from current shift, then assign to new shift
     unassignOperator.mutate(
       { assignmentId: draggedAssignment.assignmentId },
       {
         onSuccess: () => {
           // After unassigning, assign to new shift with all original assignment details
-          assignOperator.mutate({
-            shiftId: targetShiftId,
-            operatorId: draggedAssignment.operatorId,
-            role: draggedAssignment.role as OperatorRole,
-            payType: draggedAssignment.payType as PayType,
-            hourlyRate: draggedAssignment.hourlyRate ?? undefined,
-            estimatedHours: draggedAssignment.estimatedHours ?? undefined,
-            flatRate: draggedAssignment.flatRate ?? undefined,
-            needsRide: draggedAssignment.needsRide,
-            rideProviderId: draggedAssignment.rideProviderId ?? undefined,
-          });
+          assignOperator.mutate(assignmentData);
+        },
+        onError: (error) => {
+          console.error('[handleShiftDragEnd] Unassign error:', error);
         },
       }
     );
