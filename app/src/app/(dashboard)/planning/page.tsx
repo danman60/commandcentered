@@ -395,19 +395,33 @@ export default function PlanningPage() {
               flatRate: 0, // Placeholder - will be set by user later
             });
           } else {
-            // Create a shift first, then assign
+            // Create a shift first, then assign operator to it
             const shiftDate = new Date(droppedEvent?.loadInTime || dropData.date);
             const startTime = new Date(shiftDate);
             startTime.setHours(9, 0, 0, 0);
             const endTime = new Date(shiftDate);
             endTime.setHours(17, 0, 0, 0);
 
-            createShift.mutate({
-              eventId: dropData.eventId,
-              shiftName: 'Default Shift',
-              startTime,
-              endTime,
-            });
+            createShift.mutate(
+              {
+                eventId: dropData.eventId,
+                shiftName: 'Default Shift',
+                startTime,
+                endTime,
+              },
+              {
+                onSuccess: (newShift) => {
+                  // After shift is created, assign operator to it
+                  assignOperator.mutate({
+                    shiftId: newShift.id,
+                    operatorId: dragData.id,
+                    role: OperatorRole.VIDEOGRAPHER,
+                    payType: PayType.FLAT,
+                    flatRate: 0, // Placeholder - will be set by user later
+                  });
+                },
+              }
+            );
           }
         } else if (dragData.type === 'kit') {
           // Assign all gear in kit to event
