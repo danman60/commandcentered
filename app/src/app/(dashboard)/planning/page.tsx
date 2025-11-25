@@ -819,6 +819,12 @@ function DraggableOperatorBadge({ assignment, shiftId }: { assignment: any; shif
     assignmentId: assignment.id,
     operatorId: assignment.operator.id,
     role: assignment.role,
+    payType: assignment.payType,
+    hourlyRate: assignment.hourlyRate,
+    estimatedHours: assignment.estimatedHours,
+    flatRate: assignment.flatRate,
+    needsRide: assignment.needsRide,
+    rideProviderId: assignment.rideProviderId,
     currentShiftId: shiftId,
   };
 
@@ -889,7 +895,18 @@ function EventDetailModal({ eventId, isOpen, onClose }: { eventId: string; isOpe
 
     if (!over || !active.data.current) return;
 
-    const draggedAssignment = active.data.current as { assignmentId: string; operatorId: string; role: string; currentShiftId: string };
+    const draggedAssignment = active.data.current as {
+      assignmentId: string;
+      operatorId: string;
+      role: string;
+      payType: string;
+      hourlyRate: number | null;
+      estimatedHours: number | null;
+      flatRate: number | null;
+      needsRide: boolean;
+      rideProviderId: string | null;
+      currentShiftId: string;
+    };
     const targetShiftId = over.id as string;
 
     // Don't do anything if dropped on the same shift
@@ -900,12 +917,17 @@ function EventDetailModal({ eventId, isOpen, onClose }: { eventId: string; isOpe
       { assignmentId: draggedAssignment.assignmentId },
       {
         onSuccess: () => {
-          // After unassigning, assign to new shift
+          // After unassigning, assign to new shift with all original assignment details
           assignOperator.mutate({
             shiftId: targetShiftId,
             operatorId: draggedAssignment.operatorId,
             role: draggedAssignment.role as OperatorRole,
-            payType: 'HOURLY' as PayType,
+            payType: draggedAssignment.payType as PayType,
+            hourlyRate: draggedAssignment.hourlyRate ?? undefined,
+            estimatedHours: draggedAssignment.estimatedHours ?? undefined,
+            flatRate: draggedAssignment.flatRate ?? undefined,
+            needsRide: draggedAssignment.needsRide,
+            rideProviderId: draggedAssignment.rideProviderId ?? undefined,
           });
         },
       }
