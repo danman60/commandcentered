@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { trpc } from '@/lib/trpc/client';
 import { DndContext, DragEndEvent, DragOverlay, useDraggable, useDroppable } from '@dnd-kit/core';
 import { useIsMobile } from '@/hooks/useMediaQuery';
@@ -875,6 +875,13 @@ function EventDetailModal({ eventId, isOpen, onClose }: { eventId: string; isOpe
     startTime: '',
     endTime: '',
   });
+
+  // Refetch event data when modal opens to ensure fresh data
+  useEffect(() => {
+    if (isOpen) {
+      refetchEvent();
+    }
+  }, [isOpen, refetchEvent]);
 
   const createShift = trpc.shift.create.useMutation({
     onSuccess: () => {
