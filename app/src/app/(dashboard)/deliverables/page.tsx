@@ -1,7 +1,7 @@
 'use client';
 
 import { trpc } from '@/lib/trpc/client';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { SortableTableHeader, useSorting } from '@/components/ui/SortableTableHeader';
 import { InlineEditField, InlineEditSelect } from '@/components/ui/InlineEditField';
 
@@ -635,6 +635,8 @@ function DeliverableDetailModal({ deliverableId, isOpen, onClose }: { deliverabl
     status: '',
   });
   const [googleDriveUrl, setGoogleDriveUrl] = useState('');
+  const [notes, setNotes] = useState('');
+  const [saveStatus, setSaveStatus] = useState<'saved' | 'saving' | 'idle'>('idle');
 
   const { data: deliverable } = trpc.deliverable.getById.useQuery({ id: deliverableId });
   const { data: operators } = trpc.operator.list.useQuery({});
@@ -642,9 +644,34 @@ function DeliverableDetailModal({ deliverableId, isOpen, onClose }: { deliverabl
   const updateDeliverable = trpc.deliverable.update.useMutation({
     onSuccess: () => {
       setIsEditMode(false);
-      window.location.reload();
+      setSaveStatus('saved');
+      setTimeout(() => setSaveStatus('idle'), 2000);
     },
   });
+
+  // Initialize notes when deliverable loads
+  useEffect(() => {
+    if (deliverable?.notes) {
+      setNotes(deliverable.notes);
+    }
+  }, [deliverable?.notes]);
+
+  // Autosave notes with debounce
+  useEffect(() => {
+    if (!deliverable) return;
+
+    const timeoutId = setTimeout(() => {
+      if (notes !== deliverable.notes) {
+        setSaveStatus('saving');
+        updateDeliverable.mutate({
+          id: deliverableId,
+          notes: notes || null,
+        });
+      }
+    }, 1000); // Save 1 second after user stops typing
+
+    return () => clearTimeout(timeoutId);
+  }, [notes, deliverable, deliverableId]);
 
   const updateGoogleDriveFolder = trpc.deliverable.updateGoogleDriveFolder.useMutation({
     onSuccess: () => {
@@ -705,8 +732,8 @@ function DeliverableDetailModal({ deliverableId, isOpen, onClose }: { deliverabl
   if (!isOpen || !deliverable) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="bg-slate-900 border-2 border-green-500/30 rounded-xl w-[800px] max-h-[90vh] overflow-y-auto shadow-2xl">
+    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="bg-slate-900 border-2 border-green-500/30 rounded-xl w-[80vw] max-h-[90vh] overflow-y-auto shadow-2xl">
         <div className="px-6 py-4 border-b border-green-500/20 flex justify-between items-center">
           <h2 className="text-xl font-bold text-white">Deliverable Details</h2>
           <button
@@ -833,6 +860,28 @@ function DeliverableDetailModal({ deliverableId, isOpen, onClose }: { deliverabl
                   No assets added yet
                 </div>
               )}
+            </div>
+          </div>
+
+          {/* Notes Section */}
+          <div className="mb-6">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-lg font-bold text-white">Notes</h3>
+              {saveStatus === 'saving' && (
+                <span className="text-sm text-yellow-400">Saving...</span>
+              )}
+              {saveStatus === 'saved' && (
+                <span className="text-sm text-green-400">✓ Saved</span>
+              )}
+            </div>
+            <textarea
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              placeholder="Drop notes here... links, feedback, requirements, or anything else related to this deliverable"
+              className="w-full h-64 px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-green-500 resize-vertical font-mono text-sm"
+            />
+            <div className="text-xs text-slate-500 mt-2">
+              Notes autosave 1 second after you stop typing
             </div>
           </div>
 
