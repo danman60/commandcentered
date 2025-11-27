@@ -1347,6 +1347,13 @@ function LeadDetailModal({
   const bulkUpdateProducts = trpc.lead.bulkUpdateProducts.useMutation({
     onSuccess: () => onSuccess(),
   });
+  const createClient = trpc.client.create.useMutation({
+    onSuccess: () => {
+      alert('Lead successfully converted to client!');
+      onSuccess();
+      onClose();
+    },
+  });
 
   const [isEditing, setIsEditing] = useState(false);
   const [isEditingProducts, setIsEditingProducts] = useState(false);
@@ -1414,6 +1421,20 @@ function LeadDetailModal({
     }
   };
 
+  const handleConvertToClient = () => {
+    if (!lead) return;
+    if (confirm('Convert this lead to a client? This will create a new client record.')) {
+      createClient.mutate({
+        organization: lead.organization || '',
+        contactName: lead.contactName || undefined,
+        email: lead.email,
+        phone: lead.phone || undefined,
+        // Optional: add leadId to maintain the relationship
+        leadId: lead.id,
+      });
+    }
+  };
+
   if (!lead) return null;
 
   return (
@@ -1427,6 +1448,16 @@ function LeadDetailModal({
             </span>
           </div>
           <div className="flex items-center gap-2">
+            {!isEditing && (
+              <Button
+                variant="primary"
+                size="small"
+                onClick={handleConvertToClient}
+                disabled={createClient.isPending}
+              >
+                {createClient.isPending ? 'Converting...' : '✓ Convert to Client'}
+              </Button>
+            )}
             {!isEditing ? (
               <Button
                 variant="secondary"

@@ -78,9 +78,13 @@ export const deliverableRouter = router({
         throw new Error('clientId is required. Provide either clientId directly or eventId (which will inherit the client from the event)');
       }
 
-      // Validate client exists
+      // Validate client exists and get Drive URL
       const client = await ctx.prisma.client.findFirst({
-        where: { id: finalClientId, tenantId: ctx.tenantId }
+        where: { id: finalClientId, tenantId: ctx.tenantId },
+        select: {
+          id: true,
+          googleDriveFolderUrl: true
+        }
       });
       if (!client) throw new Error('Client not found');
 
@@ -104,6 +108,8 @@ export const deliverableRouter = router({
           priority: input.priority || 'NORMAL',
           notes: input.notes,
           status: 'NOT_STARTED',
+          // Auto-populate Google Drive URL from client if available
+          googleDriveFolderUrl: client.googleDriveFolderUrl || undefined,
         },
         include: { event: { include: { client: true } }, client: true, assignedEditor: true },
       });
