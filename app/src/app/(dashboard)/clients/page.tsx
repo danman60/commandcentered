@@ -142,7 +142,11 @@ export default function ClientsPage() {
               ) || 0;
 
               return (
-                <tr key={client.id} className="hover:bg-slate-800/50 transition-colors">
+                <tr
+                  key={client.id}
+                  className="hover:bg-slate-800/50 transition-colors cursor-pointer"
+                  onClick={() => handleViewDetails(client.id)}
+                >
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm font-medium text-white">{client.organization}</div>
                     <div className="text-sm text-slate-400">{client.contactName || 'No contact'}</div>
@@ -179,6 +183,7 @@ export default function ClientsPage() {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-green-400 hover:text-green-300 transition-colors"
+                        onClick={(e) => e.stopPropagation()}
                       >
                         🔗 View
                       </a>
@@ -188,7 +193,10 @@ export default function ClientsPage() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm">
                     <button
-                      onClick={() => handleViewDetails(client.id)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleViewDetails(client.id);
+                      }}
                       className="text-green-400 hover:text-green-300 font-medium transition-colors"
                     >
                       View Details

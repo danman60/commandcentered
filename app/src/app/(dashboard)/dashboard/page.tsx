@@ -63,6 +63,7 @@ export default function DashboardPage() {
   const [currentLayout, setCurrentLayout] = useState<Layout[]>(DEFAULT_LAYOUT);
   const [isDraggingEnabled, setIsDraggingEnabled] = useState(false); // Default OFF
   const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const isDraggingRef = useRef(false); // Track if currently dragging to prevent click navigation
 
   // Fetch all dashboard data
   const { data: stats, isLoading: statsLoading } = trpc.dashboard.getStats.useQuery();
@@ -154,6 +155,25 @@ export default function DashboardPage() {
     });
   };
 
+  // Track drag start/stop to prevent navigation on drop
+  const handleDragStart = () => {
+    isDraggingRef.current = true;
+  };
+
+  const handleDragStop = () => {
+    // Keep isDragging true for a short moment to prevent click from firing
+    setTimeout(() => {
+      isDraggingRef.current = false;
+    }, 100);
+  };
+
+  // Safe navigation that checks if drag just happened
+  const safeNavigate = (path: string) => {
+    if (!isDraggingRef.current) {
+      router.push(path);
+    }
+  };
+
   return (
     <div className="p-8">
       {/* Header */}
@@ -170,7 +190,7 @@ export default function DashboardPage() {
             <Button
               variant="primary"
               size="medium"
-              onClick={() => router.push('/planning')}
+              onClick={() => safeNavigate('/planning')}
             >
               ➕ New Event
             </Button>
@@ -208,6 +228,8 @@ export default function DashboardPage() {
         cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
         rowHeight={60}
         onLayoutChange={handleLayoutChange}
+        onDragStart={handleDragStart}
+        onDragStop={handleDragStop}
         isDraggable={isDraggingEnabled && !isMobile}
         isResizable={isDraggingEnabled && !isMobile}
         compactType="vertical"
@@ -219,7 +241,7 @@ export default function DashboardPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 h-full">
               <div
                 className="tactical-stat-panel p-6 cursor-pointer transition-all relative"
-                onClick={() => router.push('/planning')}
+                onClick={() => safeNavigate('/planning')}
               >
                 <div className="flex items-center justify-between">
                   <div>
@@ -239,7 +261,7 @@ export default function DashboardPage() {
 
               <div
                 className="tactical-stat-panel p-6 cursor-pointer transition-all relative"
-                onClick={() => router.push('/operators')}
+                onClick={() => safeNavigate('/operators')}
               >
                 <div className="flex items-center justify-between">
                   <div>
@@ -259,7 +281,7 @@ export default function DashboardPage() {
 
               <div
                 className="tactical-stat-panel p-6 cursor-pointer transition-all relative"
-                onClick={() => router.push('/gear')}
+                onClick={() => safeNavigate('/gear')}
               >
                 <div className="flex items-center justify-between">
                   <div>
@@ -279,7 +301,7 @@ export default function DashboardPage() {
 
               <div
                 className="tactical-stat-panel p-6 cursor-pointer transition-all relative"
-                onClick={() => router.push('/pipeline')}
+                onClick={() => safeNavigate('/pipeline')}
               >
                 <div className="flex items-center justify-between">
                   <div>
@@ -387,7 +409,7 @@ export default function DashboardPage() {
         {/* Widget 4: Deliverables */}
         {getWidgetVisibility('deliverables') && (
           <div key="deliverables" data-testid="widget-deliverables">
-            <Card padding="large" hover="glow" className="h-full cursor-pointer" onClick={() => router.push('/deliverables')}>
+            <Card padding="large" hover="glow" className="h-full cursor-pointer" onClick={() => safeNavigate('/deliverables')}>
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-white">📦 Deliverables</h3>
                 <ExternalLink className="w-4 h-4 text-gray-400" />
@@ -466,7 +488,7 @@ export default function DashboardPage() {
                   {upcomingEvents.map((event) => (
                     <div
                       key={event.id}
-                      onClick={() => router.push('/planning')}
+                      onClick={() => safeNavigate('/planning')}
                       className="p-3 bg-slate-800/50 rounded-lg border border-slate-700 cursor-pointer transition-all hover:border-green-500 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-green-500/20"
                     >
                       <div className="flex items-start justify-between">
@@ -514,8 +536,8 @@ export default function DashboardPage() {
                   {criticalAlerts.map((alert) => (
                     <div
                       key={alert.eventId}
-                      onClick={() => router.push('/planning')}
-                      className="p-3 bg-red-900/20 rounded-lg border border-red-800/30 cursor-pointer transition-all hover:border-red-500 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-red-500/30"
+                      onClick={() => safeNavigate('/planning')}
+                      className="p-3 bg-red-900/20 rounded-lg border border-red-800/30 cursor-pointer transition-all hover:border-green-500 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-red-500/30"
                     >
                       <div className="flex items-start gap-3">
                         <AlertTriangle className="w-4 h-4 text-red-400 mt-0.5 flex-shrink-0" />
@@ -562,7 +584,7 @@ export default function DashboardPage() {
                   {recentActivity.map((activity, idx) => (
                     <div
                       key={idx}
-                      onClick={() => router.push('/planning')}
+                      onClick={() => safeNavigate('/planning')}
                       className="flex items-start gap-4 p-3 bg-slate-800/50 rounded-lg cursor-pointer transition-all hover:border hover:border-green-500 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-green-500/20"
                     >
                       <div className="p-2 bg-green-600/20 rounded-lg flex-shrink-0">
