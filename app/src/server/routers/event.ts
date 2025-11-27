@@ -156,7 +156,7 @@ export const eventRouter = router({
         clientName: z.string().optional(),
         clientEmail: z.string().email().optional(),
         clientPhone: z.string().optional(),
-        clientId: z.string().uuid().optional(),
+        clientId: z.string().uuid(), // REQUIRED - all events must have a client
         loadInTime: z.date(),
         loadOutTime: z.date(),
         revenueAmount: z.number().optional(),
@@ -173,6 +173,17 @@ export const eventRouter = router({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      // Validate that client exists
+      const client = await ctx.prisma.client.findFirst({
+        where: { id: input.clientId, tenantId: ctx.tenantId },
+      });
+      if (!client) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Client not found',
+        });
+      }
+
       return ctx.prisma.event.create({
         data: {
           tenantId: ctx.tenantId,

@@ -147,8 +147,14 @@ export default function DeliverablesPage() {
             <thead className="bg-slate-950/80 border-b border-slate-700">
               <tr>
                 <SortableTableHeader
-                  label="Client / Event"
-                  sortKey="event.client.companyName"
+                  label="Client"
+                  sortKey="client.organization"
+                  currentSort={sortConfig}
+                  onSort={handleSort}
+                />
+                <SortableTableHeader
+                  label="Event"
+                  sortKey="event.eventName"
                   currentSort={sortConfig}
                   onSort={handleSort}
                 />
@@ -205,8 +211,10 @@ export default function DeliverablesPage() {
                 >
                   <td className="px-6 py-4">
                     <div className="font-bold text-slate-200">
-                      {deliverable.event?.client?.companyName || 'N/A'}
+                      {deliverable.client?.organization || deliverable.client?.contactName || 'N/A'}
                     </div>
+                  </td>
+                  <td className="px-6 py-4">
                     <div className="text-sm text-slate-400">
                       {deliverable.event?.eventName || 'N/A'}
                     </div>
@@ -324,7 +332,7 @@ export default function DeliverablesPage() {
 
               {!deliverables || deliverables.length === 0 && (
                 <tr>
-                  <td colSpan={9} className="px-6 py-12 text-center text-slate-500">
+                  <td colSpan={10} className="px-6 py-12 text-center text-slate-500">
                     No deliverables found. Create one to get started.
                   </td>
                 </tr>
@@ -381,6 +389,7 @@ function NewDeliverableModal({ isOpen, onClose }: { isOpen: boolean; onClose: ()
     createDeliverable.mutate({
       eventId: linkType === 'event' ? formData.eventId : undefined,
       clientId: linkType === 'client' ? formData.clientId : undefined,
+      // Note: If eventId is provided, clientId will be auto-populated from event.clientId on the server
       deliverableType: formData.deliverableType,
       deliverableName: formData.deliverableName,
       dueDate: new Date(formData.dueDate),
@@ -709,16 +718,28 @@ function DeliverableDetailModal({ deliverableId, isOpen, onClose }: { deliverabl
         </div>
 
         <div className="p-6">
-          {/* Event Info */}
-          <div className="mb-6 p-4 bg-slate-800/60 rounded-lg">
-            <div className="text-sm text-slate-400 mb-1">
-              {(deliverable as any).event ? 'Event' : (deliverable as any).client ? 'Client' : 'Source'}
+          {/* Client & Event Info */}
+          <div className="mb-6 grid grid-cols-2 gap-4">
+            {/* Client Info (always present) */}
+            <div className="p-4 bg-slate-800/60 rounded-lg">
+              <div className="text-sm text-slate-400 mb-1">Client</div>
+              <div className="font-bold text-white">
+                {(deliverable as any).client?.organization || (deliverable as any).client?.contactName || 'N/A'}
+              </div>
+              <div className="text-sm text-slate-400">
+                {(deliverable as any).client?.email || 'No contact info'}
+              </div>
             </div>
-            <div className="font-bold text-white">
-              {(deliverable as any).event?.eventName || (deliverable as any).client?.organization || 'N/A'}
-            </div>
-            <div className="text-sm text-slate-400">
-              {(deliverable as any).event?.venueName || (deliverable as any).client?.contactName || 'No additional info'}
+
+            {/* Event Info (optional) */}
+            <div className="p-4 bg-slate-800/60 rounded-lg">
+              <div className="text-sm text-slate-400 mb-1">Event</div>
+              <div className="font-bold text-white">
+                {(deliverable as any).event?.eventName || 'N/A'}
+              </div>
+              <div className="text-sm text-slate-400">
+                {(deliverable as any).event?.venueName || 'No event linked'}
+              </div>
             </div>
           </div>
 

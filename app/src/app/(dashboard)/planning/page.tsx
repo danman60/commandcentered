@@ -664,7 +664,7 @@ function NewEventModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
     createEvent.mutate({
       eventName: formData.eventName,
       eventType: formData.eventType,
-      clientId: formData.clientId || undefined,
+      clientId: formData.clientId, // REQUIRED - all events must have a client
       loadInTime: new Date(formData.loadInTime),
       loadOutTime: new Date(formData.loadOutTime),
       venueName: formData.venueName,
@@ -704,14 +704,15 @@ function NewEventModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
 
           <div>
             <label className="block text-sm font-semibold text-slate-300 mb-2">
-              Client
+              Client *
             </label>
             <select
               value={formData.clientId}
               onChange={(e) => setFormData({ ...formData, clientId: e.target.value })}
               className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500"
+              required
             >
-              <option value="">Select a client (optional)</option>
+              <option value="">Select a client</option>
               {clients?.map((client) => (
                 <option key={client.id} value={client.id}>
                   {client.organization}

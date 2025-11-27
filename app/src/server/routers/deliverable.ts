@@ -59,29 +59,30 @@ export const deliverableRouter = router({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      // Validate that exactly one of eventId or clientId is provided
-      if (!input.eventId && !input.clientId) {
-        throw new Error('Either eventId or clientId must be provided');
-      }
-      if (input.eventId && input.clientId) {
-        throw new Error('Cannot provide both eventId and clientId');
-      }
+      let finalClientId = input.clientId;
 
-      // Validate event if provided
+      // If eventId provided, fetch event and use its clientId
       if (input.eventId) {
         const event = await ctx.prisma.event.findFirst({
-          where: { id: input.eventId, tenantId: ctx.tenantId }
+          where: { id: input.eventId, tenantId: ctx.tenantId },
+          select: { id: true, clientId: true }
         });
         if (!event) throw new Error('Event not found');
+
+        // Use event's clientId (all events must have a client)
+        finalClientId = event.clientId;
       }
 
-      // Validate client if provided
-      if (input.clientId) {
-        const client = await ctx.prisma.client.findFirst({
-          where: { id: input.clientId, tenantId: ctx.tenantId }
-        });
-        if (!client) throw new Error('Client not found');
+      // Validate that clientId is present (either from input or from event)
+      if (!finalClientId) {
+        throw new Error('clientId is required. Provide either clientId directly or eventId (which will inherit the client from the event)');
       }
+
+      // Validate client exists
+      const client = await ctx.prisma.client.findFirst({
+        where: { id: finalClientId, tenantId: ctx.tenantId }
+      });
+      if (!client) throw new Error('Client not found');
 
       // Validate editor if assigned
       if (input.assignedEditorId) {
@@ -95,7 +96,7 @@ export const deliverableRouter = router({
         data: {
           tenantId: ctx.tenantId,
           eventId: input.eventId,
-          clientId: input.clientId,
+          clientId: finalClientId,
           deliverableType: input.deliverableType,
           deliverableName: input.deliverableName,
           dueDate: input.dueDate,
@@ -104,7 +105,7 @@ export const deliverableRouter = router({
           notes: input.notes,
           status: 'NOT_STARTED',
         },
-        include: { event: true, client: true, assignedEditor: true },
+        include: { event: { include: { client: true } }, client: true, assignedEditor: true },
       });
     }),
 
