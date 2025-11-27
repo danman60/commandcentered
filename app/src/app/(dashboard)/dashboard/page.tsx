@@ -110,16 +110,12 @@ export default function DashboardPage() {
   // Save layout immediately on unmount to prevent data loss
   useEffect(() => {
     return () => {
+      // Clear any pending saves and save immediately
       if (saveTimeoutRef.current) {
         clearTimeout(saveTimeoutRef.current);
-        // Save immediately before unmounting
-        updateDashboardLayout.mutate({
-          dashboardLayout: currentLayout,
-          visibleWidgets: currentLayout.map(item => item.i),
-        });
       }
     };
-  }, [currentLayout, updateDashboardLayout]);
+  }, []);
 
   // Determine which widgets are visible
   const getWidgetVisibility = (widgetId: WidgetType): boolean => {
