@@ -34,99 +34,104 @@ export default function ClientsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="flex-1 flex flex-col overflow-hidden bg-slate-950">
       {/* Header */}
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Clients</h1>
-        <p className="text-gray-600 mt-1">Manage your client relationships and track engagement</p>
+      <div className="flex-shrink-0 bg-gradient-to-r from-green-500/10 to-green-500/10 border-b border-green-500/30 px-8 py-6">
+        <div className="flex justify-between items-center">
+          <div>
+            <div className="flex items-center gap-4 mb-2">
+              <span className="text-4xl">🏢</span>
+              <h1 className="text-3xl font-bold tactical-heading">Clients</h1>
+            </div>
+            <p className="text-sm text-slate-400 mt-1">
+              Manage your client relationships and track engagement
+            </p>
+          </div>
+          <button
+            onClick={() => setShowAddModal(true)}
+            className="px-5 py-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-400 hover:to-green-500 text-white font-semibold rounded-lg shadow-lg shadow-green-500/30 transition-all hover:-translate-y-0.5"
+          >
+            ➕ Add Client
+          </button>
+        </div>
       </div>
 
-      {/* Search and Filters Bar */}
-      <div className="bg-white rounded-lg shadow-sm p-4 mb-6">
-        <div className="flex flex-wrap gap-4 items-center">
+      {/* Search and Filters */}
+      <div className="flex-shrink-0 px-8 py-4 bg-slate-900/60 border-b border-slate-700/50">
+        <div className="flex gap-4">
           {/* Search */}
-          <div className="flex-1 min-w-[200px]">
+          <div className="flex-1 relative">
+            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">🔍</span>
             <input
               type="text"
               placeholder="Search clients..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full pl-12 pr-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-green-500 transition-colors"
             />
           </div>
 
           {/* Status Filter */}
-          <div className="min-w-[150px]">
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value as typeof statusFilter)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            >
-              <option value="">All Statuses</option>
-              <option value="ACTIVE">Active</option>
-              <option value="INACTIVE">Inactive</option>
-              <option value="BLACKLISTED">Blacklisted</option>
-            </select>
-          </div>
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value as typeof statusFilter)}
+            className="px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500 min-w-[200px]"
+          >
+            <option value="">All Statuses</option>
+            <option value="ACTIVE">Active</option>
+            <option value="INACTIVE">Inactive</option>
+            <option value="BLACKLISTED">Blacklisted</option>
+          </select>
 
           {/* Industry Filter */}
-          <div className="min-w-[150px]">
-            <select
-              value={industryFilter}
-              onChange={(e) => setIndustryFilter(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            >
-              <option value="">All Industries</option>
-              {industries?.map((industry) => (
-                <option key={industry} value={industry}>
-                  {industry}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Add Client Button */}
-          <button
-            onClick={() => setShowAddModal(true)}
-            className="px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all shadow-sm"
+          <select
+            value={industryFilter}
+            onChange={(e) => setIndustryFilter(e.target.value)}
+            className="px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500 min-w-[200px]"
           >
-            + Add Client
-          </button>
+            <option value="">All Industries</option>
+            {industries?.map((industry) => (
+              <option key={industry} value={industry}>
+                {industry}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 
       {/* Clients Table */}
-      <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                Organization
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                Status
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                Industry
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                Total Events
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                Total Revenue
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                Last Contacted
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                Google Drive
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+      <div className="flex-1 overflow-auto px-8 py-6">
+        <div className="bg-slate-900/60 backdrop-blur-md border border-slate-700/50 rounded-xl overflow-hidden">
+          <table className="w-full">
+            <thead className="bg-slate-950/80 border-b border-slate-700">
+              <tr>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300">
+                  Organization
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300">
+                  Status
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300">
+                  Industry
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300">
+                  Total Events
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300">
+                  Total Revenue
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300">
+                  Last Contacted
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300">
+                  Google Drive
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-700">
             {clients?.map((client) => {
               const clientWithEvents = client as typeof client & {
                 events: Array<{ id: string; revenueAmount: number | null }>;
@@ -137,34 +142,34 @@ export default function ClientsPage() {
               ) || 0;
 
               return (
-                <tr key={client.id} className="hover:bg-gray-50">
+                <tr key={client.id} className="hover:bg-slate-800/50 transition-colors">
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-gray-900">{client.organization}</div>
-                    <div className="text-sm text-gray-500">{client.contactName || 'No contact'}</div>
+                    <div className="text-sm font-medium text-white">{client.organization}</div>
+                    <div className="text-sm text-slate-400">{client.contactName || 'No contact'}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span
-                      className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                      className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded ${
                         client.status === 'ACTIVE'
-                          ? 'bg-green-100 text-green-800'
+                          ? 'bg-green-600 text-white'
                           : client.status === 'INACTIVE'
-                          ? 'bg-gray-100 text-gray-800'
-                          : 'bg-red-100 text-red-800'
+                          ? 'bg-slate-600 text-slate-200'
+                          : 'bg-red-600 text-white'
                       }`}
                     >
                       {client.status}
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-300">
                     {client.industry || 'N/A'}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-300">
                     {clientWithEvents.events?.length || 0}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-300">
                     ${totalRevenue.toLocaleString()}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-400">
                     N/A
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm">
@@ -173,18 +178,18 @@ export default function ClientsPage() {
                         href={client.googleDriveFolderUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-blue-600 hover:text-blue-800"
+                        className="text-green-400 hover:text-green-300 transition-colors"
                       >
-                        View
+                        🔗 View
                       </a>
                     ) : (
-                      <span className="text-gray-400">N/A</span>
+                      <span className="text-slate-500">N/A</span>
                     )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm">
                     <button
                       onClick={() => handleViewDetails(client.id)}
-                      className="text-blue-600 hover:text-blue-800 font-medium"
+                      className="text-green-400 hover:text-green-300 font-medium transition-colors"
                     >
                       View Details
                     </button>
@@ -197,9 +202,10 @@ export default function ClientsPage() {
 
         {!clients || clients.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-gray-500">No clients found</p>
+            <p className="text-slate-400">No clients found</p>
           </div>
         ) : null}
+        </div>
       </div>
 
       {/* Add Client Modal */}
@@ -245,13 +251,13 @@ function AddClientModal({ onClose }: { onClose: () => void }) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-        <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
-          <h2 className="text-2xl font-bold text-gray-900">Add New Client</h2>
+    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50">
+      <div className="bg-slate-900 border border-slate-700 rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        <div className="sticky top-0 bg-slate-900 border-b border-slate-700 px-6 py-4 flex justify-between items-center">
+          <h2 className="text-2xl font-bold text-white">Add New Client</h2>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 text-2xl leading-none"
+            className="text-slate-400 hover:text-slate-200 text-2xl leading-none"
           >
             ×
           </button>
@@ -260,10 +266,10 @@ function AddClientModal({ onClose }: { onClose: () => void }) {
         <form onSubmit={handleSubmit} className="p-6">
           {/* Contact Information */}
           <div className="mb-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Contact Information</h3>
+            <h3 className="text-lg font-semibold text-white mb-4">Contact Information</h3>
             <div className="grid grid-cols-2 gap-4">
               <div className="col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-slate-300 mb-1">
                   Organization Name *
                 </label>
                 <input
@@ -271,50 +277,50 @@ function AddClientModal({ onClose }: { onClose: () => void }) {
                   required
                   value={formData.organization}
                   onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-slate-300 mb-1">
                   Contact Name
                 </label>
                 <input
                   type="text"
                   value={formData.contactName}
                   onChange={(e) => setFormData({ ...formData, contactName: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Email *</label>
+                <label className="block text-sm font-medium text-slate-300 mb-1">Email *</label>
                 <input
                   type="email"
                   required
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                <label className="block text-sm font-medium text-slate-300 mb-1">Phone</label>
                 <input
                   type="tel"
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Website</label>
+                <label className="block text-sm font-medium text-slate-300 mb-1">Website</label>
                 <input
                   type="url"
                   value={formData.website}
                   onChange={(e) => setFormData({ ...formData, website: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-green-500"
                   placeholder="https://"
                 />
               </div>
@@ -323,73 +329,73 @@ function AddClientModal({ onClose }: { onClose: () => void }) {
 
           {/* Address */}
           <div className="mb-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Address</h3>
+            <h3 className="text-lg font-semibold text-white mb-4">Address</h3>
             <div className="grid grid-cols-2 gap-4">
               <div className="col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-slate-300 mb-1">
                   Address Line 1
                 </label>
                 <input
                   type="text"
                   value={formData.addressLine1}
                   onChange={(e) => setFormData({ ...formData, addressLine1: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500"
                 />
               </div>
 
               <div className="col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-slate-300 mb-1">
                   Address Line 2
                 </label>
                 <input
                   type="text"
                   value={formData.addressLine2}
                   onChange={(e) => setFormData({ ...formData, addressLine2: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">City</label>
+                <label className="block text-sm font-medium text-slate-300 mb-1">City</label>
                 <input
                   type="text"
                   value={formData.city}
                   onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-slate-300 mb-1">
                   Province/State
                 </label>
                 <input
                   type="text"
                   value={formData.province}
                   onChange={(e) => setFormData({ ...formData, province: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-slate-300 mb-1">
                   Postal Code
                 </label>
                 <input
                   type="text"
                   value={formData.postalCode}
                   onChange={(e) => setFormData({ ...formData, postalCode: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Country</label>
+                <label className="block text-sm font-medium text-slate-300 mb-1">Country</label>
                 <input
                   type="text"
                   value={formData.country}
                   onChange={(e) => setFormData({ ...formData, country: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500"
                 />
               </div>
             </div>
@@ -397,33 +403,33 @@ function AddClientModal({ onClose }: { onClose: () => void }) {
 
           {/* Business Information */}
           <div className="mb-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Business Information</h3>
+            <h3 className="text-lg font-semibold text-white mb-4">Business Information</h3>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Industry</label>
+                <label className="block text-sm font-medium text-slate-300 mb-1">Industry</label>
                 <input
                   type="text"
                   value={formData.industry}
                   onChange={(e) => setFormData({ ...formData, industry: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-slate-300 mb-1">
                   Company Size
                 </label>
                 <input
                   type="text"
                   value={formData.size}
                   onChange={(e) => setFormData({ ...formData, size: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500"
                   placeholder="e.g., 1-10, 11-50, 51-200"
                 />
               </div>
 
               <div className="col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-slate-300 mb-1">
                   Google Drive Folder URL
                 </label>
                 <input
@@ -432,18 +438,18 @@ function AddClientModal({ onClose }: { onClose: () => void }) {
                   onChange={(e) =>
                     setFormData({ ...formData, googleDriveFolderUrl: e.target.value })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500"
                   placeholder="https://drive.google.com/..."
                 />
               </div>
 
               <div className="col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+                <label className="block text-sm font-medium text-slate-300 mb-1">Notes</label>
                 <textarea
                   value={formData.notes}
                   onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                   rows={4}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500"
                   placeholder="Any additional notes about this client..."
                 />
               </div>
@@ -451,18 +457,18 @@ function AddClientModal({ onClose }: { onClose: () => void }) {
           </div>
 
           {/* Actions */}
-          <div className="flex justify-end gap-3 pt-4 border-t border-gray-200">
+          <div className="flex justify-end gap-3 pt-4 border-t border-slate-700">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+              className="px-4 py-2 text-slate-300 bg-slate-800 rounded-lg hover:bg-slate-700 transition-colors"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={createClient.isPending}
-              className="px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all disabled:opacity-50"
+              className="px-6 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold rounded-lg hover:from-green-400 hover:to-green-500 shadow-lg shadow-green-500/30 transition-all hover:-translate-y-0.5 transition-all disabled:opacity-50"
             >
               {createClient.isPending ? 'Creating...' : 'Create Client'}
             </button>
@@ -519,7 +525,7 @@ function ClientDetailModal({ clientId, onClose }: { clientId: string; onClose: (
 
   if (!client) {
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50">
         <div className="bg-white rounded-lg p-6">
           <p className="text-gray-900">Loading...</p>
         </div>
@@ -556,13 +562,13 @@ function ClientDetailModal({ clientId, onClose }: { clientId: string; onClose: (
   ) || 0;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-6">
+    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-6">
       <div
-        className="bg-white rounded-lg shadow-xl overflow-hidden"
+        className="bg-slate-900 border border-slate-700 rounded-xl shadow-2xl overflow-hidden"
         style={{ width: '60vw', maxHeight: '90vh' }}
       >
         {/* Header */}
-        <div className="sticky top-0 bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-4 flex justify-between items-center">
+        <div className="sticky top-0 bg-gradient-to-r from-green-500 to-green-600 px-6 py-4 flex justify-between items-center">
           <h2 className="text-2xl font-bold text-white">{client.organization}</h2>
           <button onClick={onClose} className="text-white hover:text-gray-200 text-2xl leading-none">
             ×
@@ -573,38 +579,38 @@ function ClientDetailModal({ clientId, onClose }: { clientId: string; onClose: (
           <div className="p-6">
             {/* Contact Information */}
             <div className="mb-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">Contact Information</h3>
-              <div className="grid grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg">
+              <h3 className="text-lg font-semibold text-white mb-3">Contact Information</h3>
+              <div className="grid grid-cols-2 gap-4 bg-slate-800 p-4 rounded-lg">
                 <div>
-                  <p className="text-sm text-gray-600">Contact Name</p>
-                  <p className="text-gray-900 font-medium">{client.contactName || 'N/A'}</p>
+                  <p className="text-sm text-slate-400">Contact Name</p>
+                  <p className="text-white font-medium">{client.contactName || 'N/A'}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600">Email</p>
-                  <p className="text-gray-900 font-medium">{client.email}</p>
+                  <p className="text-sm text-slate-400">Email</p>
+                  <p className="text-white font-medium">{client.email}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600">Phone</p>
-                  <p className="text-gray-900 font-medium">{client.phone || 'N/A'}</p>
+                  <p className="text-sm text-slate-400">Phone</p>
+                  <p className="text-white font-medium">{client.phone || 'N/A'}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600">Website</p>
+                  <p className="text-sm text-slate-400">Website</p>
                   {client.website ? (
                     <a
                       href={client.website}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-blue-600 hover:text-blue-800 font-medium"
+                      className="text-green-400 hover:text-green-300 font-medium"
                     >
                       Visit Website
                     </a>
                   ) : (
-                    <p className="text-gray-900 font-medium">N/A</p>
+                    <p className="text-white font-medium">N/A</p>
                   )}
                 </div>
                 <div className="col-span-2">
-                  <p className="text-sm text-gray-600">Address</p>
-                  <p className="text-gray-900 font-medium">
+                  <p className="text-sm text-slate-400">Address</p>
+                  <p className="text-white font-medium">
                     {[
                       client.addressLine1,
                       client.addressLine2,
@@ -622,26 +628,26 @@ function ClientDetailModal({ clientId, onClose }: { clientId: string; onClose: (
 
             {/* Key Metrics */}
             <div className="mb-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">Key Metrics</h3>
+              <h3 className="text-lg font-semibold text-white mb-3">Key Metrics</h3>
               <div className="grid grid-cols-3 gap-4">
-                <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-lg">
-                  <p className="text-sm text-blue-600 font-medium">Total Events</p>
-                  <p className="text-2xl font-bold text-blue-900">{clientWithRelations.events?.length || 0}</p>
+                <div className="bg-gradient-to-br from-green-900/40 to-green-800/40 p-4 rounded-lg">
+                  <p className="text-sm text-green-400 font-medium">Total Events</p>
+                  <p className="text-2xl font-bold text-white">{clientWithRelations.events?.length || 0}</p>
                 </div>
-                <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-lg">
-                  <p className="text-sm text-green-600 font-medium">Total Revenue</p>
+                <div className="bg-gradient-to-br from-green-900/40 to-green-800/40 p-4 rounded-lg">
+                  <p className="text-sm text-green-400 font-medium">Total Revenue</p>
                   <p className="text-2xl font-bold text-green-900">${totalRevenue.toLocaleString()}</p>
                 </div>
-                <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-lg">
-                  <p className="text-sm text-purple-600 font-medium">Deliverables</p>
-                  <p className="text-2xl font-bold text-purple-900">{clientWithRelations.deliverables?.length || 0}</p>
+                <div className="bg-gradient-to-br from-purple-900/40 to-purple-800/40 p-4 rounded-lg">
+                  <p className="text-sm text-purple-400 font-medium">Deliverables</p>
+                  <p className="text-2xl font-bold text-white">{clientWithRelations.deliverables?.length || 0}</p>
                 </div>
               </div>
             </div>
 
             {/* Linked Events */}
             <div className="mb-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">
+              <h3 className="text-lg font-semibold text-white mb-3">
                 Linked Events ({clientWithRelations.events?.length || 0})
               </h3>
               {clientWithRelations.events && clientWithRelations.events.length > 0 ? (
@@ -659,13 +665,13 @@ function ClientDetailModal({ clientId, onClose }: { clientId: string; onClose: (
                       {clientWithRelations.events.map((event) => (
                         <tr key={event.id}>
                           <td className="px-4 py-2 text-sm text-gray-900">{event.eventName}</td>
-                          <td className="px-4 py-2 text-sm text-gray-600">
+                          <td className="px-4 py-2 text-sm text-slate-400">
                             {new Date(event.loadInTime).toLocaleDateString()}
                           </td>
                           <td className="px-4 py-2 text-sm text-gray-900">
                             ${Number(event.revenueAmount || 0).toLocaleString()}
                           </td>
-                          <td className="px-4 py-2 text-sm text-gray-600">{event.shifts?.length || 0}</td>
+                          <td className="px-4 py-2 text-sm text-slate-400">{event.shifts?.length || 0}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -678,7 +684,7 @@ function ClientDetailModal({ clientId, onClose }: { clientId: string; onClose: (
 
             {/* Linked Deliverables */}
             <div className="mb-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">
+              <h3 className="text-lg font-semibold text-white mb-3">
                 Linked Deliverables ({clientWithRelations.deliverables?.length || 0})
               </h3>
               {clientWithRelations.deliverables && clientWithRelations.deliverables.length > 0 ? (
@@ -696,10 +702,10 @@ function ClientDetailModal({ clientId, onClose }: { clientId: string; onClose: (
                       {clientWithRelations.deliverables.map((deliverable) => (
                         <tr key={deliverable.id}>
                           <td className="px-4 py-2 text-sm text-gray-900">{deliverable.deliverableType}</td>
-                          <td className="px-4 py-2 text-sm text-gray-600">
+                          <td className="px-4 py-2 text-sm text-slate-400">
                             {deliverable.event?.eventName || 'N/A'}
                           </td>
-                          <td className="px-4 py-2 text-sm text-gray-600">
+                          <td className="px-4 py-2 text-sm text-slate-400">
                             {deliverable.dueDate
                               ? new Date(deliverable.dueDate).toLocaleDateString()
                               : 'N/A'}
@@ -731,20 +737,20 @@ function ClientDetailModal({ clientId, onClose }: { clientId: string; onClose: (
 
             {/* Communication History */}
             <div className="mb-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">
+              <h3 className="text-lg font-semibold text-white mb-3">
                 Communication History ({clientWithRelations.communicationTouchpoints?.length || 0})
               </h3>
               {clientWithRelations.communicationTouchpoints && clientWithRelations.communicationTouchpoints.length > 0 ? (
                 <div className="space-y-3">
                   {clientWithRelations.communicationTouchpoints.map((touchpoint) => (
-                    <div key={touchpoint.id} className="bg-gray-50 p-4 rounded-lg">
+                    <div key={touchpoint.id} className="bg-slate-800 p-4 rounded-lg">
                       <div className="flex justify-between items-start mb-2">
                         <p className="font-medium text-gray-900">{touchpoint.touchpointType.replace('_', ' ')}</p>
                         <p className="text-sm text-gray-500">
                           {new Date(touchpoint.createdAt).toLocaleDateString()}
                         </p>
                       </div>
-                      {touchpoint.notes && <p className="text-sm text-gray-600">{touchpoint.notes}</p>}
+                      {touchpoint.notes && <p className="text-sm text-slate-400">{touchpoint.notes}</p>}
                     </div>
                   ))}
                 </div>
@@ -755,14 +761,14 @@ function ClientDetailModal({ clientId, onClose }: { clientId: string; onClose: (
 
             {/* Google Drive */}
             <div className="mb-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">Google Drive</h3>
-              <div className="bg-gray-50 p-4 rounded-lg">
+              <h3 className="text-lg font-semibold text-white mb-3">Google Drive</h3>
+              <div className="bg-slate-800 p-4 rounded-lg">
                 {client.googleDriveFolderUrl ? (
                   <a
                     href={client.googleDriveFolderUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-600 hover:text-blue-800 font-medium flex items-center gap-2"
+                    className="text-green-400 hover:text-green-300 font-medium flex items-center gap-2"
                   >
                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M12.5 2.5l7.5 13h-15z" />
@@ -784,14 +790,14 @@ function ClientDetailModal({ clientId, onClose }: { clientId: string; onClose: (
                   <span className="text-sm text-gray-500">Saving...</span>
                 )}
                 {saveStatus === 'saved' && (
-                  <span className="text-sm text-green-600">✓ Saved</span>
+                  <span className="text-sm text-green-400">✓ Saved</span>
                 )}
               </div>
               <textarea
                 value={notes}
                 onChange={(e) => handleNotesChange(e.target.value)}
                 rows={8}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-blue-500 resize-none"
+                className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-green-500 resize-none"
                 placeholder="Add notes about this client..."
               />
             </div>
