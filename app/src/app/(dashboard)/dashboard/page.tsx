@@ -107,6 +107,20 @@ export default function DashboardPage() {
     }
   }, [userPrefs, isMobile]);
 
+  // Save layout immediately on unmount to prevent data loss
+  useEffect(() => {
+    return () => {
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
+        // Save immediately before unmounting
+        updateDashboardLayout.mutate({
+          dashboardLayout: currentLayout,
+          visibleWidgets: currentLayout.map(item => item.i),
+        });
+      }
+    };
+  }, [currentLayout, updateDashboardLayout]);
+
   // Determine which widgets are visible
   const getWidgetVisibility = (widgetId: WidgetType): boolean => {
     const pref = widgetPrefs?.find(w => w.widgetType === widgetId);
@@ -123,7 +137,7 @@ export default function DashboardPage() {
     // Update local state immediately for responsive UI
     setCurrentLayout(layout);
 
-    // Debounce database save (wait 1 second after last change)
+    // Debounce database save (wait 300ms after last change)
     if (saveTimeoutRef.current) {
       clearTimeout(saveTimeoutRef.current);
     }
@@ -133,7 +147,7 @@ export default function DashboardPage() {
         dashboardLayout: layout,
         visibleWidgets: layout.map(item => item.i),
       });
-    }, 1000);
+    }, 300);
   }, [updateDashboardLayout]);
 
   // Toggle widget visibility
@@ -150,8 +164,11 @@ export default function DashboardPage() {
     if (isMobile) return; // Don't allow toggle on mobile
     const newState = !isDraggingEnabled;
     setIsDraggingEnabled(newState);
+    // Save dragging state along with current layout to ensure persistence
     await updateDashboardLayout.mutateAsync({
       dashboardDraggingEnabled: newState,
+      dashboardLayout: currentLayout,
+      visibleWidgets: currentLayout.map(item => item.i),
     });
   };
 
