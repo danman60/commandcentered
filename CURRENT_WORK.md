@@ -1,11 +1,50 @@
 # Current Work - CommandCentered Development
 
-**Last Updated:** November 26, 2025 at 5:00 PM EST
-**Current Phase:** ✅ Phase 1 Active - Inline Editing + Sortable Tables
+**Last Updated:** November 27, 2025 at 12:00 AM EST
+**Current Phase:** ✅ Phase 1 Active - Feature Enhancements
 
 ---
 
-## ✅ LATEST SESSION (Nov 26 - File Upload Verification - COMPLETE!)
+## ✅ LATEST SESSION (Nov 27 - Client/Lead Enhancements - COMPLETE!)
+
+**What Was Done:**
+Implemented three key enhancements for Clients page, Deliverables, and Pipeline:
+
+**1. Clients Page Theme Update:**
+- ✅ Updated Clients page to match tactical dark theme used throughout app (clients/page.tsx)
+- ✅ Dark slate backgrounds with green accents (from-green-500/10, border-green-500/30)
+- ✅ Tactical heading styles and dark form inputs
+- ✅ Table with dark theme and hover effects
+- ✅ Status badges with green/slate/red colors
+
+**2. Google Drive Auto-Population:**
+- ✅ Client's Google Drive URL now auto-populates to new deliverables (deliverable.ts:81-88, 112)
+- ✅ Enhanced client query to include googleDriveFolderUrl field
+- ✅ Auto-assign Drive URL on deliverable creation
+- ✅ Simplifies workflow - set once on client, inherits to all deliverables
+
+**3. Lead-to-Client Conversion:**
+- ✅ Added "Convert to Client" button in Lead Detail modal (pipeline/page.tsx:1450-1459)
+- ✅ One-click conversion with confirmation dialog (pipeline/page.tsx:1424-1436)
+- ✅ Maintains relationship via leadId field
+- ✅ Copies all contact information (organization, name, email, phone)
+- ✅ Shows pending state during conversion
+
+**Commits:**
+- 4c921fd - fix: Update Clients page to match tactical dark theme
+- c2092b5 - feat: Add Google Drive auto-population and lead conversion
+
+**Status:** ✅ **CLIENT/LEAD ENHANCEMENTS COMPLETE - DEPLOYED TO PRODUCTION**
+
+**Build Verification:**
+- Build passed ✅
+- TypeScript checks passed ✅
+- All three features ready for testing
+- Deployed to production (build c2092b5)
+
+---
+
+## ✅ PREVIOUS SESSION (Nov 26 - File Upload Verification - COMPLETE!)
 
 **What Was Done:**
 Verified that Supabase Storage file upload functionality works correctly. The "Known Issue" from Nov 24 session was incorrect - file uploads DO upload actual file bytes to Storage, not just metadata.
