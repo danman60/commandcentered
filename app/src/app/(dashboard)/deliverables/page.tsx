@@ -237,9 +237,9 @@ export default function DeliverablesPage() {
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    {deliverable.googleDriveLink ? (
+                    {deliverable.googleDriveFolderUrl ? (
                       <a
-                        href={deliverable.googleDriveLink}
+                        href={deliverable.googleDriveFolderUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={(e) => e.stopPropagation()}
