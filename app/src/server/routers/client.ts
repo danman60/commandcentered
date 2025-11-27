@@ -19,7 +19,8 @@ export const clientRouter = router({
       z
         .object({
           search: z.string().optional(),
-          status: z.string().optional(),
+          status: z.enum(['ACTIVE', 'INACTIVE', 'BLACKLISTED']).optional(),
+          industry: z.string().optional(),
         })
         .optional()
     )
@@ -34,12 +35,21 @@ export const clientRouter = router({
               { email: { contains: input.search, mode: 'insensitive' } },
             ],
           }),
+          ...(input?.status && { status: input.status }),
+          ...(input?.industry && { industry: input.industry }),
         },
         include: {
           lead: true,
+          events: {
+            select: {
+              id: true,
+              revenueAmount: true,
+            },
+          },
           _count: {
             select: {
               contracts: true,
+              events: true,
             },
           },
         },
@@ -68,9 +78,36 @@ export const clientRouter = router({
             orderBy: { createdAt: 'desc' },
             take: 10,
           },
+          events: {
+            orderBy: { loadInTime: 'desc' },
+            include: {
+              shifts: {
+                select: {
+                  id: true,
+                },
+              },
+            },
+          },
+          deliverables: {
+            orderBy: { dueDate: 'desc' },
+            include: {
+              event: {
+                select: {
+                  id: true,
+                  eventName: true,
+                },
+              },
+            },
+          },
+          communicationTouchpoints: {
+            orderBy: { createdAt: 'desc' },
+            take: 20,
+          },
           _count: {
             select: {
               contracts: true,
+              events: true,
+              deliverables: true,
             },
           },
         },
@@ -97,6 +134,9 @@ export const clientRouter = router({
         country: z.string().optional(),
         industry: z.string().optional(),
         size: z.string().optional(),
+        googleDriveFolderId: z.string().optional(),
+        googleDriveFolderUrl: z.string().optional(),
+        notes: z.string().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -128,6 +168,9 @@ export const clientRouter = router({
         country: z.string().optional(),
         industry: z.string().optional(),
         size: z.string().optional(),
+        googleDriveFolderId: z.string().optional(),
+        googleDriveFolderUrl: z.string().optional(),
+        notes: z.string().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -148,6 +191,35 @@ export const clientRouter = router({
       return ctx.prisma.client.update({
         where: { id },
         data,
+      });
+    }),
+
+  /**
+   * Update client status
+   */
+  updateStatus: tenantProcedure
+    .input(
+      z.object({
+        id: z.string().uuid(),
+        status: z.enum(['ACTIVE', 'INACTIVE', 'BLACKLISTED']),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      // Verify client belongs to tenant
+      const client = await ctx.prisma.client.findFirst({
+        where: {
+          id: input.id,
+          tenantId: ctx.tenantId,
+        },
+      });
+
+      if (!client) {
+        throw new Error('Client not found');
+      }
+
+      return ctx.prisma.client.update({
+        where: { id: input.id },
+        data: { status: input.status },
       });
     }),
 
@@ -292,4 +364,29 @@ export const clientRouter = router({
         orderBy: { createdAt: 'desc' },
       });
     }),
+
+  /**
+   * Get unique industries for filter dropdown
+   */
+  getIndustries: tenantProcedure.query(async ({ ctx }) => {
+    const clients = await ctx.prisma.client.findMany({
+      where: {
+        tenantId: ctx.tenantId,
+        industry: {
+          not: null,
+        },
+      },
+      select: {
+        industry: true,
+      },
+      distinct: ['industry'],
+      orderBy: {
+        industry: 'asc',
+      },
+    });
+
+    return clients
+      .map((c) => c.industry)
+      .filter((industry): industry is string => Boolean(industry));
+  }),
 });

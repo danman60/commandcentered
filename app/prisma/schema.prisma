@@ -1772,6 +1772,13 @@ model Client {
   // Visual customization
   brandColor String? @map("brand_color") @db.VarChar(7) // Hex color code (e.g., #06b6d4)
 
+  // Google Drive integration
+  googleDriveFolderId  String? @map("google_drive_folder_id") @db.VarChar(255)
+  googleDriveFolderUrl String? @map("google_drive_folder_url") @db.VarChar(500)
+
+  // Notes
+  notes String? @db.Text
+
   // Relations
   events                   Event[]
   contracts                Contract[]

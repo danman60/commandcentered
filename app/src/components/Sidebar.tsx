@@ -23,6 +23,7 @@ import {
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: '📊' },
   { name: 'Planning', href: '/planning', icon: '📅' },
+  { name: 'Clients', href: '/clients', icon: '🏢' },
   { name: 'Pipeline', href: '/pipeline', icon: '⚡' },
   { name: 'Gear Inventory', href: '/gear', icon: '🎥' },
   { name: 'Operators', href: '/operators', icon: '👥' },
