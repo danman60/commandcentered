@@ -644,34 +644,43 @@ function DeliverableDetailModal({ deliverableId, isOpen, onClose }: { deliverabl
   const updateDeliverable = trpc.deliverable.update.useMutation({
     onSuccess: () => {
       setIsEditMode(false);
+    },
+  });
+
+  const updateNotes = trpc.deliverable.update.useMutation({
+    onSuccess: () => {
       setSaveStatus('saved');
       setTimeout(() => setSaveStatus('idle'), 2000);
+    },
+    onError: () => {
+      setSaveStatus('idle');
     },
   });
 
   // Initialize notes when deliverable loads
   useEffect(() => {
-    if (deliverable?.notes) {
-      setNotes(deliverable.notes);
+    if (deliverable?.notes !== undefined) {
+      setNotes(deliverable.notes || '');
     }
-  }, [deliverable?.notes]);
+  }, [deliverable?.id]); // Only reset when deliverable ID changes
 
   // Autosave notes with debounce
   useEffect(() => {
     if (!deliverable) return;
 
+    // Don't save if notes haven't changed from database value
+    if (notes === (deliverable.notes || '')) return;
+
+    setSaveStatus('saving');
     const timeoutId = setTimeout(() => {
-      if (notes !== deliverable.notes) {
-        setSaveStatus('saving');
-        updateDeliverable.mutate({
-          id: deliverableId,
-          notes: notes || null,
-        });
-      }
+      updateNotes.mutate({
+        id: deliverableId,
+        notes: notes || null,
+      });
     }, 1000); // Save 1 second after user stops typing
 
     return () => clearTimeout(timeoutId);
-  }, [notes, deliverable, deliverableId]);
+  }, [notes, deliverableId]); // Only depend on notes and ID, not deliverable object
 
   const updateGoogleDriveFolder = trpc.deliverable.updateGoogleDriveFolder.useMutation({
     onSuccess: () => {
@@ -733,7 +742,7 @@ function DeliverableDetailModal({ deliverableId, isOpen, onClose }: { deliverabl
 
   return (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-slate-900 border-2 border-green-500/30 rounded-xl w-[80vw] max-h-[90vh] overflow-y-auto shadow-2xl">
+      <div className="bg-slate-900 border-2 border-green-500/30 rounded-xl w-[60vw] max-h-[90vh] overflow-y-auto shadow-2xl">
         <div className="px-6 py-4 border-b border-green-500/20 flex justify-between items-center">
           <h2 className="text-xl font-bold text-white">Deliverable Details</h2>
           <button
@@ -770,8 +779,8 @@ function DeliverableDetailModal({ deliverableId, isOpen, onClose }: { deliverabl
             </div>
           </div>
 
-          {/* Editable Fields */}
-          <div className="space-y-4 mb-6">
+          {/* Editable Fields - 2 Column Layout */}
+          <div className="grid grid-cols-2 gap-4 mb-6">
             <div>
               <label className="block text-sm font-semibold text-slate-300 mb-2">
                 Assigned Editor
@@ -814,7 +823,7 @@ function DeliverableDetailModal({ deliverableId, isOpen, onClose }: { deliverabl
               )}
             </div>
 
-            <div>
+            <div className="col-span-2">
               <label className="block text-sm font-semibold text-slate-300 mb-2">
                 Status
               </label>
