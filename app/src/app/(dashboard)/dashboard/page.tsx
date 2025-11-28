@@ -593,7 +593,7 @@ export default function DashboardPage() {
               {activityLoading ? (
                 <p className="text-gray-400">Loading...</p>
               ) : recentActivity && recentActivity.length > 0 ? (
-                <div className="space-y-3">
+                <div className="space-y-3 max-h-80 overflow-y-auto">
                   {recentActivity.map((activity, idx) => (
                     <div
                       key={idx}
