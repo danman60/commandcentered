@@ -1766,6 +1766,10 @@ model Client {
   status      ClientStatus @default(ACTIVE)
   statusNotes String?      @map("status_notes") @db.Text
 
+  // Lifecycle tracking (spec: Initial Contact → Proposal → Contract → Invoice → Event → Delivery → Rebooking)
+  lifecycleStage ClientLifecycleStage @default(INITIAL_CONTACT) @map("lifecycle_stage")
+  lifecycleNotes String?              @map("lifecycle_notes") @db.Text
+
   totalRevenue Decimal @default(0) @map("total_revenue") @db.Decimal(10, 2)
   totalEvents  Int     @default(0) @map("total_events")
 
@@ -1789,6 +1793,7 @@ model Client {
   @@index([tenantId])
   @@index([leadId])
   @@index([status])
+  @@index([lifecycleStage])
   @@map("clients")
   @@schema("commandcentered")
 }
@@ -1799,6 +1804,24 @@ enum ClientStatus {
   BLACKLISTED @map("blacklisted")
 
   @@map("client_status")
+  @@schema("commandcentered")
+}
+
+enum ClientLifecycleStage {
+  INITIAL_CONTACT           @map("initial_contact")
+  PROPOSAL_SENT             @map("proposal_sent")
+  CONTRACT_SIGNED           @map("contract_signed")
+  QUESTIONNAIRE_SENT        @map("questionnaire_sent")
+  QUESTIONNAIRE_COMPLETED   @map("questionnaire_completed")
+  INVOICE_SENT              @map("invoice_sent")
+  DEPOSIT_PAID              @map("deposit_paid")
+  FULL_PAYMENT_RECEIVED     @map("full_payment_received")
+  EVENT_CONFIRMED           @map("event_confirmed")
+  EVENT_COMPLETED           @map("event_completed")
+  DELIVERED                 @map("delivered")
+  REBOOKING                 @map("rebooking")
+
+  @@map("client_lifecycle_stage")
   @@schema("commandcentered")
 }
 

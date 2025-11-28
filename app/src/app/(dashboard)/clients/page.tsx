@@ -4,6 +4,63 @@ import { useState } from 'react';
 import { trpc } from '@/lib/trpc/client';
 import { formatDistanceToNow } from 'date-fns';
 
+// Helper function to format lifecycle stage
+function formatLifecycleStage(stage: string): string {
+  const stageMap: Record<string, string> = {
+    INITIAL_CONTACT: 'Initial Contact',
+    PROPOSAL_SENT: 'Proposal Sent',
+    CONTRACT_SIGNED: 'Contract Signed',
+    QUESTIONNAIRE_SENT: 'Questionnaire Sent',
+    QUESTIONNAIRE_COMPLETED: 'Questionnaire Completed',
+    INVOICE_SENT: 'Invoice Sent',
+    DEPOSIT_PAID: 'Deposit Paid',
+    FULL_PAYMENT_RECEIVED: 'Full Payment',
+    EVENT_CONFIRMED: 'Event Confirmed',
+    EVENT_COMPLETED: 'Event Completed',
+    DELIVERED: 'Delivered',
+    REBOOKING: 'Rebooking',
+  };
+  return stageMap[stage] || stage;
+}
+
+// Helper function to get lifecycle stage color
+function getLifecycleStageColor(stage: string): string {
+  const colorMap: Record<string, string> = {
+    INITIAL_CONTACT: 'bg-blue-600 text-white',
+    PROPOSAL_SENT: 'bg-purple-600 text-white',
+    CONTRACT_SIGNED: 'bg-green-600 text-white',
+    QUESTIONNAIRE_SENT: 'bg-yellow-600 text-white',
+    QUESTIONNAIRE_COMPLETED: 'bg-yellow-500 text-white',
+    INVOICE_SENT: 'bg-orange-600 text-white',
+    DEPOSIT_PAID: 'bg-green-500 text-white',
+    FULL_PAYMENT_RECEIVED: 'bg-green-700 text-white',
+    EVENT_CONFIRMED: 'bg-cyan-600 text-white',
+    EVENT_COMPLETED: 'bg-teal-600 text-white',
+    DELIVERED: 'bg-emerald-600 text-white',
+    REBOOKING: 'bg-indigo-600 text-white',
+  };
+  return colorMap[stage] || 'bg-slate-600 text-slate-200';
+}
+
+// Helper function to determine next action based on lifecycle stage
+function getNextAction(stage: string): string {
+  const actionMap: Record<string, string> = {
+    INITIAL_CONTACT: 'Send Proposal',
+    PROPOSAL_SENT: 'Follow Up / Get Contract Signed',
+    CONTRACT_SIGNED: 'Send Questionnaire',
+    QUESTIONNAIRE_SENT: 'Follow Up on Questionnaire',
+    QUESTIONNAIRE_COMPLETED: 'Send Invoice',
+    INVOICE_SENT: 'Follow Up on Payment',
+    DEPOSIT_PAID: 'Follow Up on Balance',
+    FULL_PAYMENT_RECEIVED: 'Confirm Event Details',
+    EVENT_CONFIRMED: 'Prepare for Event',
+    EVENT_COMPLETED: 'Deliver Final Product',
+    DELIVERED: 'Request Feedback / Rebooking',
+    REBOOKING: 'Send New Proposal',
+  };
+  return actionMap[stage] || 'Review Client';
+}
+
 export default function ClientsPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<'ACTIVE' | 'INACTIVE' | 'BLACKLISTED' | ''>('');
@@ -127,6 +184,12 @@ export default function ClientsPage() {
                   Google Drive
                 </th>
                 <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300">
+                  Lifecycle Stage
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300">
+                  Next Action
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300">
                   Actions
                 </th>
               </tr>
@@ -190,6 +253,18 @@ export default function ClientsPage() {
                     ) : (
                       <span className="text-slate-500">N/A</span>
                     )}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span
+                      className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded ${getLifecycleStageColor(
+                        client.lifecycleStage
+                      )}`}
+                    >
+                      {formatLifecycleStage(client.lifecycleStage)}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-300">
+                    {getNextAction(client.lifecycleStage)}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm">
                     <button

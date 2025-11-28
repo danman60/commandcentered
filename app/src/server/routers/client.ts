@@ -2,13 +2,14 @@ import { z } from 'zod';
 import { router, tenantProcedure } from '../trpc';
 
 /**
- * Client Router - 8 procedures
+ * Client Router - 9 procedures
  *
  * Manages clients (converted from leads):
  * - Create/update/list/delete clients
  * - Search and filter clients
  * - Get events by client
  * - Update client status
+ * - Update client lifecycle stage
  */
 export const clientRouter = router({
   /**
@@ -220,6 +221,53 @@ export const clientRouter = router({
       return ctx.prisma.client.update({
         where: { id: input.id },
         data: { status: input.status },
+      });
+    }),
+
+  /**
+   * Update client lifecycle stage
+   * Spec: BOOTSTRAPBUILD/00_MASTER_SPECIFICATION.md lines 1143-1153
+   */
+  updateLifecycleStage: tenantProcedure
+    .input(
+      z.object({
+        id: z.string().uuid(),
+        lifecycleStage: z.enum([
+          'INITIAL_CONTACT',
+          'PROPOSAL_SENT',
+          'CONTRACT_SIGNED',
+          'QUESTIONNAIRE_SENT',
+          'QUESTIONNAIRE_COMPLETED',
+          'INVOICE_SENT',
+          'DEPOSIT_PAID',
+          'FULL_PAYMENT_RECEIVED',
+          'EVENT_CONFIRMED',
+          'EVENT_COMPLETED',
+          'DELIVERED',
+          'REBOOKING',
+        ]),
+        lifecycleNotes: z.string().optional(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      // Verify client belongs to tenant
+      const client = await ctx.prisma.client.findFirst({
+        where: {
+          id: input.id,
+          tenantId: ctx.tenantId,
+        },
+      });
+
+      if (!client) {
+        throw new Error('Client not found');
+      }
+
+      return ctx.prisma.client.update({
+        where: { id: input.id },
+        data: {
+          lifecycleStage: input.lifecycleStage,
+          lifecycleNotes: input.lifecycleNotes,
+        },
       });
     }),
 
