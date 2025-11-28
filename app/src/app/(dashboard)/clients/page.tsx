@@ -82,6 +82,12 @@ export default function ClientsPage() {
     },
   });
 
+  const updateLifecycle = trpc.client.updateLifecycleStage.useMutation({
+    onSuccess: () => {
+      refetch();
+    },
+  });
+
   const handleViewDetails = (clientId: string) => {
     setSelectedClientId(clientId);
   };
@@ -90,6 +96,13 @@ export default function ClientsPage() {
     updateAutoEmails.mutate({
       id: clientId,
       autoEmailsEnabled: !currentValue,
+    });
+  };
+
+  const handleLifecycleChange = (clientId: string, newStage: string) => {
+    updateLifecycle.mutate({
+      id: clientId,
+      lifecycleStage: newStage as any,
     });
   };
 
@@ -271,13 +284,31 @@ export default function ClientsPage() {
                     )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span
-                      className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded ${getLifecycleStageColor(
+                    <select
+                      value={client.lifecycleStage}
+                      onChange={(e) => {
+                        e.stopPropagation();
+                        handleLifecycleChange(client.id, e.target.value);
+                      }}
+                      onClick={(e) => e.stopPropagation()}
+                      className={`px-2 py-1 text-xs leading-5 font-semibold rounded border-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-green-500 ${getLifecycleStageColor(
                         client.lifecycleStage
                       )}`}
+                      disabled={updateLifecycle.isPending}
                     >
-                      {formatLifecycleStage(client.lifecycleStage)}
-                    </span>
+                      <option value="INITIAL_CONTACT">Initial Contact</option>
+                      <option value="PROPOSAL_SENT">Proposal Sent</option>
+                      <option value="CONTRACT_SIGNED">Contract Signed</option>
+                      <option value="QUESTIONNAIRE_SENT">Questionnaire Sent</option>
+                      <option value="QUESTIONNAIRE_COMPLETED">Questionnaire Completed</option>
+                      <option value="INVOICE_SENT">Invoice Sent</option>
+                      <option value="DEPOSIT_PAID">Deposit Paid</option>
+                      <option value="FULL_PAYMENT_RECEIVED">Full Payment</option>
+                      <option value="EVENT_CONFIRMED">Event Confirmed</option>
+                      <option value="EVENT_COMPLETED">Event Completed</option>
+                      <option value="DELIVERED">Delivered</option>
+                      <option value="REBOOKING">Rebooking</option>
+                    </select>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <button
