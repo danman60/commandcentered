@@ -76,8 +76,21 @@ export default function ClientsPage() {
 
   const { data: industries } = trpc.client.getIndustries.useQuery();
 
+  const updateAutoEmails = trpc.client.updateAutoEmails.useMutation({
+    onSuccess: () => {
+      refetch();
+    },
+  });
+
   const handleViewDetails = (clientId: string) => {
     setSelectedClientId(clientId);
+  };
+
+  const handleToggleAutoEmails = (clientId: string, currentValue: boolean) => {
+    updateAutoEmails.mutate({
+      id: clientId,
+      autoEmailsEnabled: !currentValue,
+    });
   };
 
   const handleCloseDetailModal = () => {
@@ -187,6 +200,9 @@ export default function ClientsPage() {
                   Lifecycle Stage
                 </th>
                 <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300">
+                  Auto Emails
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300">
                   Next Action
                 </th>
                 <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300">
@@ -262,6 +278,24 @@ export default function ClientsPage() {
                     >
                       {formatLifecycleStage(client.lifecycleStage)}
                     </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleToggleAutoEmails(client.id, client.autoEmailsEnabled);
+                      }}
+                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-slate-900 ${
+                        client.autoEmailsEnabled ? 'bg-green-600' : 'bg-slate-700'
+                      }`}
+                      disabled={updateAutoEmails.isPending}
+                    >
+                      <span
+                        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                          client.autoEmailsEnabled ? 'translate-x-6' : 'translate-x-1'
+                        }`}
+                      />
+                    </button>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-300">
                     {getNextAction(client.lifecycleStage)}

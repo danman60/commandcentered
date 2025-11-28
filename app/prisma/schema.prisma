@@ -1770,6 +1770,9 @@ model Client {
   lifecycleStage ClientLifecycleStage @default(INITIAL_CONTACT) @map("lifecycle_stage")
   lifecycleNotes String?              @map("lifecycle_notes") @db.Text
 
+  // Email automation safety - prevents accidental emails to real clients during testing
+  autoEmailsEnabled Boolean @default(false) @map("auto_emails_enabled")
+
   totalRevenue Decimal @default(0) @map("total_revenue") @db.Decimal(10, 2)
   totalEvents  Int     @default(0) @map("total_events")
 

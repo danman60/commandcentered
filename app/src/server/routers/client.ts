@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { router, tenantProcedure } from '../trpc';
 
 /**
- * Client Router - 9 procedures
+ * Client Router - 10 procedures
  *
  * Manages clients (converted from leads):
  * - Create/update/list/delete clients
@@ -10,6 +10,7 @@ import { router, tenantProcedure } from '../trpc';
  * - Get events by client
  * - Update client status
  * - Update client lifecycle stage
+ * - Update auto emails enabled (safety toggle)
  */
 export const clientRouter = router({
   /**
@@ -268,6 +269,36 @@ export const clientRouter = router({
           lifecycleStage: input.lifecycleStage,
           lifecycleNotes: input.lifecycleNotes,
         },
+      });
+    }),
+
+  /**
+   * Update client auto emails enabled
+   * Safety feature to prevent accidental automated emails during testing with real client data
+   */
+  updateAutoEmails: tenantProcedure
+    .input(
+      z.object({
+        id: z.string().uuid(),
+        autoEmailsEnabled: z.boolean(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      // Verify client belongs to tenant
+      const client = await ctx.prisma.client.findFirst({
+        where: {
+          id: input.id,
+          tenantId: ctx.tenantId,
+        },
+      });
+
+      if (!client) {
+        throw new Error('Client not found');
+      }
+
+      return ctx.prisma.client.update({
+        where: { id: input.id },
+        data: { autoEmailsEnabled: input.autoEmailsEnabled },
       });
     }),
 
