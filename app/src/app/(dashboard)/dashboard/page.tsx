@@ -110,12 +110,17 @@ export default function DashboardPage() {
   // Save layout immediately on unmount to prevent data loss
   useEffect(() => {
     return () => {
-      // Clear any pending saves and save immediately
+      // Clear any pending saves
       if (saveTimeoutRef.current) {
         clearTimeout(saveTimeoutRef.current);
       }
+      // Save immediately on unmount (use fire-and-forget mutation)
+      updateDashboardLayout.mutate({
+        dashboardLayout: currentLayout,
+        visibleWidgets: currentLayout.map(item => item.i),
+      });
     };
-  }, []);
+  }, [currentLayout, updateDashboardLayout]);
 
   // Determine which widgets are visible
   const getWidgetVisibility = (widgetId: WidgetType): boolean => {
@@ -243,8 +248,11 @@ export default function DashboardPage() {
         onLayoutChange={handleLayoutChange}
         onDragStart={handleDragStart}
         onDragStop={handleDragStop}
+        onResizeStart={handleDragStart}
+        onResizeStop={handleDragStop}
         isDraggable={isDraggingEnabled && !isMobile}
         isResizable={isDraggingEnabled && !isMobile}
+        resizeHandles={['se', 'sw', 'ne', 'nw']}
         compactType="vertical"
         preventCollision={false}
       >
@@ -584,8 +592,8 @@ export default function DashboardPage() {
 
         {/* Widget 6: Recent Activity */}
         {getWidgetVisibility('recent_activity') && (
-          <div key="recent_activity" data-testid="widget-recent-activity">
-            <Card padding="large" hover="glow" className="h-full">
+          <div key="recent_activity" data-testid="widget-recent-activity" className="overflow-hidden h-full">
+            <Card padding="large" hover="glow" className="h-full overflow-hidden flex flex-col">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-white">Recent Activity</h3>
                 <Clock className="w-5 h-5 text-green-400" />
@@ -593,7 +601,7 @@ export default function DashboardPage() {
               {activityLoading ? (
                 <p className="text-gray-400">Loading...</p>
               ) : recentActivity && recentActivity.length > 0 ? (
-                <div className="space-y-3 max-h-80 overflow-y-auto">
+                <div className="space-y-3 flex-1 overflow-y-auto">
                   {recentActivity.map((activity, idx) => (
                     <div
                       key={idx}
