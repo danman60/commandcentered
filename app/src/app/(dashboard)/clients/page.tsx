@@ -674,8 +674,8 @@ function ClientDetailModal({ clientId, onClose }: { clientId: string; onClose: (
   if (!client) {
     return (
       <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50">
-        <div className="bg-white rounded-lg p-6">
-          <p className="text-gray-900">Loading...</p>
+        <div className="bg-slate-900 rounded-lg p-6">
+          <p className="text-white">Loading...</p>
         </div>
       </div>
     );
@@ -784,7 +784,7 @@ function ClientDetailModal({ clientId, onClose }: { clientId: string; onClose: (
                 </div>
                 <div className="bg-gradient-to-br from-green-900/40 to-green-800/40 p-4 rounded-lg">
                   <p className="text-sm text-green-400 font-medium">Total Revenue</p>
-                  <p className="text-2xl font-bold text-green-900">${totalRevenue.toLocaleString()}</p>
+                  <p className="text-2xl font-bold text-white">${totalRevenue.toLocaleString()}</p>
                 </div>
                 <div className="bg-gradient-to-br from-purple-900/40 to-purple-800/40 p-4 rounded-lg">
                   <p className="text-sm text-purple-400 font-medium">Deliverables</p>
@@ -799,24 +799,24 @@ function ClientDetailModal({ clientId, onClose }: { clientId: string; onClose: (
                 Linked Events ({clientWithRelations.events?.length || 0})
               </h3>
               {clientWithRelations.events && clientWithRelations.events.length > 0 ? (
-                <div className="bg-gray-50 rounded-lg overflow-hidden">
+                <div className="bg-slate-800 rounded-lg overflow-hidden">
                   <table className="min-w-full">
-                    <thead className="bg-gray-100">
+                    <thead className="bg-slate-900">
                       <tr>
-                        <th className="px-4 py-2 text-left text-xs font-medium text-gray-700">Event Name</th>
-                        <th className="px-4 py-2 text-left text-xs font-medium text-gray-700">Date</th>
-                        <th className="px-4 py-2 text-left text-xs font-medium text-gray-700">Revenue</th>
-                        <th className="px-4 py-2 text-left text-xs font-medium text-gray-700">Shifts</th>
+                        <th className="px-4 py-2 text-left text-xs font-medium text-slate-300">Event Name</th>
+                        <th className="px-4 py-2 text-left text-xs font-medium text-slate-300">Date</th>
+                        <th className="px-4 py-2 text-left text-xs font-medium text-slate-300">Revenue</th>
+                        <th className="px-4 py-2 text-left text-xs font-medium text-slate-300">Shifts</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-200">
+                    <tbody className="divide-y divide-slate-700">
                       {clientWithRelations.events.map((event) => (
                         <tr key={event.id}>
-                          <td className="px-4 py-2 text-sm text-gray-900">{event.eventName}</td>
+                          <td className="px-4 py-2 text-sm text-white">{event.eventName}</td>
                           <td className="px-4 py-2 text-sm text-slate-400">
                             {new Date(event.loadInTime).toLocaleDateString()}
                           </td>
-                          <td className="px-4 py-2 text-sm text-gray-900">
+                          <td className="px-4 py-2 text-sm text-white">
                             ${Number(event.revenueAmount || 0).toLocaleString()}
                           </td>
                           <td className="px-4 py-2 text-sm text-slate-400">{event.shifts?.length || 0}</td>
@@ -826,7 +826,7 @@ function ClientDetailModal({ clientId, onClose }: { clientId: string; onClose: (
                   </table>
                 </div>
               ) : (
-                <p className="text-gray-500 text-sm">No events yet</p>
+                <p className="text-slate-400 text-sm">No events yet</p>
               )}
             </div>
 
@@ -836,20 +836,20 @@ function ClientDetailModal({ clientId, onClose }: { clientId: string; onClose: (
                 Linked Deliverables ({clientWithRelations.deliverables?.length || 0})
               </h3>
               {clientWithRelations.deliverables && clientWithRelations.deliverables.length > 0 ? (
-                <div className="bg-gray-50 rounded-lg overflow-hidden">
+                <div className="bg-slate-800 rounded-lg overflow-hidden">
                   <table className="min-w-full">
-                    <thead className="bg-gray-100">
+                    <thead className="bg-slate-900">
                       <tr>
-                        <th className="px-4 py-2 text-left text-xs font-medium text-gray-700">Type</th>
-                        <th className="px-4 py-2 text-left text-xs font-medium text-gray-700">Event</th>
-                        <th className="px-4 py-2 text-left text-xs font-medium text-gray-700">Due Date</th>
-                        <th className="px-4 py-2 text-left text-xs font-medium text-gray-700">Status</th>
+                        <th className="px-4 py-2 text-left text-xs font-medium text-slate-300">Type</th>
+                        <th className="px-4 py-2 text-left text-xs font-medium text-slate-300">Event</th>
+                        <th className="px-4 py-2 text-left text-xs font-medium text-slate-300">Due Date</th>
+                        <th className="px-4 py-2 text-left text-xs font-medium text-slate-300">Status</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-200">
+                    <tbody className="divide-y divide-slate-700">
                       {clientWithRelations.deliverables.map((deliverable) => (
                         <tr key={deliverable.id}>
-                          <td className="px-4 py-2 text-sm text-gray-900">{deliverable.deliverableType}</td>
+                          <td className="px-4 py-2 text-sm text-white">{deliverable.deliverableType}</td>
                           <td className="px-4 py-2 text-sm text-slate-400">
                             {deliverable.event?.eventName || 'N/A'}
                           </td>
@@ -862,12 +862,12 @@ function ClientDetailModal({ clientId, onClose }: { clientId: string; onClose: (
                             <span
                               className={`px-2 py-1 rounded-full text-xs font-medium ${
                                 deliverable.status === 'DELIVERED'
-                                  ? 'bg-green-100 text-green-800'
+                                  ? 'bg-green-600 text-white'
                                   : deliverable.status === 'IN_PROGRESS'
-                                  ? 'bg-blue-100 text-blue-800'
+                                  ? 'bg-blue-600 text-white'
                                   : deliverable.status === 'IN_REVIEW'
-                                  ? 'bg-purple-100 text-purple-800'
-                                  : 'bg-gray-100 text-gray-800'
+                                  ? 'bg-purple-600 text-white'
+                                  : 'bg-slate-600 text-white'
                               }`}
                             >
                               {deliverable.status.replace('_', ' ')}
@@ -879,7 +879,7 @@ function ClientDetailModal({ clientId, onClose }: { clientId: string; onClose: (
                   </table>
                 </div>
               ) : (
-                <p className="text-gray-500 text-sm">No deliverables yet</p>
+                <p className="text-slate-400 text-sm">No deliverables yet</p>
               )}
             </div>
 
@@ -893,8 +893,8 @@ function ClientDetailModal({ clientId, onClose }: { clientId: string; onClose: (
                   {clientWithRelations.communicationTouchpoints.map((touchpoint) => (
                     <div key={touchpoint.id} className="bg-slate-800 p-4 rounded-lg">
                       <div className="flex justify-between items-start mb-2">
-                        <p className="font-medium text-gray-900">{touchpoint.touchpointType.replace('_', ' ')}</p>
-                        <p className="text-sm text-gray-500">
+                        <p className="font-medium text-white">{touchpoint.touchpointType.replace('_', ' ')}</p>
+                        <p className="text-sm text-slate-400">
                           {new Date(touchpoint.createdAt).toLocaleDateString()}
                         </p>
                       </div>
@@ -903,7 +903,7 @@ function ClientDetailModal({ clientId, onClose }: { clientId: string; onClose: (
                   ))}
                 </div>
               ) : (
-                <p className="text-gray-500 text-sm">No communication history yet</p>
+                <p className="text-slate-400 text-sm">No communication history yet</p>
               )}
             </div>
 
@@ -925,7 +925,7 @@ function ClientDetailModal({ clientId, onClose }: { clientId: string; onClose: (
                     Open Client Folder
                   </a>
                 ) : (
-                  <p className="text-gray-500 text-sm">No Drive folder linked</p>
+                  <p className="text-slate-400 text-sm">No Drive folder linked</p>
                 )}
               </div>
             </div>
@@ -933,9 +933,9 @@ function ClientDetailModal({ clientId, onClose }: { clientId: string; onClose: (
             {/* Notes */}
             <div className="mb-6">
               <div className="flex justify-between items-center mb-3">
-                <h3 className="text-lg font-semibold text-gray-900">Notes</h3>
+                <h3 className="text-lg font-semibold text-white">Notes</h3>
                 {saveStatus === 'saving' && (
-                  <span className="text-sm text-gray-500">Saving...</span>
+                  <span className="text-sm text-slate-400">Saving...</span>
                 )}
                 {saveStatus === 'saved' && (
                   <span className="text-sm text-green-400">✓ Saved</span>
