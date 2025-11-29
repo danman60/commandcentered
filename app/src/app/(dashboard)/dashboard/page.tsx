@@ -47,13 +47,13 @@ const WIDGET_CONFIGS: WidgetConfig[] = [
 
 // Default layout configuration
 const DEFAULT_LAYOUT: Layout[] = [
-  { i: 'overview_stats', x: 0, y: 0, w: 12, h: 2, minW: 6, minH: 2 },
+  { i: 'overview_stats', x: 0, y: 0, w: 12, h: 2, minW: 12, minH: 2 },
   { i: 'event_pipeline', x: 0, y: 2, w: 4, h: 4, minW: 4, minH: 3 },
   { i: 'revenue_stats', x: 4, y: 2, w: 4, h: 4, minW: 4, minH: 3 },
   { i: 'deliverables', x: 8, y: 2, w: 4, h: 4, minW: 4, minH: 3 },
   { i: 'upcoming_events', x: 0, y: 6, w: 6, h: 5, minW: 4, minH: 4 },
   { i: 'critical_alerts', x: 6, y: 6, w: 6, h: 5, minW: 4, minH: 4 },
-  { i: 'recent_activity', x: 0, y: 11, w: 12, h: 4, minW: 6, minH: 3 },
+  { i: 'recent_activity', x: 0, y: 11, w: 12, h: 4, minW: 12, minH: 3 },
 ];
 
 export default function DashboardPage() {
@@ -254,7 +254,7 @@ export default function DashboardPage() {
         {/* Widget 1: Overview Stats */}
         {getWidgetVisibility('overview_stats') && (
           <div key="overview_stats" data-testid="widget-overview-stats" className="overflow-hidden">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 h-full">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 h-full">
               <div
                 className="tactical-stat-panel p-6 cursor-pointer transition-all relative"
                 onClick={() => safeNavigate('/planning')}
