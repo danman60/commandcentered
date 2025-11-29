@@ -7,19 +7,33 @@ import { trpc } from '@/lib/trpc/client';
 import { Upload, FileText, Download, AlertCircle, CheckCircle2 } from 'lucide-react';
 import Papa from 'papaparse';
 
-type EntityType = 'operators' | 'gear' | 'clients' | 'events';
+type EntityType = 'operators' | 'gear' | 'clients' | 'events' | 'all';
 
 interface ParsedData {
   valid: any[];
   errors: { row: number; field: string; message: string }[];
 }
 
+interface AllInOneData {
+  operators: { valid: any[]; errors: any[] };
+  gear: { valid: any[]; errors: any[] };
+  clients: { valid: any[]; errors: any[] };
+  events: { valid: any[]; errors: any[] };
+}
+
 export default function QuickOnboardPage() {
-  const [activeTab, setActiveTab] = useState<EntityType>('operators');
+  const [activeTab, setActiveTab] = useState<EntityType>('all');
   const [pastedData, setPastedData] = useState('');
   const [parsedData, setParsedData] = useState<ParsedData | null>(null);
+  const [allInOneData, setAllInOneData] = useState<AllInOneData | null>(null);
   const [importing, setImporting] = useState(false);
-  const [importResult, setImportResult] = useState<{ count: number; skipped?: number } | null>(null);
+  const [importResult, setImportResult] = useState<{
+    operators?: number;
+    gear?: number;
+    clients?: number;
+    events?: number;
+    total?: number;
+  } | null>(null);
 
   // Mutations
   const importOperators = trpc.operator.batchCreate.useMutation();
@@ -29,6 +43,26 @@ export default function QuickOnboardPage() {
 
   // CSV Templates
   const templates = {
+    all: `[CLIENTS]
+organization,contactName,email,phone,website,industry,city,province,notes
+Acme Corp,Jane Doe,jane@acme.com,555-0200,https://acme.com,Technology,Toronto,ON,Premier client
+Tech Studios,Bob Smith,bob@techstudios.com,555-0201,https://techstudios.com,Media,Vancouver,BC,
+
+[OPERATORS]
+name,email,phone,primaryRole,hourlyRate,bio,portfolioUrl
+John Smith,john@example.com,555-0100,Videographer,75,Experienced videographer,https://johnsmith.com
+Sarah Jones,sarah@example.com,555-0101,Audio Tech,65,Sound specialist,
+
+[GEAR]
+name,category,type,manufacturer,model,serialNumber,purchasePrice,notes
+Canon C300,CAMERA,Cinema Camera,Canon,C300 Mark III,SN123456,15000,Main camera
+Rode NTG3,AUDIO,Shotgun Mic,Rode,NTG3,SN789,700,
+
+[EVENTS]
+eventName,eventType,venueName,venueAddress,clientOrganization,loadInTime,loadOutTime,revenueAmount,status,notes
+Acme Annual Gala,CORPORATE,Convention Center,123 Main St,Acme Corp,2025-12-01T09:00:00,2025-12-01T22:00:00,5000,CONFIRMED,
+Tech Studios Launch,CORPORATE,Tech Hub,456 Tech Ave,Tech Studios,2025-12-15T10:00:00,2025-12-15T18:00:00,3500,CONFIRMED,
+`,
     operators: [
       ['name', 'email', 'phone', 'primaryRole', 'hourlyRate', 'bio', 'portfolioUrl'],
       ['John Smith', 'john@example.com', '555-0100', 'Videographer', '75', 'Experienced videographer', ''],
@@ -48,12 +82,13 @@ export default function QuickOnboardPage() {
   };
 
   const downloadTemplate = () => {
-    const csv = Papa.unparse(templates[activeTab]);
+    const template = templates[activeTab];
+    const csv = typeof template === 'string' ? template : Papa.unparse(template);
     const blob = new Blob([csv], { type: 'text/csv' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `${activeTab}_template.csv`;
+    a.download = `${activeTab === 'all' ? 'bulk_onboard' : activeTab}_template.csv`;
     a.click();
     window.URL.revokeObjectURL(url);
   };
@@ -62,25 +97,192 @@ export default function QuickOnboardPage() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    Papa.parse(file, {
-      header: true,
-      skipEmptyLines: true,
-      complete: (results) => {
-        parseData(results.data as any[]);
-      },
-    });
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const text = event.target?.result as string;
+      if (activeTab === 'all') {
+        parseAllInOne(text);
+      } else {
+        Papa.parse(text, {
+          header: true,
+          skipEmptyLines: true,
+          complete: (results) => {
+            parseData(results.data as any[]);
+          },
+        });
+      }
+    };
+    reader.readAsText(file);
   };
 
   const handlePaste = () => {
     if (!pastedData.trim()) return;
 
-    Papa.parse(pastedData, {
-      header: true,
-      skipEmptyLines: true,
-      complete: (results) => {
-        parseData(results.data as any[]);
-      },
-    });
+    if (activeTab === 'all') {
+      parseAllInOne(pastedData);
+    } else {
+      Papa.parse(pastedData, {
+        header: true,
+        skipEmptyLines: true,
+        complete: (results) => {
+          parseData(results.data as any[]);
+        },
+      });
+    }
+  };
+
+  const parseAllInOne = (csvText: string) => {
+    const sections = { clients: '', operators: '', gear: '', events: '' };
+    const lines = csvText.split('\n');
+    let currentSection: keyof typeof sections | null = null;
+
+    // Split into sections
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (trimmed === '[CLIENTS]') {
+        currentSection = 'clients';
+        continue;
+      } else if (trimmed === '[OPERATORS]') {
+        currentSection = 'operators';
+        continue;
+      } else if (trimmed === '[GEAR]') {
+        currentSection = 'gear';
+        continue;
+      } else if (trimmed === '[EVENTS]') {
+        currentSection = 'events';
+        continue;
+      }
+
+      if (currentSection && trimmed) {
+        sections[currentSection] += line + '\n';
+      }
+    }
+
+    // Parse each section
+    const allData: AllInOneData = {
+      clients: { valid: [], errors: [] },
+      operators: { valid: [], errors: [] },
+      gear: { valid: [], errors: [] },
+      events: { valid: [], errors: [] },
+    };
+
+    // Parse clients
+    if (sections.clients) {
+      Papa.parse(sections.clients, {
+        header: true,
+        skipEmptyLines: true,
+        complete: (results) => {
+          const data = results.data as any[];
+          data.forEach((row, index) => {
+            const rowNum = index + 2;
+            if (!row.organization || !row.email) {
+              allData.clients.errors.push({ row: rowNum, field: 'required', message: 'Missing organization or email' });
+            } else if (!row.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+              allData.clients.errors.push({ row: rowNum, field: 'email', message: 'Invalid email' });
+            } else {
+              allData.clients.valid.push({
+                organization: row.organization,
+                contactName: row.contactName || '',
+                email: row.email,
+                phone: row.phone || '',
+                website: row.website || '',
+                industry: row.industry || '',
+                city: row.city || '',
+                province: row.province || '',
+                notes: row.notes || '',
+              });
+            }
+          });
+        },
+      });
+    }
+
+    // Parse operators
+    if (sections.operators) {
+      Papa.parse(sections.operators, {
+        header: true,
+        skipEmptyLines: true,
+        complete: (results) => {
+          const data = results.data as any[];
+          data.forEach((row, index) => {
+            const rowNum = index + 2;
+            if (!row.name || !row.email || !row.hourlyRate) {
+              allData.operators.errors.push({ row: rowNum, field: 'required', message: 'Missing name, email, or hourlyRate' });
+            } else {
+              allData.operators.valid.push({
+                name: row.name,
+                email: row.email,
+                phone: row.phone || '',
+                primaryRole: row.primaryRole || '',
+                hourlyRate: parseFloat(row.hourlyRate) || 0,
+                bio: row.bio || '',
+                portfolioUrl: row.portfolioUrl || '',
+              });
+            }
+          });
+        },
+      });
+    }
+
+    // Parse gear
+    if (sections.gear) {
+      Papa.parse(sections.gear, {
+        header: true,
+        skipEmptyLines: true,
+        complete: (results) => {
+          const data = results.data as any[];
+          data.forEach((row, index) => {
+            const rowNum = index + 2;
+            if (!row.name || !row.category || !row.type) {
+              allData.gear.errors.push({ row: rowNum, field: 'required', message: 'Missing name, category, or type' });
+            } else {
+              allData.gear.valid.push({
+                name: row.name,
+                category: row.category,
+                type: row.type,
+                manufacturer: row.manufacturer || '',
+                model: row.model || '',
+                serialNumber: row.serialNumber || '',
+                purchasePrice: row.purchasePrice ? parseFloat(row.purchasePrice) : undefined,
+                notes: row.notes || '',
+              });
+            }
+          });
+        },
+      });
+    }
+
+    // Parse events
+    if (sections.events) {
+      Papa.parse(sections.events, {
+        header: true,
+        skipEmptyLines: true,
+        complete: (results) => {
+          const data = results.data as any[];
+          data.forEach((row, index) => {
+            const rowNum = index + 2;
+            if (!row.eventName || !row.eventType || !row.venueName || !row.clientOrganization || !row.loadInTime || !row.loadOutTime) {
+              allData.events.errors.push({ row: rowNum, field: 'required', message: 'Missing required fields' });
+            } else {
+              allData.events.valid.push({
+                eventName: row.eventName,
+                eventType: row.eventType,
+                venueName: row.venueName,
+                venueAddress: row.venueAddress,
+                clientOrganization: row.clientOrganization,
+                loadInTime: new Date(row.loadInTime),
+                loadOutTime: new Date(row.loadOutTime),
+                revenueAmount: row.revenueAmount ? parseFloat(row.revenueAmount) : undefined,
+                status: row.status || 'CONFIRMED',
+                notes: row.notes || '',
+              });
+            }
+          });
+        },
+      });
+    }
+
+    setAllInOneData(allData);
   };
 
   const parseData = (data: any[]) => {
@@ -177,33 +379,95 @@ export default function QuickOnboardPage() {
   };
 
   const handleImport = async () => {
-    if (!parsedData || parsedData.valid.length === 0) return;
+    if (activeTab === 'all') {
+      // Handle all-in-one import
+      if (!allInOneData) return;
 
-    setImporting(true);
-    setImportResult(null);
+      setImporting(true);
+      setImportResult(null);
 
-    try {
-      let result;
-      if (activeTab === 'operators') {
-        result = await importOperators.mutateAsync({ operators: parsedData.valid });
-      } else if (activeTab === 'gear') {
-        result = await importGear.mutateAsync({ gear: parsedData.valid });
-      } else if (activeTab === 'clients') {
-        result = await importClients.mutateAsync({ clients: parsedData.valid });
-      } else if (activeTab === 'events') {
-        result = await importEvents.mutateAsync({ events: parsedData.valid });
+      try {
+        // Import in sequence: clients first, then operators/gear in parallel, then events
+        let clientsCount = 0;
+        let operatorsCount = 0;
+        let gearCount = 0;
+        let eventsCount = 0;
+
+        // 1. Import clients first (events depend on them)
+        if (allInOneData.clients.valid.length > 0) {
+          const clientResult = await importClients.mutateAsync({ clients: allInOneData.clients.valid });
+          clientsCount = clientResult.count;
+        }
+
+        // 2. Import operators and gear in parallel (no dependencies)
+        const parallelImports = [];
+        if (allInOneData.operators.valid.length > 0) {
+          parallelImports.push(importOperators.mutateAsync({ operators: allInOneData.operators.valid }));
+        }
+        if (allInOneData.gear.valid.length > 0) {
+          parallelImports.push(importGear.mutateAsync({ gear: allInOneData.gear.valid }));
+        }
+
+        if (parallelImports.length > 0) {
+          const results = await Promise.all(parallelImports);
+          if (allInOneData.operators.valid.length > 0) operatorsCount = results[0].count;
+          if (allInOneData.gear.valid.length > 0) gearCount = results[allInOneData.operators.valid.length > 0 ? 1 : 0].count;
+        }
+
+        // 3. Import events last (depends on clients)
+        if (allInOneData.events.valid.length > 0) {
+          const eventResult = await importEvents.mutateAsync({ events: allInOneData.events.valid });
+          eventsCount = eventResult.count;
+        }
+
+        setImportResult({
+          clients: clientsCount,
+          operators: operatorsCount,
+          gear: gearCount,
+          events: eventsCount,
+          total: clientsCount + operatorsCount + gearCount + eventsCount,
+        });
+        setAllInOneData(null);
+        setPastedData('');
+      } catch (error: any) {
+        alert(`Import failed: ${error.message}`);
+      } finally {
+        setImporting(false);
       }
-      setImportResult(result!);
-      setParsedData(null);
-      setPastedData('');
-    } catch (error: any) {
-      alert(`Import failed: ${error.message}`);
-    } finally {
-      setImporting(false);
+    } else {
+      // Handle individual entity import
+      if (!parsedData || parsedData.valid.length === 0) return;
+
+      setImporting(true);
+      setImportResult(null);
+
+      try {
+        let result;
+        if (activeTab === 'operators') {
+          result = await importOperators.mutateAsync({ operators: parsedData.valid });
+          setImportResult({ operators: result.count });
+        } else if (activeTab === 'gear') {
+          result = await importGear.mutateAsync({ gear: parsedData.valid });
+          setImportResult({ gear: result.count });
+        } else if (activeTab === 'clients') {
+          result = await importClients.mutateAsync({ clients: parsedData.valid });
+          setImportResult({ clients: result.count });
+        } else if (activeTab === 'events') {
+          result = await importEvents.mutateAsync({ events: parsedData.valid });
+          setImportResult({ events: result.count });
+        }
+        setParsedData(null);
+        setPastedData('');
+      } catch (error: any) {
+        alert(`Import failed: ${error.message}`);
+      } finally {
+        setImporting(false);
+      }
     }
   };
 
   const tabs = [
+    { id: 'all' as EntityType, label: 'All-in-One', icon: '⚡' },
     { id: 'operators' as EntityType, label: 'Operators', icon: '👥' },
     { id: 'gear' as EntityType, label: 'Gear', icon: '🎥' },
     { id: 'clients' as EntityType, label: 'Clients', icon: '🏢' },
@@ -230,6 +494,7 @@ export default function QuickOnboardPage() {
               onClick={() => {
                 setActiveTab(tab.id);
                 setParsedData(null);
+                setAllInOneData(null);
                 setPastedData('');
                 setImportResult(null);
               }}
@@ -250,12 +515,35 @@ export default function QuickOnboardPage() {
           <Card padding="large" className="mb-6 bg-green-900/20 border-green-500/30">
             <div className="flex items-center gap-3">
               <CheckCircle2 className="w-6 h-6 text-green-400" />
-              <div>
-                <p className="text-white font-semibold">
-                  Successfully imported {importResult.count} {activeTab}
-                </p>
-                {importResult.skipped && importResult.skipped > 0 && (
-                  <p className="text-yellow-400 text-sm">Skipped {importResult.skipped} invalid records</p>
+              <div className="flex-1">
+                {activeTab === 'all' ? (
+                  <>
+                    <p className="text-white font-semibold mb-2">
+                      Successfully imported {importResult.total} records
+                    </p>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-sm">
+                      {importResult.clients !== undefined && importResult.clients > 0 && (
+                        <div className="text-green-300">🏢 {importResult.clients} clients</div>
+                      )}
+                      {importResult.operators !== undefined && importResult.operators > 0 && (
+                        <div className="text-green-300">👥 {importResult.operators} operators</div>
+                      )}
+                      {importResult.gear !== undefined && importResult.gear > 0 && (
+                        <div className="text-green-300">🎥 {importResult.gear} gear</div>
+                      )}
+                      {importResult.events !== undefined && importResult.events > 0 && (
+                        <div className="text-green-300">📅 {importResult.events} events</div>
+                      )}
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-white font-semibold">
+                      Successfully imported{' '}
+                      {importResult.operators || importResult.gear || importResult.clients || importResult.events || 0}{' '}
+                      {activeTab}
+                    </p>
+                  </>
                 )}
               </div>
             </div>
@@ -315,8 +603,126 @@ export default function QuickOnboardPage() {
           </div>
         </Card>
 
-        {/* Preview Table */}
-        {parsedData && (
+        {/* Preview Table - All-in-One Mode */}
+        {activeTab === 'all' && allInOneData && (
+          <Card padding="large" className="mb-6">
+            <h3 className="text-white font-semibold mb-4">3. Preview & Import</h3>
+
+            {/* Summary Stats */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+              <div className="bg-slate-800 rounded-lg p-4">
+                <div className="text-slate-400 text-sm mb-1">🏢 Clients</div>
+                <div className="text-white text-2xl font-bold">{allInOneData.clients.valid.length}</div>
+                {allInOneData.clients.errors.length > 0 && (
+                  <div className="text-red-400 text-xs mt-1">{allInOneData.clients.errors.length} errors</div>
+                )}
+              </div>
+              <div className="bg-slate-800 rounded-lg p-4">
+                <div className="text-slate-400 text-sm mb-1">👥 Operators</div>
+                <div className="text-white text-2xl font-bold">{allInOneData.operators.valid.length}</div>
+                {allInOneData.operators.errors.length > 0 && (
+                  <div className="text-red-400 text-xs mt-1">{allInOneData.operators.errors.length} errors</div>
+                )}
+              </div>
+              <div className="bg-slate-800 rounded-lg p-4">
+                <div className="text-slate-400 text-sm mb-1">🎥 Gear</div>
+                <div className="text-white text-2xl font-bold">{allInOneData.gear.valid.length}</div>
+                {allInOneData.gear.errors.length > 0 && (
+                  <div className="text-red-400 text-xs mt-1">{allInOneData.gear.errors.length} errors</div>
+                )}
+              </div>
+              <div className="bg-slate-800 rounded-lg p-4">
+                <div className="text-slate-400 text-sm mb-1">📅 Events</div>
+                <div className="text-white text-2xl font-bold">{allInOneData.events.valid.length}</div>
+                {allInOneData.events.errors.length > 0 && (
+                  <div className="text-red-400 text-xs mt-1">{allInOneData.events.errors.length} errors</div>
+                )}
+              </div>
+            </div>
+
+            {/* All Errors */}
+            {(allInOneData.clients.errors.length > 0 ||
+              allInOneData.operators.errors.length > 0 ||
+              allInOneData.gear.errors.length > 0 ||
+              allInOneData.events.errors.length > 0) && (
+              <div className="bg-red-900/20 border border-red-500/30 rounded-lg p-4 mb-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <AlertCircle className="w-5 h-5 text-red-400" />
+                  <p className="text-red-400 font-semibold">Validation Errors</p>
+                </div>
+                <div className="space-y-2 max-h-40 overflow-y-auto">
+                  {allInOneData.clients.errors.length > 0 && (
+                    <div>
+                      <p className="text-red-300 text-sm font-semibold">Clients:</p>
+                      {allInOneData.clients.errors.slice(0, 5).map((error, i) => (
+                        <p key={i} className="text-red-300 text-sm ml-2">
+                          Row {error.row}: {error.message}
+                        </p>
+                      ))}
+                    </div>
+                  )}
+                  {allInOneData.operators.errors.length > 0 && (
+                    <div>
+                      <p className="text-red-300 text-sm font-semibold">Operators:</p>
+                      {allInOneData.operators.errors.slice(0, 5).map((error, i) => (
+                        <p key={i} className="text-red-300 text-sm ml-2">
+                          Row {error.row}: {error.message}
+                        </p>
+                      ))}
+                    </div>
+                  )}
+                  {allInOneData.gear.errors.length > 0 && (
+                    <div>
+                      <p className="text-red-300 text-sm font-semibold">Gear:</p>
+                      {allInOneData.gear.errors.slice(0, 5).map((error, i) => (
+                        <p key={i} className="text-red-300 text-sm ml-2">
+                          Row {error.row}: {error.message}
+                        </p>
+                      ))}
+                    </div>
+                  )}
+                  {allInOneData.events.errors.length > 0 && (
+                    <div>
+                      <p className="text-red-300 text-sm font-semibold">Events:</p>
+                      {allInOneData.events.errors.slice(0, 5).map((error, i) => (
+                        <p key={i} className="text-red-300 text-sm ml-2">
+                          Row {error.row}: {error.message}
+                        </p>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Import Button */}
+            <div className="mt-6 flex justify-end">
+              <Button
+                onClick={handleImport}
+                disabled={
+                  (allInOneData.clients.valid.length === 0 &&
+                    allInOneData.operators.valid.length === 0 &&
+                    allInOneData.gear.valid.length === 0 &&
+                    allInOneData.events.valid.length === 0) ||
+                  importing
+                }
+                className="bg-gradient-to-r from-green-600 to-green-500"
+              >
+                {importing
+                  ? 'Importing...'
+                  : `Import ${
+                      allInOneData.clients.valid.length +
+                      allInOneData.operators.valid.length +
+                      allInOneData.gear.valid.length +
+                      allInOneData.events.valid.length
+                    } records`}
+              </Button>
+            </div>
+          </Card>
+        )}
+
+        {/* Preview Table - Individual Mode */}
+        {activeTab !== 'all' && parsedData && (
           <Card padding="large" className="mb-6">
             <h3 className="text-white font-semibold mb-4">3. Preview & Import</h3>
 
