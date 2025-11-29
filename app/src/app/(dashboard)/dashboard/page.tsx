@@ -107,20 +107,15 @@ export default function DashboardPage() {
     }
   }, [userPrefs, isMobile]);
 
-  // Save layout immediately on unmount to prevent data loss
+  // Cleanup timeout on unmount
   useEffect(() => {
     return () => {
-      // Clear any pending saves
+      // Clear any pending saves to prevent memory leaks
       if (saveTimeoutRef.current) {
         clearTimeout(saveTimeoutRef.current);
       }
-      // Save immediately on unmount (use fire-and-forget mutation)
-      updateDashboardLayout.mutate({
-        dashboardLayout: currentLayout,
-        visibleWidgets: currentLayout.map(item => item.i),
-      });
     };
-  }, [currentLayout, updateDashboardLayout]);
+  }, []);
 
   // Determine which widgets are visible
   const getWidgetVisibility = (widgetId: WidgetType): boolean => {
