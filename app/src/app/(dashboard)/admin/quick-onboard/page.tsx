@@ -60,8 +60,8 @@ Rode NTG3,AUDIO,Shotgun Mic,SN789,700,
 
 [EVENTS]
 eventName,eventType,venueName,venueAddress,clientOrganization,loadInTime,loadOutTime,revenueAmount,status,notes
-Acme Annual Gala,CORPORATE,Convention Center,123 Main St,Acme Corp,2025-12-01T09:00:00,2025-12-01T22:00:00,5000,CONFIRMED,
-Tech Studios Launch,CORPORATE,Tech Hub,456 Tech Ave,Tech Studios,2025-12-15T10:00:00,2025-12-15T18:00:00,3500,CONFIRMED,
+Acme Annual Gala,CONCERT,Convention Center,123 Main St,Acme Corp,2025-12-01T09:00:00,2025-12-01T22:00:00,5000,CONFIRMED,
+Tech Studios Launch,OTHER,Tech Hub,456 Tech Ave,Tech Studios,2025-12-15T10:00:00,2025-12-15T18:00:00,3500,CONFIRMED,
 `,
     operators: [
       ['name', 'email', 'phone', 'primaryRole', 'hourlyRate', 'bio', 'portfolioUrl'],
@@ -77,7 +77,7 @@ Tech Studios Launch,CORPORATE,Tech Hub,456 Tech Ave,Tech Studios,2025-12-15T10:0
     ],
     events: [
       ['eventName', 'eventType', 'venueName', 'venueAddress', 'clientOrganization', 'loadInTime', 'loadOutTime', 'revenueAmount', 'status', 'notes'],
-      ['Annual Gala', 'CORPORATE', 'Convention Center', '123 Main St', 'Acme Corp', '2025-12-01T09:00:00', '2025-12-01T22:00:00', '5000', 'CONFIRMED', ''],
+      ['Annual Gala', 'CONCERT', 'Convention Center', '123 Main St', 'Acme Corp', '2025-12-01T09:00:00', '2025-12-01T22:00:00', '5000', 'CONFIRMED', ''],
     ],
   };
 
