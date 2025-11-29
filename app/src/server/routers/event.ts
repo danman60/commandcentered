@@ -636,4 +636,69 @@ export const eventRouter = router({
         events,
       };
     }),
+
+  /**
+   * Batch create events (for quick onboarding)
+   */
+  batchCreate: tenantProcedure
+    .input(
+      z.object({
+        events: z.array(
+          z.object({
+            eventName: z.string().min(1),
+            eventType: EventTypeEnum,
+            venueName: z.string().min(1),
+            venueAddress: z.string().min(1),
+            clientOrganization: z.string().min(1), // Will look up client by organization name
+            loadInTime: z.date(),
+            loadOutTime: z.date(),
+            revenueAmount: z.number().optional(),
+            status: EventStatusEnum.default('CONFIRMED'),
+            notes: z.string().optional(),
+          })
+        ),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      // Look up all clients by organization name
+      const orgNames = [...new Set(input.events.map(e => e.clientOrganization))];
+      const clients = await ctx.prisma.client.findMany({
+        where: {
+          tenantId: ctx.tenantId,
+          organization: { in: orgNames },
+        },
+        select: { id: true, organization: true },
+      });
+
+      const clientMap = new Map(clients.map(c => [c.organization, c.id]));
+
+      // Filter out events where client doesn't exist
+      const validEvents = input.events
+        .filter(e => clientMap.has(e.clientOrganization))
+        .map(e => {
+          const { clientOrganization, ...rest } = e;
+          return {
+            tenantId: ctx.tenantId,
+            clientId: clientMap.get(clientOrganization)!,
+            clientName: clientOrganization,
+            clientEmail: '',
+            clientPhone: '',
+            ...rest,
+          };
+        });
+
+      if (validEvents.length === 0) {
+        throw new Error('No valid events found - clients must exist first');
+      }
+
+      const events = await ctx.prisma.event.createMany({
+        data: validEvents,
+        skipDuplicates: true,
+      });
+
+      return {
+        count: events.count,
+        skipped: input.events.length - validEvents.length,
+      };
+    }),
 });

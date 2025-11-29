@@ -289,4 +289,39 @@ export const gearRouter = router({
         movements,
       };
     }),
+
+  /**
+   * Batch create gear (for quick onboarding)
+   */
+  batchCreate: tenantProcedure
+    .input(
+      z.object({
+        gear: z.array(
+          z.object({
+            name: z.string().min(1),
+            category: z.enum(['CAMERA', 'LENS', 'AUDIO', 'COMPUTER', 'RIGGING', 'CABLE', 'LIGHTING', 'ACCESSORIES', 'STABILIZERS', 'DRONES', 'MONITORS', 'OTHER']),
+            type: z.string(),
+            manufacturer: z.string().optional(),
+            model: z.string().optional(),
+            serialNumber: z.string().optional(),
+            purchaseDate: z.date().optional(),
+            purchasePrice: z.number().optional(),
+            notes: z.string().optional(),
+          })
+        ),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      // Create all gear with tenant ID
+      const gear = await ctx.prisma.gear.createMany({
+        data: input.gear.map((g) => ({
+          tenantId: ctx.tenantId,
+          status: 'AVAILABLE',
+          ...g,
+        })),
+        skipDuplicates: true,
+      });
+
+      return { count: gear.count };
+    }),
 });

@@ -464,4 +464,36 @@ export const operatorRouter = router({
         where: { id: input.id },
       });
     }),
+
+  /**
+   * Batch create operators (for quick onboarding)
+   */
+  batchCreate: tenantProcedure
+    .input(
+      z.object({
+        operators: z.array(
+          z.object({
+            name: z.string().min(1),
+            email: z.string().email(),
+            phone: z.string().optional(),
+            primaryRole: z.string().optional(),
+            hourlyRate: z.number(),
+            bio: z.string().optional(),
+            portfolioUrl: z.string().url().optional().or(z.literal('')),
+          })
+        ),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      // Create all operators with tenant ID
+      const operators = await ctx.prisma.operator.createMany({
+        data: input.operators.map((op) => ({
+          tenantId: ctx.tenantId,
+          ...op,
+        })),
+        skipDuplicates: true, // Skip if email already exists
+      });
+
+      return { count: operators.count };
+    }),
 });

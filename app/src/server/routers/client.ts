@@ -468,4 +468,43 @@ export const clientRouter = router({
       .map((c) => c.industry)
       .filter((industry): industry is string => Boolean(industry));
   }),
+
+  /**
+   * Batch create clients (for quick onboarding)
+   */
+  batchCreate: tenantProcedure
+    .input(
+      z.object({
+        clients: z.array(
+          z.object({
+            organization: z.string().min(1),
+            contactName: z.string().optional(),
+            email: z.string().email(),
+            phone: z.string().optional(),
+            website: z.string().url().optional().or(z.literal('')),
+            addressLine1: z.string().optional(),
+            addressLine2: z.string().optional(),
+            city: z.string().optional(),
+            province: z.string().optional(),
+            postalCode: z.string().optional(),
+            country: z.string().optional(),
+            industry: z.string().optional(),
+            size: z.string().optional(),
+            notes: z.string().optional(),
+          })
+        ),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      // Create all clients with tenant ID
+      const clients = await ctx.prisma.client.createMany({
+        data: input.clients.map((c) => ({
+          tenantId: ctx.tenantId,
+          ...c,
+        })),
+        skipDuplicates: true, // Skip if email already exists
+      });
+
+      return { count: clients.count };
+    }),
 });

@@ -31,6 +31,7 @@ const navigation = [
   { name: 'Communications', href: '/communications', icon: '💬' },
   { name: 'Files & Assets', href: '/files', icon: '📁' },
   { name: 'Reports', href: '/reports', icon: '📈' },
+  { name: 'Quick Onboard', href: '/admin/quick-onboard', icon: '⚡' },
   { name: 'Operator Portal', href: '/operator-portal', icon: '👤' },
   { name: 'Settings', href: '/settings', icon: '🔧' },
 ]
