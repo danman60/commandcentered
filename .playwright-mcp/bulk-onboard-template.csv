@@ -1,0 +1,19 @@
+[CLIENTS]
+organization,contactName,email,phone,website,industry,city,province,notes
+Acme Corp,Jane Doe,jane@acme.com,555-0200,https://acme.com,Technology,Toronto,ON,Premier client
+Tech Studios,Bob Smith,bob@techstudios.com,555-0201,https://techstudios.com,Media,Vancouver,BC,
+
+[OPERATORS]
+name,email,phone,primaryRole,hourlyRate,bio,portfolioUrl
+John Smith,john@example.com,555-0100,Videographer,75,Experienced videographer,https://johnsmith.com
+Sarah Jones,sarah@example.com,555-0101,Audio Tech,65,Sound specialist,
+
+[GEAR]
+name,category,type,manufacturer,model,serialNumber,purchasePrice,notes
+Canon C300,CAMERA,Cinema Camera,Canon,C300 Mark III,SN123456,15000,Main camera
+Rode NTG3,AUDIO,Shotgun Mic,Rode,NTG3,SN789,700,
+
+[EVENTS]
+eventName,eventType,venueName,venueAddress,clientOrganization,loadInTime,loadOutTime,revenueAmount,status,notes
+Acme Annual Gala,CORPORATE,Convention Center,123 Main St,Acme Corp,2025-12-01T09:00:00,2025-12-01T22:00:00,5000,CONFIRMED,
+Tech Studios Launch,CORPORATE,Tech Hub,456 Tech Ave,Tech Studios,2025-12-15T10:00:00,2025-12-15T18:00:00,3500,CONFIRMED,

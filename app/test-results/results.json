@@ -126,24 +126,24 @@
   },
   "suites": [
     {
-      "title": "07-communications.spec.ts",
-      "file": "07-communications.spec.ts",
+      "title": "05-dashboard.spec.ts",
+      "file": "05-dashboard.spec.ts",
       "column": 0,
       "line": 0,
       "specs": [],
       "suites": [
         {
-          "title": "Communications Module @p0 @communications",
-          "file": "07-communications.spec.ts",
+          "title": "Dashboard Page @p1 @dashboard",
+          "file": "05-dashboard.spec.ts",
           "line": 9,
           "column": 6,
           "specs": [
             {
-              "title": "TC-COMM-001: Communications page loads successfully",
+              "title": "TC-DASH-001: Verify 6 widget types render correctly",
               "ok": true,
               "tags": [
-                "p0",
-                "communications"
+                "p1",
+                "dashboard"
               ],
               "tests": [
                 {
@@ -157,12 +157,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3700,
+                      "duration": 6977,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-23T18:03:20.019Z",
+                      "startTime": "2025-11-29T23:19:31.908Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -170,17 +170,17 @@
                   "status": "expected"
                 }
               ],
-              "id": "39849ae0047eada1385c-ff5b175838b6c0fae676",
-              "file": "07-communications.spec.ts",
-              "line": 16,
+              "id": "15664880665903ff2434-d846422c9b7434bdde49",
+              "file": "05-dashboard.spec.ts",
+              "line": 20,
               "column": 7
             },
             {
-              "title": "TC-COMM-002: Tab navigation works (Email, Telegram, Notification Log)",
+              "title": "TC-DASH-002: Verify Event Pipeline widget displays",
               "ok": true,
               "tags": [
-                "p0",
-                "communications"
+                "p1",
+                "dashboard"
               ],
               "tests": [
                 {
@@ -194,12 +194,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 4701,
+                      "duration": 6608,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-23T18:03:20.014Z",
+                      "startTime": "2025-11-29T23:19:31.885Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -207,91 +207,17 @@
                   "status": "expected"
                 }
               ],
-              "id": "39849ae0047eada1385c-e6e82d452eaea206e118",
-              "file": "07-communications.spec.ts",
-              "line": 22,
-              "column": 7
-            },
-            {
-              "title": "TC-COMM-003: Telegram Integration tab displays groups",
-              "ok": true,
-              "tags": [
-                "p0",
-                "communications"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 3610,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-23T18:03:23.865Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "39849ae0047eada1385c-6a55a71fb0603c34c61f",
-              "file": "07-communications.spec.ts",
-              "line": 46,
-              "column": 7
-            },
-            {
-              "title": "TC-COMM-004: Telegram group cards display correctly",
-              "ok": true,
-              "tags": [
-                "p0",
-                "communications"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 1,
-                      "parallelIndex": 1,
-                      "status": "passed",
-                      "duration": 3905,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-23T18:03:24.873Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "39849ae0047eada1385c-dee296ae457e11de7ab8",
-              "file": "07-communications.spec.ts",
+              "id": "15664880665903ff2434-310f1afa8134fe6b32c4",
+              "file": "05-dashboard.spec.ts",
               "line": 61,
               "column": 7
             },
             {
-              "title": "TC-COMM-005: Notification Log tab displays notification entries",
+              "title": "TC-DASH-003: Verify Revenue Overview widget exists",
               "ok": true,
               "tags": [
-                "p0",
-                "communications"
+                "p1",
+                "dashboard"
               ],
               "tests": [
                 {
@@ -302,15 +228,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 3503,
+                      "duration": 4545,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-23T18:03:27.498Z",
+                      "startTime": "2025-11-29T23:19:39.640Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -318,54 +244,17 @@
                   "status": "expected"
                 }
               ],
-              "id": "39849ae0047eada1385c-159fad98bd81a5f5b8aa",
-              "file": "07-communications.spec.ts",
+              "id": "15664880665903ff2434-7d892ff070235424e803",
+              "file": "05-dashboard.spec.ts",
               "line": 75,
               "column": 7
             },
             {
-              "title": "TC-COMM-006: Notification Log shows notification details",
+              "title": "TC-DASH-004: Verify Customize Dashboard button opens modal",
               "ok": true,
               "tags": [
-                "p0",
-                "communications"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 1,
-                      "parallelIndex": 1,
-                      "status": "passed",
-                      "duration": 3645,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-23T18:03:28.803Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "39849ae0047eada1385c-d5d51118854470bbd249",
-              "file": "07-communications.spec.ts",
-              "line": 93,
-              "column": 7
-            },
-            {
-              "title": "TC-COMM-007: Notification Log pagination controls exist",
-              "ok": true,
-              "tags": [
-                "p0",
-                "communications"
+                "p1",
+                "dashboard"
               ],
               "tests": [
                 {
@@ -379,12 +268,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3359,
+                      "duration": 4596,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-23T18:03:31.033Z",
+                      "startTime": "2025-11-29T23:19:39.941Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -392,17 +281,17 @@
                   "status": "expected"
                 }
               ],
-              "id": "39849ae0047eada1385c-76da073cfd7b3218712d",
-              "file": "07-communications.spec.ts",
-              "line": 107,
+              "id": "15664880665903ff2434-cdf96f879f6d135800e2",
+              "file": "05-dashboard.spec.ts",
+              "line": 89,
               "column": 7
             },
             {
-              "title": "TC-COMM-008: Notification Log filters are functional",
-              "ok": true,
+              "title": "TC-DASH-005: Verify widget customization modal displays checkboxes with descriptions",
+              "ok": false,
               "tags": [
-                "p0",
-                "communications"
+                "p1",
+                "dashboard"
               ],
               "tests": [
                 {
@@ -415,49 +304,71 @@
                     {
                       "workerIndex": 1,
                       "parallelIndex": 1,
-                      "status": "passed",
-                      "duration": 8354,
-                      "errors": [],
+                      "status": "failed",
+                      "duration": 4526,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mnot\u001b[2m.\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: not \u001b[32mtrue\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mnot\u001b[2m.\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: not \u001b[32mtrue\u001b[39m\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\05-dashboard.spec.ts:134:26",
+                        "location": {
+                          "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\05-dashboard.spec.ts",
+                          "column": 26,
+                          "line": 134
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 132 |\u001b[39m     \u001b[36mawait\u001b[39m firstCheckbox\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m 133 |\u001b[39m     \u001b[36mconst\u001b[39m newState \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m firstCheckbox\u001b[33m.\u001b[39misChecked()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 134 |\u001b[39m     expect(newState)\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoBe(initialState)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                          \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 135 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 136 |\u001b[39m\n \u001b[90m 137 |\u001b[39m   \u001b[90m/**\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\05-dashboard.spec.ts",
+                            "column": 26,
+                            "line": 134
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mnot\u001b[2m.\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: not \u001b[32mtrue\u001b[39m\n\n  132 |     await firstCheckbox.click();\n  133 |     const newState = await firstCheckbox.isChecked();\n> 134 |     expect(newState).not.toBe(initialState);\n      |                          ^\n  135 |   });\n  136 |\n  137 |   /**\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\05-dashboard.spec.ts:134:26"
+                        }
+                      ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-23T18:03:32.480Z",
+                      "startTime": "2025-11-29T23:19:44.217Z",
                       "annotations": [],
-                      "attachments": []
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\05-dashboard-Dashboard-Pag-c044b-heckboxes-with-descriptions-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\05-dashboard-Dashboard-Pag-c044b-heckboxes-with-descriptions-chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\05-dashboard-Dashboard-Pag-c044b-heckboxes-with-descriptions-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\05-dashboard.spec.ts",
+                        "column": 26,
+                        "line": 134
+                      }
                     }
                   ],
-                  "status": "expected"
+                  "status": "unexpected"
                 }
               ],
-              "id": "39849ae0047eada1385c-a9cbb319d440ce9f30d5",
-              "file": "07-communications.spec.ts",
-              "line": 121,
+              "id": "15664880665903ff2434-3063021340e5efc5e12d",
+              "file": "05-dashboard.spec.ts",
+              "line": 110,
               "column": 7
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "title": "08-operator-ratings.spec.ts",
-      "file": "08-operator-ratings.spec.ts",
-      "column": 0,
-      "line": 0,
-      "specs": [],
-      "suites": [
-        {
-          "title": "Operator Ratings System @p0 @operators @ratings",
-          "file": "08-operator-ratings.spec.ts",
-          "line": 9,
-          "column": 6,
-          "specs": [
+            },
             {
-              "title": "TC-RATE-001: Operators page loads with rating data",
+              "title": "TC-DASH-006: Verify widget containers exist",
               "ok": true,
               "tags": [
-                "p0",
-                "operators",
-                "ratings"
+                "p1",
+                "dashboard"
               ],
               "tests": [
                 {
@@ -471,12 +382,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 4854,
+                      "duration": 4173,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-23T18:03:34.416Z",
+                      "startTime": "2025-11-29T23:19:44.558Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -484,18 +395,17 @@
                   "status": "expected"
                 }
               ],
-              "id": "4bc168a9d3f6439f2692-f1af74390aedace062dc",
-              "file": "08-operator-ratings.spec.ts",
-              "line": 16,
+              "id": "15664880665903ff2434-f432117d547c4435b065",
+              "file": "05-dashboard.spec.ts",
+              "line": 141,
               "column": 7
             },
             {
-              "title": "TC-RATE-002: Operator cards display rating information",
+              "title": "TC-DASH-007: Verify modular grid layout with different widget sizes",
               "ok": true,
               "tags": [
-                "p0",
-                "operators",
-                "ratings"
+                "p1",
+                "dashboard"
               ],
               "tests": [
                 {
@@ -509,12 +419,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3075,
+                      "duration": 3031,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-23T18:03:39.307Z",
+                      "startTime": "2025-11-29T23:19:48.756Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -522,717 +432,804 @@
                   "status": "expected"
                 }
               ],
-              "id": "4bc168a9d3f6439f2692-fab7d8e584da417858a0",
-              "file": "08-operator-ratings.spec.ts",
-              "line": 27,
+              "id": "15664880665903ff2434-13297a6abfcf18cc9189",
+              "file": "05-dashboard.spec.ts",
+              "line": 161,
               "column": 7
             },
             {
-              "title": "TC-RATE-003: Operator detail modal shows Performance Metrics",
+              "title": "TC-DASH-008: Verify drag-and-drop widget reordering",
               "ok": true,
               "tags": [
-                "p0",
-                "operators",
-                "ratings"
+                "p1",
+                "dashboard"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "location": {
+                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\05-dashboard.spec.ts",
+                        "line": 178,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-29T23:19:48.863Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "15664880665903ff2434-95a365407e1e972f1bb6",
+              "file": "05-dashboard.spec.ts",
+              "line": 178,
+              "column": 8
+            },
+            {
+              "title": "TC-DASH-001: Verify 6 widget types render correctly",
+              "ok": false,
+              "tags": [
+                "p1",
+                "dashboard"
               ],
               "tests": [
                 {
                   "timeout": 30000,
                   "annotations": [],
                   "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 2,
                       "parallelIndex": 1,
-                      "status": "passed",
-                      "duration": 2857,
-                      "errors": [],
+                      "status": "failed",
+                      "duration": 8,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\firefox-1495\\firefox\\firefox.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\firefox-1495\\firefox\\firefox.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\firefox-1495\\firefox\\firefox.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        }
+                      ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-23T18:03:40.864Z",
+                      "startTime": "2025-11-29T23:19:50.416Z",
                       "annotations": [],
                       "attachments": []
                     }
                   ],
-                  "status": "expected"
+                  "status": "unexpected"
                 }
               ],
-              "id": "4bc168a9d3f6439f2692-d447ef123269b6b06d8d",
-              "file": "08-operator-ratings.spec.ts",
-              "line": 36,
+              "id": "15664880665903ff2434-97c9412dba04d5f80ef7",
+              "file": "05-dashboard.spec.ts",
+              "line": 20,
               "column": 7
             },
             {
-              "title": "TC-RATE-004: Performance Metrics shows rating value",
-              "ok": true,
+              "title": "TC-DASH-002: Verify Event Pipeline widget displays",
+              "ok": false,
               "tags": [
-                "p0",
-                "operators",
-                "ratings"
+                "p1",
+                "dashboard"
               ],
               "tests": [
                 {
                   "timeout": 30000,
                   "annotations": [],
                   "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
                   "results": [
                     {
-                      "workerIndex": 0,
+                      "workerIndex": 3,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 5,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\firefox-1495\\firefox\\firefox.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\firefox-1495\\firefox\\firefox.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\firefox-1495\\firefox\\firefox.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-29T23:19:51.869Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "15664880665903ff2434-4cd17c2c692c3be1c3c9",
+              "file": "05-dashboard.spec.ts",
+              "line": 61,
+              "column": 7
+            },
+            {
+              "title": "TC-DASH-003: Verify Revenue Overview widget exists",
+              "ok": false,
+              "tags": [
+                "p1",
+                "dashboard"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 4,
                       "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 2955,
-                      "errors": [],
+                      "status": "failed",
+                      "duration": 5,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\firefox-1495\\firefox\\firefox.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\firefox-1495\\firefox\\firefox.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\firefox-1495\\firefox\\firefox.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        }
+                      ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-23T18:03:42.404Z",
+                      "startTime": "2025-11-29T23:19:52.960Z",
                       "annotations": [],
                       "attachments": []
                     }
                   ],
-                  "status": "expected"
+                  "status": "unexpected"
                 }
               ],
-              "id": "4bc168a9d3f6439f2692-4d4351c27b6690c4b736",
-              "file": "08-operator-ratings.spec.ts",
-              "line": 59,
-              "column": 7
-            },
-            {
-              "title": "TC-RATE-005: Performance Metrics shows rating count",
-              "ok": true,
-              "tags": [
-                "p0",
-                "operators",
-                "ratings"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 1,
-                      "parallelIndex": 1,
-                      "status": "passed",
-                      "duration": 2990,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-23T18:03:43.750Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "4bc168a9d3f6439f2692-2b7803f6250e318efc2a",
-              "file": "08-operator-ratings.spec.ts",
-              "line": 76,
-              "column": 7
-            },
-            {
-              "title": "TC-RATE-006: Rating display includes star icon when rating exists",
-              "ok": true,
-              "tags": [
-                "p0",
-                "operators",
-                "ratings"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 3034,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-23T18:03:45.379Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "4bc168a9d3f6439f2692-15947d81db9661abe39f",
-              "file": "08-operator-ratings.spec.ts",
-              "line": 93,
-              "column": 7
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "title": "09-service-templates.spec.ts",
-      "file": "09-service-templates.spec.ts",
-      "column": 0,
-      "line": 0,
-      "specs": [],
-      "suites": [
-        {
-          "title": "Service Templates Management @p0 @settings @templates",
-          "file": "09-service-templates.spec.ts",
-          "line": 9,
-          "column": 6,
-          "specs": [
-            {
-              "title": "TC-TEMP-001: Service Templates tab loads successfully",
-              "ok": true,
-              "tags": [
-                "p0",
-                "settings",
-                "templates"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 1,
-                      "parallelIndex": 1,
-                      "status": "passed",
-                      "duration": 3564,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-23T18:03:46.768Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "c522bcc0770f4e0b3ff0-2dcd777334436f44532b",
-              "file": "09-service-templates.spec.ts",
-              "line": 21,
-              "column": 7
-            },
-            {
-              "title": "TC-TEMP-002: Template list displays template cards",
-              "ok": true,
-              "tags": [
-                "p0",
-                "settings",
-                "templates"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 3890,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-23T18:03:48.436Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "c522bcc0770f4e0b3ff0-8d95fdc1653da20e62ab",
-              "file": "09-service-templates.spec.ts",
-              "line": 31,
-              "column": 7
-            },
-            {
-              "title": "TC-TEMP-003: Create Template button opens modal",
-              "ok": true,
-              "tags": [
-                "p0",
-                "settings",
-                "templates"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 1,
-                      "parallelIndex": 1,
-                      "status": "passed",
-                      "duration": 4265,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-23T18:03:50.353Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "c522bcc0770f4e0b3ff0-8e036e103db54030b06d",
-              "file": "09-service-templates.spec.ts",
-              "line": 40,
-              "column": 7
-            },
-            {
-              "title": "TC-TEMP-004: Template cards show all required information",
-              "ok": true,
-              "tags": [
-                "p0",
-                "settings",
-                "templates"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 3661,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-23T18:03:52.347Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "c522bcc0770f4e0b3ff0-b77346ca6d2f312b80b5",
-              "file": "09-service-templates.spec.ts",
-              "line": 59,
-              "column": 7
-            },
-            {
-              "title": "TC-TEMP-005: Edit button exists on template cards",
-              "ok": true,
-              "tags": [
-                "p0",
-                "settings",
-                "templates"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 1,
-                      "parallelIndex": 1,
-                      "status": "passed",
-                      "duration": 3350,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-23T18:03:54.639Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "c522bcc0770f4e0b3ff0-12ff81af19e522f9b318",
-              "file": "09-service-templates.spec.ts",
-              "line": 74,
-              "column": 7
-            },
-            {
-              "title": "TC-TEMP-006: Delete/Archive button exists on template cards",
-              "ok": true,
-              "tags": [
-                "p0",
-                "settings",
-                "templates"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 3692,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-23T18:03:56.028Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "c522bcc0770f4e0b3ff0-9e746e4cf012115b189e",
-              "file": "09-service-templates.spec.ts",
-              "line": 83,
-              "column": 7
-            },
-            {
-              "title": "TC-TEMP-007: Template filter toggle works",
-              "ok": true,
-              "tags": [
-                "p0",
-                "settings",
-                "templates"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 1,
-                      "parallelIndex": 1,
-                      "status": "passed",
-                      "duration": 3708,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-23T18:03:58.009Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "c522bcc0770f4e0b3ff0-0f3678191a0019516863",
-              "file": "09-service-templates.spec.ts",
-              "line": 92,
-              "column": 7
-            },
-            {
-              "title": "TC-TEMP-008: Template modal has all required fields",
-              "ok": true,
-              "tags": [
-                "p0",
-                "settings",
-                "templates"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 4330,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-23T18:03:59.740Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "c522bcc0770f4e0b3ff0-def01c3db07e95b2c4a0",
-              "file": "09-service-templates.spec.ts",
-              "line": 106,
-              "column": 7
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "title": "10-operator-portal.spec.ts",
-      "file": "10-operator-portal.spec.ts",
-      "column": 0,
-      "line": 0,
-      "specs": [],
-      "suites": [
-        {
-          "title": "Operator Portal @p0 @operators @portal",
-          "file": "10-operator-portal.spec.ts",
-          "line": 9,
-          "column": 6,
-          "specs": [
-            {
-              "title": "TC-PORT-001: Operator Portal page loads successfully",
-              "ok": true,
-              "tags": [
-                "p0",
-                "operators",
-                "portal"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 1,
-                      "parallelIndex": 1,
-                      "status": "passed",
-                      "duration": 2806,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-23T18:04:01.740Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "2ed82641b462a97438f7-679ef159fdc18fe22aed",
-              "file": "10-operator-portal.spec.ts",
-              "line": 16,
-              "column": 7
-            },
-            {
-              "title": "TC-PORT-002: Tab navigation works (Schedule, Profile, Availability)",
-              "ok": true,
-              "tags": [
-                "p0",
-                "operators",
-                "portal"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 4239,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-23T18:04:04.094Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "2ed82641b462a97438f7-c95452c01582fc1191b8",
-              "file": "10-operator-portal.spec.ts",
-              "line": 22,
-              "column": 7
-            },
-            {
-              "title": "TC-PORT-003: Schedule tab displays upcoming assignments",
-              "ok": true,
-              "tags": [
-                "p0",
-                "operators",
-                "portal"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 1,
-                      "parallelIndex": 1,
-                      "status": "passed",
-                      "duration": 3553,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-23T18:04:04.565Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "2ed82641b462a97438f7-4ee43d9b4c507671871c",
-              "file": "10-operator-portal.spec.ts",
-              "line": 46,
-              "column": 7
-            },
-            {
-              "title": "TC-PORT-004: Schedule tab shows past assignments section",
-              "ok": true,
-              "tags": [
-                "p0",
-                "operators",
-                "portal"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 1,
-                      "parallelIndex": 1,
-                      "status": "passed",
-                      "duration": 2879,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-23T18:04:08.136Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "2ed82641b462a97438f7-10e27c03fee033bbbb39",
-              "file": "10-operator-portal.spec.ts",
-              "line": 64,
-              "column": 7
-            },
-            {
-              "title": "TC-PORT-005: Profile tab displays operator information",
-              "ok": true,
-              "tags": [
-                "p0",
-                "operators",
-                "portal"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 3592,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-23T18:04:08.352Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "2ed82641b462a97438f7-948ce103f5221dda3c86",
-              "file": "10-operator-portal.spec.ts",
+              "id": "15664880665903ff2434-483e0a33e4ae9cf9298b",
+              "file": "05-dashboard.spec.ts",
               "line": 75,
               "column": 7
             },
             {
-              "title": "TC-PORT-006: Profile tab shows skills and rates",
-              "ok": true,
+              "title": "TC-DASH-004: Verify Customize Dashboard button opens modal",
+              "ok": false,
               "tags": [
-                "p0",
-                "operators",
-                "portal"
+                "p1",
+                "dashboard"
               ],
               "tests": [
                 {
                   "timeout": 30000,
                   "annotations": [],
                   "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 5,
                       "parallelIndex": 1,
-                      "status": "passed",
-                      "duration": 3373,
+                      "status": "failed",
+                      "duration": 8,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\firefox-1495\\firefox\\firefox.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\firefox-1495\\firefox\\firefox.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\firefox-1495\\firefox\\firefox.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-29T23:19:52.980Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "15664880665903ff2434-c0fe7668b5e4f35e5a2f",
+              "file": "05-dashboard.spec.ts",
+              "line": 89,
+              "column": 7
+            },
+            {
+              "title": "TC-DASH-005: Verify widget customization modal displays checkboxes with descriptions",
+              "ok": false,
+              "tags": [
+                "p1",
+                "dashboard"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 5,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\firefox-1495\\firefox\\firefox.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\firefox-1495\\firefox\\firefox.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\firefox-1495\\firefox\\firefox.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-29T23:19:54.088Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "15664880665903ff2434-68695f6683210adfc2f5",
+              "file": "05-dashboard.spec.ts",
+              "line": 110,
+              "column": 7
+            },
+            {
+              "title": "TC-DASH-006: Verify widget containers exist",
+              "ok": false,
+              "tags": [
+                "p1",
+                "dashboard"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 5,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\firefox-1495\\firefox\\firefox.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\firefox-1495\\firefox\\firefox.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\firefox-1495\\firefox\\firefox.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-29T23:19:54.088Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "15664880665903ff2434-9f924d70766eb638386c",
+              "file": "05-dashboard.spec.ts",
+              "line": 141,
+              "column": 7
+            },
+            {
+              "title": "TC-DASH-007: Verify modular grid layout with different widget sizes",
+              "ok": false,
+              "tags": [
+                "p1",
+                "dashboard"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 5,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\firefox-1495\\firefox\\firefox.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\firefox-1495\\firefox\\firefox.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\firefox-1495\\firefox\\firefox.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-29T23:19:55.208Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "15664880665903ff2434-990c8cdb09ab85ecc19c",
+              "file": "05-dashboard.spec.ts",
+              "line": 161,
+              "column": 7
+            },
+            {
+              "title": "TC-DASH-008: Verify drag-and-drop widget reordering",
+              "ok": true,
+              "tags": [
+                "p1",
+                "dashboard"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "location": {
+                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\05-dashboard.spec.ts",
+                        "line": 178,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-23T18:04:11.036Z",
+                      "startTime": "2025-11-29T23:19:54.152Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "15664880665903ff2434-9e11beb29c13e6195e0f",
+              "file": "05-dashboard.spec.ts",
+              "line": 178,
+              "column": 8
+            },
+            {
+              "title": "TC-DASH-001: Verify 6 widget types render correctly",
+              "ok": false,
+              "tags": [
+                "p1",
+                "dashboard"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 9,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 5,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\webkit-2215\\Playwright.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\webkit-2215\\Playwright.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\webkit-2215\\Playwright.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-29T23:19:55.212Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "15664880665903ff2434-fef0da3e71458e86a7ce",
+              "file": "05-dashboard.spec.ts",
+              "line": 20,
+              "column": 7
+            },
+            {
+              "title": "TC-DASH-002: Verify Event Pipeline widget displays",
+              "ok": false,
+              "tags": [
+                "p1",
+                "dashboard"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 10,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 5,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\webkit-2215\\Playwright.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\webkit-2215\\Playwright.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\webkit-2215\\Playwright.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-29T23:19:56.308Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "15664880665903ff2434-46209b9155f9febaaf95",
+              "file": "05-dashboard.spec.ts",
+              "line": 61,
+              "column": 7
+            },
+            {
+              "title": "TC-DASH-003: Verify Revenue Overview widget exists",
+              "ok": false,
+              "tags": [
+                "p1",
+                "dashboard"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 11,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 5,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\webkit-2215\\Playwright.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\webkit-2215\\Playwright.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\webkit-2215\\Playwright.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-29T23:19:56.330Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "15664880665903ff2434-de31a23b6b8a9cd417a0",
+              "file": "05-dashboard.spec.ts",
+              "line": 75,
+              "column": 7
+            },
+            {
+              "title": "TC-DASH-004: Verify Customize Dashboard button opens modal",
+              "ok": false,
+              "tags": [
+                "p1",
+                "dashboard"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 12,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 6,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\webkit-2215\\Playwright.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\webkit-2215\\Playwright.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\webkit-2215\\Playwright.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-29T23:19:57.405Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "15664880665903ff2434-484f0f23f94a42d9f009",
+              "file": "05-dashboard.spec.ts",
+              "line": 89,
+              "column": 7
+            },
+            {
+              "title": "TC-DASH-005: Verify widget customization modal displays checkboxes with descriptions",
+              "ok": false,
+              "tags": [
+                "p1",
+                "dashboard"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 13,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 7,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\webkit-2215\\Playwright.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\webkit-2215\\Playwright.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\webkit-2215\\Playwright.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-29T23:19:57.451Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "15664880665903ff2434-d86c9a16cc3f51c5cf94",
+              "file": "05-dashboard.spec.ts",
+              "line": 110,
+              "column": 7
+            },
+            {
+              "title": "TC-DASH-006: Verify widget containers exist",
+              "ok": false,
+              "tags": [
+                "p1",
+                "dashboard"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 14,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 6,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\webkit-2215\\Playwright.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\webkit-2215\\Playwright.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\webkit-2215\\Playwright.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-29T23:19:58.542Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "15664880665903ff2434-d522dd04acc7a0bcdd8c",
+              "file": "05-dashboard.spec.ts",
+              "line": 141,
+              "column": 7
+            },
+            {
+              "title": "TC-DASH-007: Verify modular grid layout with different widget sizes",
+              "ok": false,
+              "tags": [
+                "p1",
+                "dashboard"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 15,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 5,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\webkit-2215\\Playwright.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\webkit-2215\\Playwright.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\webkit-2215\\Playwright.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-29T23:19:58.587Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "15664880665903ff2434-f34d6b62e8b82c1e9642",
+              "file": "05-dashboard.spec.ts",
+              "line": 161,
+              "column": 7
+            },
+            {
+              "title": "TC-DASH-008: Verify drag-and-drop widget reordering",
+              "ok": true,
+              "tags": [
+                "p1",
+                "dashboard"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "location": {
+                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\05-dashboard.spec.ts",
+                        "line": 178,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-29T23:19:58.616Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "15664880665903ff2434-1ce51a636ceac6eb0931",
+              "file": "05-dashboard.spec.ts",
+              "line": 178,
+              "column": 8
+            },
+            {
+              "title": "TC-DASH-001: Verify 6 widget types render correctly",
+              "ok": true,
+              "tags": [
+                "p1",
+                "dashboard"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [
+                    {
+                      "workerIndex": 16,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4441,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-29T23:19:59.672Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1240,37 +1237,36 @@
                   "status": "expected"
                 }
               ],
-              "id": "2ed82641b462a97438f7-62eb17c4dffd08e84485",
-              "file": "10-operator-portal.spec.ts",
-              "line": 93,
+              "id": "15664880665903ff2434-aeb7e99a72f97f409ba4",
+              "file": "05-dashboard.spec.ts",
+              "line": 20,
               "column": 7
             },
             {
-              "title": "TC-PORT-007: Availability tab displays content",
+              "title": "TC-DASH-002: Verify Event Pipeline widget displays",
               "ok": true,
               "tags": [
-                "p0",
-                "operators",
-                "portal"
+                "p1",
+                "dashboard"
               ],
               "tests": [
                 {
                   "timeout": 30000,
                   "annotations": [],
                   "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
                   "results": [
                     {
-                      "workerIndex": 0,
+                      "workerIndex": 17,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3442,
+                      "duration": 4651,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-23T18:04:11.963Z",
+                      "startTime": "2025-11-29T23:19:59.718Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1278,37 +1274,36 @@
                   "status": "expected"
                 }
               ],
-              "id": "2ed82641b462a97438f7-2be372bd120fcfce49e3",
-              "file": "10-operator-portal.spec.ts",
-              "line": 116,
+              "id": "15664880665903ff2434-e086709a66d6eb3fc4f9",
+              "file": "05-dashboard.spec.ts",
+              "line": 61,
               "column": 7
             },
             {
-              "title": "TC-PORT-008: Availability tab shows blackout dates section",
+              "title": "TC-DASH-003: Verify Revenue Overview widget exists",
               "ok": true,
               "tags": [
-                "p0",
-                "operators",
-                "portal"
+                "p1",
+                "dashboard"
               ],
               "tests": [
                 {
                   "timeout": 30000,
                   "annotations": [],
                   "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 16,
                       "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 5100,
+                      "duration": 4428,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-23T18:04:14.431Z",
+                      "startTime": "2025-11-29T23:20:04.260Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1316,10 +1311,605 @@
                   "status": "expected"
                 }
               ],
-              "id": "2ed82641b462a97438f7-1a8d0f000d6b544c462f",
-              "file": "10-operator-portal.spec.ts",
-              "line": 130,
+              "id": "15664880665903ff2434-3b3ec9e4568f251da51b",
+              "file": "05-dashboard.spec.ts",
+              "line": 75,
               "column": 7
+            },
+            {
+              "title": "TC-DASH-004: Verify Customize Dashboard button opens modal",
+              "ok": true,
+              "tags": [
+                "p1",
+                "dashboard"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [
+                    {
+                      "workerIndex": 17,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4813,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-29T23:20:04.622Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "15664880665903ff2434-5ee2be46ceabd0db2db9",
+              "file": "05-dashboard.spec.ts",
+              "line": 89,
+              "column": 7
+            },
+            {
+              "title": "TC-DASH-005: Verify widget customization modal displays checkboxes with descriptions",
+              "ok": false,
+              "tags": [
+                "p1",
+                "dashboard"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [
+                    {
+                      "workerIndex": 16,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 5031,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mnot\u001b[2m.\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: not \u001b[32mfalse\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mnot\u001b[2m.\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: not \u001b[32mfalse\u001b[39m\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\05-dashboard.spec.ts:134:26",
+                        "location": {
+                          "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\05-dashboard.spec.ts",
+                          "column": 26,
+                          "line": 134
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 132 |\u001b[39m     \u001b[36mawait\u001b[39m firstCheckbox\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m 133 |\u001b[39m     \u001b[36mconst\u001b[39m newState \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m firstCheckbox\u001b[33m.\u001b[39misChecked()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 134 |\u001b[39m     expect(newState)\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoBe(initialState)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                          \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 135 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 136 |\u001b[39m\n \u001b[90m 137 |\u001b[39m   \u001b[90m/**\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\05-dashboard.spec.ts",
+                            "column": 26,
+                            "line": 134
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mnot\u001b[2m.\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: not \u001b[32mfalse\u001b[39m\n\n  132 |     await firstCheckbox.click();\n  133 |     const newState = await firstCheckbox.isChecked();\n> 134 |     expect(newState).not.toBe(initialState);\n      |                          ^\n  135 |   });\n  136 |\n  137 |   /**\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\05-dashboard.spec.ts:134:26"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-29T23:20:08.712Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\05-dashboard-Dashboard-Pag-c044b-heckboxes-with-descriptions-Mobile-Chrome\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\05-dashboard-Dashboard-Pag-c044b-heckboxes-with-descriptions-Mobile-Chrome\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\05-dashboard-Dashboard-Pag-c044b-heckboxes-with-descriptions-Mobile-Chrome\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\05-dashboard.spec.ts",
+                        "column": 26,
+                        "line": 134
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "15664880665903ff2434-9c6eb43c251312e1a4e8",
+              "file": "05-dashboard.spec.ts",
+              "line": 110,
+              "column": 7
+            },
+            {
+              "title": "TC-DASH-006: Verify widget containers exist",
+              "ok": true,
+              "tags": [
+                "p1",
+                "dashboard"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [
+                    {
+                      "workerIndex": 17,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4136,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-29T23:20:09.460Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "15664880665903ff2434-f5020f2678e1e1740e20",
+              "file": "05-dashboard.spec.ts",
+              "line": 141,
+              "column": 7
+            },
+            {
+              "title": "TC-DASH-007: Verify modular grid layout with different widget sizes",
+              "ok": true,
+              "tags": [
+                "p1",
+                "dashboard"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [
+                    {
+                      "workerIndex": 17,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3277,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-29T23:20:13.661Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "15664880665903ff2434-88618c86470f156b9646",
+              "file": "05-dashboard.spec.ts",
+              "line": 161,
+              "column": 7
+            },
+            {
+              "title": "TC-DASH-008: Verify drag-and-drop widget reordering",
+              "ok": true,
+              "tags": [
+                "p1",
+                "dashboard"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "location": {
+                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\05-dashboard.spec.ts",
+                        "line": 178,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-29T23:20:13.871Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "15664880665903ff2434-f420c28f25a75f79c0e5",
+              "file": "05-dashboard.spec.ts",
+              "line": 178,
+              "column": 8
+            },
+            {
+              "title": "TC-DASH-001: Verify 6 widget types render correctly",
+              "ok": false,
+              "tags": [
+                "p1",
+                "dashboard"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [
+                    {
+                      "workerIndex": 18,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 5,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\webkit-2215\\Playwright.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\webkit-2215\\Playwright.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\webkit-2215\\Playwright.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-29T23:20:15.149Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "15664880665903ff2434-5e0b0be641facae83002",
+              "file": "05-dashboard.spec.ts",
+              "line": 20,
+              "column": 7
+            },
+            {
+              "title": "TC-DASH-002: Verify Event Pipeline widget displays",
+              "ok": false,
+              "tags": [
+                "p1",
+                "dashboard"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [
+                    {
+                      "workerIndex": 19,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 8,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\webkit-2215\\Playwright.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\webkit-2215\\Playwright.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\webkit-2215\\Playwright.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-29T23:20:16.384Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "15664880665903ff2434-af27939b39a6ccaac64a",
+              "file": "05-dashboard.spec.ts",
+              "line": 61,
+              "column": 7
+            },
+            {
+              "title": "TC-DASH-003: Verify Revenue Overview widget exists",
+              "ok": false,
+              "tags": [
+                "p1",
+                "dashboard"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [
+                    {
+                      "workerIndex": 20,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 5,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\webkit-2215\\Playwright.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\webkit-2215\\Playwright.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\webkit-2215\\Playwright.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-29T23:20:17.693Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "15664880665903ff2434-eb58669cc454464e0c29",
+              "file": "05-dashboard.spec.ts",
+              "line": 75,
+              "column": 7
+            },
+            {
+              "title": "TC-DASH-004: Verify Customize Dashboard button opens modal",
+              "ok": false,
+              "tags": [
+                "p1",
+                "dashboard"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [
+                    {
+                      "workerIndex": 21,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 6,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\webkit-2215\\Playwright.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\webkit-2215\\Playwright.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\webkit-2215\\Playwright.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-29T23:20:18.123Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "15664880665903ff2434-016814e9892d1039aad4",
+              "file": "05-dashboard.spec.ts",
+              "line": 89,
+              "column": 7
+            },
+            {
+              "title": "TC-DASH-005: Verify widget customization modal displays checkboxes with descriptions",
+              "ok": false,
+              "tags": [
+                "p1",
+                "dashboard"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [
+                    {
+                      "workerIndex": 22,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 5,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\webkit-2215\\Playwright.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\webkit-2215\\Playwright.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\webkit-2215\\Playwright.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-29T23:20:18.845Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "15664880665903ff2434-41f1e72d5320b3ed91a6",
+              "file": "05-dashboard.spec.ts",
+              "line": 110,
+              "column": 7
+            },
+            {
+              "title": "TC-DASH-006: Verify widget containers exist",
+              "ok": false,
+              "tags": [
+                "p1",
+                "dashboard"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [
+                    {
+                      "workerIndex": 23,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 7,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\webkit-2215\\Playwright.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\webkit-2215\\Playwright.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\webkit-2215\\Playwright.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-29T23:20:19.271Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "15664880665903ff2434-d595934d113f62a5502d",
+              "file": "05-dashboard.spec.ts",
+              "line": 141,
+              "column": 7
+            },
+            {
+              "title": "TC-DASH-007: Verify modular grid layout with different widget sizes",
+              "ok": false,
+              "tags": [
+                "p1",
+                "dashboard"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [
+                    {
+                      "workerIndex": 24,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 5,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\webkit-2215\\Playwright.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\webkit-2215\\Playwright.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\Danie\\AppData\\Local\\ms-playwright\\webkit-2215\\Playwright.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-29T23:20:19.940Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "15664880665903ff2434-68030673ef3c6465e5d2",
+              "file": "05-dashboard.spec.ts",
+              "line": 161,
+              "column": 7
+            },
+            {
+              "title": "TC-DASH-008: Verify drag-and-drop widget reordering",
+              "ok": true,
+              "tags": [
+                "p1",
+                "dashboard"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "location": {
+                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\05-dashboard.spec.ts",
+                        "line": 178,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-29T23:20:19.337Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "15664880665903ff2434-aeb9495c12bf62cbfcee",
+              "file": "05-dashboard.spec.ts",
+              "line": 178,
+              "column": 8
             }
           ]
         }
@@ -1328,11 +1918,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-11-23T18:03:18.765Z",
-    "duration": 60898.799000000006,
-    "expected": 30,
-    "skipped": 0,
-    "unexpected": 0,
+    "startTime": "2025-11-29T23:19:30.619Z",
+    "duration": 49404.696,
+    "expected": 12,
+    "skipped": 5,
+    "unexpected": 23,
     "flaky": 0
   }
 }

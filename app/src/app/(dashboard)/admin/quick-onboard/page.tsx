@@ -54,9 +54,9 @@ John Smith,john@example.com,555-0100,Videographer,75,Experienced videographer,ht
 Sarah Jones,sarah@example.com,555-0101,Audio Tech,65,Sound specialist,
 
 [GEAR]
-name,category,type,manufacturer,model,serialNumber,purchasePrice,notes
-Canon C300,CAMERA,Cinema Camera,Canon,C300 Mark III,SN123456,15000,Main camera
-Rode NTG3,AUDIO,Shotgun Mic,Rode,NTG3,SN789,700,
+name,category,type,serialNumber,purchasePrice,notes
+Canon C300,CAMERA,Cinema Camera,SN123456,15000,Main camera
+Rode NTG3,AUDIO,Shotgun Mic,SN789,700,
 
 [EVENTS]
 eventName,eventType,venueName,venueAddress,clientOrganization,loadInTime,loadOutTime,revenueAmount,status,notes
@@ -68,8 +68,8 @@ Tech Studios Launch,CORPORATE,Tech Hub,456 Tech Ave,Tech Studios,2025-12-15T10:0
       ['John Smith', 'john@example.com', '555-0100', 'Videographer', '75', 'Experienced videographer', ''],
     ],
     gear: [
-      ['name', 'category', 'type', 'manufacturer', 'model', 'serialNumber', 'purchasePrice', 'notes'],
-      ['Canon C300', 'CAMERA', 'Cinema Camera', 'Canon', 'C300 Mark III', 'SN123456', '15000', ''],
+      ['name', 'category', 'type', 'serialNumber', 'purchasePrice', 'notes'],
+      ['Canon C300', 'CAMERA', 'Cinema Camera', 'SN123456', '15000', ''],
     ],
     clients: [
       ['organization', 'contactName', 'email', 'phone', 'website', 'industry', 'city', 'province', 'notes'],
@@ -240,8 +240,6 @@ Tech Studios Launch,CORPORATE,Tech Hub,456 Tech Ave,Tech Studios,2025-12-15T10:0
                 name: row.name,
                 category: row.category,
                 type: row.type,
-                manufacturer: row.manufacturer || '',
-                model: row.model || '',
                 serialNumber: row.serialNumber || '',
                 purchasePrice: row.purchasePrice ? parseFloat(row.purchasePrice) : undefined,
                 notes: row.notes || '',
@@ -324,8 +322,6 @@ Tech Studios Launch,CORPORATE,Tech Hub,456 Tech Ave,Tech Studios,2025-12-15T10:0
             name: row.name,
             category: row.category,
             type: row.type,
-            manufacturer: row.manufacturer || '',
-            model: row.model || '',
             serialNumber: row.serialNumber || '',
             purchasePrice: row.purchasePrice ? parseFloat(row.purchasePrice) : undefined,
             notes: row.notes || '',
