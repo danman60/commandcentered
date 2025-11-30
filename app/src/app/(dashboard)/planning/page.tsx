@@ -27,6 +27,7 @@ function DraggableOperatorCard({ operator, getOperatorInitials }: { operator: an
 
   return (
     <div
+      data-testid="operator-item"
       ref={setNodeRef}
       {...listeners}
       {...attributes}
