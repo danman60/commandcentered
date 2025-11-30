@@ -77,7 +77,7 @@ export default function DashboardPage() {
   // Fetch widget preferences
   const { data: widgetPrefs, refetch: refetchWidgets } = trpc.dashboard.getWidgets.useQuery();
   const updateVisibility = trpc.dashboard.updateWidgetVisibility.useMutation({
-    onSuccess: () => refetchWidgets(),
+    onSuccess: async () => await refetchWidgets(),
   });
   const updateSettings = trpc.dashboard.updateSettings.useMutation();
 
