@@ -11,7 +11,7 @@
     "grepInvert": null,
     "maxFailures": 0,
     "metadata": {
-      "actualWorkers": 1
+      "actualWorkers": 2
     },
     "preserveOutput": "always",
     "reporter": [
@@ -41,7 +41,7 @@
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "actualWorkers": 1
+          "actualWorkers": 2
         },
         "id": "chromium",
         "name": "chromium",
@@ -57,7 +57,7 @@
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "actualWorkers": 1
+          "actualWorkers": 2
         },
         "id": "firefox",
         "name": "firefox",
@@ -73,7 +73,7 @@
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "actualWorkers": 1
+          "actualWorkers": 2
         },
         "id": "webkit",
         "name": "webkit",
@@ -89,7 +89,7 @@
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "actualWorkers": 1
+          "actualWorkers": 2
         },
         "id": "Mobile Chrome",
         "name": "Mobile Chrome",
@@ -105,7 +105,7 @@
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "actualWorkers": 1
+          "actualWorkers": 2
         },
         "id": "Mobile Safari",
         "name": "Mobile Safari",
@@ -126,25 +126,25 @@
   },
   "suites": [
     {
-      "title": "01-planning-calendar.spec.ts",
-      "file": "01-planning-calendar.spec.ts",
+      "title": "10-operator-portal.spec.ts",
+      "file": "10-operator-portal.spec.ts",
       "column": 0,
       "line": 0,
       "specs": [],
       "suites": [
         {
-          "title": "Planning Calendar @p0 @critical @planning",
-          "file": "01-planning-calendar.spec.ts",
+          "title": "Operator Portal @p0 @operators @portal",
+          "file": "10-operator-portal.spec.ts",
           "line": 9,
           "column": 6,
           "specs": [
             {
-              "title": "TC-PLAN-010: Kits panel displays",
+              "title": "TC-PORT-001: Operator Portal page loads successfully",
               "ok": true,
               "tags": [
                 "p0",
-                "critical",
-                "planning"
+                "operators",
+                "portal"
               ],
               "tests": [
                 {
@@ -158,12 +158,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 5314,
+                      "duration": 3906,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-30T04:16:05.012Z",
+                      "startTime": "2025-11-30T18:18:22.752Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -171,9 +171,275 @@
                   "status": "expected"
                 }
               ],
-              "id": "fe09c7215427b20c6391-a9bf0b5bc03ea031dd81",
-              "file": "01-planning-calendar.spec.ts",
-              "line": 183,
+              "id": "2ed82641b462a97438f7-679ef159fdc18fe22aed",
+              "file": "10-operator-portal.spec.ts",
+              "line": 16,
+              "column": 7
+            },
+            {
+              "title": "TC-PORT-002: Tab navigation works (Schedule, Profile, Availability)",
+              "ok": true,
+              "tags": [
+                "p0",
+                "operators",
+                "portal"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 5456,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-30T18:18:22.771Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "2ed82641b462a97438f7-c95452c01582fc1191b8",
+              "file": "10-operator-portal.spec.ts",
+              "line": 22,
+              "column": 7
+            },
+            {
+              "title": "TC-PORT-003: Schedule tab displays upcoming assignments",
+              "ok": true,
+              "tags": [
+                "p0",
+                "operators",
+                "portal"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4220,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-30T18:18:26.839Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "2ed82641b462a97438f7-4ee43d9b4c507671871c",
+              "file": "10-operator-portal.spec.ts",
+              "line": 46,
+              "column": 7
+            },
+            {
+              "title": "TC-PORT-004: Schedule tab shows past assignments section",
+              "ok": true,
+              "tags": [
+                "p0",
+                "operators",
+                "portal"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3791,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-30T18:18:28.482Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "2ed82641b462a97438f7-10e27c03fee033bbbb39",
+              "file": "10-operator-portal.spec.ts",
+              "line": 64,
+              "column": 7
+            },
+            {
+              "title": "TC-PORT-005: Profile tab displays operator information",
+              "ok": true,
+              "tags": [
+                "p0",
+                "operators",
+                "portal"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4790,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-30T18:18:31.083Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "2ed82641b462a97438f7-948ce103f5221dda3c86",
+              "file": "10-operator-portal.spec.ts",
+              "line": 75,
+              "column": 7
+            },
+            {
+              "title": "TC-PORT-006: Profile tab shows skills and rates",
+              "ok": true,
+              "tags": [
+                "p0",
+                "operators",
+                "portal"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4689,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-30T18:18:32.296Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "2ed82641b462a97438f7-62eb17c4dffd08e84485",
+              "file": "10-operator-portal.spec.ts",
+              "line": 93,
+              "column": 7
+            },
+            {
+              "title": "TC-PORT-007: Availability tab displays content",
+              "ok": true,
+              "tags": [
+                "p0",
+                "operators",
+                "portal"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4690,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-30T18:18:35.909Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "2ed82641b462a97438f7-2be372bd120fcfce49e3",
+              "file": "10-operator-portal.spec.ts",
+              "line": 116,
+              "column": 7
+            },
+            {
+              "title": "TC-PORT-008: Availability tab shows blackout dates section",
+              "ok": true,
+              "tags": [
+                "p0",
+                "operators",
+                "portal"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3934,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-30T18:18:37.006Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "2ed82641b462a97438f7-1a8d0f000d6b544c462f",
+              "file": "10-operator-portal.spec.ts",
+              "line": 130,
               "column": 7
             }
           ]
@@ -183,9 +449,9 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-11-30T04:16:03.928Z",
-    "duration": 6710.437,
-    "expected": 1,
+    "startTime": "2025-11-30T18:18:21.640Z",
+    "duration": 19418.984,
+    "expected": 8,
     "skipped": 0,
     "unexpected": 0,
     "flaky": 0

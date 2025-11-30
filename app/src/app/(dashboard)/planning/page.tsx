@@ -143,6 +143,7 @@ function DroppableCalendarDay({
         {events.map((event: any) => (
           <div
             key={event.id}
+            data-testid="event-bar"
             onClick={(e) => {
               e.stopPropagation();
               onEventClick(event.id);
@@ -1004,7 +1005,11 @@ function EventDetailModal({ eventId, isOpen, onClose }: { eventId: string; isOpe
 
   return (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="bg-slate-900 border-2 border-green-500/30 rounded-xl w-[800px] max-h-[90vh] overflow-y-auto shadow-2xl">
+      <div
+        role="dialog"
+        data-testid="event-detail-modal"
+        className="bg-slate-900 border-2 border-green-500/30 rounded-xl w-[800px] max-h-[90vh] overflow-y-auto shadow-2xl"
+      >
         <div className="px-6 py-4 border-b border-green-500/20 flex justify-between items-center">
           <h2 className="text-xl font-bold text-white">{event.eventName}</h2>
           <button
