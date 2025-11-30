@@ -53,7 +53,7 @@ function DraggableKitCard({ kit }: { kit: any }) {
   const dragData: DragItem = {
     type: 'kit',
     id: kit.id,
-    name: kit.name,
+    name: kit.kitName,
   };
 
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
@@ -66,6 +66,7 @@ function DraggableKitCard({ kit }: { kit: any }) {
       ref={setNodeRef}
       {...listeners}
       {...attributes}
+      data-testid="kit-item"
       className={`bg-slate-800/60 border border-green-500/20 rounded-lg p-3 hover:border-green-500 hover:translate-x-1 transition-all cursor-move relative group ${
         isDragging ? 'opacity-50' : ''
       }`}
@@ -74,10 +75,10 @@ function DraggableKitCard({ kit }: { kit: any }) {
         ⋮⋮
       </span>
       <div className="font-bold text-sm text-slate-200 mb-1">
-        📷 {kit.name}
+        📷 {kit.kitName}
       </div>
       <div className="text-xs text-slate-400 mb-1">
-        {kit.gearIds.length} items
+        {kit.gearAssignments?.length || 0} items
       </div>
       <div className="text-xs text-green-400 flex items-center gap-1">
         ✓ Available
@@ -1619,6 +1620,11 @@ ${event.clientName}${event.clientPhone ? ` - ${event.clientPhone}` : ''}${event.
                   <div key={assignment.id} className="flex items-center gap-2 text-slate-300">
                     <input type="checkbox" className="w-4 h-4 rounded border-slate-600" />
                     <span>{assignment.gear?.name || 'Unknown Gear'}</span>
+                    {assignment.kit?.kitName && (
+                      <span className="text-xs text-green-400 bg-green-500/10 px-2 py-0.5 rounded">
+                        📷 {assignment.kit.kitName}
+                      </span>
+                    )}
                     {assignment.gear?.category && (
                       <span className="text-xs text-slate-500">({assignment.gear.category})</span>
                     )}

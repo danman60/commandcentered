@@ -1,0 +1,135 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - main [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e7]:
+          - button "◀" [ref=e8]
+          - heading "November" [level=2] [ref=e9]
+          - button "▶" [ref=e10]
+          - button "+ Event" [ref=e11]
+        - generic [ref=e13]:
+          - generic [ref=e15]: November 2025 Calendar
+          - grid [ref=e17]:
+            - generic [ref=e18]: Sun
+            - generic [ref=e19]: Mon
+            - generic [ref=e20]: Tue
+            - generic [ref=e21]: Wed
+            - generic [ref=e22]: Thu
+            - generic [ref=e23]: Fri
+            - generic [ref=e24]: Sat
+            - generic [ref=e26] [cursor=pointer]: "26"
+            - generic [ref=e28] [cursor=pointer]: "27"
+            - generic [ref=e30] [cursor=pointer]: "28"
+            - generic [ref=e32] [cursor=pointer]: "29"
+            - generic [ref=e34] [cursor=pointer]: "30"
+            - generic [ref=e36] [cursor=pointer]: "31"
+            - generic [ref=e38] [cursor=pointer]: "1"
+            - generic [ref=e40] [cursor=pointer]: "2"
+            - generic [ref=e42] [cursor=pointer]: "3"
+            - generic [ref=e44] [cursor=pointer]: "4"
+            - generic [ref=e46] [cursor=pointer]: "5"
+            - generic [ref=e48] [cursor=pointer]: "6"
+            - generic [ref=e50] [cursor=pointer]: "7"
+            - generic [ref=e52] [cursor=pointer]: "8"
+            - generic [ref=e54] [cursor=pointer]: "9"
+            - generic [ref=e56] [cursor=pointer]: "10"
+            - generic [ref=e58] [cursor=pointer]: "11"
+            - generic [ref=e60] [cursor=pointer]: "12"
+            - generic [ref=e62] [cursor=pointer]: "13"
+            - generic [ref=e64] [cursor=pointer]: "14"
+            - generic [ref=e66] [cursor=pointer]: "15"
+            - generic [ref=e68] [cursor=pointer]: "16"
+            - generic [ref=e70] [cursor=pointer]: "17"
+            - generic [ref=e72] [cursor=pointer]: "18"
+            - generic [ref=e74] [cursor=pointer]: "19"
+            - generic [ref=e76] [cursor=pointer]: "20"
+            - generic [ref=e78] [cursor=pointer]: "21"
+            - generic [ref=e80] [cursor=pointer]: "22"
+            - generic [ref=e81] [cursor=pointer]:
+              - generic [ref=e82]: "23"
+              - generic [ref=e84]:
+                - generic [ref=e85]: Elite Dance Competition Fall Championships
+                - generic [ref=e86]:
+                  - generic [ref=e87]:
+                    - text: JS
+                    - button "×" [ref=e88]
+                  - generic [ref=e89]:
+                    - text: SJ
+                    - button "×" [ref=e90]
+                  - generic [ref=e91]:
+                    - text: JS
+                    - button "×" [ref=e92]
+                  - generic [ref=e93]:
+                    - text: MW
+                    - button "×" [ref=e94]
+                  - generic [ref=e95]:
+                    - text: SJ
+                    - button "×" [ref=e96]
+                  - generic [ref=e97]:
+                    - text: MW
+                    - button "×" [ref=e98]
+                  - generic [ref=e99]:
+                    - text: SJ
+                    - button "×" [ref=e100]
+                  - generic [ref=e101]:
+                    - text: JS
+                    - button "×" [ref=e102]
+                  - generic [ref=e103]:
+                    - text: MW
+                    - button "×" [ref=e104]
+                  - generic [ref=e105]:
+                    - text: SJ
+                    - button "×" [ref=e106]
+                  - generic [ref=e107]:
+                    - text: 📷 Competition Package Pro
+                    - button "×" [ref=e108]
+            - generic [ref=e110] [cursor=pointer]: "24"
+            - generic [ref=e111] [cursor=pointer]:
+              - generic [ref=e112]: "25"
+              - generic [ref=e114]:
+                - generic [ref=e115]: Test Event With Client
+                - generic [ref=e116]:
+                  - generic [ref=e117]:
+                    - text: MW
+                    - button "×" [ref=e118]
+                  - generic [ref=e119]:
+                    - text: SJ
+                    - button "×" [ref=e120]
+                  - generic [ref=e121]:
+                    - text: 📷 Competition Package Pro
+                    - button "×" [ref=e122]
+            - generic [ref=e124] [cursor=pointer]: "26"
+            - generic [ref=e126] [cursor=pointer]: "27"
+            - generic [ref=e128] [cursor=pointer]: "28"
+            - generic [ref=e130] [cursor=pointer]: "29"
+            - generic [ref=e132] [cursor=pointer]: "30"
+            - generic [ref=e134] [cursor=pointer]: "1"
+            - generic [ref=e136] [cursor=pointer]: "2"
+            - generic [ref=e138] [cursor=pointer]: "3"
+            - generic [ref=e140] [cursor=pointer]: "4"
+            - generic [ref=e142] [cursor=pointer]: "5"
+            - generic [ref=e144] [cursor=pointer]: "6"
+      - status [ref=e145]
+    - generic [ref=e147]:
+      - button "Dashboard" [ref=e148]:
+        - img [ref=e149]
+        - generic [ref=e154]: Dashboard
+      - button "Planning" [ref=e155]:
+        - img [ref=e156]
+        - generic [ref=e158]: Planning
+      - button "Pipeline" [ref=e159]:
+        - img [ref=e160]
+        - generic [ref=e163]: Pipeline
+      - button "Operators" [ref=e164]:
+        - img [ref=e165]
+        - generic [ref=e170]: Operators
+      - button "Deliverables" [ref=e171]:
+        - img [ref=e172]
+        - generic [ref=e175]: Deliverables
+    - button "Start voice command" [ref=e176]:
+      - img [ref=e177]
+  - alert [ref=e183]
+```
