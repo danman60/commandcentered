@@ -194,63 +194,65 @@ export const dashboardRouter = router({
   getCriticalAlerts: tenantProcedure.query(async ({ ctx }) => {
     const now = new Date();
 
-    // Find upcoming events (next 30 days) with missing requirements
+    // Find upcoming events - fetch only basic info (no nested includes)
     const upcomingEvents = await ctx.prisma.event.findMany({
       where: {
         tenantId: ctx.tenantId,
         loadInTime: { gte: now },
         status: { in: [EventStatus.CONFIRMED, EventStatus.SCHEDULED, EventStatus.BOOKED] },
       },
-      include: {
-        _count: {
-          select: {
-            shifts: true,
-            gearAssignments: true,
-          },
-        },
-        shifts: {
-          select: {
-            id: true,
-            shiftAssignments: {
-              select: {
-                operatorId: true,
-              },
-            },
-          },
-        },
+      select: {
+        id: true,
+        eventName: true,
+        loadInTime: true,
       },
       orderBy: { loadInTime: 'asc' },
-      take: 10, // Reduced from 50 for performance - critical alerts widget only needs recent events
+      take: 10, // Only need recent events for critical alerts widget
     });
 
-    const alerts = upcomingEvents
-      .map((event) => {
-        const issues: string[] = [];
+    // For each event, check for issues using efficient count queries
+    const alertsPromises = upcomingEvents.map(async (event) => {
+      const issues: string[] = [];
 
-        // Check for shifts without operators
-        const shiftsWithoutOperators = event.shifts.filter(
-          (shift) => shift.shiftAssignments.length === 0
-        ).length;
-        if (shiftsWithoutOperators > 0) {
-          issues.push(`${shiftsWithoutOperators} shift(s) missing operators`);
-        }
-
-        // Check for events without any gear
-        if (event._count.gearAssignments === 0) {
-          issues.push('No gear assigned');
-        }
-
-        if (issues.length > 0) {
-          return {
+      // Count shifts without operators using aggregation (avoids fetching all records)
+      const [totalShifts, shiftsWithoutOperators, gearCount] = await Promise.all([
+        ctx.prisma.shift.count({
+          where: { eventId: event.id, tenantId: ctx.tenantId },
+        }),
+        ctx.prisma.shift.count({
+          where: {
             eventId: event.id,
-            eventName: event.eventName,
-            loadInTime: event.loadInTime,
-            issues,
-          };
-        }
-        return null;
-      })
-      .filter((alert) => alert !== null);
+            tenantId: ctx.tenantId,
+            shiftAssignments: { none: {} }, // Shifts with zero assignments
+          },
+        }),
+        ctx.prisma.gearAssignment.count({
+          where: { eventId: event.id, tenantId: ctx.tenantId },
+        }),
+      ]);
+
+      // Check for shifts without operators
+      if (shiftsWithoutOperators > 0) {
+        issues.push(`${shiftsWithoutOperators} shift(s) missing operators`);
+      }
+
+      // Check for events without any gear
+      if (gearCount === 0) {
+        issues.push('No gear assigned');
+      }
+
+      if (issues.length > 0) {
+        return {
+          eventId: event.id,
+          eventName: event.eventName,
+          loadInTime: event.loadInTime,
+          issues,
+        };
+      }
+      return null;
+    });
+
+    const alerts = (await Promise.all(alertsPromises)).filter((alert) => alert !== null);
 
     return alerts;
   }),
