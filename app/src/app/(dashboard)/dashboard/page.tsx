@@ -64,15 +64,37 @@ export default function DashboardPage() {
   const [isDraggingEnabled, setIsDraggingEnabled] = useState(false); // Default OFF
   const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const isDraggingRef = useRef(false); // Track if currently dragging to prevent click navigation
+  const [loadCriticalAlerts, setLoadCriticalAlerts] = useState(false); // Lazy load critical alerts
 
-  // Fetch all dashboard data
-  const { data: stats, isLoading: statsLoading } = trpc.dashboard.getStats.useQuery();
-  const { data: pipeline, isLoading: pipelineLoading } = trpc.dashboard.getEventPipeline.useQuery();
-  const { data: revenueStats, isLoading: revenueLoading } = trpc.dashboard.getRevenueStats.useQuery();
-  const { data: deliverablesStats, isLoading: deliverablesLoading } = trpc.deliverable.getStats.useQuery();
-  const { data: upcomingEvents, isLoading: upcomingLoading } = trpc.dashboard.getUpcomingEvents.useQuery({ limit: 5 });
-  const { data: criticalAlerts, isLoading: alertsLoading } = trpc.dashboard.getCriticalAlerts.useQuery();
-  const { data: recentActivity, isLoading: activityLoading } = trpc.dashboard.getRecentActivity.useQuery({ limit: 10 });
+  // Delay loading critical alerts to improve time-to-interactive
+  useEffect(() => {
+    const timer = setTimeout(() => setLoadCriticalAlerts(true), 1500); // 1.5s delay
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Fetch all dashboard data (with 30s cache to reduce redundant requests)
+  const { data: stats, isLoading: statsLoading } = trpc.dashboard.getStats.useQuery(undefined, {
+    staleTime: 30000, // Cache for 30 seconds
+  });
+  const { data: pipeline, isLoading: pipelineLoading } = trpc.dashboard.getEventPipeline.useQuery(undefined, {
+    staleTime: 30000,
+  });
+  const { data: revenueStats, isLoading: revenueLoading } = trpc.dashboard.getRevenueStats.useQuery(undefined, {
+    staleTime: 30000,
+  });
+  const { data: deliverablesStats, isLoading: deliverablesLoading } = trpc.deliverable.getStats.useQuery(undefined, {
+    staleTime: 30000,
+  });
+  const { data: upcomingEvents, isLoading: upcomingLoading } = trpc.dashboard.getUpcomingEvents.useQuery({ limit: 5 }, {
+    staleTime: 30000,
+  });
+  const { data: criticalAlerts, isLoading: alertsLoading } = trpc.dashboard.getCriticalAlerts.useQuery(undefined, {
+    enabled: loadCriticalAlerts, // Only load after 1.5s delay
+    staleTime: 30000, // Cache for 30 seconds once loaded
+  });
+  const { data: recentActivity, isLoading: activityLoading } = trpc.dashboard.getRecentActivity.useQuery({ limit: 10 }, {
+    staleTime: 30000,
+  });
 
   // Fetch widget preferences
   const { data: widgetPrefs, refetch: refetchWidgets } = trpc.dashboard.getWidgets.useQuery();
