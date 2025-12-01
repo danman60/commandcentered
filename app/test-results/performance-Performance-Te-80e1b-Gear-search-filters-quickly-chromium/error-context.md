@@ -1,0 +1,519 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]:
+      - heading "CommandCentered" [level=1] [ref=e5]
+      - navigation [ref=e6]:
+        - link "📊 Dashboard" [ref=e7] [cursor=pointer]:
+          - /url: /dashboard
+          - generic [ref=e8]: 📊
+          - text: Dashboard
+        - link "📅 Planning" [ref=e9] [cursor=pointer]:
+          - /url: /planning
+          - generic [ref=e10]: 📅
+          - text: Planning
+        - link "🏢 Clients" [ref=e11] [cursor=pointer]:
+          - /url: /clients
+          - generic [ref=e12]: 🏢
+          - text: Clients
+        - link "⚡ Pipeline" [ref=e13] [cursor=pointer]:
+          - /url: /pipeline
+          - generic [ref=e14]: ⚡
+          - text: Pipeline
+        - link "🎥 Gear Inventory" [ref=e15] [cursor=pointer]:
+          - /url: /gear
+          - generic [ref=e16]: 🎥
+          - text: Gear Inventory
+        - link "👥 Operators" [ref=e17] [cursor=pointer]:
+          - /url: /operators
+          - generic [ref=e18]: 👥
+          - text: Operators
+        - link "📦 Deliverables" [ref=e19] [cursor=pointer]:
+          - /url: /deliverables
+          - generic [ref=e20]: 📦
+          - text: Deliverables
+        - link "💬 Communications" [ref=e21] [cursor=pointer]:
+          - /url: /communications
+          - generic [ref=e22]: 💬
+          - text: Communications
+        - link "📁 Files & Assets" [ref=e23] [cursor=pointer]:
+          - /url: /files
+          - generic [ref=e24]: 📁
+          - text: Files & Assets
+        - link "📈 Reports" [ref=e25] [cursor=pointer]:
+          - /url: /reports
+          - generic [ref=e26]: 📈
+          - text: Reports
+        - link "⚡ Quick Onboard" [ref=e27] [cursor=pointer]:
+          - /url: /admin/quick-onboard
+          - generic [ref=e28]: ⚡
+          - text: Quick Onboard
+        - link "👤 Operator Portal" [ref=e29] [cursor=pointer]:
+          - /url: /operator-portal
+          - generic [ref=e30]: 👤
+          - text: Operator Portal
+        - link "🔧 Settings" [ref=e31] [cursor=pointer]:
+          - /url: /settings
+          - generic [ref=e32]: 🔧
+          - text: Settings
+    - main [ref=e34]:
+      - generic [ref=e35]:
+        - generic [ref=e37]:
+          - generic [ref=e38]:
+            - generic [ref=e39]: 🎥
+            - heading "Gear Inventory" [level=1] [ref=e40]
+          - generic [ref=e41]:
+            - button "📊 Export Inventory" [ref=e42]
+            - button "➕ Add Gear" [ref=e43]
+        - generic [ref=e44]:
+          - generic [ref=e45]:
+            - button "INVENTORY" [ref=e46]
+            - button "CALENDAR" [ref=e47]
+            - button "MAINTENANCE" [ref=e48]
+            - button "KITS" [ref=e49]
+          - generic [ref=e50]:
+            - generic [ref=e51]:
+              - heading "Gear Inventory" [level=2] [ref=e52]
+              - generic [ref=e53]:
+                - button "📇 Card View" [ref=e54]
+                - button "📊 Table View" [ref=e55]
+            - generic [ref=e56]:
+              - generic [ref=e57]:
+                - generic [ref=e58]:
+                  - generic [ref=e59]: 💡
+                  - generic [ref=e60]: Available
+                - heading "Aputure 300D II LED" [level=3] [ref=e61]
+                - generic [ref=e62]:
+                  - generic [ref=e63]:
+                    - generic [ref=e64]: "Category:"
+                    - generic [ref=e65]: LIGHTING
+                  - generic [ref=e66]:
+                    - generic [ref=e67]: "Type:"
+                    - generic [ref=e68]: LED Panel
+                  - generic [ref=e69]:
+                    - generic [ref=e70]: "Serial #:"
+                    - generic [ref=e71]: SN-AP300-001
+                  - generic [ref=e72]:
+                    - generic [ref=e73]: "Purchased:"
+                    - generic [ref=e74]: 2/14/2024
+              - generic [ref=e75]:
+                - generic [ref=e76]:
+                  - generic [ref=e77]: 🖥️
+                  - generic [ref=e78]: Available
+                - heading "Atomos Shinobi 7\" Monitor" [level=3] [ref=e79]
+                - generic [ref=e80]:
+                  - generic [ref=e81]:
+                    - generic [ref=e82]: "Category:"
+                    - generic [ref=e83]: MONITORS
+                  - generic [ref=e84]:
+                    - generic [ref=e85]: "Type:"
+                    - generic [ref=e86]: Field Monitor
+                  - generic [ref=e87]:
+                    - generic [ref=e88]: "Serial #:"
+                    - generic [ref=e89]: SN-SH7-001
+                  - generic [ref=e90]:
+                    - generic [ref=e91]: "Purchased:"
+                    - generic [ref=e92]: 4/9/2024
+              - generic [ref=e93]:
+                - generic [ref=e94]:
+                  - generic [ref=e95]: 🎒
+                  - generic [ref=e96]: Available
+                - heading "Battery Pack Sony NP-FZ100 (4x)" [level=3] [ref=e97]
+                - generic [ref=e98]:
+                  - generic [ref=e99]:
+                    - generic [ref=e100]: "Category:"
+                    - generic [ref=e101]: ACCESSORIES
+                  - generic [ref=e102]:
+                    - generic [ref=e103]: "Type:"
+                    - generic [ref=e104]: Battery Pack
+                  - generic [ref=e105]:
+                    - generic [ref=e106]: "Serial #:"
+                    - generic [ref=e107]: N/A
+                  - generic [ref=e108]:
+                    - generic [ref=e109]: "Purchased:"
+                    - generic [ref=e110]: 1/14/2024
+              - generic [ref=e111]:
+                - generic [ref=e112]:
+                  - generic [ref=e113]: 🔭
+                  - generic [ref=e114]: Available
+                - heading "Canon 24-105mm f/4L" [level=3] [ref=e115]
+                - generic [ref=e116]:
+                  - generic [ref=e117]:
+                    - generic [ref=e118]: "Category:"
+                    - generic [ref=e119]: LENS
+                  - generic [ref=e120]:
+                    - generic [ref=e121]: "Type:"
+                    - generic [ref=e122]: Standard Zoom
+                  - generic [ref=e123]:
+                    - generic [ref=e124]: "Serial #:"
+                    - generic [ref=e125]: SN-24105-001
+                  - generic [ref=e126]:
+                    - generic [ref=e127]: "Purchased:"
+                    - generic [ref=e128]: 3/19/2024
+              - generic [ref=e129]:
+                - generic [ref=e130]:
+                  - generic [ref=e131]: 📷
+                  - generic [ref=e132]: Available
+                - heading "Canon C300" [level=3] [ref=e133]
+                - generic [ref=e134]:
+                  - generic [ref=e135]:
+                    - generic [ref=e136]: "Category:"
+                    - generic [ref=e137]: CAMERA
+                  - generic [ref=e138]:
+                    - generic [ref=e139]: "Type:"
+                    - generic [ref=e140]: Cinema Camera
+                  - generic [ref=e141]:
+                    - generic [ref=e142]: "Serial #:"
+                    - generic [ref=e143]: SN123456
+                  - generic [ref=e144]:
+                    - generic [ref=e145]: "Purchased:"
+                    - generic [ref=e146]: N/A
+              - generic [ref=e147]:
+                - generic [ref=e148]:
+                  - generic [ref=e149]: 📷
+                  - generic [ref=e150]: Available
+                - heading "Canon C300" [level=3] [ref=e151]
+                - generic [ref=e152]:
+                  - generic [ref=e153]:
+                    - generic [ref=e154]: "Category:"
+                    - generic [ref=e155]: CAMERA
+                  - generic [ref=e156]:
+                    - generic [ref=e157]: "Type:"
+                    - generic [ref=e158]: Cinema Camera
+                  - generic [ref=e159]:
+                    - generic [ref=e160]: "Serial #:"
+                    - generic [ref=e161]: SN123456
+                  - generic [ref=e162]:
+                    - generic [ref=e163]: "Purchased:"
+                    - generic [ref=e164]: N/A
+              - generic [ref=e165]:
+                - generic [ref=e166]:
+                  - generic [ref=e167]: 📷
+                  - generic [ref=e168]: Available
+                - heading "Canon C300" [level=3] [ref=e169]
+                - generic [ref=e170]:
+                  - generic [ref=e171]:
+                    - generic [ref=e172]: "Category:"
+                    - generic [ref=e173]: CAMERA
+                  - generic [ref=e174]:
+                    - generic [ref=e175]: "Type:"
+                    - generic [ref=e176]: Cinema Camera
+                  - generic [ref=e177]:
+                    - generic [ref=e178]: "Serial #:"
+                    - generic [ref=e179]: SN123456
+                  - generic [ref=e180]:
+                    - generic [ref=e181]: "Purchased:"
+                    - generic [ref=e182]: N/A
+              - generic [ref=e183]:
+                - generic [ref=e184]:
+                  - generic [ref=e185]: 📷
+                  - generic [ref=e186]: Available
+                - heading "Canon C70 Cinema Camera" [level=3] [ref=e187]
+                - generic [ref=e188]:
+                  - generic [ref=e189]:
+                    - generic [ref=e190]: "Category:"
+                    - generic [ref=e191]: CAMERA
+                  - generic [ref=e192]:
+                    - generic [ref=e193]: "Type:"
+                    - generic [ref=e194]: Cinema Camera
+                  - generic [ref=e195]:
+                    - generic [ref=e196]: "Serial #:"
+                    - generic [ref=e197]: SN-C70-001
+                  - generic [ref=e198]:
+                    - generic [ref=e199]: "Purchased:"
+                    - generic [ref=e200]: 3/19/2024
+              - generic [ref=e201]:
+                - generic [ref=e202]:
+                  - generic [ref=e203]: 📐
+                  - generic [ref=e204]: Available
+                - heading "DJI Ronin S Gimbal" [level=3] [ref=e205]
+                - generic [ref=e206]:
+                  - generic [ref=e207]:
+                    - generic [ref=e208]: "Category:"
+                    - generic [ref=e209]: STABILIZERS
+                  - generic [ref=e210]:
+                    - generic [ref=e211]: "Type:"
+                    - generic [ref=e212]: Gimbal Stabilizer
+                  - generic [ref=e213]:
+                    - generic [ref=e214]: "Serial #:"
+                    - generic [ref=e215]: SN-RS-001
+                  - generic [ref=e216]:
+                    - generic [ref=e217]: "Purchased:"
+                    - generic [ref=e218]: 9/4/2023
+              - generic [ref=e219]:
+                - generic [ref=e220]:
+                  - generic [ref=e221]: 💡
+                  - generic [ref=e222]: Available
+                - heading "Godox SL60W LED" [level=3] [ref=e223]
+                - generic [ref=e224]:
+                  - generic [ref=e225]:
+                    - generic [ref=e226]: "Category:"
+                    - generic [ref=e227]: LIGHTING
+                  - generic [ref=e228]:
+                    - generic [ref=e229]: "Type:"
+                    - generic [ref=e230]: LED Panel
+                  - generic [ref=e231]:
+                    - generic [ref=e232]: "Serial #:"
+                    - generic [ref=e233]: SN-SL60-001
+                  - generic [ref=e234]:
+                    - generic [ref=e235]: "Purchased:"
+                    - generic [ref=e236]: 2/14/2024
+              - generic [ref=e237]:
+                - generic [ref=e238]:
+                  - generic [ref=e239]: 🔌
+                  - generic [ref=e240]: Available
+                - heading "HDMI Cables (5x 15ft)" [level=3] [ref=e241]
+                - generic [ref=e242]:
+                  - generic [ref=e243]:
+                    - generic [ref=e244]: "Category:"
+                    - generic [ref=e245]: CABLE
+                  - generic [ref=e246]:
+                    - generic [ref=e247]: "Type:"
+                    - generic [ref=e248]: HDMI Cable
+                  - generic [ref=e249]:
+                    - generic [ref=e250]: "Serial #:"
+                    - generic [ref=e251]: N/A
+                  - generic [ref=e252]:
+                    - generic [ref=e253]: "Purchased:"
+                    - generic [ref=e254]: 3/14/2023
+              - generic [ref=e255]:
+                - generic [ref=e256]:
+                  - generic [ref=e257]: 📐
+                  - generic [ref=e258]: Available
+                - heading "Manfrotto Tripod 502AH" [level=3] [ref=e259]
+                - generic [ref=e260]:
+                  - generic [ref=e261]:
+                    - generic [ref=e262]: "Category:"
+                    - generic [ref=e263]: STABILIZERS
+                  - generic [ref=e264]:
+                    - generic [ref=e265]: "Type:"
+                    - generic [ref=e266]: Video Tripod
+                  - generic [ref=e267]:
+                    - generic [ref=e268]: "Serial #:"
+                    - generic [ref=e269]: SN-MF502-001
+                  - generic [ref=e270]:
+                    - generic [ref=e271]: "Purchased:"
+                    - generic [ref=e272]: 5/9/2023
+              - generic [ref=e273]:
+                - generic [ref=e274]:
+                  - generic [ref=e275]: 🎒
+                  - generic [ref=e276]: Available
+                - heading "Pelican 1510 Case" [level=3] [ref=e277]
+                - generic [ref=e278]:
+                  - generic [ref=e279]:
+                    - generic [ref=e280]: "Category:"
+                    - generic [ref=e281]: ACCESSORIES
+                  - generic [ref=e282]:
+                    - generic [ref=e283]: "Type:"
+                    - generic [ref=e284]: Hard Case
+                  - generic [ref=e285]:
+                    - generic [ref=e286]: "Serial #:"
+                    - generic [ref=e287]: SN-PC1510-001
+                  - generic [ref=e288]:
+                    - generic [ref=e289]: "Purchased:"
+                    - generic [ref=e290]: 3/31/2023
+              - generic [ref=e291]:
+                - generic [ref=e292]:
+                  - generic [ref=e293]: 🎤
+                  - generic [ref=e294]: Available
+                - heading "Rode NTG3" [level=3] [ref=e295]
+                - generic [ref=e296]:
+                  - generic [ref=e297]:
+                    - generic [ref=e298]: "Category:"
+                    - generic [ref=e299]: AUDIO
+                  - generic [ref=e300]:
+                    - generic [ref=e301]: "Type:"
+                    - generic [ref=e302]: Shotgun Mic
+                  - generic [ref=e303]:
+                    - generic [ref=e304]: "Serial #:"
+                    - generic [ref=e305]: SN789
+                  - generic [ref=e306]:
+                    - generic [ref=e307]: "Purchased:"
+                    - generic [ref=e308]: N/A
+              - generic [ref=e309]:
+                - generic [ref=e310]:
+                  - generic [ref=e311]: 🎤
+                  - generic [ref=e312]: Available
+                - heading "Rode NTG3" [level=3] [ref=e313]
+                - generic [ref=e314]:
+                  - generic [ref=e315]:
+                    - generic [ref=e316]: "Category:"
+                    - generic [ref=e317]: AUDIO
+                  - generic [ref=e318]:
+                    - generic [ref=e319]: "Type:"
+                    - generic [ref=e320]: Shotgun Mic
+                  - generic [ref=e321]:
+                    - generic [ref=e322]: "Serial #:"
+                    - generic [ref=e323]: SN789
+                  - generic [ref=e324]:
+                    - generic [ref=e325]: "Purchased:"
+                    - generic [ref=e326]: N/A
+              - generic [ref=e327]:
+                - generic [ref=e328]:
+                  - generic [ref=e329]: 🎤
+                  - generic [ref=e330]: Available
+                - heading "Rode NTG3" [level=3] [ref=e331]
+                - generic [ref=e332]:
+                  - generic [ref=e333]:
+                    - generic [ref=e334]: "Category:"
+                    - generic [ref=e335]: AUDIO
+                  - generic [ref=e336]:
+                    - generic [ref=e337]: "Type:"
+                    - generic [ref=e338]: Shotgun Mic
+                  - generic [ref=e339]:
+                    - generic [ref=e340]: "Serial #:"
+                    - generic [ref=e341]: SN789
+                  - generic [ref=e342]:
+                    - generic [ref=e343]: "Purchased:"
+                    - generic [ref=e344]: N/A
+              - generic [ref=e345]:
+                - generic [ref=e346]:
+                  - generic [ref=e347]: 🎤
+                  - generic [ref=e348]: Available
+                - heading "Rode Wireless GO II Dual" [level=3] [ref=e349]
+                - generic [ref=e350]:
+                  - generic [ref=e351]:
+                    - generic [ref=e352]: "Category:"
+                    - generic [ref=e353]: AUDIO
+                  - generic [ref=e354]:
+                    - generic [ref=e355]: "Type:"
+                    - generic [ref=e356]: Wireless Microphone System
+                  - generic [ref=e357]:
+                    - generic [ref=e358]: "Serial #:"
+                    - generic [ref=e359]: SN-RWG2-001
+                  - generic [ref=e360]:
+                    - generic [ref=e361]: "Purchased:"
+                    - generic [ref=e362]: 1/14/2024
+              - generic [ref=e363]:
+                - generic [ref=e364]:
+                  - generic [ref=e365]: 🔭
+                  - generic [ref=e366]: Available
+                - heading "Sony 24-70mm f/2.8 GM" [level=3] [ref=e367]
+                - generic [ref=e368]:
+                  - generic [ref=e369]:
+                    - generic [ref=e370]: "Category:"
+                    - generic [ref=e371]: LENS
+                  - generic [ref=e372]:
+                    - generic [ref=e373]: "Type:"
+                    - generic [ref=e374]: Standard Zoom
+                  - generic [ref=e375]:
+                    - generic [ref=e376]: "Serial #:"
+                    - generic [ref=e377]: SN-2470-001
+                  - generic [ref=e378]:
+                    - generic [ref=e379]: "Purchased:"
+                    - generic [ref=e380]: 1/14/2024
+              - generic [ref=e381]:
+                - generic [ref=e382]:
+                  - generic [ref=e383]: 🔭
+                  - generic [ref=e384]: Available
+                - heading "Sony 70-200mm f/2.8 GM" [level=3] [ref=e385]
+                - generic [ref=e386]:
+                  - generic [ref=e387]:
+                    - generic [ref=e388]: "Category:"
+                    - generic [ref=e389]: LENS
+                  - generic [ref=e390]:
+                    - generic [ref=e391]: "Type:"
+                    - generic [ref=e392]: Telephoto Zoom
+                  - generic [ref=e393]:
+                    - generic [ref=e394]: "Serial #:"
+                    - generic [ref=e395]: SN-70200-001
+                  - generic [ref=e396]:
+                    - generic [ref=e397]: "Purchased:"
+                    - generic [ref=e398]: 2/19/2024
+              - generic [ref=e399]:
+                - generic [ref=e400]:
+                  - generic [ref=e401]: 📷
+                  - generic [ref=e402]: Available
+                - heading "Sony A7 III Body" [level=3] [ref=e403]
+                - generic [ref=e404]:
+                  - generic [ref=e405]:
+                    - generic [ref=e406]: "Category:"
+                    - generic [ref=e407]: CAMERA
+                  - generic [ref=e408]:
+                    - generic [ref=e409]: "Type:"
+                    - generic [ref=e410]: Mirrorless Camera
+                  - generic [ref=e411]:
+                    - generic [ref=e412]: "Serial #:"
+                    - generic [ref=e413]: SN-A73-002
+                  - generic [ref=e414]:
+                    - generic [ref=e415]: "Purchased:"
+                    - generic [ref=e416]: 6/9/2023
+              - generic [ref=e417]:
+                - generic [ref=e418]:
+                  - generic [ref=e419]: 📷
+                  - generic [ref=e420]: Available
+                - heading "Sony A7S III Body" [level=3] [ref=e421]
+                - generic [ref=e422]:
+                  - generic [ref=e423]:
+                    - generic [ref=e424]: "Category:"
+                    - generic [ref=e425]: CAMERA
+                  - generic [ref=e426]:
+                    - generic [ref=e427]: "Type:"
+                    - generic [ref=e428]: Mirrorless Camera
+                  - generic [ref=e429]:
+                    - generic [ref=e430]: "Serial #:"
+                    - generic [ref=e431]: SN-A7S3-001
+                  - generic [ref=e432]:
+                    - generic [ref=e433]: "Purchased:"
+                    - generic [ref=e434]: 1/14/2024
+              - generic [ref=e435]:
+                - generic [ref=e436]:
+                  - generic [ref=e437]: 📷
+                  - generic [ref=e438]: Available
+                - heading "Test Camera - Workflow Check" [level=3] [ref=e439]
+                - generic [ref=e440]:
+                  - generic [ref=e441]:
+                    - generic [ref=e442]: "Category:"
+                    - generic [ref=e443]: CAMERA
+                  - generic [ref=e444]:
+                    - generic [ref=e445]: "Type:"
+                    - generic [ref=e446]: Test Type
+                  - generic [ref=e447]:
+                    - generic [ref=e448]: "Serial #:"
+                    - generic [ref=e449]: TEST-001
+                  - generic [ref=e450]:
+                    - generic [ref=e451]: "Purchased:"
+                    - generic [ref=e452]: N/A
+              - generic [ref=e453]:
+                - generic [ref=e454]:
+                  - generic [ref=e455]: 🔌
+                  - generic [ref=e456]: Available
+                - heading "XLR Cables (4x 25ft)" [level=3] [ref=e457]
+                - generic [ref=e458]:
+                  - generic [ref=e459]:
+                    - generic [ref=e460]: "Category:"
+                    - generic [ref=e461]: CABLE
+                  - generic [ref=e462]:
+                    - generic [ref=e463]: "Type:"
+                    - generic [ref=e464]: Audio Cable
+                  - generic [ref=e465]:
+                    - generic [ref=e466]: "Serial #:"
+                    - generic [ref=e467]: N/A
+                  - generic [ref=e468]:
+                    - generic [ref=e469]: "Purchased:"
+                    - generic [ref=e470]: 3/14/2023
+              - generic [ref=e471]:
+                - generic [ref=e472]:
+                  - generic [ref=e473]: 🎤
+                  - generic [ref=e474]: Available
+                - heading "Zoom H6 Audio Recorder" [level=3] [ref=e475]
+                - generic [ref=e476]:
+                  - generic [ref=e477]:
+                    - generic [ref=e478]: "Category:"
+                    - generic [ref=e479]: AUDIO
+                  - generic [ref=e480]:
+                    - generic [ref=e481]: "Type:"
+                    - generic [ref=e482]: Audio Recorder
+                  - generic [ref=e483]:
+                    - generic [ref=e484]: "Serial #:"
+                    - generic [ref=e485]: SN-H6-001
+                  - generic [ref=e486]:
+                    - generic [ref=e487]: "Purchased:"
+                    - generic [ref=e488]: 8/9/2023
+    - button "Start voice command" [ref=e489]:
+      - img [ref=e490]
+  - generic [ref=e496]: "Build: 01b887f | 11/30/2025, 16:06 EST"
+  - alert [ref=e497]
+```

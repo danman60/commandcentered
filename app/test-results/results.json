@@ -126,25 +126,25 @@
   },
   "suites": [
     {
-      "title": "10-operator-portal.spec.ts",
-      "file": "10-operator-portal.spec.ts",
+      "title": "integration-workflows.spec.ts",
+      "file": "integration-workflows.spec.ts",
       "column": 0,
       "line": 0,
       "specs": [],
       "suites": [
         {
-          "title": "Operator Portal @p0 @operators @portal",
-          "file": "10-operator-portal.spec.ts",
+          "title": "Integration Workflows @p0 @critical @integration",
+          "file": "integration-workflows.spec.ts",
           "line": 9,
           "column": 6,
           "specs": [
             {
-              "title": "TC-PORT-001: Operator Portal page loads successfully",
+              "title": "TC-INTEG-001: Event creation to completion workflow",
               "ok": true,
               "tags": [
                 "p0",
-                "operators",
-                "portal"
+                "critical",
+                "integration"
               ],
               "tests": [
                 {
@@ -158,12 +158,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3906,
+                      "duration": 12924,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-30T18:18:22.752Z",
+                      "startTime": "2025-12-01T01:57:34.723Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -171,18 +171,159 @@
                   "status": "expected"
                 }
               ],
-              "id": "2ed82641b462a97438f7-679ef159fdc18fe22aed",
-              "file": "10-operator-portal.spec.ts",
-              "line": 16,
+              "id": "082d3ea7e44599e426a2-c4300c53d570f00cdac9",
+              "file": "integration-workflows.spec.ts",
+              "line": 14,
               "column": 7
             },
             {
-              "title": "TC-PORT-002: Tab navigation works (Schedule, Profile, Availability)",
+              "title": "TC-INTEG-002: Conflict detection and resolution workflow",
               "ok": true,
               "tags": [
                 "p0",
-                "operators",
-                "portal"
+                "critical",
+                "integration"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "location": {
+                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\integration-workflows.spec.ts",
+                        "line": 105,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-12-01T01:57:33.541Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "082d3ea7e44599e426a2-7ea94b696504bbb2a215",
+              "file": "integration-workflows.spec.ts",
+              "line": 105,
+              "column": 8
+            },
+            {
+              "title": "TC-INTEG-003: Kit creation to event assignment workflow",
+              "ok": true,
+              "tags": [
+                "p0",
+                "critical",
+                "integration"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "location": {
+                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\integration-workflows.spec.ts",
+                        "line": 120,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-12-01T01:57:33.542Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "082d3ea7e44599e426a2-48535040e7469f035e92",
+              "file": "integration-workflows.spec.ts",
+              "line": 120,
+              "column": 8
+            },
+            {
+              "title": "TC-INTEG-004: Pipeline to proposal to event conversion",
+              "ok": true,
+              "tags": [
+                "p0",
+                "critical",
+                "integration"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "location": {
+                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\integration-workflows.spec.ts",
+                        "line": 134,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-12-01T01:57:33.543Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "082d3ea7e44599e426a2-85bad2a8d1c1f6904234",
+              "file": "integration-workflows.spec.ts",
+              "line": 134,
+              "column": 8
+            },
+            {
+              "title": "TC-INTEG-005: Communication lifecycle workflow",
+              "ok": true,
+              "tags": [
+                "p0",
+                "critical",
+                "integration"
               ],
               "tests": [
                 {
@@ -196,12 +337,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 5456,
+                      "duration": 11105,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-30T18:18:22.771Z",
+                      "startTime": "2025-12-01T01:57:34.783Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -209,18 +350,188 @@
                   "status": "expected"
                 }
               ],
-              "id": "2ed82641b462a97438f7-c95452c01582fc1191b8",
-              "file": "10-operator-portal.spec.ts",
-              "line": 22,
+              "id": "082d3ea7e44599e426a2-2bb99530f06cf8ce9f3b",
+              "file": "integration-workflows.spec.ts",
+              "line": 149,
               "column": 7
             },
             {
-              "title": "TC-PORT-003: Schedule tab displays upcoming assignments",
+              "title": "TC-INTEG-006: Multi-tenant data isolation",
               "ok": true,
               "tags": [
                 "p0",
-                "operators",
-                "portal"
+                "critical",
+                "integration"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "location": {
+                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\integration-workflows.spec.ts",
+                        "line": 186,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-12-01T01:57:47.152Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "082d3ea7e44599e426a2-fb5609890b93832d33fe",
+              "file": "integration-workflows.spec.ts",
+              "line": 186,
+              "column": 8
+            },
+            {
+              "title": "TC-INTEG-007: Dashboard customization persistence",
+              "ok": false,
+              "tags": [
+                "p0",
+                "critical",
+                "integration"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "timedOut",
+                      "duration": 31826,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\integration-workflows.spec.ts",
+                            "column": 37,
+                            "line": 213
+                          },
+                          "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button').filter({ hasText: /customize|edit dashboard/i }).first()\u001b[22m\n\n\n  211 |\n  212 |     if (hasCustomizeButton) {\n> 213 |       await customizeButton.first().click();\n      |                                     ^\n  214 |       await page.waitForTimeout(500);\n  215 |\n  216 |       // Look for customization modal\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\integration-workflows.spec.ts:213:37"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-12-01T01:57:47.154Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\integration-workflows-Inte-49aa1-d-customization-persistence-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\integration-workflows-Inte-49aa1-d-customization-persistence-chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\integration-workflows-Inte-49aa1-d-customization-persistence-chromium\\error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "082d3ea7e44599e426a2-158f9f873f79a35eb680",
+              "file": "integration-workflows.spec.ts",
+              "line": 202,
+              "column": 7
+            },
+            {
+              "title": "TC-INTEG-008: Operator availability to assignment workflow",
+              "ok": true,
+              "tags": [
+                "p0",
+                "critical",
+                "integration"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "location": {
+                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\integration-workflows.spec.ts",
+                        "line": 266,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-12-01T01:57:48.970Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "082d3ea7e44599e426a2-0d31c6575011c36fac74",
+              "file": "integration-workflows.spec.ts",
+              "line": 266,
+              "column": 8
+            }
+          ]
+        },
+        {
+          "title": "Navigation Tests @smoke",
+          "file": "integration-workflows.spec.ts",
+          "line": 283,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Navigate to Dashboard page",
+              "ok": false,
+              "tags": [
+                "smoke"
               ],
               "tests": [
                 {
@@ -233,32 +544,62 @@
                     {
                       "workerIndex": 0,
                       "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 4220,
-                      "errors": [],
+                      "status": "timedOut",
+                      "duration": 30312,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\integration-workflows.spec.ts",
+                            "column": 18,
+                            "line": 303
+                          },
+                          "message": "Error: page.waitForLoadState: Test timeout of 30000ms exceeded.\n\n  301 |\n  302 |       // Wait for page to load\n> 303 |       await page.waitForLoadState('networkidle');\n      |                  ^\n  304 |\n  305 |       // Verify page loaded (check URL)\n  306 |       expect(page.url()).toContain(pageInfo.path);\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\integration-workflows.spec.ts:303:18"
+                        }
+                      ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-30T18:18:26.839Z",
+                      "startTime": "2025-12-01T01:57:48.971Z",
                       "annotations": [],
-                      "attachments": []
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\integration-workflows-Navi-2017e--Navigate-to-Dashboard-page-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\integration-workflows-Navi-2017e--Navigate-to-Dashboard-page-chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\integration-workflows-Navi-2017e--Navigate-to-Dashboard-page-chromium\\error-context.md"
+                        }
+                      ]
                     }
                   ],
-                  "status": "expected"
+                  "status": "unexpected"
                 }
               ],
-              "id": "2ed82641b462a97438f7-4ee43d9b4c507671871c",
-              "file": "10-operator-portal.spec.ts",
-              "line": 46,
-              "column": 7
+              "id": "082d3ea7e44599e426a2-8e8b2596ccbcf2c76266",
+              "file": "integration-workflows.spec.ts",
+              "line": 298,
+              "column": 9
             },
             {
-              "title": "TC-PORT-004: Schedule tab shows past assignments section",
+              "title": "Navigate to Planning page",
               "ok": true,
               "tags": [
-                "p0",
-                "operators",
-                "portal"
+                "smoke"
               ],
               "tests": [
                 {
@@ -269,15 +610,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 2,
                       "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 3791,
+                      "duration": 9186,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-30T18:18:28.482Z",
+                      "startTime": "2025-12-01T01:58:21.857Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -285,18 +626,16 @@
                   "status": "expected"
                 }
               ],
-              "id": "2ed82641b462a97438f7-10e27c03fee033bbbb39",
-              "file": "10-operator-portal.spec.ts",
-              "line": 64,
-              "column": 7
+              "id": "082d3ea7e44599e426a2-afb6619c3270024e99ab",
+              "file": "integration-workflows.spec.ts",
+              "line": 298,
+              "column": 9
             },
             {
-              "title": "TC-PORT-005: Profile tab displays operator information",
+              "title": "Navigate to Pipeline page",
               "ok": true,
               "tags": [
-                "p0",
-                "operators",
-                "portal"
+                "smoke"
               ],
               "tests": [
                 {
@@ -307,15 +646,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 0,
+                      "workerIndex": 3,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 4790,
+                      "duration": 5419,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-30T18:18:31.083Z",
+                      "startTime": "2025-12-01T01:58:22.481Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -323,18 +662,16 @@
                   "status": "expected"
                 }
               ],
-              "id": "2ed82641b462a97438f7-948ce103f5221dda3c86",
-              "file": "10-operator-portal.spec.ts",
-              "line": 75,
-              "column": 7
+              "id": "082d3ea7e44599e426a2-bef2f40698bb2847e18d",
+              "file": "integration-workflows.spec.ts",
+              "line": 298,
+              "column": 9
             },
             {
-              "title": "TC-PORT-006: Profile tab shows skills and rates",
+              "title": "Navigate to Gear Inventory page",
               "ok": true,
               "tags": [
-                "p0",
-                "operators",
-                "portal"
+                "smoke"
               ],
               "tests": [
                 {
@@ -345,53 +682,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 1,
-                      "parallelIndex": 1,
-                      "status": "passed",
-                      "duration": 4689,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-30T18:18:32.296Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "2ed82641b462a97438f7-62eb17c4dffd08e84485",
-              "file": "10-operator-portal.spec.ts",
-              "line": 93,
-              "column": 7
-            },
-            {
-              "title": "TC-PORT-007: Availability tab displays content",
-              "ok": true,
-              "tags": [
-                "p0",
-                "operators",
-                "portal"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 0,
+                      "workerIndex": 3,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 4690,
+                      "duration": 22677,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-30T18:18:35.909Z",
+                      "startTime": "2025-12-01T01:58:28.251Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -399,18 +698,16 @@
                   "status": "expected"
                 }
               ],
-              "id": "2ed82641b462a97438f7-2be372bd120fcfce49e3",
-              "file": "10-operator-portal.spec.ts",
-              "line": 116,
-              "column": 7
+              "id": "082d3ea7e44599e426a2-ab9f7a938bc693bda5a4",
+              "file": "integration-workflows.spec.ts",
+              "line": 298,
+              "column": 9
             },
             {
-              "title": "TC-PORT-008: Availability tab shows blackout dates section",
+              "title": "Navigate to Operators page",
               "ok": true,
               "tags": [
-                "p0",
-                "operators",
-                "portal"
+                "smoke"
               ],
               "tests": [
                 {
@@ -421,15 +718,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 2,
                       "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 3934,
+                      "duration": 16963,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-30T18:18:37.006Z",
+                      "startTime": "2025-12-01T01:58:31.535Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -437,9 +734,265 @@
                   "status": "expected"
                 }
               ],
-              "id": "2ed82641b462a97438f7-1a8d0f000d6b544c462f",
-              "file": "10-operator-portal.spec.ts",
-              "line": 130,
+              "id": "082d3ea7e44599e426a2-a8dcf585a1c5cf34cdb8",
+              "file": "integration-workflows.spec.ts",
+              "line": 298,
+              "column": 9
+            },
+            {
+              "title": "Navigate to Deliverables page",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 16514,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-12-01T01:58:48.527Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "082d3ea7e44599e426a2-dea968f20be93b6c044e",
+              "file": "integration-workflows.spec.ts",
+              "line": 298,
+              "column": 9
+            },
+            {
+              "title": "Navigate to Communications page",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 5760,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-12-01T01:58:50.951Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "082d3ea7e44599e426a2-a69b3870e1966da6bc98",
+              "file": "integration-workflows.spec.ts",
+              "line": 298,
+              "column": 9
+            },
+            {
+              "title": "Navigate to Files & Assets page",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 10430,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-12-01T01:58:56.759Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "082d3ea7e44599e426a2-60411e0c7c6f07ba9c16",
+              "file": "integration-workflows.spec.ts",
+              "line": 298,
+              "column": 9
+            },
+            {
+              "title": "Navigate to Reports page",
+              "ok": false,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 7327,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeFalsy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mtrue\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeFalsy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mtrue\u001b[39m\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\integration-workflows.spec.ts:310:24",
+                        "location": {
+                          "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\integration-workflows.spec.ts",
+                          "column": 24,
+                          "line": 310
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 308 |\u001b[39m       \u001b[90m// Verify no critical errors\u001b[39m\n \u001b[90m 309 |\u001b[39m       \u001b[36mconst\u001b[39m hasError \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=/error|something went wrong|404|500/i'\u001b[39m)\u001b[33m.\u001b[39mcount() \u001b[33m>\u001b[39m \u001b[35m0\u001b[39m\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 310 |\u001b[39m       expect(hasError)\u001b[33m.\u001b[39mtoBeFalsy()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 311 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 312 |\u001b[39m   }\n \u001b[90m 313 |\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\integration-workflows.spec.ts",
+                            "column": 24,
+                            "line": 310
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeFalsy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mtrue\u001b[39m\n\n  308 |       // Verify no critical errors\n  309 |       const hasError = await page.locator('text=/error|something went wrong|404|500/i').count() > 0;\n> 310 |       expect(hasError).toBeFalsy();\n      |                        ^\n  311 |     });\n  312 |   }\n  313 |\n    at D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\integration-workflows.spec.ts:310:24"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-12-01T01:59:05.067Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\integration-workflows-Navi-07591-ke-Navigate-to-Reports-page-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\integration-workflows-Navi-07591-ke-Navigate-to-Reports-page-chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\ClaudeCode\\CommandCentered\\app\\test-results\\integration-workflows-Navi-07591-ke-Navigate-to-Reports-page-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\ClaudeCode\\CommandCentered\\app\\tests\\e2e\\integration-workflows.spec.ts",
+                        "column": 24,
+                        "line": 310
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "082d3ea7e44599e426a2-13c696154150e87eea61",
+              "file": "integration-workflows.spec.ts",
+              "line": 298,
+              "column": 9
+            },
+            {
+              "title": "Navigate to Settings page",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 22213,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-12-01T01:59:07.209Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "082d3ea7e44599e426a2-a33433d4e48e35ff6613",
+              "file": "integration-workflows.spec.ts",
+              "line": 298,
+              "column": 9
+            },
+            {
+              "title": "Verify all navigation links functional",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 15015,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-12-01T01:59:29.448Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "082d3ea7e44599e426a2-88c49c8f9aa67e994e6a",
+              "file": "integration-workflows.spec.ts",
+              "line": 314,
               "column": 7
             }
           ]
@@ -449,11 +1002,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-11-30T18:18:21.640Z",
-    "duration": 19418.984,
-    "expected": 8,
-    "skipped": 0,
-    "unexpected": 0,
+    "startTime": "2025-12-01T01:57:33.296Z",
+    "duration": 131629.53300000002,
+    "expected": 11,
+    "skipped": 5,
+    "unexpected": 3,
     "flaky": 0
   }
 }

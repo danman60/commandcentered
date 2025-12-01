@@ -1,0 +1,297 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]:
+      - heading "CommandCentered" [level=1] [ref=e5]
+      - navigation [ref=e6]:
+        - link "📊 Dashboard" [ref=e7] [cursor=pointer]:
+          - /url: /dashboard
+          - generic [ref=e8]: 📊
+          - text: Dashboard
+        - link "📅 Planning" [ref=e9] [cursor=pointer]:
+          - /url: /planning
+          - generic [ref=e10]: 📅
+          - text: Planning
+        - link "🏢 Clients" [ref=e11] [cursor=pointer]:
+          - /url: /clients
+          - generic [ref=e12]: 🏢
+          - text: Clients
+        - link "⚡ Pipeline" [ref=e13] [cursor=pointer]:
+          - /url: /pipeline
+          - generic [ref=e14]: ⚡
+          - text: Pipeline
+        - link "🎥 Gear Inventory" [ref=e15] [cursor=pointer]:
+          - /url: /gear
+          - generic [ref=e16]: 🎥
+          - text: Gear Inventory
+        - link "👥 Operators" [ref=e17] [cursor=pointer]:
+          - /url: /operators
+          - generic [ref=e18]: 👥
+          - text: Operators
+        - link "📦 Deliverables" [ref=e19] [cursor=pointer]:
+          - /url: /deliverables
+          - generic [ref=e20]: 📦
+          - text: Deliverables
+        - link "💬 Communications" [ref=e21] [cursor=pointer]:
+          - /url: /communications
+          - generic [ref=e22]: 💬
+          - text: Communications
+        - link "📁 Files & Assets" [ref=e23] [cursor=pointer]:
+          - /url: /files
+          - generic [ref=e24]: 📁
+          - text: Files & Assets
+        - link "📈 Reports" [ref=e25] [cursor=pointer]:
+          - /url: /reports
+          - generic [ref=e26]: 📈
+          - text: Reports
+        - link "⚡ Quick Onboard" [ref=e27] [cursor=pointer]:
+          - /url: /admin/quick-onboard
+          - generic [ref=e28]: ⚡
+          - text: Quick Onboard
+        - link "👤 Operator Portal" [ref=e29] [cursor=pointer]:
+          - /url: /operator-portal
+          - generic [ref=e30]: 👤
+          - text: Operator Portal
+        - link "🔧 Settings" [ref=e31] [cursor=pointer]:
+          - /url: /settings
+          - generic [ref=e32]: 🔧
+          - text: Settings
+    - main [ref=e34]:
+      - generic [ref=e35]:
+        - generic [ref=e37]:
+          - generic [ref=e38]:
+            - heading "Dashboard" [level=1] [ref=e39]
+            - generic [ref=e40]: Good evening, Commander
+          - generic [ref=e41]:
+            - button "➕ New Event" [ref=e42]
+            - button "Dragging ON" [ref=e43]:
+              - img [ref=e44]
+              - text: Dragging ON
+            - button "Customize" [ref=e49]:
+              - img [ref=e50]
+              - generic [ref=e53]: Customize
+        - generic [ref=e54]:
+          - generic [ref=e56]:
+            - generic [ref=e58] [cursor=pointer]:
+              - generic [ref=e59]:
+                - paragraph [ref=e60]:
+                  - text: Upcoming Events
+                  - img [ref=e61]
+                - paragraph [ref=e65]: "5"
+              - img [ref=e67]
+            - generic [ref=e70] [cursor=pointer]:
+              - generic [ref=e71]:
+                - paragraph [ref=e72]:
+                  - text: Active Operators
+                  - img [ref=e73]
+                - paragraph [ref=e77]: "6"
+              - img [ref=e79]
+            - generic [ref=e85] [cursor=pointer]:
+              - generic [ref=e86]:
+                - paragraph [ref=e87]:
+                  - text: Gear Items
+                  - img [ref=e88]
+                - paragraph [ref=e92]: "24"
+              - img [ref=e94]
+            - generic [ref=e99] [cursor=pointer]:
+              - generic [ref=e100]:
+                - paragraph [ref=e101]:
+                  - text: Total Revenue
+                  - img [ref=e102]
+                - paragraph [ref=e106]: $36,600
+              - img [ref=e108]
+          - generic [ref=e115]:
+            - generic [ref=e116]:
+              - heading "Event Pipeline" [level=3] [ref=e117]
+              - img [ref=e118]
+            - generic [ref=e121]:
+              - generic [ref=e124]:
+                - generic [ref=e125]: Proposal
+                - generic [ref=e126]: "0"
+              - generic [ref=e130]:
+                - generic [ref=e131]: Tentative
+                - generic [ref=e132]: "2"
+              - generic [ref=e137]:
+                - generic [ref=e138]: Booked
+                - generic [ref=e139]: "1"
+              - generic [ref=e144]:
+                - generic [ref=e145]: Confirmed
+                - generic [ref=e146]: "3"
+              - generic [ref=e151]:
+                - generic [ref=e152]: In Progress
+                - generic [ref=e153]: "0"
+              - generic [ref=e157]:
+                - generic [ref=e158]: Completed
+                - generic [ref=e159]: "0"
+          - generic [ref=e166]:
+            - generic [ref=e167]:
+              - heading "Revenue Overview" [level=3] [ref=e168]
+              - img [ref=e169]
+            - generic [ref=e171]:
+              - generic [ref=e173]:
+                - generic [ref=e174]: Expected Revenue
+                - generic [ref=e175]: $22,000
+              - generic [ref=e179]:
+                - generic [ref=e180]: Actual Revenue
+                - generic [ref=e181]: $0
+              - generic [ref=e184]:
+                - generic [ref=e185]: Cancelled Penalty
+                - generic [ref=e186]: $0
+          - generic [ref=e192] [cursor=pointer]:
+            - generic [ref=e193]:
+              - heading "📦 Deliverables" [level=3] [ref=e194]
+              - img [ref=e195]
+            - generic [ref=e200]:
+              - generic [ref=e201]:
+                - generic [ref=e202]: Overdue
+                - generic [ref=e204]: "0"
+              - generic [ref=e205]:
+                - generic [ref=e206]: Due This Week
+                - generic [ref=e208]: "0"
+              - generic [ref=e209]:
+                - generic [ref=e210]: In Progress
+                - generic [ref=e212]: "0"
+          - generic [ref=e218]:
+            - generic [ref=e219]:
+              - heading "Upcoming Events" [level=3] [ref=e220]
+              - img [ref=e221]
+            - generic [ref=e223]:
+              - generic [ref=e225] [cursor=pointer]:
+                - generic [ref=e226]:
+                  - heading "Acme Annual Gala" [level=4] [ref=e227]:
+                    - text: Acme Annual Gala
+                    - img [ref=e228]
+                  - paragraph [ref=e232]: Acme Corp
+                - generic [ref=e233]:
+                  - paragraph [ref=e234]: 12/1/2025
+                  - paragraph [ref=e235]: 09:00 AM
+              - generic [ref=e237] [cursor=pointer]:
+                - generic [ref=e238]:
+                  - heading "Star Performers Winter Recital" [level=4] [ref=e239]:
+                    - text: Star Performers Winter Recital
+                    - img [ref=e240]
+                  - paragraph [ref=e244]: Star Performers Theater
+                - generic [ref=e245]:
+                  - paragraph [ref=e246]: 12/5/2025
+                  - paragraph [ref=e247]: 12:00 PM
+          - generic [ref=e253]:
+            - generic [ref=e254]:
+              - heading "Critical Alerts" [level=3] [ref=e255]
+              - img [ref=e256]
+            - generic [ref=e258]:
+              - generic [ref=e260] [cursor=pointer]:
+                - img [ref=e261]
+                - generic [ref=e263]:
+                  - heading "Acme Annual Gala" [level=4] [ref=e264]:
+                    - text: Acme Annual Gala
+                    - img [ref=e265]
+                  - paragraph [ref=e269]: 12/1/2025
+                  - list [ref=e270]:
+                    - listitem [ref=e271]: • No gear assigned
+              - generic [ref=e273] [cursor=pointer]:
+                - img [ref=e274]
+                - generic [ref=e276]:
+                  - heading "Star Performers Winter Recital" [level=4] [ref=e277]:
+                    - text: Star Performers Winter Recital
+                    - img [ref=e278]
+                  - paragraph [ref=e282]: 12/5/2025
+                  - list [ref=e283]:
+                    - listitem [ref=e284]: • 1 shift(s) missing operators
+              - generic [ref=e286] [cursor=pointer]:
+                - img [ref=e287]
+                - generic [ref=e289]:
+                  - heading "Tech Studios Launch" [level=4] [ref=e290]:
+                    - text: Tech Studios Launch
+                    - img [ref=e291]
+                  - paragraph [ref=e295]: 12/15/2025
+                  - list [ref=e296]:
+                    - listitem [ref=e297]: • No gear assigned
+          - generic [ref=e303]:
+            - generic [ref=e304]:
+              - heading "Recent Activity" [level=3] [ref=e305]
+              - img [ref=e306]
+            - generic [ref=e309]:
+              - generic [ref=e310] [cursor=pointer]:
+                - img [ref=e312]
+                - generic [ref=e315]:
+                  - generic [ref=e316]:
+                    - heading "Acme Annual Gala" [level=4] [ref=e317]:
+                      - text: Acme Annual Gala
+                      - img [ref=e318]
+                    - paragraph [ref=e322]: Event created
+                  - generic [ref=e323]:
+                    - paragraph [ref=e324]: 11/29/2025
+                    - text: CONFIRMED
+              - generic [ref=e325] [cursor=pointer]:
+                - img [ref=e327]
+                - generic [ref=e330]:
+                  - generic [ref=e331]:
+                    - heading "Tech Studios Launch" [level=4] [ref=e332]:
+                      - text: Tech Studios Launch
+                      - img [ref=e333]
+                    - paragraph [ref=e337]: Event created
+                  - generic [ref=e338]:
+                    - paragraph [ref=e339]: 11/29/2025
+                    - text: CONFIRMED
+              - generic [ref=e340] [cursor=pointer]:
+                - img [ref=e342]
+                - generic [ref=e345]:
+                  - generic [ref=e346]:
+                    - heading "Test Event With Client" [level=4] [ref=e347]:
+                      - text: Test Event With Client
+                      - img [ref=e348]
+                    - paragraph [ref=e352]: Event created
+                  - generic [ref=e353]:
+                    - paragraph [ref=e354]: 11/19/2025
+                    - text: TENTATIVE
+              - generic [ref=e355] [cursor=pointer]:
+                - img [ref=e357]
+                - generic [ref=e360]:
+                  - generic [ref=e361]:
+                    - heading "Test Event - Workflow Verification" [level=4] [ref=e362]:
+                      - text: Test Event - Workflow Verification
+                      - img [ref=e363]
+                    - paragraph [ref=e367]: Event created
+                  - generic [ref=e368]:
+                    - paragraph [ref=e369]: 11/19/2025
+                    - text: TENTATIVE
+              - generic [ref=e370] [cursor=pointer]:
+                - img [ref=e372]
+                - generic [ref=e375]:
+                  - generic [ref=e376]:
+                    - heading "Elite Dance Competition Fall Championships" [level=4] [ref=e377]:
+                      - text: Elite Dance Competition Fall Championships
+                      - img [ref=e378]
+                    - paragraph [ref=e382]: Event created
+                  - generic [ref=e383]:
+                    - paragraph [ref=e384]: 11/19/2025
+                    - text: CONFIRMED
+              - generic [ref=e385] [cursor=pointer]:
+                - img [ref=e387]
+                - generic [ref=e390]:
+                  - generic [ref=e391]:
+                    - heading "Broadway Dance Holiday Showcase" [level=4] [ref=e392]:
+                      - text: Broadway Dance Holiday Showcase
+                      - img [ref=e393]
+                    - paragraph [ref=e397]: Event created
+                  - generic [ref=e398]:
+                    - paragraph [ref=e399]: 11/19/2025
+                    - text: BOOKED
+              - generic [ref=e400] [cursor=pointer]:
+                - img [ref=e402]
+                - generic [ref=e405]:
+                  - generic [ref=e406]:
+                    - heading "Star Performers Winter Recital" [level=4] [ref=e407]:
+                      - text: Star Performers Winter Recital
+                      - img [ref=e408]
+                    - paragraph [ref=e412]: Event created
+                  - generic [ref=e413]:
+                    - paragraph [ref=e414]: 11/19/2025
+                    - text: SCHEDULED
+    - button "Start voice command" [ref=e419]:
+      - img [ref=e420]
+  - generic [ref=e426]: "Build: 01b887f | 11/30/2025, 16:06 EST"
+  - alert [ref=e427]
+```

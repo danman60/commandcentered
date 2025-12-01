@@ -1,0 +1,201 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]:
+      - heading "CommandCentered" [level=1] [ref=e5]
+      - navigation [ref=e6]:
+        - link "📊 Dashboard" [ref=e7] [cursor=pointer]:
+          - /url: /dashboard
+          - generic [ref=e8]: 📊
+          - text: Dashboard
+        - link "📅 Planning" [ref=e9] [cursor=pointer]:
+          - /url: /planning
+          - generic [ref=e10]: 📅
+          - text: Planning
+        - link "🏢 Clients" [ref=e11] [cursor=pointer]:
+          - /url: /clients
+          - generic [ref=e12]: 🏢
+          - text: Clients
+        - link "⚡ Pipeline" [ref=e13] [cursor=pointer]:
+          - /url: /pipeline
+          - generic [ref=e14]: ⚡
+          - text: Pipeline
+        - link "🎥 Gear Inventory" [ref=e15] [cursor=pointer]:
+          - /url: /gear
+          - generic [ref=e16]: 🎥
+          - text: Gear Inventory
+        - link "👥 Operators" [ref=e17] [cursor=pointer]:
+          - /url: /operators
+          - generic [ref=e18]: 👥
+          - text: Operators
+        - link "📦 Deliverables" [ref=e19] [cursor=pointer]:
+          - /url: /deliverables
+          - generic [ref=e20]: 📦
+          - text: Deliverables
+        - link "💬 Communications" [ref=e21] [cursor=pointer]:
+          - /url: /communications
+          - generic [ref=e22]: 💬
+          - text: Communications
+        - link "📁 Files & Assets" [ref=e23] [cursor=pointer]:
+          - /url: /files
+          - generic [ref=e24]: 📁
+          - text: Files & Assets
+        - link "📈 Reports" [ref=e25] [cursor=pointer]:
+          - /url: /reports
+          - generic [ref=e26]: 📈
+          - text: Reports
+        - link "⚡ Quick Onboard" [ref=e27] [cursor=pointer]:
+          - /url: /admin/quick-onboard
+          - generic [ref=e28]: ⚡
+          - text: Quick Onboard
+        - link "👤 Operator Portal" [ref=e29] [cursor=pointer]:
+          - /url: /operator-portal
+          - generic [ref=e30]: 👤
+          - text: Operator Portal
+        - link "🔧 Settings" [ref=e31] [cursor=pointer]:
+          - /url: /settings
+          - generic [ref=e32]: 🔧
+          - text: Settings
+    - main [ref=e34]:
+      - generic [ref=e35]:
+        - generic [ref=e37]:
+          - generic [ref=e38]:
+            - heading "Pipeline" [level=1] [ref=e40]
+            - paragraph [ref=e41]: Manage leads and track opportunities
+          - generic [ref=e42]:
+            - generic [ref=e43]:
+              - button "📇 Kanban" [ref=e44]:
+                - generic [ref=e45]: 📇
+                - generic [ref=e46]: Kanban
+              - button "📊 Card" [ref=e47]:
+                - generic [ref=e48]: 📊
+                - generic [ref=e49]: Card
+              - button "📋 Table" [ref=e50]:
+                - generic [ref=e51]: 📋
+                - generic [ref=e52]: Table
+            - button "📊 Export" [disabled] [ref=e53]:
+              - img [ref=e54]
+              - text: 📊 Export
+            - generic [ref=e57]:
+              - button "⌨️" [ref=e58]
+              - generic:
+                - generic: Keyboard Shortcuts
+                - generic:
+                  - generic:
+                    - generic: New Lead
+                    - generic: "N"
+                  - generic:
+                    - generic: Export CSV
+                    - generic: E
+                  - generic:
+                    - generic: Focus Search
+                    - generic: /
+                  - generic:
+                    - generic: Clear Filters
+                    - generic: Esc
+                  - generic:
+                    - generic: Kanban View
+                    - generic: "1"
+                  - generic:
+                    - generic: Card View
+                    - generic: "2"
+                  - generic:
+                    - generic: Table View
+                    - generic: "3"
+            - generic [ref=e59]:
+              - button "📦" [ref=e60]
+              - generic:
+                - generic: Product Status Guide
+                - generic:
+                  - generic:
+                    - generic: Discussing
+                    - generic: Initial conversations about product
+                  - generic:
+                    - generic: Proposal
+                    - generic: Formal proposal has been sent
+                  - generic:
+                    - generic: Won
+                    - generic: Deal closed successfully
+                  - generic:
+                    - generic: Lost
+                    - generic: Opportunity was lost
+                  - generic:
+                    - generic: Not Interested
+                    - generic: Client not interested in this product
+                  - generic:
+                    - generic: Not Applicable
+                    - generic: Product doesn't apply to this client
+            - button "New Lead" [ref=e61]:
+              - img [ref=e62]
+              - text: New Lead
+        - generic [ref=e64]:
+          - generic [ref=e65]:
+            - img [ref=e66]
+            - textbox "Search leads by organization, contact, or email..." [active] [ref=e69]: Dance
+          - combobox [ref=e70]:
+            - option "All Statuses" [selected]
+            - option "Hot Leads"
+            - option "Warm Leads"
+            - option "Cold Leads"
+          - combobox [ref=e71]:
+            - option "All Products" [selected]
+            - option "Studio Sage"
+            - option "Dance Recital"
+            - option "Competition Software"
+            - option "Core Video"
+          - combobox [ref=e72]:
+            - option "Sort by..." [selected]
+            - option "Last Contacted (Oldest)"
+            - option "Next Follow-Up (Upcoming)"
+            - option "Revenue Potential (Highest)"
+            - option "Client Name (A-Z)"
+        - generic [ref=e73]:
+          - generic [ref=e74]:
+            - generic [ref=e76]:
+              - heading "New" [level=3] [ref=e77]
+              - generic [ref=e78]: "0"
+            - generic [ref=e80]:
+              - generic [ref=e81]: 📭
+              - paragraph [ref=e82]: No leads yet
+          - generic [ref=e83]:
+            - generic [ref=e85]:
+              - heading "Contacted" [level=3] [ref=e86]
+              - generic [ref=e87]: "0"
+            - generic [ref=e89]:
+              - generic [ref=e90]: 📭
+              - paragraph [ref=e91]: No leads yet
+          - generic [ref=e92]:
+            - generic [ref=e94]:
+              - heading "Qualified" [level=3] [ref=e95]
+              - generic [ref=e96]: "0"
+            - generic [ref=e98]:
+              - generic [ref=e99]: 📭
+              - paragraph [ref=e100]: No leads yet
+          - generic [ref=e101]:
+            - generic [ref=e103]:
+              - heading "Proposal Sent" [level=3] [ref=e104]
+              - generic [ref=e105]: "0"
+            - generic [ref=e107]:
+              - generic [ref=e108]: 📭
+              - paragraph [ref=e109]: No leads yet
+          - generic [ref=e110]:
+            - generic [ref=e112]:
+              - heading "Engaged" [level=3] [ref=e113]
+              - generic [ref=e114]: "0"
+            - generic [ref=e116]:
+              - generic [ref=e117]: 📭
+              - paragraph [ref=e118]: No leads yet
+          - generic [ref=e119]:
+            - generic [ref=e121]:
+              - heading "Converted" [level=3] [ref=e122]
+              - generic [ref=e123]: "0"
+            - generic [ref=e125]:
+              - generic [ref=e126]: 📭
+              - paragraph [ref=e127]: No leads yet
+    - button "Start voice command" [ref=e128]:
+      - img [ref=e129]
+  - generic [ref=e135]: "Build: 01b887f | 11/30/2025, 16:06 EST"
+  - alert [ref=e136]
+```

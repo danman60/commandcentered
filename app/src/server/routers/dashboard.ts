@@ -220,7 +220,7 @@ export const dashboardRouter = router({
         },
       },
       orderBy: { loadInTime: 'asc' },
-      take: 50,
+      take: 10, // Reduced from 50 for performance - critical alerts widget only needs recent events
     });
 
     const alerts = upcomingEvents

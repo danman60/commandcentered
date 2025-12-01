@@ -1,0 +1,225 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]:
+      - heading "CommandCentered" [level=1] [ref=e5]
+      - navigation [ref=e6]:
+        - link "📊 Dashboard" [ref=e7] [cursor=pointer]:
+          - /url: /dashboard
+          - generic [ref=e8]: 📊
+          - text: Dashboard
+        - link "📅 Planning" [ref=e9] [cursor=pointer]:
+          - /url: /planning
+          - generic [ref=e10]: 📅
+          - text: Planning
+        - link "🏢 Clients" [ref=e11] [cursor=pointer]:
+          - /url: /clients
+          - generic [ref=e12]: 🏢
+          - text: Clients
+        - link "⚡ Pipeline" [ref=e13] [cursor=pointer]:
+          - /url: /pipeline
+          - generic [ref=e14]: ⚡
+          - text: Pipeline
+        - link "🎥 Gear Inventory" [ref=e15] [cursor=pointer]:
+          - /url: /gear
+          - generic [ref=e16]: 🎥
+          - text: Gear Inventory
+        - link "👥 Operators" [ref=e17] [cursor=pointer]:
+          - /url: /operators
+          - generic [ref=e18]: 👥
+          - text: Operators
+        - link "📦 Deliverables" [ref=e19] [cursor=pointer]:
+          - /url: /deliverables
+          - generic [ref=e20]: 📦
+          - text: Deliverables
+        - link "💬 Communications" [ref=e21] [cursor=pointer]:
+          - /url: /communications
+          - generic [ref=e22]: 💬
+          - text: Communications
+        - link "📁 Files & Assets" [ref=e23] [cursor=pointer]:
+          - /url: /files
+          - generic [ref=e24]: 📁
+          - text: Files & Assets
+        - link "📈 Reports" [ref=e25] [cursor=pointer]:
+          - /url: /reports
+          - generic [ref=e26]: 📈
+          - text: Reports
+        - link "⚡ Quick Onboard" [ref=e27] [cursor=pointer]:
+          - /url: /admin/quick-onboard
+          - generic [ref=e28]: ⚡
+          - text: Quick Onboard
+        - link "👤 Operator Portal" [ref=e29] [cursor=pointer]:
+          - /url: /operator-portal
+          - generic [ref=e30]: 👤
+          - text: Operator Portal
+        - link "🔧 Settings" [ref=e31] [cursor=pointer]:
+          - /url: /settings
+          - generic [ref=e32]: 🔧
+          - text: Settings
+    - main [ref=e34]:
+      - generic [ref=e35]:
+        - generic [ref=e38]:
+          - generic [ref=e39]: 📈
+          - heading "Reports" [level=1] [ref=e40]
+        - generic [ref=e41]:
+          - generic [ref=e42]:
+            - heading "⚙️ Report Filters" [level=2] [ref=e43]
+            - generic [ref=e44]:
+              - generic [ref=e45]:
+                - generic [ref=e46]: Start Date
+                - textbox [ref=e47]: 2025-01-01
+              - generic [ref=e48]:
+                - generic [ref=e49]: End Date
+                - textbox [ref=e50]: 2025-11-30
+          - generic [ref=e51]:
+            - generic [ref=e52]: Year-over-Year Comparison
+            - generic [ref=e53]:
+              - generic [ref=e54]: "OFF"
+              - button [ref=e55]
+              - generic [ref=e57]: "ON"
+          - generic [ref=e58]:
+            - generic [ref=e59]: "Export Report:"
+            - button "📄 PDF" [ref=e60]
+            - button "📊 CSV" [ref=e61]
+            - button "📈 EXCEL" [ref=e62]
+          - generic [ref=e63]:
+            - generic [ref=e64]:
+              - generic [ref=e65]: Total Revenue
+              - generic [ref=e66]: $0
+              - generic [ref=e67]: 1 periods
+            - generic [ref=e68]:
+              - generic [ref=e69]: Total Events
+              - generic [ref=e70]: "2"
+              - generic [ref=e71]: 2 types
+            - generic [ref=e72]:
+              - generic [ref=e73]: Operator Hours
+              - generic [ref=e74]: "62"
+              - generic [ref=e75]: 6 operators
+            - generic [ref=e76]:
+              - generic [ref=e77]: Equipment Utilization
+              - generic [ref=e78]: 0%
+              - generic [ref=e79]: 24 items tracked
+          - generic [ref=e80]:
+            - generic [ref=e81]:
+              - heading "Revenue Over Time" [level=3] [ref=e82]
+              - generic [ref=e86]: Nov
+            - generic [ref=e87]:
+              - heading "Events by Type" [level=3] [ref=e88]
+              - generic [ref=e90]:
+                - generic [ref=e91]:
+                  - generic [ref=e92]: DANCE_COMPETITION
+                  - generic [ref=e95]: "1"
+                - generic [ref=e96]:
+                  - generic [ref=e97]: RECITAL
+                  - generic [ref=e100]: "1"
+            - generic [ref=e101]:
+              - heading "Operator Hours Distribution (Top 5)" [level=3] [ref=e102]
+              - generic [ref=e104]:
+                - generic [ref=e105]:
+                  - generic [ref=e107]: 24h
+                  - generic [ref=e108]: Sarah
+                - generic [ref=e109]:
+                  - generic [ref=e111]: 19h
+                  - generic [ref=e112]: John
+                - generic [ref=e113]:
+                  - generic [ref=e115]: 19h
+                  - generic [ref=e116]: Mike
+                - generic [ref=e117]:
+                  - generic [ref=e119]: 0h
+                  - generic [ref=e120]: John
+                - generic [ref=e121]:
+                  - generic [ref=e123]: 0h
+                  - generic [ref=e124]: Sarah
+            - generic [ref=e125]:
+              - heading "Equipment Utilization (Top 5)" [level=3] [ref=e126]
+              - generic [ref=e128]:
+                - generic [ref=e129]:
+                  - generic [ref=e130]: Sony A7S III Body
+                  - generic [ref=e133]: 1%
+                - generic [ref=e134]:
+                  - generic [ref=e135]: Canon C70 Cinema Camera
+                  - generic [ref=e138]: 1%
+                - generic [ref=e139]:
+                  - generic [ref=e140]: Sony 24-70mm f/2.8 GM
+                  - generic [ref=e143]: 1%
+                - generic [ref=e144]:
+                  - generic [ref=e145]: Sony 70-200mm f/2.8 GM
+                  - generic [ref=e148]: 1%
+                - generic [ref=e149]:
+                  - generic [ref=e150]: Rode Wireless GO II Dual
+                  - generic [ref=e153]: 1%
+          - generic [ref=e154]:
+            - heading "Recent Events (Last 10)" [level=3] [ref=e155]
+            - table [ref=e157]:
+              - rowgroup [ref=e158]:
+                - row "Date Client Event Type Duration (hrs) Revenue Status" [ref=e159]:
+                  - cell "Date" [ref=e160]
+                  - cell "Client" [ref=e161]
+                  - cell "Event Type" [ref=e162]
+                  - cell "Duration (hrs)" [ref=e163]
+                  - cell "Revenue" [ref=e164]
+                  - cell "Status" [ref=e165]
+              - rowgroup [ref=e166]:
+                - row "12/20/2025 Unknown DANCE_COMPETITION 14 $0 TENTATIVE" [ref=e167]:
+                  - cell "12/20/2025" [ref=e168]
+                  - cell "Unknown" [ref=e169]
+                  - cell "DANCE_COMPETITION" [ref=e170]
+                  - cell "14" [ref=e171]
+                  - cell "$0" [ref=e172]
+                  - cell "TENTATIVE" [ref=e173]:
+                    - generic [ref=e174]: TENTATIVE
+                - row "12/15/2025 Tech Studios OTHER 8 $3,500 CONFIRMED" [ref=e175]:
+                  - cell "12/15/2025" [ref=e176]
+                  - cell "Tech Studios" [ref=e177]
+                  - cell "OTHER" [ref=e178]
+                  - cell "8" [ref=e179]
+                  - cell "$3,500" [ref=e180]
+                  - cell "CONFIRMED" [ref=e181]:
+                    - generic [ref=e182]: CONFIRMED
+                - row "12/15/2025 Broadway Dance Studio DANCE_COMPETITION 9 $4,800 BOOKED" [ref=e183]:
+                  - cell "12/15/2025" [ref=e184]
+                  - cell "Broadway Dance Studio" [ref=e185]
+                  - cell "DANCE_COMPETITION" [ref=e186]
+                  - cell "9" [ref=e187]
+                  - cell "$4,800" [ref=e188]
+                  - cell "BOOKED" [ref=e189]:
+                    - generic [ref=e190]: BOOKED
+                - row "12/5/2025 Star Performers Theater RECITAL 5 $3,200 SCHEDULED" [ref=e191]:
+                  - cell "12/5/2025" [ref=e192]
+                  - cell "Star Performers Theater" [ref=e193]
+                  - cell "RECITAL" [ref=e194]
+                  - cell "5" [ref=e195]
+                  - cell "$3,200" [ref=e196]
+                  - cell "SCHEDULED" [ref=e197]:
+                    - generic [ref=e198]: SCHEDULED
+                - row "12/1/2025 Acme Corp CONCERT 13 $5,000 CONFIRMED" [ref=e199]:
+                  - cell "12/1/2025" [ref=e200]
+                  - cell "Acme Corp" [ref=e201]
+                  - cell "CONCERT" [ref=e202]
+                  - cell "13" [ref=e203]
+                  - cell "$5,000" [ref=e204]
+                  - cell "CONFIRMED" [ref=e205]:
+                    - generic [ref=e206]: CONFIRMED
+                - row "11/25/2025 Unknown RECITAL 8 $0 TENTATIVE" [ref=e207]:
+                  - cell "11/25/2025" [ref=e208]
+                  - cell "Unknown" [ref=e209]
+                  - cell "RECITAL" [ref=e210]
+                  - cell "8" [ref=e211]
+                  - cell "$0" [ref=e212]
+                  - cell "TENTATIVE" [ref=e213]:
+                    - generic [ref=e214]: TENTATIVE
+                - row "11/23/2025 Elite Dance Academy DANCE_COMPETITION 36 $5,500 CONFIRMED" [ref=e215]:
+                  - cell "11/23/2025" [ref=e216]
+                  - cell "Elite Dance Academy" [ref=e217]
+                  - cell "DANCE_COMPETITION" [ref=e218]
+                  - cell "36" [ref=e219]
+                  - cell "$5,500" [ref=e220]
+                  - cell "CONFIRMED" [ref=e221]:
+                    - generic [ref=e222]: CONFIRMED
+    - button "Start voice command" [ref=e223]:
+      - img [ref=e224]
+  - generic [ref=e230]: "Build: 01b887f | 11/30/2025, 16:06 EST"
+  - alert [ref=e231]
+```
