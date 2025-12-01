@@ -1,0 +1,173 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - main [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e7]:
+          - button "◀" [ref=e8]
+          - heading "December" [level=2] [ref=e9]
+          - button "▶" [ref=e10]
+          - button "+ Event" [ref=e11]
+        - generic [ref=e13]:
+          - generic [ref=e15]: December 2025 Calendar
+          - grid [ref=e17]:
+            - generic [ref=e18]: Sun
+            - generic [ref=e19]: Mon
+            - generic [ref=e20]: Tue
+            - generic [ref=e21]: Wed
+            - generic [ref=e22]: Thu
+            - generic [ref=e23]: Fri
+            - generic [ref=e24]: Sat
+            - generic [ref=e26] [cursor=pointer]: "30"
+            - generic [ref=e27] [cursor=pointer]:
+              - generic [ref=e28]: "1"
+              - generic [ref=e31]: Acme Annual Gala
+            - generic [ref=e33] [cursor=pointer]: "2"
+            - generic [ref=e35] [cursor=pointer]: "3"
+            - generic [ref=e37] [cursor=pointer]: "4"
+            - generic [ref=e38] [cursor=pointer]:
+              - generic [ref=e39]: "5"
+              - generic [ref=e41]:
+                - generic [ref=e42]: Star Performers Winter Recital
+                - generic [ref=e43]:
+                  - generic [ref=e44]:
+                    - text: JS
+                    - button "×" [ref=e45]
+                  - generic [ref=e46]:
+                    - text: MW
+                    - button "×" [ref=e47]
+                  - generic [ref=e48]:
+                    - text: JS
+                    - button "×" [ref=e49]
+                  - generic [ref=e50]:
+                    - text: SJ
+                    - button "×" [ref=e51]
+                  - generic [ref=e52]:
+                    - text: MW
+                    - button "×" [ref=e53]
+                  - generic [ref=e54]:
+                    - text: 📷 Recital Package Standard
+                    - button "×" [ref=e55]
+            - generic [ref=e57] [cursor=pointer]: "6"
+            - generic [ref=e59] [cursor=pointer]: "7"
+            - generic [ref=e61] [cursor=pointer]: "8"
+            - generic [ref=e63] [cursor=pointer]: "9"
+            - generic [ref=e65] [cursor=pointer]: "10"
+            - generic [ref=e67] [cursor=pointer]: "11"
+            - generic [ref=e69] [cursor=pointer]: "12"
+            - generic [ref=e71] [cursor=pointer]: "13"
+            - generic [ref=e73] [cursor=pointer]: "14"
+            - generic [ref=e74] [cursor=pointer]:
+              - generic [ref=e75]: "15"
+              - generic [ref=e76]:
+                - generic [ref=e77]:
+                  - generic [ref=e78]: Broadway Dance Holiday Showcase
+                  - generic [ref=e79]:
+                    - generic [ref=e80]:
+                      - text: SJ
+                      - button "×" [ref=e81]
+                    - generic [ref=e82]:
+                      - text: MW
+                      - button "×" [ref=e83]
+                    - generic [ref=e84]:
+                      - text: JS
+                      - button "×" [ref=e85]
+                    - generic [ref=e86]:
+                      - text: SJ
+                      - button "×" [ref=e87]
+                    - generic [ref=e88]:
+                      - text: MW
+                      - button "×" [ref=e89]
+                    - generic [ref=e90]:
+                      - text: 📷 Small Event Package
+                      - button "×" [ref=e91]
+                - generic [ref=e93]: Tech Studios Launch
+            - generic [ref=e95] [cursor=pointer]: "16"
+            - generic [ref=e97] [cursor=pointer]: "17"
+            - generic [ref=e99] [cursor=pointer]: "18"
+            - generic [ref=e101] [cursor=pointer]: "19"
+            - generic [ref=e102] [cursor=pointer]:
+              - generic [ref=e103]: "20"
+              - generic [ref=e106]: Test Event - Workflow Verification
+            - generic [ref=e108] [cursor=pointer]: "21"
+            - generic [ref=e110] [cursor=pointer]: "22"
+            - generic [ref=e112] [cursor=pointer]: "23"
+            - generic [ref=e114] [cursor=pointer]: "24"
+            - generic [ref=e116] [cursor=pointer]: "25"
+            - generic [ref=e118] [cursor=pointer]: "26"
+            - generic [ref=e120] [cursor=pointer]: "27"
+            - generic [ref=e122] [cursor=pointer]: "28"
+            - generic [ref=e124] [cursor=pointer]: "29"
+            - generic [ref=e126] [cursor=pointer]: "30"
+            - generic [ref=e128] [cursor=pointer]: "31"
+            - generic [ref=e130] [cursor=pointer]: "1"
+            - generic [ref=e132] [cursor=pointer]: "2"
+            - generic [ref=e134] [cursor=pointer]: "3"
+        - dialog [ref=e136]:
+          - generic [ref=e137]:
+            - heading "Acme Annual Gala" [level=2] [ref=e138]
+            - button "×" [ref=e139]
+          - generic [ref=e140]:
+            - generic [ref=e141]:
+              - generic [ref=e142]:
+                - generic [ref=e143]: Load-In Time
+                - generic [ref=e144]: 12/1/2025, 9:00:00 AM
+              - generic [ref=e145]:
+                - generic [ref=e146]: Venue
+                - generic [ref=e147]: Convention Center
+              - generic [ref=e148]:
+                - generic [ref=e149]: Type
+                - generic [ref=e150]: CONCERT
+              - generic [ref=e151]:
+                - generic [ref=e152]: Status
+                - generic [ref=e153]: CONFIRMED
+              - generic [ref=e154]:
+                - generic [ref=e155]: Expected Revenue
+                - generic [ref=e156]: $5000.00
+            - generic [ref=e157]:
+              - heading "📋 Gig Sheets" [level=3] [ref=e158]:
+                - generic [ref=e159]: 📋
+                - text: Gig Sheets
+              - paragraph [ref=e160]: Generate event brief documents for operators with all event details, location, equipment checklists, and contacts.
+              - generic [ref=e161]:
+                - button "📄 Commander Gig Sheet" [ref=e162]:
+                  - generic [ref=e163]: 📄
+                  - text: Commander Gig Sheet
+                - button "👥 Per-Operator Gig Sheets" [ref=e164]:
+                  - generic [ref=e165]: 👥
+                  - text: Per-Operator Gig Sheets
+            - generic [ref=e166]:
+              - generic [ref=e167]:
+                - heading "Shifts & Assignments" [level=3] [ref=e168]
+                - button "+ Add Shift" [ref=e169]
+              - generic [ref=e173]:
+                - generic [ref=e174]:
+                  - generic [ref=e175]: Default Shift
+                  - generic [ref=e176]: 12/1/2025, 9:00:00 AM - 12/1/2025, 5:00:00 PM
+                - generic [ref=e177]:
+                  - button "✏️ Edit" [ref=e178]
+                  - button "+ Operator" [ref=e179]
+              - status [ref=e180]
+      - status [ref=e181]
+    - generic [ref=e183]:
+      - button "Dashboard" [ref=e184]:
+        - img [ref=e185]
+        - generic [ref=e190]: Dashboard
+      - button "Planning" [ref=e191]:
+        - img [ref=e192]
+        - generic [ref=e194]: Planning
+      - button "Pipeline" [ref=e195]:
+        - img [ref=e196]
+        - generic [ref=e199]: Pipeline
+      - button "Operators" [ref=e200]:
+        - img [ref=e201]
+        - generic [ref=e206]: Operators
+      - button "Deliverables" [ref=e207]:
+        - img [ref=e208]
+        - generic [ref=e211]: Deliverables
+    - button "Start voice command" [ref=e212]:
+      - img [ref=e213]
+  - alert [ref=e219]
+```

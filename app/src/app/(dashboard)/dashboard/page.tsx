@@ -171,10 +171,14 @@ export default function DashboardPage() {
   // Toggle widget visibility
   const handleToggleVisibility = async (widgetId: WidgetType) => {
     const currentVisibility = getWidgetVisibility(widgetId);
-    await updateVisibility.mutateAsync({
-      widgetType: widgetId,
-      isVisible: !currentVisibility,
-    });
+    try {
+      await updateVisibility.mutateAsync({
+        widgetType: widgetId,
+        isVisible: !currentVisibility,
+      });
+    } catch (error) {
+      console.error('Failed to update widget visibility:', error);
+    }
   };
 
   // Toggle dragging mode
@@ -694,6 +698,7 @@ export default function DashboardPage() {
                 size="medium"
                 onClick={() => resetPreferences.mutate()}
                 data-testid="reset-layout-button"
+                disabled={updateVisibility.isPending}
               >
                 <RotateCcw className="w-4 h-4 mr-2" />
                 Reset Layout
@@ -702,8 +707,10 @@ export default function DashboardPage() {
                 variant="primary"
                 size="medium"
                 onClick={() => setIsCustomizeOpen(false)}
+                disabled={updateVisibility.isPending}
+                data-testid="save-customization"
               >
-                Done
+                {updateVisibility.isPending ? 'Saving...' : 'Done'}
               </Button>
             </div>
           </div>

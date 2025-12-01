@@ -1,0 +1,269 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]:
+      - heading "CommandCentered" [level=1] [ref=e5]
+      - navigation [ref=e6]:
+        - link "📊 Dashboard" [ref=e7] [cursor=pointer]:
+          - /url: /dashboard
+          - generic [ref=e8]: 📊
+          - text: Dashboard
+        - link "📅 Planning" [ref=e9] [cursor=pointer]:
+          - /url: /planning
+          - generic [ref=e10]: 📅
+          - text: Planning
+        - link "🏢 Clients" [ref=e11] [cursor=pointer]:
+          - /url: /clients
+          - generic [ref=e12]: 🏢
+          - text: Clients
+        - link "⚡ Pipeline" [ref=e13] [cursor=pointer]:
+          - /url: /pipeline
+          - generic [ref=e14]: ⚡
+          - text: Pipeline
+        - link "🎥 Gear Inventory" [ref=e15] [cursor=pointer]:
+          - /url: /gear
+          - generic [ref=e16]: 🎥
+          - text: Gear Inventory
+        - link "👥 Operators" [ref=e17] [cursor=pointer]:
+          - /url: /operators
+          - generic [ref=e18]: 👥
+          - text: Operators
+        - link "📦 Deliverables" [ref=e19] [cursor=pointer]:
+          - /url: /deliverables
+          - generic [ref=e20]: 📦
+          - text: Deliverables
+        - link "💬 Communications" [ref=e21] [cursor=pointer]:
+          - /url: /communications
+          - generic [ref=e22]: 💬
+          - text: Communications
+        - link "📁 Files & Assets" [ref=e23] [cursor=pointer]:
+          - /url: /files
+          - generic [ref=e24]: 📁
+          - text: Files & Assets
+        - link "📈 Reports" [ref=e25] [cursor=pointer]:
+          - /url: /reports
+          - generic [ref=e26]: 📈
+          - text: Reports
+        - link "⚡ Quick Onboard" [ref=e27] [cursor=pointer]:
+          - /url: /admin/quick-onboard
+          - generic [ref=e28]: ⚡
+          - text: Quick Onboard
+        - link "👤 Operator Portal" [ref=e29] [cursor=pointer]:
+          - /url: /operator-portal
+          - generic [ref=e30]: 👤
+          - text: Operator Portal
+        - link "🔧 Settings" [ref=e31] [cursor=pointer]:
+          - /url: /settings
+          - generic [ref=e32]: 🔧
+          - text: Settings
+    - main [ref=e34]:
+      - generic [ref=e35]:
+        - generic [ref=e37]:
+          - generic [ref=e38]:
+            - heading "SCHEDULING COMMAND CENTER" [level=1] [ref=e39]
+            - paragraph [ref=e40]: Drag operators & kits to calendar • 3-Panel Layout
+          - generic [ref=e41]:
+            - button "◀ Prev" [ref=e42]
+            - heading "December 2025" [level=2] [ref=e43]
+            - button "Next ▶" [ref=e44]
+            - button "+ NEW EVENT" [ref=e45]
+        - generic [ref=e46]:
+          - generic [ref=e47]:
+            - generic [ref=e48]:
+              - heading "Operators" [level=3] [ref=e49]
+              - generic [ref=e50]:
+                - button "↕" [ref=e51]
+                - button "+" [ref=e52]
+            - generic [ref=e53]:
+              - button "⋮⋮ John Smith (JS) Available Full Day" [ref=e54]:
+                - generic [ref=e55]: ⋮⋮
+                - generic [ref=e56]: John Smith (JS)
+                - generic [ref=e57]: Available Full Day
+              - button "⋮⋮ John Smith (JS) Available Full Day" [ref=e59]:
+                - generic [ref=e60]: ⋮⋮
+                - generic [ref=e61]: John Smith (JS)
+                - generic [ref=e62]: Available Full Day
+              - button "⋮⋮ Mike Williams (MW) Available Full Day" [ref=e64]:
+                - generic [ref=e65]: ⋮⋮
+                - generic [ref=e66]: Mike Williams (MW)
+                - generic [ref=e67]: Available Full Day
+              - button "⋮⋮ Sarah Johnson (SJ) Available Full Day" [ref=e69]:
+                - generic [ref=e70]: ⋮⋮
+                - generic [ref=e71]: Sarah Johnson (SJ)
+                - generic [ref=e72]: Available Full Day
+              - button "⋮⋮ Sarah Jones (SJ) Available Full Day" [ref=e74]:
+                - generic [ref=e75]: ⋮⋮
+                - generic [ref=e76]: Sarah Jones (SJ)
+                - generic [ref=e77]: Available Full Day
+              - button "⋮⋮ Test Operator Fixed (TF) Available Full Day" [ref=e79]:
+                - generic [ref=e80]: ⋮⋮
+                - generic [ref=e81]: Test Operator Fixed (TF)
+                - generic [ref=e82]: Available Full Day
+          - generic [ref=e84]:
+            - generic [ref=e86]: December 2025 Calendar
+            - grid [ref=e88]:
+              - generic [ref=e89]: Sun
+              - generic [ref=e90]: Mon
+              - generic [ref=e91]: Tue
+              - generic [ref=e92]: Wed
+              - generic [ref=e93]: Thu
+              - generic [ref=e94]: Fri
+              - generic [ref=e95]: Sat
+              - generic [ref=e97] [cursor=pointer]: "30"
+              - generic [ref=e98] [cursor=pointer]:
+                - generic [ref=e99]: "1"
+                - generic [ref=e102]: Acme Annual Gala
+              - generic [ref=e104] [cursor=pointer]: "2"
+              - generic [ref=e106] [cursor=pointer]: "3"
+              - generic [ref=e108] [cursor=pointer]: "4"
+              - generic [ref=e109] [cursor=pointer]:
+                - generic [ref=e110]: "5"
+                - generic [ref=e112]:
+                  - generic [ref=e113]: Star Performers Winter Recital
+                  - generic [ref=e114]:
+                    - generic [ref=e115]:
+                      - text: JS
+                      - button "×" [ref=e116]
+                    - generic [ref=e117]:
+                      - text: MW
+                      - button "×" [ref=e118]
+                    - generic [ref=e119]:
+                      - text: JS
+                      - button "×" [ref=e120]
+                    - generic [ref=e121]:
+                      - text: SJ
+                      - button "×" [ref=e122]
+                    - generic [ref=e123]:
+                      - text: MW
+                      - button "×" [ref=e124]
+                    - generic [ref=e125]:
+                      - text: 📷 Recital Package Standard
+                      - button "×" [ref=e126]
+              - generic [ref=e128] [cursor=pointer]: "6"
+              - generic [ref=e130] [cursor=pointer]: "7"
+              - generic [ref=e132] [cursor=pointer]: "8"
+              - generic [ref=e134] [cursor=pointer]: "9"
+              - generic [ref=e136] [cursor=pointer]: "10"
+              - generic [ref=e138] [cursor=pointer]: "11"
+              - generic [ref=e140] [cursor=pointer]: "12"
+              - generic [ref=e142] [cursor=pointer]: "13"
+              - generic [ref=e144] [cursor=pointer]: "14"
+              - generic [ref=e145] [cursor=pointer]:
+                - generic [ref=e146]: "15"
+                - generic [ref=e147]:
+                  - generic [ref=e148]:
+                    - generic [ref=e149]: Broadway Dance Holiday Showcase
+                    - generic [ref=e150]:
+                      - generic [ref=e151]:
+                        - text: SJ
+                        - button "×" [ref=e152]
+                      - generic [ref=e153]:
+                        - text: MW
+                        - button "×" [ref=e154]
+                      - generic [ref=e155]:
+                        - text: JS
+                        - button "×" [ref=e156]
+                      - generic [ref=e157]:
+                        - text: SJ
+                        - button "×" [ref=e158]
+                      - generic [ref=e159]:
+                        - text: MW
+                        - button "×" [ref=e160]
+                      - generic [ref=e161]:
+                        - text: 📷 Small Event Package
+                        - button "×" [ref=e162]
+                  - generic [ref=e164]: Tech Studios Launch
+              - generic [ref=e166] [cursor=pointer]: "16"
+              - generic [ref=e168] [cursor=pointer]: "17"
+              - generic [ref=e170] [cursor=pointer]: "18"
+              - generic [ref=e172] [cursor=pointer]: "19"
+              - generic [ref=e173] [cursor=pointer]:
+                - generic [ref=e174]: "20"
+                - generic [ref=e177]: Test Event - Workflow Verification
+              - generic [ref=e179] [cursor=pointer]: "21"
+              - generic [ref=e181] [cursor=pointer]: "22"
+              - generic [ref=e183] [cursor=pointer]: "23"
+              - generic [ref=e185] [cursor=pointer]: "24"
+              - generic [ref=e187] [cursor=pointer]: "25"
+              - generic [ref=e189] [cursor=pointer]: "26"
+              - generic [ref=e191] [cursor=pointer]: "27"
+              - generic [ref=e193] [cursor=pointer]: "28"
+              - generic [ref=e195] [cursor=pointer]: "29"
+              - generic [ref=e197] [cursor=pointer]: "30"
+              - generic [ref=e199] [cursor=pointer]: "31"
+              - generic [ref=e201] [cursor=pointer]: "1"
+              - generic [ref=e203] [cursor=pointer]: "2"
+              - generic [ref=e205] [cursor=pointer]: "3"
+          - generic [ref=e206]:
+            - generic [ref=e207]:
+              - heading "Kits" [level=3] [ref=e208]
+              - generic [ref=e209]:
+                - button "🔍" [ref=e210]
+                - button "+" [ref=e211]
+            - generic [ref=e212]:
+              - button "⋮⋮ 📷 Competition Package Pro 13 items ✓ Available" [ref=e213]:
+                - generic [ref=e214]: ⋮⋮
+                - generic [ref=e215]: 📷 Competition Package Pro
+                - generic [ref=e216]: 13 items
+                - generic [ref=e217]: ✓ Available
+              - button "⋮⋮ 📷 Recital Package Standard 3 items ✓ Available" [ref=e218]:
+                - generic [ref=e219]: ⋮⋮
+                - generic [ref=e220]: 📷 Recital Package Standard
+                - generic [ref=e221]: 3 items
+                - generic [ref=e222]: ✓ Available
+              - button "⋮⋮ 📷 Small Event Package 3 items ✓ Available" [ref=e223]:
+                - generic [ref=e224]: ⋮⋮
+                - generic [ref=e225]: 📷 Small Event Package
+                - generic [ref=e226]: 3 items
+                - generic [ref=e227]: ✓ Available
+              - button "⋮⋮ 📷 TEstKit 0 items ✓ Available" [ref=e228]:
+                - generic [ref=e229]: ⋮⋮
+                - generic [ref=e230]: 📷 TEstKit
+                - generic [ref=e231]: 0 items
+                - generic [ref=e232]: ✓ Available
+        - dialog [ref=e234]:
+          - generic [ref=e235]:
+            - heading "Acme Annual Gala" [level=2] [ref=e236]
+            - button "×" [ref=e237]
+          - generic [ref=e238]:
+            - generic [ref=e239]:
+              - generic [ref=e240]:
+                - generic [ref=e241]: Load-In Time
+                - generic [ref=e242]: 12/1/2025, 9:00:00 AM
+              - generic [ref=e243]:
+                - generic [ref=e244]: Venue
+                - generic [ref=e245]: Convention Center
+              - generic [ref=e246]:
+                - generic [ref=e247]: Type
+                - generic [ref=e248]: CONCERT
+              - generic [ref=e249]:
+                - generic [ref=e250]: Status
+                - generic [ref=e251]: CONFIRMED
+              - generic [ref=e252]:
+                - generic [ref=e253]: Expected Revenue
+                - generic [ref=e254]: $5000.00
+            - generic [ref=e255]:
+              - heading "📋 Gig Sheets" [level=3] [ref=e256]:
+                - generic [ref=e257]: 📋
+                - text: Gig Sheets
+              - paragraph [ref=e258]: Generate event brief documents for operators with all event details, location, equipment checklists, and contacts.
+              - generic [ref=e259]:
+                - button "📄 Commander Gig Sheet" [ref=e260]:
+                  - generic [ref=e261]: 📄
+                  - text: Commander Gig Sheet
+                - button "👥 Per-Operator Gig Sheets" [ref=e262]:
+                  - generic [ref=e263]: 👥
+                  - text: Per-Operator Gig Sheets
+            - generic [ref=e264]:
+              - generic [ref=e265]:
+                - heading "Shifts & Assignments" [level=3] [ref=e266]
+                - button "+ Add Shift" [ref=e267]
+              - generic [ref=e268]: No shifts created yet. Click "Add Shift" to get started.
+      - status [ref=e269]
+    - button "Start voice command" [ref=e270]:
+      - img [ref=e271]
+  - generic [ref=e277]: "Build: 91b4d07 | 12/01/2025, 12:53 EST"
+  - alert [ref=e278]
+```

@@ -1,0 +1,312 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]:
+      - heading "CommandCentered" [level=1] [ref=e5]
+      - navigation [ref=e6]:
+        - link "📊 Dashboard" [ref=e7] [cursor=pointer]:
+          - /url: /dashboard
+          - generic [ref=e8]: 📊
+          - text: Dashboard
+        - link "📅 Planning" [ref=e9] [cursor=pointer]:
+          - /url: /planning
+          - generic [ref=e10]: 📅
+          - text: Planning
+        - link "🏢 Clients" [ref=e11] [cursor=pointer]:
+          - /url: /clients
+          - generic [ref=e12]: 🏢
+          - text: Clients
+        - link "⚡ Pipeline" [ref=e13] [cursor=pointer]:
+          - /url: /pipeline
+          - generic [ref=e14]: ⚡
+          - text: Pipeline
+        - link "🎥 Gear Inventory" [ref=e15] [cursor=pointer]:
+          - /url: /gear
+          - generic [ref=e16]: 🎥
+          - text: Gear Inventory
+        - link "👥 Operators" [ref=e17] [cursor=pointer]:
+          - /url: /operators
+          - generic [ref=e18]: 👥
+          - text: Operators
+        - link "📦 Deliverables" [ref=e19] [cursor=pointer]:
+          - /url: /deliverables
+          - generic [ref=e20]: 📦
+          - text: Deliverables
+        - link "💬 Communications" [ref=e21] [cursor=pointer]:
+          - /url: /communications
+          - generic [ref=e22]: 💬
+          - text: Communications
+        - link "📁 Files & Assets" [ref=e23] [cursor=pointer]:
+          - /url: /files
+          - generic [ref=e24]: 📁
+          - text: Files & Assets
+        - link "📈 Reports" [ref=e25] [cursor=pointer]:
+          - /url: /reports
+          - generic [ref=e26]: 📈
+          - text: Reports
+        - link "⚡ Quick Onboard" [ref=e27] [cursor=pointer]:
+          - /url: /admin/quick-onboard
+          - generic [ref=e28]: ⚡
+          - text: Quick Onboard
+        - link "👤 Operator Portal" [ref=e29] [cursor=pointer]:
+          - /url: /operator-portal
+          - generic [ref=e30]: 👤
+          - text: Operator Portal
+        - link "🔧 Settings" [ref=e31] [cursor=pointer]:
+          - /url: /settings
+          - generic [ref=e32]: 🔧
+          - text: Settings
+    - main [ref=e34]:
+      - generic [ref=e35]:
+        - generic [ref=e37]:
+          - generic [ref=e38]:
+            - heading "Dashboard" [level=1] [ref=e39]
+            - generic [ref=e40]: Good afternoon, Commander
+          - generic [ref=e41]:
+            - button "➕ New Event" [ref=e42]
+            - button "Dragging ON" [ref=e43]:
+              - img [ref=e44]
+              - text: Dragging ON
+            - button "Customize" [ref=e49]:
+              - img [ref=e50]
+              - generic [ref=e53]: Customize
+        - generic [ref=e54]:
+          - generic [ref=e56]:
+            - generic [ref=e58] [cursor=pointer]:
+              - generic [ref=e59]:
+                - paragraph [ref=e60]:
+                  - text: Upcoming Events
+                  - img [ref=e61]
+                - paragraph [ref=e65]: "4"
+              - img [ref=e67]
+            - generic [ref=e70] [cursor=pointer]:
+              - generic [ref=e71]:
+                - paragraph [ref=e72]:
+                  - text: Active Operators
+                  - img [ref=e73]
+                - paragraph [ref=e77]: "6"
+              - img [ref=e79]
+            - generic [ref=e85] [cursor=pointer]:
+              - generic [ref=e86]:
+                - paragraph [ref=e87]:
+                  - text: Gear Items
+                  - img [ref=e88]
+                - paragraph [ref=e92]: "24"
+              - img [ref=e94]
+            - generic [ref=e99] [cursor=pointer]:
+              - generic [ref=e100]:
+                - paragraph [ref=e101]:
+                  - text: Total Revenue
+                  - img [ref=e102]
+                - paragraph [ref=e106]: $36,600
+              - img [ref=e108]
+          - generic [ref=e115]:
+            - generic [ref=e116]:
+              - heading "Event Pipeline" [level=3] [ref=e117]
+              - img [ref=e118]
+            - generic [ref=e121]:
+              - generic [ref=e124]:
+                - generic [ref=e125]: Proposal
+                - generic [ref=e126]: "0"
+              - generic [ref=e130]:
+                - generic [ref=e131]: Tentative
+                - generic [ref=e132]: "2"
+              - generic [ref=e137]:
+                - generic [ref=e138]: Booked
+                - generic [ref=e139]: "1"
+              - generic [ref=e144]:
+                - generic [ref=e145]: Confirmed
+                - generic [ref=e146]: "3"
+              - generic [ref=e151]:
+                - generic [ref=e152]: In Progress
+                - generic [ref=e153]: "0"
+              - generic [ref=e157]:
+                - generic [ref=e158]: Completed
+                - generic [ref=e159]: "0"
+          - generic [ref=e166]:
+            - generic [ref=e167]:
+              - heading "Revenue Overview" [level=3] [ref=e168]
+              - img [ref=e169]
+            - generic [ref=e171]:
+              - generic [ref=e173]:
+                - generic [ref=e174]: Expected Revenue
+                - generic [ref=e175]: $22,000
+              - generic [ref=e179]:
+                - generic [ref=e180]: Actual Revenue
+                - generic [ref=e181]: $0
+              - generic [ref=e184]:
+                - generic [ref=e185]: Cancelled Penalty
+                - generic [ref=e186]: $0
+          - generic [ref=e192] [cursor=pointer]:
+            - generic [ref=e193]:
+              - heading "📦 Deliverables" [level=3] [ref=e194]
+              - img [ref=e195]
+            - generic [ref=e200]:
+              - generic [ref=e201]:
+                - generic [ref=e202]: Overdue
+                - generic [ref=e204]: "0"
+              - generic [ref=e205]:
+                - generic [ref=e206]: Due This Week
+                - generic [ref=e208]: "0"
+              - generic [ref=e209]:
+                - generic [ref=e210]: In Progress
+                - generic [ref=e212]: "0"
+          - generic [ref=e218]:
+            - generic [ref=e219]:
+              - heading "Upcoming Events" [level=3] [ref=e220]
+              - img [ref=e221]
+            - generic [ref=e225] [cursor=pointer]:
+              - generic [ref=e226]:
+                - heading "Star Performers Winter Recital" [level=4] [ref=e227]:
+                  - text: Star Performers Winter Recital
+                  - img [ref=e228]
+                - paragraph [ref=e232]: Star Performers Theater
+              - generic [ref=e233]:
+                - paragraph [ref=e234]: 12/5/2025
+                - paragraph [ref=e235]: 12:00 PM
+          - generic [ref=e241]:
+            - generic [ref=e242]:
+              - heading "Critical Alerts" [level=3] [ref=e243]
+              - img [ref=e244]
+            - generic [ref=e246]:
+              - generic [ref=e248] [cursor=pointer]:
+                - img [ref=e249]
+                - generic [ref=e251]:
+                  - heading "Star Performers Winter Recital" [level=4] [ref=e252]:
+                    - text: Star Performers Winter Recital
+                    - img [ref=e253]
+                  - paragraph [ref=e257]: 12/5/2025
+                  - list [ref=e258]:
+                    - listitem [ref=e259]: • 1 shift(s) missing operators
+              - generic [ref=e261] [cursor=pointer]:
+                - img [ref=e262]
+                - generic [ref=e264]:
+                  - heading "Tech Studios Launch" [level=4] [ref=e265]:
+                    - text: Tech Studios Launch
+                    - img [ref=e266]
+                  - paragraph [ref=e270]: 12/15/2025
+                  - list [ref=e271]:
+                    - listitem [ref=e272]: • No gear assigned
+          - generic [ref=e278]:
+            - generic [ref=e279]:
+              - heading "Recent Activity" [level=3] [ref=e280]
+              - img [ref=e281]
+            - generic [ref=e284]:
+              - generic [ref=e285] [cursor=pointer]:
+                - img [ref=e287]
+                - generic [ref=e290]:
+                  - generic [ref=e291]:
+                    - heading "Acme Annual Gala" [level=4] [ref=e292]:
+                      - text: Acme Annual Gala
+                      - img [ref=e293]
+                    - paragraph [ref=e297]: Event created
+                  - generic [ref=e298]:
+                    - paragraph [ref=e299]: 11/29/2025
+                    - text: CONFIRMED
+              - generic [ref=e300] [cursor=pointer]:
+                - img [ref=e302]
+                - generic [ref=e305]:
+                  - generic [ref=e306]:
+                    - heading "Tech Studios Launch" [level=4] [ref=e307]:
+                      - text: Tech Studios Launch
+                      - img [ref=e308]
+                    - paragraph [ref=e312]: Event created
+                  - generic [ref=e313]:
+                    - paragraph [ref=e314]: 11/29/2025
+                    - text: CONFIRMED
+              - generic [ref=e315] [cursor=pointer]:
+                - img [ref=e317]
+                - generic [ref=e320]:
+                  - generic [ref=e321]:
+                    - heading "Test Event With Client" [level=4] [ref=e322]:
+                      - text: Test Event With Client
+                      - img [ref=e323]
+                    - paragraph [ref=e327]: Event created
+                  - generic [ref=e328]:
+                    - paragraph [ref=e329]: 11/19/2025
+                    - text: TENTATIVE
+              - generic [ref=e330] [cursor=pointer]:
+                - img [ref=e332]
+                - generic [ref=e335]:
+                  - generic [ref=e336]:
+                    - heading "Test Event - Workflow Verification" [level=4] [ref=e337]:
+                      - text: Test Event - Workflow Verification
+                      - img [ref=e338]
+                    - paragraph [ref=e342]: Event created
+                  - generic [ref=e343]:
+                    - paragraph [ref=e344]: 11/19/2025
+                    - text: TENTATIVE
+              - generic [ref=e345] [cursor=pointer]:
+                - img [ref=e347]
+                - generic [ref=e350]:
+                  - generic [ref=e351]:
+                    - heading "Elite Dance Competition Fall Championships" [level=4] [ref=e352]:
+                      - text: Elite Dance Competition Fall Championships
+                      - img [ref=e353]
+                    - paragraph [ref=e357]: Event created
+                  - generic [ref=e358]:
+                    - paragraph [ref=e359]: 11/19/2025
+                    - text: CONFIRMED
+              - generic [ref=e360] [cursor=pointer]:
+                - img [ref=e362]
+                - generic [ref=e365]:
+                  - generic [ref=e366]:
+                    - heading "Broadway Dance Holiday Showcase" [level=4] [ref=e367]:
+                      - text: Broadway Dance Holiday Showcase
+                      - img [ref=e368]
+                    - paragraph [ref=e372]: Event created
+                  - generic [ref=e373]:
+                    - paragraph [ref=e374]: 11/19/2025
+                    - text: BOOKED
+              - generic [ref=e375] [cursor=pointer]:
+                - img [ref=e377]
+                - generic [ref=e380]:
+                  - generic [ref=e381]:
+                    - heading "Star Performers Winter Recital" [level=4] [ref=e382]:
+                      - text: Star Performers Winter Recital
+                      - img [ref=e383]
+                    - paragraph [ref=e387]: Event created
+                  - generic [ref=e388]:
+                    - paragraph [ref=e389]: 11/19/2025
+                    - text: SCHEDULED
+    - button "Start voice command" [ref=e394]:
+      - img [ref=e395]
+  - generic [ref=e401]: "Build: 91b4d07 | 12/01/2025, 12:53 EST"
+  - alert [ref=e402]
+  - dialog [ref=e405]:
+    - generic [ref=e406]:
+      - heading "Customize Dashboard" [level=2] [ref=e407]
+      - button "Close modal" [ref=e408]:
+        - img [ref=e409]
+    - generic [ref=e413]:
+      - paragraph [ref=e414]: Toggle widgets on or off, then drag and resize them to customize your dashboard layout.
+      - generic [ref=e415]:
+        - generic [ref=e416] [cursor=pointer]:
+          - checkbox "Overview Stats" [checked] [active] [ref=e417]
+          - generic [ref=e418]: Overview Stats
+        - generic [ref=e419] [cursor=pointer]:
+          - checkbox "Event Pipeline" [checked] [ref=e420]
+          - generic [ref=e421]: Event Pipeline
+        - generic [ref=e422] [cursor=pointer]:
+          - checkbox "Revenue Overview" [checked] [ref=e423]
+          - generic [ref=e424]: Revenue Overview
+        - generic [ref=e425] [cursor=pointer]:
+          - checkbox "Deliverables" [checked] [ref=e426]
+          - generic [ref=e427]: Deliverables
+        - generic [ref=e428] [cursor=pointer]:
+          - checkbox "Upcoming Events" [checked] [ref=e429]
+          - generic [ref=e430]: Upcoming Events
+        - generic [ref=e431] [cursor=pointer]:
+          - checkbox "Critical Alerts" [checked] [ref=e432]
+          - generic [ref=e433]: Critical Alerts
+        - generic [ref=e434] [cursor=pointer]:
+          - checkbox "Recent Activity" [checked] [ref=e435]
+          - generic [ref=e436]: Recent Activity
+      - generic [ref=e437]:
+        - button "Reset Layout" [ref=e438]:
+          - img [ref=e439]
+          - text: Reset Layout
+        - button "Done" [ref=e442]
+```
