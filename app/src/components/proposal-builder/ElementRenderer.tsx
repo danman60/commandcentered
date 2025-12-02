@@ -38,8 +38,35 @@ export function ElementRenderer({
     case 'textarea':
       return <TextareaElement element={element} register={register} errors={errors} />;
 
+    case 'date_picker':
+      return <DatePickerElement element={element} register={register} errors={errors} />;
+
+    case 'dropdown':
+      return <DropdownElement element={element} register={register} errors={errors} />;
+
+    case 'radio_group':
+      return <RadioGroupElement element={element} register={register} errors={errors} />;
+
+    case 'checkbox_group':
+      return <CheckboxGroupElement element={element} register={register} formValues={formValues} />;
+
     case 'service_toggles':
       return <ServiceTogglesElement element={element} register={register} formValues={formValues} />;
+
+    case 'pricing_tiers':
+      return <PricingTiersElement element={element} formValues={formValues} />;
+
+    case 'package_tiers':
+      return <PackageTiersElement element={element} register={register} formValues={formValues} />;
+
+    case 'rich_text':
+      return <RichTextElement element={element} />;
+
+    case 'image':
+      return <ImageElement element={element} />;
+
+    case 'video':
+      return <VideoElement element={element} />;
 
     case 'pricing_summary':
       return <PricingSummaryElement element={element} pricing={pricing} />;
@@ -366,6 +393,385 @@ function SubmitButtonElement({ element }: { element: ProposalElement }) {
       >
         {element.config.label || 'Submit'}
       </button>
+    </div>
+  );
+}
+
+function DatePickerElement({
+  element,
+  register,
+  errors,
+}: {
+  element: ProposalElement;
+  register: UseFormRegister<any>;
+  errors: FieldErrors;
+}) {
+  const fieldName = element.id;
+  const error = errors[fieldName];
+
+  return (
+    <div className="bg-white rounded-lg p-6 shadow-sm">
+      <label className="block text-sm font-medium text-gray-900 mb-2">
+        {element.config.label}
+        {element.config.required && <span className="text-red-500 ml-1">*</span>}
+      </label>
+      <input
+        type="date"
+        {...register(fieldName, {
+          required: element.config.required ? `${element.config.label} is required` : false,
+        })}
+        min={element.config.minDate}
+        max={element.config.maxDate}
+        defaultValue={element.config.defaultValue}
+        className={cn(
+          'w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors',
+          error ? 'border-red-500' : 'border-gray-300'
+        )}
+      />
+      {element.config.helpText && !error && (
+        <p className="text-sm text-gray-500 mt-1">{element.config.helpText}</p>
+      )}
+      {error && (
+        <p className="text-sm text-red-500 mt-1">{error.message as string}</p>
+      )}
+    </div>
+  );
+}
+
+function DropdownElement({
+  element,
+  register,
+  errors,
+}: {
+  element: ProposalElement;
+  register: UseFormRegister<any>;
+  errors: FieldErrors;
+}) {
+  const fieldName = element.id;
+  const error = errors[fieldName];
+
+  return (
+    <div className="bg-white rounded-lg p-6 shadow-sm">
+      <label className="block text-sm font-medium text-gray-900 mb-2">
+        {element.config.label}
+        {element.config.required && <span className="text-red-500 ml-1">*</span>}
+      </label>
+      <select
+        {...register(fieldName, {
+          required: element.config.required ? `${element.config.label} is required` : false,
+        })}
+        defaultValue={element.config.defaultValue || ''}
+        className={cn(
+          'w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors',
+          error ? 'border-red-500' : 'border-gray-300'
+        )}
+      >
+        <option value="">Select an option...</option>
+        {element.config.options?.map((option: any) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+            {option.priceModifier && ` (+$${option.priceModifier})`}
+          </option>
+        ))}
+      </select>
+      {element.config.helpText && !error && (
+        <p className="text-sm text-gray-500 mt-1">{element.config.helpText}</p>
+      )}
+      {error && (
+        <p className="text-sm text-red-500 mt-1">{error.message as string}</p>
+      )}
+    </div>
+  );
+}
+
+function RadioGroupElement({
+  element,
+  register,
+  errors,
+}: {
+  element: ProposalElement;
+  register: UseFormRegister<any>;
+  errors: FieldErrors;
+}) {
+  const fieldName = element.id;
+  const error = errors[fieldName];
+
+  return (
+    <div className="bg-white rounded-lg p-6 shadow-sm">
+      <label className="block text-sm font-medium text-gray-900 mb-3">
+        {element.config.label}
+        {element.config.required && <span className="text-red-500 ml-1">*</span>}
+      </label>
+      <div
+        className={cn(
+          'space-y-2',
+          element.config.layout === 'horizontal' && 'flex gap-4 space-y-0'
+        )}
+      >
+        {element.config.options?.map((option: any) => (
+          <label
+            key={option.value}
+            className="flex items-start gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer"
+          >
+            <input
+              type="radio"
+              {...register(fieldName, {
+                required: element.config.required ? `${element.config.label} is required` : false,
+              })}
+              value={option.value}
+              className="mt-1 w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+            />
+            <div className="flex-1">
+              <div className="font-medium text-gray-900">{option.label}</div>
+              {option.description && (
+                <p className="text-sm text-gray-600">{option.description}</p>
+              )}
+              {option.priceModifier && (
+                <p className="text-sm font-semibold text-blue-600 mt-1">
+                  +${option.priceModifier}
+                </p>
+              )}
+            </div>
+          </label>
+        ))}
+      </div>
+      {error && (
+        <p className="text-sm text-red-500 mt-2">{error.message as string}</p>
+      )}
+    </div>
+  );
+}
+
+function CheckboxGroupElement({
+  element,
+  register,
+  formValues,
+}: {
+  element: ProposalElement;
+  register: UseFormRegister<any>;
+  formValues: Record<string, any>;
+}) {
+  return (
+    <div className="bg-white rounded-lg p-6 shadow-sm">
+      <label className="block text-sm font-medium text-gray-900 mb-3">
+        {element.config.label}
+      </label>
+      <div
+        className={cn(
+          'space-y-2',
+          element.config.layout === 'horizontal' && 'flex flex-wrap gap-4 space-y-0'
+        )}
+      >
+        {element.config.options?.map((option: any) => (
+          <label
+            key={option.value}
+            className="flex items-start gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer"
+          >
+            <input
+              type="checkbox"
+              {...register(`${element.id}.${option.value}`)}
+              className="mt-1 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+            />
+            <div className="flex-1">
+              <div className="font-medium text-gray-900">{option.label}</div>
+              {option.description && (
+                <p className="text-sm text-gray-600">{option.description}</p>
+              )}
+              {option.priceModifier && (
+                <p className="text-sm font-semibold text-blue-600 mt-1">
+                  +${option.priceModifier}
+                </p>
+              )}
+            </div>
+          </label>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function PricingTiersElement({
+  element,
+  formValues,
+}: {
+  element: ProposalElement;
+  formValues: Record<string, any>;
+}) {
+  const quantity = formValues[element.config.basedOn] || 0;
+  const tiers = element.config.tiers || [];
+
+  // Find active tier
+  const activeTier = tiers.find((tier: any) => {
+    if (quantity < tier.minQty) return false;
+    if (tier.maxQty === null) return true;
+    return quantity <= tier.maxQty;
+  });
+
+  return (
+    <div className="bg-white rounded-lg p-6 shadow-sm">
+      <h3 className="text-lg font-semibold text-gray-900 mb-4">
+        {element.config.label || 'Pricing'}
+      </h3>
+      <div className="space-y-2">
+        {tiers.map((tier: any, index: number) => {
+          const isActive = activeTier === tier;
+          return (
+            <div
+              key={index}
+              className={cn(
+                'p-4 border-2 rounded-lg transition-all',
+                isActive ? 'border-blue-500 bg-blue-50' : 'border-gray-200 bg-gray-50'
+              )}
+            >
+              <div className="flex justify-between items-center">
+                <span className="font-medium text-gray-900">
+                  {tier.label || `${tier.minQty}-${tier.maxQty || '∞'} units`}
+                </span>
+                <span className="text-lg font-bold text-blue-600">
+                  ${tier.pricePerUnit}/unit
+                </span>
+              </div>
+              {isActive && element.config.showCalculation && quantity > 0 && (
+                <p className="text-sm text-gray-600 mt-2">
+                  {quantity} × ${tier.pricePerUnit} = ${(quantity * tier.pricePerUnit).toFixed(2)}
+                </p>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function PackageTiersElement({
+  element,
+  register,
+  formValues,
+}: {
+  element: ProposalElement;
+  register: UseFormRegister<any>;
+  formValues: Record<string, any>;
+}) {
+  const packages = element.config.packages || [];
+
+  return (
+    <div className="bg-white rounded-lg p-6 shadow-sm">
+      <h3 className="text-lg font-semibold text-gray-900 mb-4">
+        {element.config.label || 'Choose Your Package'}
+      </h3>
+      <div
+        className={cn(
+          'gap-4',
+          element.config.layout === 'cards' ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' : 'flex flex-col'
+        )}
+      >
+        {packages.map((pkg: any) => {
+          const fieldName = `package.${pkg.id}`;
+          const isSelected = formValues[fieldName];
+
+          return (
+            <label
+              key={pkg.id}
+              className={cn(
+                'relative p-6 border-2 rounded-lg cursor-pointer transition-all hover:shadow-lg',
+                isSelected ? 'border-blue-500 bg-blue-50' : 'border-gray-200 bg-white',
+                pkg.recommended && 'ring-2 ring-blue-400'
+              )}
+            >
+              {pkg.recommended && (
+                <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-xs font-semibold px-3 py-1 rounded-full">
+                  Recommended
+                </span>
+              )}
+              <input
+                type={element.config.allowMultiple ? 'checkbox' : 'radio'}
+                {...register(fieldName)}
+                className="sr-only"
+              />
+              <div className="text-center">
+                {pkg.icon && <div className="text-4xl mb-3">{pkg.icon}</div>}
+                <h4 className="text-xl font-bold text-gray-900 mb-2">{pkg.name}</h4>
+                <p className="text-3xl font-bold text-blue-600 mb-4">${pkg.price.toLocaleString()}</p>
+                <ul className="text-left space-y-2 text-sm text-gray-600">
+                  {pkg.features?.map((feature: string, idx: number) => (
+                    <li key={idx} className="flex items-start gap-2">
+                      <span className="text-green-500 mt-0.5">✓</span>
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </label>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function RichTextElement({ element }: { element: ProposalElement }) {
+  return (
+    <div className="bg-white rounded-lg p-6 shadow-sm">
+      <div
+        className={cn(
+          'prose max-w-none',
+          element.config.fontSize === 'sm' && 'text-sm',
+          element.config.fontSize === 'lg' && 'text-lg'
+        )}
+        style={{ textAlign: element.config.textAlign || 'left' }}
+        dangerouslySetInnerHTML={{ __html: element.config.content || '' }}
+      />
+    </div>
+  );
+}
+
+function ImageElement({ element }: { element: ProposalElement }) {
+  if (!element.config.src) return null;
+
+  const alignmentClasses = {
+    left: 'mr-auto',
+    center: 'mx-auto',
+    right: 'ml-auto',
+  };
+
+  return (
+    <div className="bg-white rounded-lg p-6 shadow-sm">
+      <img
+        src={element.config.src}
+        alt={element.config.alt || ''}
+        className={cn(
+          'rounded-lg',
+          alignmentClasses[element.config.alignment as keyof typeof alignmentClasses] || 'mx-auto'
+        )}
+        style={{ width: element.config.width ? `${element.config.width}%` : 'auto' }}
+      />
+      {element.config.caption && (
+        <p className="text-sm text-gray-600 text-center mt-2">{element.config.caption}</p>
+      )}
+    </div>
+  );
+}
+
+function VideoElement({ element }: { element: ProposalElement }) {
+  if (!element.config.embedUrl) return null;
+
+  const aspectRatioClasses = {
+    '16:9': 'aspect-video',
+    '4:3': 'aspect-[4/3]',
+    '1:1': 'aspect-square',
+  };
+
+  return (
+    <div className="bg-white rounded-lg p-6 shadow-sm">
+      <div className={cn('w-full rounded-lg overflow-hidden', aspectRatioClasses[element.config.aspectRatio as keyof typeof aspectRatioClasses] || 'aspect-video')}>
+        <iframe
+          src={element.config.embedUrl}
+          className="w-full h-full"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        />
+      </div>
     </div>
   );
 }

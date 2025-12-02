@@ -322,6 +322,115 @@ function getDefaultConfig(type: ProposalElement['type']): Record<string, any> {
         successMessage: 'Thank you! We will be in touch soon.',
       };
 
+    case 'date_picker':
+      return {
+        label: 'Event Date',
+        placeholder: '',
+        required: false,
+        helpText: '',
+        defaultValue: '',
+        minDate: '',
+        maxDate: '',
+      };
+
+    case 'dropdown':
+      return {
+        label: 'Select Option',
+        placeholder: 'Choose...',
+        required: false,
+        helpText: '',
+        options: [
+          { value: 'option-1', label: 'Option 1', priceModifier: 0 },
+          { value: 'option-2', label: 'Option 2', priceModifier: 0 },
+        ],
+      };
+
+    case 'radio_group':
+      return {
+        label: 'Choose One',
+        required: false,
+        layout: 'vertical',
+        options: [
+          { value: 'option-1', label: 'Option 1', description: '', priceModifier: 0 },
+          { value: 'option-2', label: 'Option 2', description: '', priceModifier: 0 },
+        ],
+      };
+
+    case 'checkbox_group':
+      return {
+        label: 'Select All That Apply',
+        options: [
+          { value: 'option-1', label: 'Option 1', description: '', priceModifier: 0 },
+          { value: 'option-2', label: 'Option 2', description: '', priceModifier: 0 },
+        ],
+      };
+
+    case 'pricing_tiers':
+      return {
+        label: 'Pricing',
+        basedOn: 'quantity',
+        showCalculation: true,
+        tiers: [
+          { label: '1-10 units', minQty: 1, maxQty: 10, pricePerUnit: 100 },
+          { label: '11-50 units', minQty: 11, maxQty: 50, pricePerUnit: 90 },
+          { label: '51+ units', minQty: 51, maxQty: null, pricePerUnit: 80 },
+        ],
+      };
+
+    case 'package_tiers':
+      return {
+        label: 'Choose Your Package',
+        layout: 'cards',
+        allowMultiple: false,
+        packages: [
+          {
+            id: 'basic',
+            name: 'Basic',
+            price: 1000,
+            icon: '📦',
+            features: ['Feature 1', 'Feature 2', 'Feature 3'],
+            recommended: false,
+          },
+          {
+            id: 'pro',
+            name: 'Professional',
+            price: 2500,
+            icon: '🚀',
+            features: ['Everything in Basic', 'Feature 4', 'Feature 5', 'Priority Support'],
+            recommended: true,
+          },
+          {
+            id: 'enterprise',
+            name: 'Enterprise',
+            price: 5000,
+            icon: '⭐',
+            features: ['Everything in Pro', 'Feature 6', 'Feature 7', 'Dedicated Account Manager'],
+            recommended: false,
+          },
+        ],
+      };
+
+    case 'rich_text':
+      return {
+        content: '<h2>Heading</h2><p>Your content here...</p>',
+        textAlign: 'left',
+        fontSize: 'base',
+      };
+
+    case 'image':
+      return {
+        imageUrl: '',
+        altText: 'Image',
+        caption: '',
+        width: 'full',
+      };
+
+    case 'video':
+      return {
+        embedUrl: '',
+        aspectRatio: '16:9',
+      };
+
     default:
       return {};
   }
